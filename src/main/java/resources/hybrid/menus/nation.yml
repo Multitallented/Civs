@@ -12,6 +12,7 @@ name: Nation
 #  get-lore: gives the player a copy of the nation's lore if they don't already have it
 #  join-nation: your town will join the nation (opens town select menu if you own multiple towns) and refreshes the menu
 #  leave-nation: leave nation (opens town select menu if you own multiple towns) and refreshes the menu
+#  set-capitol: sets the capitol town of the nation
 items:
   icon:
     index: 0

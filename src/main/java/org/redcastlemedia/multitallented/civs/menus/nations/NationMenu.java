@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,6 +13,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -22,7 +24,6 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
-import org.redcastlemedia.multitallented.civs.menus.towns.SelectTownMenu;
 import org.redcastlemedia.multitallented.civs.nations.Nation;
 import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -31,6 +32,10 @@ import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
+
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 @CivsMenu(name = Constants.NATION) @SuppressWarnings("unused")
 public class NationMenu extends CustomMenu {
@@ -79,9 +84,26 @@ public class NationMenu extends CustomMenu {
         if (player == null || nation == null) {
             return new ItemStack(Material.AIR);
         }
-        if (menuIcon.getActions().contains("set-capitol") &&
-                TownManager.getInstance().getOwnedTowns(civilian).isEmpty()) {
-            return new ItemStack(Material.AIR);
+        if (menuIcon.getActions().contains("set-capitol")) {
+            if (setAirIfNoTownMember(civilian, nation)) {
+                return new ItemStack(Material.AIR);
+            }
+        }
+        if (menuIcon.getActions().contains("join-nation")) {
+            Set<Town> ownedTowns = TownManager.getInstance().getOwnedTowns(civilian);
+            if (ownedTowns.isEmpty()) {
+                return new ItemStack(Material.AIR);
+            }
+            for (Town town : ownedTowns) {
+                if (nation.getMembers().contains(town.getName())) {
+                    return new ItemStack(Material.AIR);
+                }
+            }
+        }
+        if (menuIcon.getActions().contains("leave-nation")) {
+            if (setAirIfNoTownMember(civilian, nation)) {
+                return new ItemStack(Material.AIR);
+            }
         }
         boolean isAuthorized = !OwnershipUtil.isNotAuthorized(player, nation);
         if ("icon".equals(menuIcon.getKey())) {
@@ -146,6 +168,24 @@ public class NationMenu extends CustomMenu {
         return super.createItemStack(civilian, menuIcon, count);
     }
 
+    private boolean setAirIfNoTownMember(Civilian civilian, Nation nation) {
+        Set<Town> ownedTowns = TownManager.getInstance().getOwnedTowns(civilian);
+        if (ownedTowns.isEmpty()) {
+            return true;
+        }
+        boolean noTownMember = true;
+        for (Town town : ownedTowns) {
+            if (nation.getMembers().contains(town.getName())) {
+                noTownMember = false;
+                break;
+            }
+        }
+        if (noTownMember) {
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
@@ -166,25 +206,116 @@ public class NationMenu extends CustomMenu {
             }
             return true;
         } else if ("set-capitol".equals(actionString)) {
-            setCapitol(civilian, player);
+            setCapitol(civilian, player, nation);
             return true;
         } else if ("leave-nation".equals(actionString)) {
-            // TODO open select town menu
+            leaveNation(civilian, player, nation);
             return true;
         } else if ("join-nation".equals(actionString)) {
-            // TODO open select town menu
+            joinNation(civilian, player, nation);
             return true;
         }
         return super.doActionAndCancel(civilian, actionString, clickedItem);
     }
 
-    private void setCapitol(Civilian civilian, Player player) {
+    private static void leaveNation(Civilian civilian, Player player, Nation nation) {
         Set<Town> towns = TownManager.getInstance().getOwnedTowns(civilian);
         if (towns.size() == 1) {
+            Town town = towns.iterator().next();
+            leaveNation(player, nation, town);
+        } else if (towns.size() > 1) {
+            MenuManager.openMenuFromString(civilian, "select-town?nation=$nation$&leave=true");
+        }
+    }
+
+    public static void leaveNation(Player player, Nation nation, Town town) {
+        if (nation.getMembers().size() < 2) {
+            NationManager.getInstance().removeNation(nation);
+        } else {
+            nation.getMembers().remove(town.getName());
+            NationManager.getInstance().saveNation(nation);
+        }
+        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                "left-nation").replace("$1", town.getName())
+                .replace("$2", nation.getName()));
+        for (String townName : nation.getMembers()) {
+            Town town1 = TownManager.getInstance().getTown(townName);
+            for (UUID uuid : town1.getRawPeople().keySet()) {
+                Player player1 = Bukkit.getPlayer(uuid);
+                if (player1 != null) {
+                    player1.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player1,
+                            "left-nation").replace("$1", town.getName())
+                            .replace("$2", nation.getName()));
+                }
+            }
+        }
+    }
+
+    private void joinNation(Civilian civilian, Player player, Nation nation) {
+        Set<Town> towns = TownManager.getInstance().getOwnedTowns(civilian);
+        if (towns.size() == 1) {
+            Town town = towns.iterator().next();
+            joinNation(player, nation, town);
+        } else if (towns.size() > 1) {
+            MenuManager.openMenuFromString(civilian, "select-town?nation=$nation$&join=true");
+        }
+    }
+
+    public static void joinNation(Player player, Nation nation, Town town) {
+        nation.getNationApplications().add(town);
+        String townName = nation.getCapitol();
+        if (townName != null) {
+            Town capitol = TownManager.getInstance().getTown(townName);
+            for (Map.Entry<UUID, String> entry : capitol.getRawPeople().entrySet()) {
+                if (entry.getValue().contains(Constants.OWNER)) {
+                    Player player1 = Bukkit.getPlayer(entry.getKey());
+                    if (player1 != null) {
+                        sendInviteMessage(player, town, nation);
+                    }
+                }
+            }
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                    ""));
+                    "nation-app-sent").replace("$1", nation.getName()));
+        }
+    }
+
+    private static void sendInviteMessage(Player player, Town town, Nation nation) {
+        String inviteMessage = Civs.getRawPrefix() + LocaleManager.getInstance().getRawTranslation(player,
+                "nation-invite").replace("$1", town.getName())
+                .replace("$2", nation.getName());
+        TextComponent component = Util.parseColorsComponent(inviteMessage);
+
+        TextComponent acceptComponent = new TextComponent("[✔]");
+        acceptComponent.setColor(ChatColor.GREEN);
+        acceptComponent.setUnderlined(true);
+        acceptComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv acceptnation " + town.getName()));
+        component.addExtra(acceptComponent);
+
+        player.spigot().sendMessage(component);
+    }
+
+    private void setCapitol(Civilian civilian, Player player, Nation nation) {
+        Set<Town> towns = TownManager.getInstance().getOwnedTowns(civilian);
+        if (towns.size() == 1) {
+            setCapitol(player, nation, towns.iterator().next());
         } else if (towns.size() > 1) {
             MenuManager.openMenuFromString(civilian, "select-town?nation=$nation$&capitol=true");
         }
+    }
+
+    public static void setCapitol(Player player, Nation nation, Town town) {
+        if (nation.getCapitol() != null) {
+            Town capitolTown = TownManager.getInstance().getTown(nation.getCapitol());
+            if (town.getPopulation() < capitolTown.getPopulation()) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        "capitol-must-exceed-pop").replace("$1", "" + capitolTown.getPopulation()));
+                return;
+            }
+        }
+        nation.setCapitol(town.getName());
+        NationManager.getInstance().saveNation(nation);
+        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                "capitol-set").replace("$1", nation.getName())
+                .replace("$2", town.getName()));
     }
 }

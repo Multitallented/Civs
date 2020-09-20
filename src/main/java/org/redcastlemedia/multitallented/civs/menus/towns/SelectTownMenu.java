@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -15,8 +16,11 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.menus.nations.NationMenu;
+import org.redcastlemedia.multitallented.civs.nations.Nation;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "select-town") @SuppressWarnings("unused")
@@ -126,6 +130,34 @@ public class SelectTownMenu extends CustomMenu {
             }
             player.closeInventory();
             return true;
+        }
+        boolean isNation = MenuManager.getAllData(civilian.getUuid()).containsKey(Constants.NATION);
+        if (isNation) {
+            Nation nation = (Nation) MenuManager.getData(civilian.getUuid(), Constants.NATION);
+            if (nation == null) {
+                Civs.logger.severe("Unable to find null nation in select-town");
+                return true;
+            }
+            String townName = ChatColor.stripColor(itemStack.getItemMeta().getDisplayName());
+            Town fromTown = TownManager.getInstance().getTown(townName);
+            if (fromTown == null) {
+                return true;
+            }
+            if (MenuManager.getAllData(civilian.getUuid()).containsKey("capitol")) {
+                NationMenu.setCapitol(player, nation, fromTown);
+                MenuManager.openMenuFromString(civilian, "nation?nation=$nation$");
+                return true;
+            }
+            if (MenuManager.getAllData(civilian.getUuid()).containsKey("join")) {
+                NationMenu.joinNation(player, nation, fromTown);
+                MenuManager.openMenuFromString(civilian, "nation?nation=$nation$");
+                return true;
+            }
+            if (MenuManager.getAllData(civilian.getUuid()).containsKey("leave")) {
+                NationMenu.leaveNation(player, nation, fromTown);
+                MenuManager.openMenuFromString(civilian, "nation?nation=$nation$");
+                return true;
+            }
         }
         return super.doActionAndCancel(civilian, actionString, itemStack);
     }
