@@ -82,6 +82,7 @@ items:
     desc: set-capitol-desc
     actions:
       - set-capitol #TODO
+      - refresh
   join-nation:
     index: 17
     icon: IRON_SWORD
@@ -89,6 +90,7 @@ items:
     desc: join-nation-desc
     actions:
       - join-nation #TODO
+      - refresh
   leave-nation:
     index: 17
     icon: CREEPER_HEAD
@@ -96,6 +98,7 @@ items:
     desc: leave-nation-desc
     actions:
       - leave-nation #TODO
+      - refresh
   members:
     index: 18-53
     # icon: town icon
