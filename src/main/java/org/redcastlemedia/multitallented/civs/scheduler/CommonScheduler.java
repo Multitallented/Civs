@@ -209,8 +209,7 @@ public class CommonScheduler implements Runnable {
                 NationManager.getInstance().saveNation(nation);
 
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                        player, "neutralized-claim"
-                ).replace("$1", claim.getNation().getName()));
+                        player, "neutralized-claim").replace("$1", claim.getNation().getName()));
             } else {
                 claim.setLastEnter(-1);
             }

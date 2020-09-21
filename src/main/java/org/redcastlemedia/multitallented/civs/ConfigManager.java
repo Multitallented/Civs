@@ -176,6 +176,8 @@ public class ConfigManager {
 
     @Getter
     String chatChannelFormat;
+    @Getter
+    boolean unclaimNationChunksWithTnt;
 
     public ConfigManager() {
         loadDefaults();
@@ -409,6 +411,7 @@ public class ConfigManager {
             useHardshipSystem = config.getBoolean("hardship-should-pay-damages", false);
             keepRegionChunksLoaded = config.getBoolean("keep-region-chunks-loaded", true);
             silentExp = config.getBoolean("no-exp-chat-messages", false);
+            unclaimNationChunksWithTnt = config.getBoolean("unclaim-nation-chunks-with-tnt", true);
             lineLengthMap = new HashMap<>();
             useSkills = config.getBoolean("use-skills", true);
             if (config.isSet("line-break-length-per-language")) {
@@ -484,6 +487,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        unclaimNationChunksWithTnt = true;
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         silentExp = false;
         useSkills = true;
