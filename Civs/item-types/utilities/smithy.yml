@@ -33,7 +33,7 @@
 #  - block_build
 #  - block_liquid
 #  - block_fire
-#  - repair
+#  - repair:IRON_BLOCK
 #
 #period: 900 #15 minutes
 #upkeep:

@@ -5,6 +5,7 @@ name: Claim
 #  captureTime: formatted time string for time until claim is unclaimed
 # actions
 #  capture-claim: capture this claim for your nation by paying items
+# unclaim: Unclaims the current claim if the timer is 0
 items:
   icon:
     index: 0
@@ -23,7 +24,9 @@ items:
     icon: RED_WOOL
     name: claim-unsafe{$captureTime$
     desc: claim-capture-desc
-    actions: []
+    actions:
+      - unclaim
+      - refresh
   claim-map:
     index: 7
     icon: GRASS_BLOCK

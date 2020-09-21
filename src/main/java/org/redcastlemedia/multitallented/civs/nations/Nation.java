@@ -42,6 +42,8 @@ public class Nation {
     private String desc;
     private String loreTitle;
     private List<String> lorePages;
+    @Getter
+    private Set<Town> nationApplications = new HashSet<>();
 
     public void setLore(ItemStack itemStack) {
         BookMeta bookMeta = (BookMeta) itemStack.getItemMeta();

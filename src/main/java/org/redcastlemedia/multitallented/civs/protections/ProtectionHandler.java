@@ -71,6 +71,7 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.nations.Nation;
 import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
@@ -121,16 +122,11 @@ public class ProtectionHandler implements Listener {
         if (event.getReason() != PortalCreateEvent.CreateReason.NETHER_PAIR) {
             return;
         }
-        boolean setCancelled;
-        if (event.getEntity() instanceof Player) {
-            setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(),
-                    (Player) event.getEntity(), RegionEffectConstants.BLOCK_BUILD);
-        } else {
-            setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(), null,
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(), null,
                     RegionEffectConstants.BLOCK_BUILD);
-        }
         if (setCancelled) {
-            for (BlockState state : event.getBlocks()) {
+            for (Block block : event.getBlocks()) {
+                BlockState state = block.getState();
                 revertThese.put(state.getLocation(), state.getWorld().getBlockAt(state.getLocation()).getBlockData());
             }
             event.getBlocks().clear();
@@ -582,6 +578,12 @@ public class ProtectionHandler implements Listener {
             if (setCancelled && player != null) {
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
+            }
+            if (ConfigManager.getInstance().isUnclaimNationChunksWithTnt()) {
+                ChunkClaim claim = ChunkClaim.fromLocation(event.getLocation());
+                if (claim.getNation() != null) {
+                    claim.setNation(null);
+                }
             }
         }
         if (setCancelled) {

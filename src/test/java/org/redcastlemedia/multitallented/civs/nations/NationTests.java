@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.PlayerInventoryImpl;
 import org.redcastlemedia.multitallented.civs.SuccessException;
@@ -204,28 +205,18 @@ public class NationTests extends TestUtil {
         assertEquals(1, NationManager.getInstance().getSurroundTownClaim(9, town1.getLocation()).getX());
     }
 
-    @Test
+    @Test @Ignore
     public void allianceBecomingANationShouldBridgeTheTwoTowns() {
 
     }
 
-    @Test
+    @Test @Ignore
     public void townJoiningNationShouldAutoClaimBridge() {
 
     }
 
-    @Test
-    public void nationMemberShouldClaimLandIfHasItemAndClaimsAvailable() {
-
-    }
-
-    @Test
+    @Test @Ignore
     public void nationMemberShouldNotClaimLandIfNoClaimsAvailable() {
-
-    }
-
-    @Test
-    public void nationCapitolShouldOnlyBeChangedIfTownHasGreaterPopulation() {
 
     }
 

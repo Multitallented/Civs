@@ -40,6 +40,7 @@ import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.ItemStackJsonUtil;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
@@ -491,6 +492,19 @@ public class NationManager implements Listener {
         return false;
     }
 
+    public Nation getNationByOwnerPlayer(UUID uuid) {
+        for (Nation nation : nations.values()) {
+            if (nation.getCapitol() != null) {
+                Town town = TownManager.getInstance().getTown(nation.getCapitol());
+                if (town != null && town.getRawPeople().containsKey(uuid) &&
+                        town.getRawPeople().get(uuid).contains(Constants.OWNER)) {
+                    return nation;
+                }
+            }
+        }
+        return null;
+    }
+
     public Nation getNationByPlayer(UUID uniqueId) {
         for (Nation nation : nations.values()) {
             for (String townName : nation.getMembers()) {
@@ -631,5 +645,10 @@ public class NationManager implements Listener {
             }
         }
 
+    }
+
+    public void addMemberToNation(Nation nation, Town town) {
+        nation.getMembers().add(town.getName());
+        saveNation(nation);
     }
 }

@@ -189,31 +189,6 @@ public class CommonScheduler implements Runnable {
         } else if (lastClaim != null && !lastClaim.equals(claim)) {
             exitClaim(lastClaim, claim, player);
             enterClaim(lastClaim, claim, player);
-        } else {
-            stayInClaim(claim, player);
-        }
-    }
-
-    private void stayInClaim(ChunkClaim claim, Player player) {
-        if (claim.getNation() == null) {
-            return;
-        }
-        final long CAPTURE_TIME = ConfigManager.getInstance().getAllianceClaimCaptureTime() * 1000;
-        if (claim.getLastEnter() != -1 &&
-                claim.getLastEnter() + CAPTURE_TIME < System.currentTimeMillis()) {
-            boolean isInNation = NationManager.getInstance().isInNation(player.getUniqueId(), claim.getNation());
-            if (!isInNation && TownManager.getInstance().getTownAt(player.getLocation()) == null) {
-
-                Nation nation = claim.getNation();
-                nation.getNationClaims().get(player.getLocation().getWorld().getUID()).remove(claim.getId());
-                NationManager.getInstance().saveNation(nation);
-
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                        player, "neutralized-claim"
-                ).replace("$1", claim.getNation().getName()));
-            } else {
-                claim.setLastEnter(-1);
-            }
         }
     }
 

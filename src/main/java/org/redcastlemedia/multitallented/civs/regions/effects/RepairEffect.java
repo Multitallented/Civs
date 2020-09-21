@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -318,7 +319,6 @@ public class RepairEffect implements Listener {
         }
 
         if ((!event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && !event.getAction().equals(Action.LEFT_CLICK_BLOCK)) ||
-                (!event.getClickedBlock().getType().equals(Material.IRON_BLOCK)) ||
                 event.getHand().equals(EquipmentSlot.HAND)) {
             return;
         }
@@ -326,6 +326,10 @@ public class RepairEffect implements Listener {
         Region r = RegionManager.getInstance().getRegionAt(event.getClickedBlock().getLocation());
 
         if (r == null || !r.getEffects().containsKey(KEY)) {
+            return;
+        }
+        CVItem cvItem = CVItem.createCVItemFromString(r.getEffects().get(KEY));
+        if (event.getClickedBlock().getType() != cvItem.getMat()) {
             return;
         }
 
