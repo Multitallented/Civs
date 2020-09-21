@@ -1010,5 +1010,7 @@ capitol-must-exceed-pop: "Only a town of $1 population can be set as the capitol
 capitol-set: "$1's capitol has been set to $2"
 nation-app-sent: "Your town has sent an application to join nation $1"
 nation-invite: "$1 is requesting to join nation $2 Accept?"
+nation-apps: "Join Applications"
+nation-apps-desc: "Towns have applied to join this nation"
 region-summary: "@{GREEN}Type: $1\n@{BLUE}Owners: $2\n@{YELLOW}Location: $3\n@{BLUE}Working: $4\n@{GREEN}Income today: $5"
 town-summary: "@{GREEN}Type: $1\n@{BLUE}Owners: $2\n@{YELLOW}Power: $3/$4\n@{GREEN}Population: $5/$6"

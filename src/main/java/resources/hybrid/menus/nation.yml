@@ -82,15 +82,22 @@ items:
     name: set-capitol
     desc: set-capitol-desc
     actions:
-      - set-capitol #TODO
+      - set-capitol
       - refresh
+  nation-apps:
+    index: 14
+    icon: GOLDEN_SWORD
+    name: nation-apps
+    desc: nation-apps-desc
+    actions:
+      - menu:nation-invite?nation=$nation$
   join-nation:
     index: 17
     icon: IRON_SWORD
     name: join-nation
     desc: join-nation-desc
     actions:
-      - join-nation #TODO
+      - join-nation
       - refresh
   leave-nation:
     index: 17
@@ -98,7 +105,7 @@ items:
     name: leave-nation
     desc: leave-nation-desc
     actions:
-      - leave-nation #TODO
+      - leave-nation
       - refresh
   members:
     index: 18-53
