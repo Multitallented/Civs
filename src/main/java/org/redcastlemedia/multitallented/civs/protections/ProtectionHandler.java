@@ -122,11 +122,16 @@ public class ProtectionHandler implements Listener {
         if (event.getReason() != PortalCreateEvent.CreateReason.NETHER_PAIR) {
             return;
         }
-        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(), null,
+        boolean setCancelled;
+        if (event.getEntity() instanceof Player) {
+            setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(),
+                    (Player) event.getEntity(), RegionEffectConstants.BLOCK_BUILD);
+        } else {
+            setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(), null,
                     RegionEffectConstants.BLOCK_BUILD);
+        }
         if (setCancelled) {
-            for (Block block : event.getBlocks()) {
-                BlockState state = block.getState();
+            for (BlockState state : event.getBlocks()) {
                 revertThese.put(state.getLocation(), state.getWorld().getBlockAt(state.getLocation()).getBlockData());
             }
             event.getBlocks().clear();
