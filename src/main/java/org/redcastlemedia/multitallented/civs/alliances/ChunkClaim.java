@@ -9,11 +9,14 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.nations.Nation;
 import org.redcastlemedia.multitallented.civs.nations.NationManager;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import lombok.Getter;
@@ -68,6 +71,18 @@ public class ChunkClaim {
             return;
         }
         this.nation.getNationClaims().get(this.world.getUID()).remove(this.getId());
+        for (String townName : nation.getMembers()) {
+            Town town = TownManager.getInstance().getTown(townName);
+            for (UUID uuid : town.getRawPeople().keySet()) {
+                Player player1 = Bukkit.getPlayer(uuid);
+                if (player1 != null) {
+                    player1.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player1,
+                            "neutralized-claim").replace("$1", this.nation.getName())
+                            .replace("$2", "" + (this.x * 16))
+                            .replace("$3", "" + (this.z * 16)));
+                }
+            }
+        }
         NationManager.getInstance().saveNation(this.nation);
     }
 
