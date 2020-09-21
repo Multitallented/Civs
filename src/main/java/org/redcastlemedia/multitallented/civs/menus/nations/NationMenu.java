@@ -228,12 +228,7 @@ public class NationMenu extends CustomMenu {
     }
 
     public static void leaveNation(Player player, Nation nation, Town town) {
-        if (nation.getMembers().size() < 2) {
-            NationManager.getInstance().removeNation(nation);
-        } else {
-            nation.getMembers().remove(town.getName());
-            NationManager.getInstance().saveNation(nation);
-        }
+        NationManager.getInstance().removeMemberFromNation(nation, town);
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                 "left-nation").replace("$1", town.getName())
                 .replace("$2", nation.getName()));

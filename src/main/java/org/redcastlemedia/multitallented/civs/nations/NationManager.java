@@ -646,4 +646,9 @@ public class NationManager implements Listener {
         }
 
     }
+
+    public void addMemberToNation(Nation nation, Town town) {
+        nation.getMembers().add(town.getName());
+        saveNation(nation);
+    }
 }

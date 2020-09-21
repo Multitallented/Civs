@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
@@ -17,7 +22,9 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.nations.Nation;
 import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "nation-invite") @SuppressWarnings("unused")
 public class NationInviteMenu extends CustomMenu {
@@ -53,20 +60,59 @@ public class NationInviteMenu extends CustomMenu {
             return new ItemStack(Material.AIR);
         }
         if ("icon".equals(menuIcon.getKey())) {
-            // TODO
+            CVItem cvItem = nation.getIconAsCVItem();
+            ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
         } else if ("apps".equals(menuIcon.getKey())) {
-            // TODO
+            List<Town> townList = (List<Town>) MenuManager.getData(civilian.getUuid(), "apps");
+            int page = (int) MenuManager.getData(civilian.getUuid(), "page");
+            int startIndex = page * menuIcon.getIndex().size();
+            if (townList.size() <= startIndex + count) {
+                return new ItemStack(Material.AIR);
+            }
+            Town town = townList.get(startIndex + count);
+            Map<ItemStack, Town> townMap = (Map<ItemStack, Town>) MenuManager.getData(civilian.getUuid(), "appMap");
+            CVItem cvItem = ItemManager.getInstance().getItemType(town.getType()).clone();
+            cvItem.setDisplayName(town.getName());
+            cvItem.setLore(Util.textWrap(civilian, town.getSummary(player)));
+            ItemStack itemStack = cvItem.createItemStack();
+            townMap.put(itemStack, town);
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
     }
 
     @Override
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack itemStack) {
+        Nation nation = (Nation) MenuManager.getData(civilian.getUuid(), Constants.NATION);
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null || nation == null) {
+            return true;
+        }
         if ("decline-all-invites".equals(actionString)) {
-            // TODO
+            nation.getNationApplications().clear();
         } else if ("accept-application".equals(actionString)) {
-            // TODO
+            Map<ItemStack, Town> townMap = (Map<ItemStack, Town>) MenuManager.getData(civilian.getUuid(), "appMap");
+            Town town = townMap.get(itemStack);
+            NationManager.getInstance().addMemberToNation(nation, town);
+            messageAllPlayersInNation(nation, town);
         }
         return super.doActionAndCancel(civilian, actionString, itemStack);
+    }
+
+    private void messageAllPlayersInNation(Nation nation, Town town) {
+        for (String townName : nation.getMembers()) {
+            Town cTown = TownManager.getInstance().getTown(townName);
+            for (UUID uuid : cTown.getRawPeople().keySet()) {
+                Player cPlayer = Bukkit.getPlayer(uuid);
+                if (cPlayer != null) {
+                    cPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(cPlayer,
+                            "new-town-member").replace("$1", town.getName())
+                            .replace("$2", nation.getName()));
+                }
+            }
+        }
     }
 }
