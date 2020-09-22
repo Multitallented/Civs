@@ -24,10 +24,10 @@ import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.alliances.ClaimBridge;
-import org.redcastlemedia.multitallented.civs.events.AllianceDissolvedEvent;
 import org.redcastlemedia.multitallented.civs.events.AllianceFormedEvent;
 import org.redcastlemedia.multitallented.civs.events.NationCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.NationDestroyedEvent;
+import org.redcastlemedia.multitallented.civs.events.NationRenamedEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
@@ -177,6 +177,8 @@ public class NationManager implements Listener {
             return false;
         }
         Nation nation = nations.get(oldName);
+        NationRenamedEvent renameNationEvent = new NationRenamedEvent(nation, newName);
+        Bukkit.getPluginManager().callEvent(renameNationEvent);
         File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
         File allianceFile = new File(allianceFolder, oldName + ".yml");
         if (!allianceFile.delete()) {
@@ -333,17 +335,15 @@ public class NationManager implements Listener {
     }
 
     private int surroundAllAlliedTowns(Nation nation, int claimsAvailable) {
-        int i=0;
-        for (;;) {
-            int fullTowns = 0;
-            for (String townName : nation.getMembers()) {
-                Town town = TownManager.getInstance().getTown(townName);
-                TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        for (String townName : nation.getMembers()) {
+            Town town = TownManager.getInstance().getTown(townName);
+            TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+            int i=0;
+            for (;;) {
 
                 int chunkRadius = (int) (Math.ceil((double) townType.getBuildRadius() / 16) + 2);
                 if (i > chunkRadius * 8 + 1) {
-                    fullTowns++;
-                    continue;
+                    break;
                 }
 
                 ChunkClaim claim = getSurroundTownClaim(i, town.getLocation());
@@ -355,12 +355,8 @@ public class NationManager implements Listener {
                         return 0;
                     }
                 }
-
+                i++;
             }
-            if (fullTowns >= nation.getMembers().size()) {
-                break;
-            }
-            i++;
         }
         return claimsAvailable;
     }
@@ -378,11 +374,14 @@ public class NationManager implements Listener {
                 ChunkClaim chunk = getBridgeChunk(i, claimBridge);
                 if (chunk == null) {
                     claimBridges.remove(claimBridge);
+                    i++;
                     continue;
                 }
                 if (chunk.getNation() == null) {
                     chunk.setNation(nation);
+                    claimsAvailable--;
                 }
+                i++;
             }
         }
 
@@ -539,7 +538,7 @@ public class NationManager implements Listener {
     }
 
     public Nation getNation(String nationName) {
-        return nations.get(nationName.toLowerCase());
+        return nations.get(nationName);
     }
 
     @EventHandler
@@ -598,6 +597,7 @@ public class NationManager implements Listener {
                     nation.getMembers().add(townName);
                 }
             }
+            fillClaims(nation);
             return true;
         }
         return false;

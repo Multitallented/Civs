@@ -140,7 +140,7 @@
 #    name: create-nation
 #    desc: create-nation-desc
 #    actions:
-#      - command:cv createnation
+#      - command:cv create-nation $town$
 #  nation:
 #    index: 16
 #    # icon: nation icon
