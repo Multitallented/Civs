@@ -2,6 +2,8 @@ size: 27
 # variables:
 #  town: name of the town you're currently in
 #  region: id of the region you're currently in
+#  nation: name of the nation you're currently in
+#  claim: id of the claim in
 name: Main
 items:
   guide:
@@ -71,6 +73,12 @@ items:
     name: leaderboard
     actions:
       - menu:gov-list?leaderboard=true
+  nation-list:
+    index: 16
+    icon: GREEN_BANNER
+    name: nations
+    actions:
+      - menu:nation-list
   town:
     index: 18
     # name: town name
@@ -83,6 +91,20 @@ items:
     # icon: region icon
     actions:
       - menu:region?region=$region$
+  nation:
+    index: 20
+    # name: nation name
+    # icon: nation icon
+    # desc: nation desc
+    actions:
+      - menu:nation?nation=$nation$
+  claim-map:
+    index: 21
+    name: claims
+    icon: COMPASS
+    desc: claim-desc
+    actions:
+      - menu:claim-map
   class:
     index: 23
     #icon: class icon

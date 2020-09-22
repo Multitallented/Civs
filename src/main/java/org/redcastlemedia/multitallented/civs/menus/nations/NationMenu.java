@@ -83,6 +83,12 @@ public class NationMenu extends CustomMenu {
         if (player == null || nation == null) {
             return new ItemStack(Material.AIR);
         }
+        boolean isOwnerOfCapitol = false;
+        if (nation.getCapitol() != null) {
+            Town town = TownManager.getInstance().getTown(nation.getCapitol());
+            isOwnerOfCapitol = town.getRawPeople().containsKey(civilian.getUuid()) &&
+                    town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
+        }
         if (menuIcon.getActions().contains("set-capitol")) {
             if (setAirIfNoTownMember(civilian, nation)) {
                 return new ItemStack(Material.AIR);
@@ -110,6 +116,10 @@ public class NationMenu extends CustomMenu {
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
+        } else if ("set-lore".equals(menuIcon.getKey())) {
+            if (!isOwnerOfCapitol) {
+                return new ItemStack(Material.AIR);
+            }
         } else if ("constitution".equals(menuIcon.getKey())) {
             if (nation.getLore() == null) {
                 return new ItemStack(Material.AIR);
@@ -134,8 +144,12 @@ public class NationMenu extends CustomMenu {
             } else {
                 return new ItemStack(Material.AIR);
             }
+        } else if ("nation-apps".equals(menuIcon.getKey())) {
+            if (nation.getNationApplications().isEmpty() || setAirIfNoTownMember(civilian, nation)) {
+                return new ItemStack(Material.AIR);
+            }
         } else if ("rename".equals(menuIcon.getKey())) {
-            if (!isAuthorized) {
+            if (!isOwnerOfCapitol) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("capitol".equals(menuIcon.getKey())) {
@@ -145,7 +159,9 @@ public class NationMenu extends CustomMenu {
             }
             TownType townType = (TownType) ItemManager.getInstance().getItemType(capitol.getType());
             CVItem cvItem = townType.clone();
-            cvItem.setDisplayName(capitol.getName());
+            CVItem icon = menuIcon.createCVItem(player, count);
+            cvItem.setDisplayName(icon.getDisplayName());
+            cvItem.setLore(icon.getLore());
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
@@ -263,7 +279,7 @@ public class NationMenu extends CustomMenu {
             for (Map.Entry<UUID, String> entry : capitol.getRawPeople().entrySet()) {
                 if (entry.getValue().contains(Constants.OWNER)) {
                     Player player1 = Bukkit.getPlayer(entry.getKey());
-                    if (player1 != null) {
+                    if (player1 != null && !player1.equals(player)) {
                         sendInviteMessage(player, town, nation);
                     }
                 }
@@ -289,6 +305,14 @@ public class NationMenu extends CustomMenu {
     }
 
     private void setCapitol(Civilian civilian, Player player, Nation nation) {
+        String townName = nation.getCapitol();
+        if (townName != null) {
+            Town town = TownManager.getInstance().getTown(townName);
+            if (!town.getRawPeople().containsKey(civilian.getUuid()) ||
+                    !town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
+                return;
+            }
+        }
         Set<Town> towns = TownManager.getInstance().getOwnedTowns(civilian);
         if (towns.size() == 1) {
             setCapitol(player, nation, towns.iterator().next());

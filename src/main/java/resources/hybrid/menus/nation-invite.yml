@@ -32,3 +32,4 @@ items:
     # desc: town-desc
     actions:
       - accept-application
+      - refresh

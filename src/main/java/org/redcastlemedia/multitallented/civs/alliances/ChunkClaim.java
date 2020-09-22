@@ -49,7 +49,15 @@ public class ChunkClaim {
                 "capture-not-started");
         final long CAPTURE_TIME = ConfigManager.getInstance().getAllianceClaimCaptureTime() * 1000;
         long timeRemains = lastEnter + CAPTURE_TIME - System.currentTimeMillis();
-        return timeRemains > -1 ? Util.formatTime(player, timeRemains / 1000) : captureNotStarted;
+        if (lastEnter > 0) {
+            if (timeRemains > 0) {
+                return Util.formatTime(player, timeRemains / 1000);
+            } else {
+                return Util.formatTime(player, 0);
+            }
+        } else {
+            return captureNotStarted;
+        }
     }
 
     private void putInNationClaims(Nation nation) {

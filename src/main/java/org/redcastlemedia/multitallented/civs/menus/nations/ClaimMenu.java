@@ -109,11 +109,11 @@ public class ClaimMenu extends CustomMenu {
         final long CAPTURE_TIME = ConfigManager.getInstance().getAllianceClaimCaptureTime() * 1000;
         if (claim.getLastEnter() != -1 &&
                 claim.getLastEnter() + CAPTURE_TIME < System.currentTimeMillis()) {
-            claim.setNation(null);
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                     player, "neutralized-claim").replace("$1", claim.getNation().getName())
                     .replace("$1", "" + (claim.getX() * 16))
                     .replace("$2", "" + (claim.getZ() * 16)));
+            claim.setNation(null);
         }
     }
 }

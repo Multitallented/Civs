@@ -24,8 +24,6 @@ import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.alliances.ClaimBridge;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.AllianceDissolvedEvent;
 import org.redcastlemedia.multitallented.civs.events.AllianceFormedEvent;
 import org.redcastlemedia.multitallented.civs.events.NationCreatedEvent;
@@ -223,6 +221,14 @@ public class NationManager implements Listener {
                 NationManager.getInstance().removeNation(nation);
                 return;
             }
+        }
+    }
+
+    private void checkNationValidity(Nation nation) {
+        boolean isValid = false;
+
+        if (!isValid) {
+            NationManager.getInstance().removeNation(nation);
         }
     }
 
