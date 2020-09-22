@@ -2,7 +2,9 @@ package org.redcastlemedia.multitallented.civs.skills;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 
 import lombok.Getter;
@@ -97,6 +99,10 @@ public class Skill {
         }
         SkillType skillType = SkillManager.getInstance().getSkillType(type);
         double exp = 0;
+        if (skillType == null) {
+            Civs.logger.log(Level.SEVERE, "Unable to find skill type for {0}", type);
+            return exp;
+        }
         do {
             double baseExp = skillType.getExceptions()
                     .getOrDefault(category, skillType.getExpPerCategory());

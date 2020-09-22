@@ -225,6 +225,9 @@ public class DeathListener implements Listener {
                 damagerCiv.setLastDamager(player.getUniqueId());
             }
         }
+        if (!civilian.isInCombat() && player.equals(damager)) {
+            return;
+        }
         if (!civilian.isInCombat()) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
