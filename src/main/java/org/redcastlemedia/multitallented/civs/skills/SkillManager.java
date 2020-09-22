@@ -77,6 +77,7 @@ public class SkillManager {
         if (!config.getBoolean("enabled")) {
             return;
         }
+        skillName = skillName.toLowerCase();
         SkillType skillType = new SkillType(skillName,
                 config.getString("icon", "STONE"));
         skillType.setExpPerCategory(config.getDouble("exp-per-new-item", 100));
@@ -100,7 +101,7 @@ public class SkillManager {
     }
 
     public SkillType getSkillType(String name) {
-        return skills.get(name);
+        return skills.get(name.toLowerCase());
     }
 
     public double getSkillDiscountedPrice(Civilian civilian, CivItem civItem) {

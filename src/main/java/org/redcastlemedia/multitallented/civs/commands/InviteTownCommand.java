@@ -153,7 +153,7 @@ public class InviteTownCommand extends CivCommand {
             return suggestions;
         }
         if (args.length == 3) {
-            return new ArrayList<>(TownManager.getInstance().getTownNames());
+            return getTownNames(args[2]);
         }
         return super.getWord(commandSender, args);
     }
