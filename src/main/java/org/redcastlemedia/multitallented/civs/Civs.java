@@ -23,12 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.commands.CivCommand;
 import org.redcastlemedia.multitallented.civs.commands.CivsCommand;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.nations.NationManager;
-import org.redcastlemedia.multitallented.civs.protections.DeathListener;
-import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
-import org.redcastlemedia.multitallented.civs.regions.RegionListener;
 import org.redcastlemedia.multitallented.civs.commands.TabComplete;
 import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -65,6 +60,7 @@ public class Civs extends JavaPlugin {
     protected static Civs civs;
     public static Logger logger;
     private TabComplete tabComplete;
+    private int saveCycle = 0;
 
     @Override
     public void onEnable() {
@@ -89,6 +85,7 @@ public class Civs extends JavaPlugin {
         StructureUtil.removeAllBoundingBoxes();
         RegionManager.getInstance().saveAllUnsavedRegions();
         TownManager.getInstance().saveAllUnsavedTowns();
+        NationManager.getInstance().saveAllUnsavedNations();
         ConveyorEffect.getInstance().onDisable();
         getLogger().info(LogInfo.DISABLED);
         Bukkit.getScheduler().cancelTasks(this);
@@ -161,10 +158,23 @@ public class Civs extends JavaPlugin {
 
             @Override
             public void run() {
-                RegionManager.getInstance().saveNextRegion();
-                TownManager.getInstance().saveNextTown();
+                try {
+                    if (saveCycle == 1) {
+                        NationManager.getInstance().saveNextNation();
+                    } else if (saveCycle == 2) {
+                        TownManager.getInstance().saveNextTown();
+                    } else {
+                        RegionManager.getInstance().saveNextRegion();
+                    }
+                } catch (Exception exception) {
+                    Civs.logger.log(Level.SEVERE, "Unable to save during save task " + saveCycle, exception);
+                }
+                saveCycle++;
+                if (saveCycle > 2) {
+                    saveCycle = 0;
+                }
             }
-        }, 20L, 20L);
+        }, 10L, 10L);
     }
 
     private void initCommands() {

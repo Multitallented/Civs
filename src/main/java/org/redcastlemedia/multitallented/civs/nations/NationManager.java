@@ -55,6 +55,7 @@ public class NationManager implements Listener {
     }
 
     private HashMap<String, Nation> nations = new HashMap<>();
+    private final HashSet<Nation> needsSaving = new HashSet<>();
 
     NationManager() {
         Bukkit.getPluginManager().registerEvents(this, Civs.getInstance());
@@ -130,6 +131,31 @@ public class NationManager implements Listener {
     }
 
     public void saveNation(Nation nation) {
+        needsSaving.add(nation);
+    }
+
+    public void saveAllUnsavedNations() {
+        for (Nation nation : new HashSet<>(needsSaving)) {
+            saveNationNow(nation);
+        }
+        needsSaving.clear();
+    }
+
+    public void saveNextNation() {
+        Nation n = null;
+        for (Nation nation : needsSaving) {
+            n = nation;
+            saveNationNow(n);
+            break;
+        }
+        if (n != null) {
+            while (needsSaving.contains(n)) {
+                needsSaving.remove(n);
+            }
+        }
+    }
+
+    public void saveNationNow(Nation nation) {
         if (Civs.getInstance() == null) {
             return;
         }
@@ -303,15 +329,18 @@ public class NationManager implements Listener {
         if (claimsAvailable < 1) {
             return;
         }
-        HashSet<String> bridges = new HashSet<>();
-        getBridges(nation, bridges);
-        claimsAvailable = createBridgesBetweenAlliedTowns(nation, bridges, claimsAvailable);
+        if (ConfigManager.getInstance().isConnectTownsWithNationClaims()) {
+            HashSet<String> bridges = new HashSet<>();
+            getBridges(nation, bridges);
+            claimsAvailable = createBridgesBetweenAlliedTowns(nation, bridges, claimsAvailable);
 
-        if (claimsAvailable < 1) {
-            return;
+            if (claimsAvailable < 1) {
+                return;
+            }
+
+            // TODO spiral outwards from connected towns
         }
 
-        // TODO spiral outwards from connected towns
     }
 
     private void getBridges(Nation nation, HashSet<String> bridges) {

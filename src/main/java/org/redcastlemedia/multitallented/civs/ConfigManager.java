@@ -173,6 +173,7 @@ public class ConfigManager {
     boolean keepRegionChunksLoaded;
     @Getter boolean useSkills;
     @Getter boolean silentExp;
+    @Getter boolean connectTownsWithNationClaims;
 
     @Getter
     String chatChannelFormat;
@@ -358,7 +359,6 @@ public class ConfigManager {
             allowFoodHealInCombat = config.getBoolean("allow-food-heal-in-combat", true);
             allowTeleportInCombat = config.getBoolean("allow-teleporting-during-combat", false);
             townGracePeriod = config.getLong("town-grace-period", 43200); //12 hours
-            useClassesAndSpells = config.getBoolean("use-classes-and-spells", false);
             useTutorial = config.getBoolean("tutorial.use-tutorial", true);
             useGuide = config.getBoolean("tutorial.use-guide", true);
             tutorialUrl = config.getString("tutorial.url");
@@ -379,6 +379,7 @@ public class ConfigManager {
             if ("".equals(civsItemPrefix)) {
                 civsItemPrefix = "Civs";
             }
+            connectTownsWithNationClaims = config.getBoolean("use-claims-connect-towns-when-nation-created", true);
             revoltCost = config.getString("revolt-cost", "GUNPOWDER*64");
             useAnnouncements = config.getBoolean("use-announcements", true);
             announcementPeriod = config.getLong("announcement-period", 240);
@@ -487,6 +488,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        connectTownsWithNationClaims = true;
         unclaimNationChunksWithTnt = true;
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         silentExp = false;

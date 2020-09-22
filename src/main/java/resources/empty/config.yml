@@ -88,10 +88,6 @@ allow-offline-raiding: true
 ##can non-allied players teleport out of towns?
 allow-teleporting-out-of-hostile-towns: true
 
-##use the class and spell system from Civs
-##this is an undocumented and unfinished feature
-use-classes-and-spells: false
-
 ##Should the town enter and exit messages be titles (or chat)
 enter-exit-messages-use-titles: true
 
@@ -265,6 +261,9 @@ alliance-claim-capture-seconds: 180
 claim-material: REDSTONE*8
 # How much power should an alliance have per land claim
 power-per-nation-claim: 1
+# When the nation is created from an alliance, it will attempt to claim land so that the
+# towns are connected by nation claims
+use-claims-connect-towns-when-nation-created: true
 unclaimed-icon: "GRASS_BLOCK"
 nation-formed-at-town-level: 4
 # Should TNT explosions unclaim nation chunks
