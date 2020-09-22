@@ -63,6 +63,7 @@ public class NationMenu extends CustomMenu {
             }
             townList.add(town);
         }
+        data.put("capitol", nation.getCapitol());
         data.put("townList", townList);
         data.put("power", nation.getPower());
         data.put("maxPower", nation.getMaxPower());
@@ -160,7 +161,7 @@ public class NationMenu extends CustomMenu {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(capitol.getType());
             CVItem cvItem = townType.clone();
             CVItem icon = menuIcon.createCVItem(player, count);
-            cvItem.setDisplayName(icon.getDisplayName());
+            cvItem.setDisplayName(capitol.getName());
             cvItem.setLore(icon.getLore());
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
@@ -205,7 +206,13 @@ public class NationMenu extends CustomMenu {
     @Override
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        Nation nation = (Nation) MenuManager.getData(civilian.getUuid(), Constants.NATION);
+        Object nationObj = MenuManager.getData(civilian.getUuid(), Constants.NATION);
+        Nation nation = null;
+        if (nationObj instanceof Nation) {
+            nation = (Nation) nationObj;
+        } else if (nationObj instanceof String) {
+            nation = NationManager.getInstance().getNation((String) nationObj);
+        }
         if (player == null || nation == null) {
             return true;
         }
