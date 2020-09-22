@@ -250,6 +250,9 @@ alliance-claim-capture-seconds: 180
 claim-material: REDSTONE*8
 # How much power should an alliance have per land claim
 power-per-nation-claim: 1
+# When the nation is created from an alliance, it will attempt to claim land so that the
+# towns are connected by nation claims
+use-claims-connect-towns-when-nation-created: true
 unclaimed-icon: "GRASS_BLOCK"
 nation-formed-at-town-level: 4
 # Should TNT explosions unclaim nation chunks

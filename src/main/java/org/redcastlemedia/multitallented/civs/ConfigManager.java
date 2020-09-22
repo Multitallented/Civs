@@ -173,6 +173,7 @@ public class ConfigManager {
     boolean keepRegionChunksLoaded;
     @Getter boolean useSkills;
     @Getter boolean silentExp;
+    @Getter boolean connectTownsWithNationClaims;
 
     @Getter
     String chatChannelFormat;
@@ -379,6 +380,7 @@ public class ConfigManager {
             if ("".equals(civsItemPrefix)) {
                 civsItemPrefix = "Civs";
             }
+            connectTownsWithNationClaims = config.getBoolean("use-claims-connect-towns-when-nation-created", true);
             revoltCost = config.getString("revolt-cost", "GUNPOWDER*64");
             useAnnouncements = config.getBoolean("use-announcements", true);
             announcementPeriod = config.getLong("announcement-period", 240);
@@ -487,6 +489,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        connectTownsWithNationClaims = true;
         unclaimNationChunksWithTnt = true;
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         silentExp = false;

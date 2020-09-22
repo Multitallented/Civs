@@ -329,15 +329,18 @@ public class NationManager implements Listener {
         if (claimsAvailable < 1) {
             return;
         }
-        HashSet<String> bridges = new HashSet<>();
-        getBridges(nation, bridges);
-        claimsAvailable = createBridgesBetweenAlliedTowns(nation, bridges, claimsAvailable);
+        if (ConfigManager.getInstance().isConnectTownsWithNationClaims()) {
+            HashSet<String> bridges = new HashSet<>();
+            getBridges(nation, bridges);
+            claimsAvailable = createBridgesBetweenAlliedTowns(nation, bridges, claimsAvailable);
 
-        if (claimsAvailable < 1) {
-            return;
+            if (claimsAvailable < 1) {
+                return;
+            }
+
+            // TODO spiral outwards from connected towns
         }
 
-        // TODO spiral outwards from connected towns
     }
 
     private void getBridges(Nation nation, HashSet<String> bridges) {
