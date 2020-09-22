@@ -57,14 +57,14 @@ public class ClaimMenu extends CustomMenu {
             if (claim.getNation() != null) {
                 cvItem = claim.getNation().getIconAsCVItem();
                 cvItem.getLore().clear();
+                cvItem.getLore().addAll(Util.textWrap(civilian,
+                        LocaleManager.getInstance().getTranslation(player,
+                                menuIcon.getDesc())));
             } else {
                 cvItem = menuIcon.createCVItem(player, count);
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,
                         "claim-no-nation"));
             }
-            cvItem.getLore().addAll(Util.textWrap(civilian,
-                    LocaleManager.getInstance().getTranslation(player,
-                    menuIcon.getDesc())));
 
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);

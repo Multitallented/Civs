@@ -339,7 +339,7 @@ public class TownMenu extends CustomMenu {
             return itemStack;
         } else if ("create-nation".equals(menuIcon.getKey())) {
             Nation nation = (Nation) MenuManager.getData(civilian.getUuid(), Constants.NATION);
-            if (nation != null || !NationManager.getInstance().canCreateNation(town)) {
+            if (nation != null || !isOwner || !NationManager.getInstance().canCreateNation(town)) {
                 return new ItemStack(Material.AIR);
             }
         }

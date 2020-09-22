@@ -191,7 +191,7 @@ public class CommonScheduler implements Runnable {
         lastClaim.setLastEnter(-1);
         if (claim.getNation() == null) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                    player, "town-exit").replace("$1", lastClaim.getNation().getName()));
+                    player, "nation-exit").replace("$1", lastClaim.getNation().getName()));
         }
     }
 
@@ -207,7 +207,7 @@ public class CommonScheduler implements Runnable {
         }
         if (lastClaim == null || lastClaim.getNation() == null || !claim.getNation().equals(lastClaim.getNation())) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                    player, "town-enter").replace("$1", claim.getNation().getName()));
+                    player, "nation-enter").replace("$1", claim.getNation().getName()));
         }
     }
 
