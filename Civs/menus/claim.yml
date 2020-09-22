@@ -1,0 +1,46 @@
+#size: 18
+#name: Claim
+## variables
+##  claim: the id of the claim you're in
+##  captureTime: formatted time string for time until claim is unclaimed
+## actions
+##  capture-claim: capture this claim for your nation by paying items
+## unclaim: Unclaims the current claim if the timer is 0
+#items:
+#  icon:
+#    index: 0
+#    icon: GRASS_BLOCK
+#    # name: nation name
+#    desc: claim-desc
+#    actions:
+#      - menu:nation?nation=$itemName$
+#  timer-ok:
+#    index: 1
+#    icon: GREEN_WOOL
+#    name: claim-safe
+#    desc: claim-capture-desc
+#    actions: []
+#  timer-bad:
+#    index: 1
+#    icon: RED_WOOL
+#    name: claim-unsafe{$captureTime$
+#    desc: claim-capture-desc
+#    actions:
+#      - unclaim
+#      - refresh
+#  claim-map:
+#    index: 7
+#    icon: GRASS_BLOCK
+#    name: claim-map
+#    actions:
+#      - menu:claim-map
+#  back:
+#    index: 8
+#  capture-claim:
+#    index: 9
+#    icon: REDSTONE
+#    name: capture-claim
+#    desc: pay-capture-claim
+#    actions:
+#      - capture-claim
+#      - refresh

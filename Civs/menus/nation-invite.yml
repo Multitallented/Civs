@@ -1,0 +1,35 @@
+#size: 54
+#name: Nation
+## variables
+##  nation: name of the nation
+## actions
+##  accept-application: accepts the applications
+##  decline-all-invites
+#items:
+#  icon:
+#    index: 0
+#    # icon: nation icon
+#    # name: nation name
+#    # desc: nation desc
+#    actions: []
+#  clear:
+#    index: 1
+#    icon: SKELETON_SKULL
+#    name: decline-all
+#    actions:
+#      - decline-all-invites
+#      - back
+#  prev:
+#    index: 4
+#  next:
+#    index: 6
+#  back:
+#    index: 8
+#  apps:
+#    index: 9-53
+#    # icon: town icon
+#    # name: town name
+#    # desc: town-desc
+#    actions:
+#      - accept-application
+#      - refresh

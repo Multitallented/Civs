@@ -9,3 +9,5 @@
 #    index: 8
 #  blueprints:
 #    index: 9-35
+#    actions:
+#      - delete

@@ -1,0 +1,32 @@
+size: 54
+name: NationList
+# variables
+#
+# actions
+#
+items:
+  sort-power:
+    index: 0
+    icon: REDSTONE
+    name: sort-power
+    actions:
+      - menu:nation-list?sort=power
+  sort-alphabetical:
+    index: 1
+    icon: MAP
+    name: sort-alphabetical
+    actions:
+      - menu:nation-list?sort=alphabetical
+  prev:
+    index: 3
+  next:
+    index: 5
+  back:
+    index: 8
+  nations:
+    index: 9-53
+    # icon: nation icon
+    # name: nation name
+    # desc: nation desc
+    actions:
+      - menu:nation?nation=$itemName$

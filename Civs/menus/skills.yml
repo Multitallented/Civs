@@ -1,0 +1,25 @@
+#size: 36
+#name: Skills
+## variables
+##  uuid: your uuid
+## custom actions:
+#items:
+#  parent:
+#    index: 0
+#    # icon: parent icon
+#    # name: parent name
+#    # desc: parent desc
+#    actions:
+#      - menu:player?uuid=$uuid$
+#  prev:
+#    index: 3
+#  next:
+#    index: 5
+#  back:
+#    index: 8
+#  skills:
+#    index: 9-35
+#    # icon: skill icon
+#    # name: skill name
+#    # desc: skill desc
+#    actions: []

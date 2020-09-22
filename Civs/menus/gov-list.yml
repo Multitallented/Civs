@@ -19,5 +19,4 @@
 #    # desc gov desc
 #    actions:
 #      - select-gov
-#      - clear-history
 #      - menu:town?town=$town$
