@@ -105,12 +105,31 @@ public class ClaimMenu extends CustomMenu {
     }
 
     private void unclaim(Player player, ChunkClaim claim) {
+        Nation nation = claim.getNation();
+        if (nation == null) {
+            return;
+        }
+        boolean hasAdjacentUnclaimed = false;
+        outer: for (int x = 0; x < 3; x++) {
+            for (int z = 0; z < 3; z++) {
+                ChunkClaim claim1 = ChunkClaim.fromXZ(x + claim.getX() - 1, z + claim.getZ() - 1, claim.getWorld());
+                if (claim1.getNation() == null || !claim1.getNation().equals(nation)) {
+                    hasAdjacentUnclaimed = true;
+                    break outer;
+                }
+            }
+        }
+        if (!hasAdjacentUnclaimed) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                    "no-adjacent-claim").replace("$1", nation.getName()));
+            return;
+        }
 
         final long CAPTURE_TIME = ConfigManager.getInstance().getAllianceClaimCaptureTime() * 1000;
         if (claim.getLastEnter() != -1 &&
                 claim.getLastEnter() + CAPTURE_TIME < System.currentTimeMillis()) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                    player, "neutralized-claim").replace("$1", claim.getNation().getName())
+                    player, "neutralized-claim").replace("$1", nation.getName())
                     .replace("$1", "" + (claim.getX() * 16))
                     .replace("$2", "" + (claim.getZ() * 16)));
             claim.setNation(null);

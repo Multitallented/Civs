@@ -31,6 +31,7 @@ import org.redcastlemedia.multitallented.civs.events.NationDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
+import org.redcastlemedia.multitallented.civs.events.TownDevolveEvent;
 import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
@@ -217,17 +218,19 @@ public class NationManager implements Listener {
                 nation.getMembers().remove(town.getName());
                 NationManager.getInstance().saveNation(nation);
             }
-            if (nation.getMembers().isEmpty()) {
+            if (nation.getMembers().isEmpty() || !nationHasEnoughMembers(nation)) {
                 NationManager.getInstance().removeNation(nation);
                 return;
             }
         }
     }
 
-    private void checkNationValidity(Nation nation) {
-        boolean isValid = false;
+    @EventHandler
+    public void onTownDevolve(TownDevolveEvent event) {
+        String townName = event.getTown().getName();
+        Nation nation = getNationByTownName(townName);
 
-        if (!isValid) {
+        if (!nationHasEnoughMembers(nation)) {
             NationManager.getInstance().removeNation(nation);
         }
     }
@@ -573,11 +576,6 @@ public class NationManager implements Listener {
         checkAllianceForNationCreation(event.getAlliance());
     }
 
-    @EventHandler
-    public void onAllianceDissolved(AllianceDissolvedEvent event) {
-        // TODO
-    }
-
     private boolean checkAllianceForNationCreation(Alliance alliance) {
         int totalTownLevel = 0;
         boolean noMembersAreInNation = true;
@@ -603,6 +601,41 @@ public class NationManager implements Listener {
             return true;
         }
         return false;
+    }
+
+    public boolean canCreateNation(Town town) {
+        int levels = 0;
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        levels += townType.getLevel();
+        for (Alliance alliance : AllianceManager.getInstance().getAllAlliances()) {
+            if (!alliance.getMembers().contains(town.getName())) {
+                continue;
+            }
+
+            for (String townName : alliance.getMembers()) {
+                Town town1 = TownManager.getInstance().getTown(townName);
+                if (town.equals(town1)) {
+                    continue;
+                }
+                TownType townType1 = (TownType) ItemManager.getInstance().getItemType(town1.getType());
+                levels += townType1.getLevel();
+            }
+        }
+        int minLevel = ConfigManager.getInstance().getNationFormedAtTownLevel();
+        return levels >= minLevel;
+    }
+
+    private boolean nationHasEnoughMembers(Nation nation) {
+        int levels = 0;
+        for (String townName : nation.getMembers()) {
+            Town town = TownManager.getInstance().getTown(townName);
+            if (town != null) {
+                TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+                levels += townType.getLevel();
+            }
+        }
+        int minLevel = ConfigManager.getInstance().getNationFormedAtTownLevel();
+        return levels >= minLevel;
     }
 
     public void createNation(Town newTown) {

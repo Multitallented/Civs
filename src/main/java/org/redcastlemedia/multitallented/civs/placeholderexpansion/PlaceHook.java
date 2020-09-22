@@ -12,6 +12,8 @@ import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.ChatChannel;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.nations.Nation;
+import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -157,6 +159,11 @@ public class PlaceHook extends PlaceholderExpansion {
     }
 
     private String getNation(Civilian civilian) {
+        Nation nation = NationManager.getInstance().getNationByPlayer(civilian.getUuid());
+        if (nation != null) {
+            return nation.getName();
+        }
+
         for (Alliance alliance : AllianceManager.getInstance().getAllSortedAlliances()) {
             for (String townName : alliance.getMembers()) {
                 Town town = TownManager.getInstance().getTown(townName);
