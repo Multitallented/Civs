@@ -346,7 +346,6 @@ public class ConfigManager {
             allowFoodHealInCombat = config.getBoolean("allow-food-heal-in-combat", true);
             allowTeleportInCombat = config.getBoolean("allow-teleporting-during-combat", false);
             townGracePeriod = config.getLong("town-grace-period", 43200); //12 hours
-            useClassesAndSpells = config.getBoolean("use-classes-and-spells", false);
             useTutorial = config.getBoolean("tutorial.use-tutorial", true);
             useGuide = config.getBoolean("tutorial.use-guide", true);
             tutorialUrl = config.getString("tutorial.url");
