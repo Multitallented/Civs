@@ -24,14 +24,14 @@
 #  upkeep-working:
 #    index: 2
 #    icon: GREEN_WOOL
-#    name: operation
-#    desc: region-working
+#    name: region-working
+#    desc: region-cooldown{$cooldown$
 #    actions: []
 #  upkeep-not-working:
 #    index: 2
 #    icon: RED_WOOL
-#    name: operation
-#    desc: region-not-working
+#    name: region-not-working
+#    desc: region-cooldown{$cooldown$
 #    actions:
 #      - menu:recipe?region=$region$&regionType=$regionTypeName$&recipe=failing:$failingUpkeeps$
 #  location:
@@ -52,7 +52,7 @@
 #    icon: BARRIER
 #    name: destroy
 #    actions:
-#      - menu:confirmation&region=$region$&type=destroy
+#      - menu:confirmation?region=$region$&type=destroy
 #  back:
 #    index: 8
 #  people:
@@ -87,7 +87,7 @@
 #    name: buy-region
 #    actions:
 #      - buy-region
-#      - close
+#      - refresh
 #  warehouse-enabled:
 #    index: 14
 #    icon: GREEN_WOOL

@@ -4,6 +4,7 @@
 ##  town
 ##  selectedTown
 ##  townType
+##  nation
 ## actions
 ##  ally: send an alliance invite
 ##  unally: break alliance
@@ -133,6 +134,20 @@
 #    actions:
 #      - leave-revolt
 #      - refresh
+#  create-nation:
+#    index: 16
+#    icon: WHITE_BANNER
+#    name: create-nation
+#    desc: create-nation-desc
+#    actions:
+#      - command:cv createnation
+#  nation:
+#    index: 16
+#    # icon: nation icon
+#    # name: nation name
+#    # desc: nation desc
+#    actions:
+#      - menu:nation?nation=$nation$
 #  karma:
 #    index: 17
 #    icon: SOUL_SAND

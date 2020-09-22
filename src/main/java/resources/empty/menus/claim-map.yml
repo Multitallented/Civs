@@ -1,0 +1,21 @@
+size: 54
+name: ClaimMap
+# variables
+#  orientation: what way are you facing. defaults to player facing
+# actions
+#  view-claim
+items:
+  orientation:
+    index: 2
+    icon: COMPASS
+    name: orientation-name
+    desc: orientation-desc
+    actions:
+      - menu:claim-map?rotate=true&orient=$orient$
+  back:
+    index: 8
+  claims:
+    index: 9-53
+    icon: GRASS_BLOCK
+    actions:
+      - view-claim
