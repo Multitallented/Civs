@@ -178,47 +178,36 @@ public class CommonScheduler implements Runnable {
     private void playerInChunk(Player player) {
         ChunkClaim claim = ChunkClaim.fromLocation(player.getLocation());
         ChunkClaim lastClaim = lastClaims.get(player.getUniqueId());
-        if (claim != null && claim.getNation() == null) {
-            if (lastClaim != null && lastClaim.getNation() != null) {
-                exitClaim(lastClaim, claim, player);
-            }
-            return;
-        }
-        if (lastClaim != null && lastClaim.getNation() == null) {
-            enterClaim(null, claim, player);
-        } else if (lastClaim != null && !lastClaim.equals(claim)) {
+        if (lastClaim != null && lastClaim.getNation() != null && !lastClaim.equals(claim)) {
             exitClaim(lastClaim, claim, player);
+        }
+        if (claim.getNation() != null && !claim.equals(lastClaim)) {
             enterClaim(lastClaim, claim, player);
         }
+        lastClaims.put(player.getUniqueId(), claim);
     }
 
     private void exitClaim(ChunkClaim lastClaim, ChunkClaim claim, Player player) {
         lastClaim.setLastEnter(-1);
         if (claim.getNation() == null) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                    player, "exit-town"
-            ).replace("$1", lastClaim.getNation().getName()));
-            lastClaims.remove(player.getUniqueId());
-        } else {
-            lastClaims.put(player.getUniqueId(), claim);
+                    player, "town-exit").replace("$1", lastClaim.getNation().getName()));
         }
     }
 
     private void enterClaim(ChunkClaim lastClaim, ChunkClaim claim, Player player) {
-        lastClaims.put(player.getUniqueId(), claim);
         if (claim.getNation() == null) {
             return;
         }
         boolean isInNation = NationManager.getInstance().isInNation(player.getUniqueId(), claim.getNation());
-        if (claim.getLastEnter() == -1 && !isInNation) {
+        if (claim.getLastEnter() < 1 && !isInNation) {
             claim.setLastEnter(System.currentTimeMillis());
         } else if (isInNation) {
             claim.setLastEnter(-1);
         }
-        if (lastClaim.getNation() != null && !lastClaim.getNation().equals(claim.getNation())) {
+        if (lastClaim == null || lastClaim.getNation() == null || !claim.getNation().equals(lastClaim.getNation())) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                    player, "enter-town"
-            ).replace("$1", claim.getNation().getName()));
+                    player, "town-enter").replace("$1", claim.getNation().getName()));
         }
     }
 

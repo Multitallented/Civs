@@ -79,7 +79,7 @@ items:
   set-capitol:
     index: 13
     icon: MAP
-    name: set-capitol
+    name: nation-capitol{$capitol$
     desc: set-capitol-desc
     actions:
       - set-capitol

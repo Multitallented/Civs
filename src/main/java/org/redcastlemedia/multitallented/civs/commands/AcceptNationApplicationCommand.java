@@ -1,5 +1,8 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,7 +13,9 @@ import org.redcastlemedia.multitallented.civs.nations.Nation;
 import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
+@CivsCommand(keys={"acceptnation"})
 public class AcceptNationApplicationCommand extends CivCommand {
 
     @Override
@@ -21,7 +26,8 @@ public class AcceptNationApplicationCommand extends CivCommand {
         }
         Player player = (Player) commandSender;
         if (args.length < 2) {
-            // TODO send usage
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                    LocaleConstants.INVALID_TARGET));
             return true;
         }
         handleAcceptNationApplication(player, args[1]);
@@ -30,7 +36,14 @@ public class AcceptNationApplicationCommand extends CivCommand {
 
     private void handleAcceptNationApplication(Player player, String townName) {
         Nation nation = NationManager.getInstance().getNationByOwnerPlayer(player.getUniqueId());
-        if (nation == null) {
+        if (nation == null || nation.getCapitol() == null) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                    LocaleConstants.PERMISSION_DENIED));
+            return;
+        }
+        Town capitol = TownManager.getInstance().getTown(nation.getCapitol());
+        if (!capitol.getRawPeople().containsKey(player.getUniqueId()) ||
+                !capitol.getRawPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     LocaleConstants.PERMISSION_DENIED));
             return;
@@ -47,9 +60,18 @@ public class AcceptNationApplicationCommand extends CivCommand {
             return;
         }
         nation.getNationApplications().remove(town);
-        nation.getMembers().add(town.getName());
-        NationManager.getInstance().saveNation(nation);
-        // TODO send success message
+        NationManager.getInstance().addMemberToNation(nation, town);
+        for (String cTownName : nation.getMembers()) {
+            Town town1 = TownManager.getInstance().getTown(cTownName);
+            for (UUID uuid : town1.getRawPeople().keySet()) {
+                Player player1 = Bukkit.getPlayer(uuid);
+                if (player1 != null) {
+                    player1.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player1,
+                            "new-town-member").replace("$1", town.getName())
+                            .replace("$2", nation.getName()));
+                }
+            }
+        }
     }
 
     @Override

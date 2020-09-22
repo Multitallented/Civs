@@ -100,14 +100,15 @@ public class MainMenu extends CustomMenu {
                 putActions(civilian, menuIcon, itemStack, count);
                 return itemStack;
             }
-        } else if (menuIcon.getKey().equals("nation")) {
-            Nation nation = (Nation) MenuManager.getData(civilian.getUuid(), "nation");
+        } else if (Constants.NATION.equals(menuIcon.getKey())) {
+            Nation nation = (Nation) MenuManager.getData(civilian.getUuid(), Constants.NATION);
             if (nation == null) {
                 return new ItemStack(Material.AIR);
+            } else {
+                ItemStack itemStack = nation.getIcon();
+                putActions(civilian, menuIcon, itemStack, count);
+                return nation.getIcon();
             }
-            ItemStack itemStack = nation.getIcon();
-            putActions(civilian, menuIcon, itemStack, count);
-            return nation.getIcon();
         } else if (menuIcon.getKey().equals(Constants.REGIONS)) {
             boolean showBuiltRegions = false;
             for (Region region : RegionManager.getInstance().getAllRegions()) {

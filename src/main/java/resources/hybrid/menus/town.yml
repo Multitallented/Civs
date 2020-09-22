@@ -134,6 +134,13 @@ items:
     actions:
       - leave-revolt
       - refresh
+  create-nation:
+    index: 16
+    icon: WHITE_BANNER
+    name: create-nation
+    desc: create-nation-desc
+    actions:
+      - command:cv createnation
   nation:
     index: 16
     # icon: nation icon
