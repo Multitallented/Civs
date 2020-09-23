@@ -898,6 +898,8 @@ alliance-channel-desc: "Only player in alliance $1"
 chat-channel-set: "You are now chatting in channel $1"
 click-change-chat: "Click to change chat channel"
 no-recipients: "There is no one online in $1 chat channel"
+netherite_mine-name: "Netherite Mine"
+netherite_mine-desc: "Creates netherite by using diamond pickaxes."
 change-class: "Change Class"
 change-class-desc: "Select a new or previously saved class."
 health: Health

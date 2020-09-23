@@ -51,7 +51,7 @@
 #      - menu:alliance-list
 #  players:
 #    index: 12
-#    icon: SIGN
+#    icon: OAK_SIGN
 #    name: players
 #    actions:
 #      - menu:people

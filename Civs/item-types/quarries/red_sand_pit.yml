@@ -38,3 +38,8 @@
 #      - DIAMOND_SHOVEL
 #    output:
 #      - RED_SAND*32
+#  3:
+#    reagents:
+#      - NETHERITE_SHOVEL
+#    output:
+#      - RED_SAND*76
