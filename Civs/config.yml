@@ -88,6 +88,10 @@ allow-offline-raiding: true
 ##can non-allied players teleport out of towns?
 allow-teleporting-out-of-hostile-towns: true
 
+##use the class and spell system from Civs
+##this is an undocumented and unfinished feature
+use-classes-and-spells: false
+
 ##Should the town enter and exit messages be titles (or chat)
 enter-exit-messages-use-titles: true
 
