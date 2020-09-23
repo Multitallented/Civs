@@ -363,6 +363,23 @@ public class NationManager implements Listener {
         }
     }
 
+    private void removeAllClaimsInTown(Town town) {
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+        int i = 0;
+        for (;;) {
+            int chunkRadius = (int) (Math.ceil((double) townType.getBuildRadius() / 16) + 2);
+            if (i > chunkRadius * 8 + 1) {
+                break;
+            }
+
+            ChunkClaim claim = getSurroundTownClaim(i, town.getLocation());
+            if (claim.getNation() != null) {
+                claim.setNation(null, true);
+            }
+            i++;
+        }
+    }
+
     private int surroundAllAlliedTowns(Nation nation, int claimsAvailable) {
         for (String townName : nation.getMembers()) {
             Town town = TownManager.getInstance().getTown(townName);
@@ -696,7 +713,9 @@ public class NationManager implements Listener {
         }
         if (nation.getMembers().size() < 2) {
             NationManager.getInstance().removeNation(nation);
+            return;
         }
+        removeAllClaimsInTown(town);
         nation.getMembers().remove(town.getName());
         if (town.getName().equals(nation.getCapitol())) {
             int highestPopulation = 0;
@@ -717,6 +736,7 @@ public class NationManager implements Listener {
 
     public void addMemberToNation(Nation nation, Town town) {
         nation.getMembers().add(town.getName());
+        fillClaims(nation);
         saveNation(nation);
     }
 }

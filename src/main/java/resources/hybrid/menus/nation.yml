@@ -92,7 +92,7 @@ items:
     actions:
       - menu:nation-invite?nation=$nation$
   join-nation:
-    index: 17
+    index: 16
     icon: IRON_SWORD
     name: join-nation
     desc: join-nation-desc

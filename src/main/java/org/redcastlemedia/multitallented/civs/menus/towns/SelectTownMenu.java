@@ -18,6 +18,7 @@ import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.menus.nations.NationMenu;
 import org.redcastlemedia.multitallented.civs.nations.Nation;
+import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
@@ -33,6 +34,9 @@ public class SelectTownMenu extends CustomMenu {
             data.put("page", Integer.parseInt(params.get("page")));
         } else {
             data.put("page", 0);
+        }
+        if (params.containsKey(Constants.NATION)) {
+            data.put(Constants.NATION, NationManager.getInstance().getNation(params.get(Constants.NATION)));
         }
         Set<Town> towns = new HashSet<>();
         if (params.containsKey("uuid")) {
@@ -133,7 +137,13 @@ public class SelectTownMenu extends CustomMenu {
         }
         boolean isNation = MenuManager.getAllData(civilian.getUuid()).containsKey(Constants.NATION);
         if (isNation) {
-            Nation nation = (Nation) MenuManager.getData(civilian.getUuid(), Constants.NATION);
+            Object nationObj = MenuManager.getData(civilian.getUuid(), Constants.NATION);
+            Nation nation = null;
+            if (nationObj instanceof Nation) {
+                nation = (Nation) nationObj;
+            } else if (nationObj instanceof String) {
+                nation = NationManager.getInstance().getNation((String) nationObj);
+            }
             if (nation == null) {
                 Civs.logger.severe("Unable to find null nation in select-town");
                 return true;
@@ -145,19 +155,20 @@ public class SelectTownMenu extends CustomMenu {
             }
             if (MenuManager.getAllData(civilian.getUuid()).containsKey("capitol")) {
                 NationMenu.setCapitol(player, nation, fromTown);
-                MenuManager.openMenuFromString(civilian, "nation?nation=$nation$");
+                MenuManager.openMenuFromString(civilian, "nation?capitol=true&nation=" + nation.getName());
                 return true;
             }
             if (MenuManager.getAllData(civilian.getUuid()).containsKey("join")) {
                 NationMenu.joinNation(player, nation, fromTown);
-                MenuManager.openMenuFromString(civilian, "nation?nation=$nation$");
+                MenuManager.openMenuFromString(civilian, "nation?join=true&nation=" + nation.getName());
                 return true;
             }
             if (MenuManager.getAllData(civilian.getUuid()).containsKey("leave")) {
                 NationMenu.leaveNation(player, nation, fromTown);
-                MenuManager.openMenuFromString(civilian, "nation?nation=$nation$");
+                MenuManager.openMenuFromString(civilian, "nation?leave=true&nation=" + nation.getName());
                 return true;
             }
+            return true;
         }
         return super.doActionAndCancel(civilian, actionString, itemStack);
     }

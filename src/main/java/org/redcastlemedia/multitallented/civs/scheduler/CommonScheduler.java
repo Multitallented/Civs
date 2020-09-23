@@ -190,8 +190,10 @@ public class CommonScheduler implements Runnable {
     private void exitClaim(ChunkClaim lastClaim, ChunkClaim claim, Player player) {
         lastClaim.setLastEnter(-1);
         if (claim.getNation() == null) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                    player, "nation-exit").replace("$1", lastClaim.getNation().getName()));
+            if (!ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                        player, "nation-exit").replace("$1", lastClaim.getNation().getName()));
+            }
         }
     }
 
@@ -206,8 +208,12 @@ public class CommonScheduler implements Runnable {
             claim.setLastEnter(-1);
         }
         if (lastClaim == null || lastClaim.getNation() == null || !claim.getNation().equals(lastClaim.getNation())) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
-                    player, "nation-enter").replace("$1", claim.getNation().getName()));
+            if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
+                player.sendTitle(ChatColor.GREEN + claim.getNation().getName(), "", 5, 40, 5);
+            } else {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
+                        player, "nation-enter").replace("$1", claim.getNation().getName()));
+            }
         }
     }
 

@@ -100,10 +100,14 @@ public class NationMenu extends CustomMenu {
             if (ownedTowns.isEmpty()) {
                 return new ItemStack(Material.AIR);
             }
+            boolean allTownsInNation = true;
             for (Town town : ownedTowns) {
-                if (nation.getMembers().contains(town.getName())) {
-                    return new ItemStack(Material.AIR);
+                if (!nation.getMembers().contains(town.getName())) {
+                    allTownsInNation = false;
                 }
+            }
+            if (allTownsInNation) {
+                return new ItemStack(Material.AIR);
             }
         }
         if (menuIcon.getActions().contains("leave-nation")) {
@@ -246,7 +250,7 @@ public class NationMenu extends CustomMenu {
             Town town = towns.iterator().next();
             leaveNation(player, nation, town);
         } else if (towns.size() > 1) {
-            MenuManager.openMenuFromString(civilian, "select-town?nation=$nation$&leave=true");
+            MenuManager.openMenuFromString(civilian, "select-town?nation=" + nation.getName() + "&leave=true");
         }
     }
 
@@ -259,7 +263,7 @@ public class NationMenu extends CustomMenu {
             Town town1 = TownManager.getInstance().getTown(townName);
             for (UUID uuid : town1.getRawPeople().keySet()) {
                 Player player1 = Bukkit.getPlayer(uuid);
-                if (player1 != null) {
+                if (player1 != null && !player1.equals(player)) {
                     player1.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player1,
                             "left-nation").replace("$1", town.getName())
                             .replace("$2", nation.getName()));
@@ -274,7 +278,7 @@ public class NationMenu extends CustomMenu {
             Town town = towns.iterator().next();
             joinNation(player, nation, town);
         } else if (towns.size() > 1) {
-            MenuManager.openMenuFromString(civilian, "select-town?nation=$nation$&join=true");
+            MenuManager.openMenuFromString(civilian, "select-town?nation=" + nation.getName() + "&join=true");
         }
     }
 
@@ -287,7 +291,7 @@ public class NationMenu extends CustomMenu {
                 if (entry.getValue().contains(Constants.OWNER)) {
                     Player player1 = Bukkit.getPlayer(entry.getKey());
                     if (player1 != null && !player1.equals(player)) {
-                        sendInviteMessage(player, town, nation);
+                        sendInviteMessage(player1, town, nation);
                     }
                 }
             }
@@ -302,7 +306,7 @@ public class NationMenu extends CustomMenu {
                 .replace("$2", nation.getName());
         TextComponent component = Util.parseColorsComponent(inviteMessage);
 
-        TextComponent acceptComponent = new TextComponent("[✔]");
+        TextComponent acceptComponent = new TextComponent(" [✔]");
         acceptComponent.setColor(ChatColor.GREEN);
         acceptComponent.setUnderlined(true);
         acceptComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv acceptnation " + town.getName()));
@@ -324,7 +328,7 @@ public class NationMenu extends CustomMenu {
         if (towns.size() == 1) {
             setCapitol(player, nation, towns.iterator().next());
         } else if (towns.size() > 1) {
-            MenuManager.openMenuFromString(civilian, "select-town?nation=$nation$&capitol=true");
+            MenuManager.openMenuFromString(civilian, "select-town?nation=" + nation.getName() + "&capitol=true");
         }
     }
 

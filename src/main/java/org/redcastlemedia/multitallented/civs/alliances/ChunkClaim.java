@@ -39,7 +39,11 @@ public class ChunkClaim {
     }
 
     public void setNation(Nation nation) {
-        removePreviousNation();
+        setNation(nation, false);
+    }
+
+    public void setNation(Nation nation, boolean silent) {
+        removePreviousNation(silent);
         putInNationClaims(nation);
         this.nation = nation;
     }
@@ -71,7 +75,7 @@ public class ChunkClaim {
         NationManager.getInstance().saveNation(nation);
     }
 
-    private void removePreviousNation() {
+    private void removePreviousNation(boolean silent) {
         if (this.nation == null) {
             return;
         }
@@ -83,7 +87,7 @@ public class ChunkClaim {
             Town town = TownManager.getInstance().getTown(townName);
             for (UUID uuid : town.getRawPeople().keySet()) {
                 Player player1 = Bukkit.getPlayer(uuid);
-                if (player1 != null) {
+                if (player1 != null && !silent) {
                     player1.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player1,
                             "neutralized-claim").replace("$1", this.nation.getName())
                             .replace("$2", "" + (this.x * 16))
