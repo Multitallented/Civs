@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.regions.effects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -52,7 +53,8 @@ public class IntruderEffect implements Listener {
         }
 
         Player player = Bukkit.getPlayer(event.getUuid());
-        if (Civs.perm != null && Civs.perm.has(player, Constants.PVP_EXEMPT_PERMISSION)) {
+        if (player == null || player.getGameMode() == GameMode.SPECTATOR ||
+                (Civs.perm != null && Civs.perm.has(player, Constants.PVP_EXEMPT_PERMISSION))) {
             return;
         }
 
@@ -78,7 +80,8 @@ public class IntruderEffect implements Listener {
             return;
         }
         Player player = Bukkit.getPlayer(event.getUuid());
-        if (Civs.perm != null && Civs.perm.has(player, Constants.PVP_EXEMPT_PERMISSION)) {
+        if (player == null || player.getGameMode() == GameMode.SPECTATOR ||
+                (Civs.perm != null && Civs.perm.has(player, Constants.PVP_EXEMPT_PERMISSION))) {
             return;
         }
 
