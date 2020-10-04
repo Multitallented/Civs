@@ -13,6 +13,7 @@ public final class LocaleConstants {
     public static final String PERMISSION_DENIED = "no-permission";
     public static final String SKILL_DESC_SUFFIX = "-skill-desc";
     public static final String INVALID_TARGET = "invalid-target";
+    public static final String COOLDOWN = "cooldown";
 
     private LocaleConstants() {
 
