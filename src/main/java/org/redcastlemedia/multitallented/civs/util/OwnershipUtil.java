@@ -150,12 +150,8 @@ public final class OwnershipUtil {
         }
 
         boolean colonialOverride = hasColonialOverride(town, civilian);
-        boolean isOwner = false;
-        for (UUID uuid : town.getRawPeople().keySet()) {
-            if (town.getRawPeople().get(uuid).contains(Constants.OWNER)) {
-                isOwner = true;
-            }
-        }
+        boolean isOwner = town.getRawPeople().containsKey(civilian.getUuid()) &&
+                town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         if (!isOwner && !colonialOverride) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "no-permission"));
