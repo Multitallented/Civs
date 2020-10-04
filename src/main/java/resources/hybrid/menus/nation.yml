@@ -106,7 +106,7 @@ items:
     desc: leave-nation-desc
     actions:
       - leave-nation
-      - refresh
+      - close
   members:
     index: 18-53
     # icon: town icon

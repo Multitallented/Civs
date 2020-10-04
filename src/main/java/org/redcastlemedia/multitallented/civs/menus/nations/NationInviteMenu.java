@@ -97,6 +97,7 @@ public class NationInviteMenu extends CustomMenu {
             Map<ItemStack, Town> townMap = (Map<ItemStack, Town>) MenuManager.getData(civilian.getUuid(), "appMap");
             Town town = townMap.get(itemStack);
             NationManager.getInstance().addMemberToNation(nation, town);
+            nation.getNationApplications().remove(town);
             messageAllPlayersInNation(nation, town);
         }
         return super.doActionAndCancel(civilian, actionString, itemStack);
