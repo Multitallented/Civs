@@ -686,19 +686,22 @@ public class NationManager implements Listener {
 
     public void createNation(Town newTown) {
         Nation nation = new Nation();
-        int i = 0;
         String name = newTown.getName();
-        for (;;) {
-            i++;
-            if (!nations.containsKey(name + i)) {
-                name = name + i;
-                break;
-            }
-            if (i == 10) {
-                Civs.logger.log(Level.SEVERE, "Unable to create new nation named: {0}", name);
-                return;
+        if (nations.containsKey(newTown.getName())) {
+            int i = 0;
+            for (;;) {
+                i++;
+                if (!nations.containsKey(name + i)) {
+                    name = name + i;
+                    break;
+                }
+                if (i == 10) {
+                    Civs.logger.log(Level.SEVERE, "Unable to create new nation named: {0}", name);
+                    return;
+                }
             }
         }
+
         nation.setName(name);
         nation.setCapitol(newTown.getName());
         nation.getMembers().add(newTown.getName());
