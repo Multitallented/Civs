@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -42,11 +43,11 @@ public class Government {
         Player player = Bukkit.getPlayer(civilian.getUuid());
         CVItem cvItem = icon.clone();
         cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,
-                name.toLowerCase() + "-name"));
+                name.toLowerCase() + LocaleConstants.NAME_SUFFIX));
         ArrayList<String> lore = new ArrayList<>();
         lore.add("Gov Type: " + name);
         lore.addAll(Util.textWrap(LocaleManager.getInstance().getTranslation(player,
-                name.toLowerCase() + "-desc")));
+                name.toLowerCase() + LocaleConstants.DESC_SUFFIX)));
         if (isUseBuffs) {
             lore.addAll(getBuffDescriptions(civilian));
         }

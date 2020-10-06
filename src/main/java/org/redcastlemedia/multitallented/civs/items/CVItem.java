@@ -221,7 +221,7 @@ public class CVItem {
         return lore != null && !lore.isEmpty() &&
                 LocaleManager.getInstance().hasTranslation(
                         ConfigManager.getInstance().getDefaultLanguage(),
-                        "item-" + ChatColor.stripColor(lore.get(0)) + "-name");
+                        "item-" + ChatColor.stripColor(lore.get(0)) + LocaleConstants.NAME_SUFFIX);
     }
 
     private static Material getMaterialFromString(String materialString) {
