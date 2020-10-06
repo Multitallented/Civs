@@ -219,6 +219,9 @@ public class PortCommand extends CivCommand {
             if (!r.getEffects().containsKey(Constants.PORT)) {
                 return false;
             }
+            if ("public".equals(r.getEffects().get(Constants.PORT))) {
+                return true;
+            }
             boolean privatePort = r.getEffects().get(Constants.PORT) != null &&
                     !r.getEffects().get(Constants.PORT).equals("");
             if (town == null) {
