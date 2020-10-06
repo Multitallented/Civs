@@ -105,7 +105,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
 
         for (Player player1 : Bukkit.getOnlinePlayers()) {
             String raidLocalName = LocaleManager.getInstance().getTranslation(player1,
-                    rt.getProcessedName() + "-name");
+                    rt.getProcessedName() + LocaleConstants.NAME_SUFFIX);
             player1.sendMessage(Civs.getPrefix() + ChatColor.RED +
                     LocaleManager.getInstance().getTranslation(player1, "raid-porter-warning")
                             .replace("$1", player.getDisplayName())
@@ -114,7 +114,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         }
         if (Civs.discordSRV != null) {
             String raidLocalName = LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(),
-                    rt.getProcessedName() + "-name");
+                    rt.getProcessedName() + LocaleConstants.NAME_SUFFIX);
             String defaultMessage = Civs.getPrefix() + ChatColor.RED +
                     LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(), "raid-porter-warning")
                             .replace("$1", player.getDisplayName())

@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.ai.AIManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -152,9 +153,9 @@ public class GovernmentManager {
             }
             Civilian civilian1 = CivilianManager.getInstance().getCivilian(uuid);
             String oldGovName = LocaleManager.getInstance().getTranslation(civilian1.getLocale(),
-                    town.getGovernmentType().toLowerCase() + "-name");
+                    town.getGovernmentType().toLowerCase() + LocaleConstants.NAME_SUFFIX);
             String newGovName = LocaleManager.getInstance().getTranslation(civilian1.getLocale(),
-                    governmentType.toLowerCase() + "-name");
+                    governmentType.toLowerCase() + LocaleConstants.NAME_SUFFIX);
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
                     .getTranslation(civilian1.getLocale(), "gov-type-change")
                     .replace("$1", town.getName())

@@ -271,14 +271,13 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         }
         for (Player p : Bukkit.getOnlinePlayers()) {
             Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
-            String siegeMachineLocalName = LocaleManager.getInstance().getTranslation(civ.getLocale(), regionType.getProcessedName() + "-name");
+            String siegeMachineLocalName = regionType.getDisplayName(p);
             p.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
                     civ.getLocale(), "siege-built").replace("$1", player.getDisplayName())
                     .replace("$2", siegeMachineLocalName).replace("$3", town.getName()));
         }
         if (Civs.discordSRV != null) {
-            String siegeLocalName = LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(),
-                    regionType.getProcessedName() + "-name");
+            String siegeLocalName = regionType.getDisplayName();
             String defaultMessage = Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
                     ConfigManager.getInstance().getDefaultLanguage(), "siege-built").replace("$1", player.getDisplayName())
                     .replace("$2", siegeLocalName).replace("$3", town.getName());

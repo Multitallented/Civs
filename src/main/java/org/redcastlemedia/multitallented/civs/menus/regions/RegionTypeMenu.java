@@ -249,7 +249,7 @@ public class RegionTypeMenu extends CustomMenu {
             CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
             for (String townTypeName : regionType.getTowns()) {
                 String localizedTownTypeName = LocaleManager.getInstance().getTranslation(player,
-                        townTypeName + "-name");
+                        townTypeName + LocaleConstants.NAME_SUFFIX);
                 cvItem.getLore().add(localizedTownTypeName);
             }
             ItemStack itemStack = cvItem.createItemStack();
