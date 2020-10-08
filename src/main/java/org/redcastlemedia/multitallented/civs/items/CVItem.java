@@ -1,10 +1,8 @@
 package org.redcastlemedia.multitallented.civs.items;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.Indyuce.mmoitems.api.Type;
-import net.Indyuce.mmoitems.api.item.MMOItem;
-import net.mmogroup.mmolib.api.item.NBTItem;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
@@ -22,12 +20,11 @@ import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.regex.Pattern;
+import lombok.Getter;
+import lombok.Setter;
+import net.Indyuce.mmoitems.api.Type;
+import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
+import net.mmogroup.mmolib.api.item.NBTItem;
 
 /**
  *
@@ -182,7 +179,7 @@ public class CVItem {
             Civs.logger.severe(Civs.getPrefix() + "Invalid MMOItem " + itemType + " did not provide item name");
             return new CVItem(mat, quantity, chance);
         }
-        MMOItem mmoItem = Civs.mmoItems.getItems().getMMOItem(mmoItemType, nameString);
+        MMOItem mmoItem = Civs.mmoItems.getMMOItem(mmoItemType, nameString);
         ItemStack item = mmoItem.newBuilder().build();
         CVItem cvItem = new CVItem(item.getType(), quantity, chance, item.getItemMeta().getDisplayName(),
                 item.getItemMeta().getLore());
