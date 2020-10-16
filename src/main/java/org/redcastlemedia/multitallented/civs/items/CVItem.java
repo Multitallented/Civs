@@ -22,6 +22,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
 import net.mmogroup.mmolib.api.item.NBTItem;
@@ -92,6 +93,7 @@ public class CVItem {
         String chanceString = "100";
         String nameString = null;
         String itemType = "";
+        String data = "";
         Material mat;
 
         String[] splitString;
@@ -101,17 +103,22 @@ public class CVItem {
             int asteriskIndex = materialString.indexOf("*");
             int percentIndex = materialString.indexOf("%");
             int nameIndex = materialString.indexOf(".");
-            if (asteriskIndex != -1 && asteriskIndex > percentIndex && asteriskIndex > nameIndex) {
+            int dataIndex = materialString.indexOf("^");
+            if (asteriskIndex != -1 && asteriskIndex > percentIndex && asteriskIndex > nameIndex && asteriskIndex > dataIndex) {
                 splitString = materialString.split("\\*");
                 quantityString = splitString[splitString.length - 1];
                 materialString = splitString[0];
-            } else if (percentIndex != -1 && percentIndex > asteriskIndex && percentIndex > nameIndex) {
+            } else if (percentIndex != -1 && percentIndex > asteriskIndex && percentIndex > nameIndex && percentIndex > dataIndex) {
                 splitString = materialString.split("%");
                 chanceString = splitString[splitString.length - 1];
                 materialString = splitString[0];
-            } else if (nameIndex != -1 && nameIndex > percentIndex && nameIndex > asteriskIndex) {
+            } else if (nameIndex != -1 && nameIndex > percentIndex && nameIndex > asteriskIndex && nameIndex > dataIndex) {
                 splitString = materialString.split("\\.");
-                nameString = splitString[splitString.length -1];
+                nameString = splitString[splitString.length - 1];
+                materialString = splitString[0];
+            } else if (dataIndex != -1 && dataIndex > percentIndex && dataIndex > asteriskIndex && dataIndex > nameIndex) {
+                splitString = materialString.split("\\^");
+                data = splitString[splitString.length - 1];
                 materialString = splitString[0];
             } else {
                 if (isMMOItem) {
@@ -136,7 +143,7 @@ public class CVItem {
         int chance = Integer.parseInt(chanceString);
 
         if (isMMOItem) {
-            return getMmoItemAsCvItem(nameString, itemType, mat, quantity, chance);
+            return getMmoItemAsCvItem(nameString, itemType, mat, quantity, chance, data);
         }
         if (isCivItem) {
             return getCivItem(itemType, quantity, chance);
@@ -165,7 +172,7 @@ public class CVItem {
     }
 
     @NotNull
-    private static CVItem getMmoItemAsCvItem(String nameString, String itemType, Material mat, int quantity, int chance) {
+    private static CVItem getMmoItemAsCvItem(String nameString, String itemType, Material mat, int quantity, int chance, String data) {
         if (Civs.mmoItems == null) {
             Civs.logger.severe(Civs.getPrefix() + "Unable to create MMOItem because MMOItems is disabled");
             return new CVItem(mat, quantity, chance);
@@ -179,7 +186,11 @@ public class CVItem {
             Civs.logger.severe(Civs.getPrefix() + "Invalid MMOItem " + itemType + " did not provide item name");
             return new CVItem(mat, quantity, chance);
         }
-        MMOItem mmoItem = Civs.mmoItems.getMMOItem(mmoItemType, nameString);
+        int level = 0;
+        if (data != null && !data.isEmpty()) {
+            level = Integer.parseInt(data);
+        }
+        MMOItem mmoItem = MMOItems.plugin.getMMOItem(mmoItemType, nameString, level, null);
         ItemStack item = mmoItem.newBuilder().build();
         CVItem cvItem = new CVItem(item.getType(), quantity, chance, item.getItemMeta().getDisplayName(),
                 item.getItemMeta().getLore());
