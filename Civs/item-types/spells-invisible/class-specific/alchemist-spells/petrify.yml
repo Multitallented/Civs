@@ -1,0 +1,39 @@
+#enabled: true
+#icon: COBBLESTONE
+#type: spell
+#is-in-shop: false
+#level: 1
+#groups: []
+#
+#pre-reqs:
+#  - skill:armor=5
+#  - skill:food=3
+#
+#allowed-actions: []
+#
+#exp-per-use: 25
+#
+#conditions:
+#  cooldown: 45000
+#  mana: 60
+#
+#components:
+#  1:
+#    yield:
+#      mana: -60
+#      cooldown: 45000
+#      sound: BLOCK_METAL_BREAK
+#      duration:
+#        ticks: 180
+#        period: 20
+#        section:
+#          components:
+#            2:
+#              yield:
+#                cleanse: BOTH
+#                civstate:
+#                  type: STUN
+#                  duration: 2000
+#                potion^1:
+#                  type: GLOWING
+#                  ticks: 40

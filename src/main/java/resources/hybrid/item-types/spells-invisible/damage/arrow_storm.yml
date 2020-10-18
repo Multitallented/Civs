@@ -19,7 +19,7 @@ conditions:
 components:
   1:
     variables:
-      arrowcount^1: 0
+      arrowcount^1: "0"
     yield:
       mana: -25
       cooldown: 20000

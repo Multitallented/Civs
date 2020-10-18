@@ -1,0 +1,33 @@
+#enabled: true
+#icon: GOLDEN_CARROT
+#type: spell
+#is-in-shop: false
+#level: 1
+#groups:
+#  - chase
+#
+#pre-reqs:
+#  - skill:potion=7
+#  - skill:exploration=3
+#
+#allowed-actions:
+#  - INVISIBILITY.99
+#
+#exp-per-use: 15
+#
+#conditions:
+#  cooldown: 120000
+#  mana: 50
+#
+#components:
+#  1:
+#    yield:
+#      mana: -50
+#      cooldown: 120000
+#      sound: BLOCK_BREWING_STAND_BREW
+#      item:
+#        item: SPLASH_POTION
+#        potion:
+#          type: INVISIBILITY
+#          upgraded: false
+#          extended: true

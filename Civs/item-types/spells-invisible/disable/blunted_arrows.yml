@@ -1,0 +1,52 @@
+#enabled: true
+#icon: ARROW
+#type: spell
+#is-in-shop: false
+#level: 1
+#groups:
+#  - disable
+#
+#pre-reqs: []
+#
+#allowed-actions:
+#  - POISON.99
+#
+#exp-per-use: 15
+#
+#conditions:
+#  cooldown: 20000
+#  mana: 25
+#
+#passives:
+#  components:
+#    1:
+#      variables:
+#        luckyblunted: 0
+#      yield:
+#        damage-listener:
+#          section:
+#            projectile: ARROW
+#            components:
+#              2:
+#                costs:
+#                  value: "$rand$ > (0.75 + $luckyblunted#var$)"
+#                yield:
+#                  civstate:
+#                    target: damage-listener
+#                    type: STUN
+#                    duration: 500
+#                  particle:
+#                    particle: SMOKE_LARGE
+#                    target: damage-listener
+#                  duration:
+#                    delay: 1
+#                    section:
+#                      components:
+#                        4:
+#                          variables:
+#                            luckyblunted: "$luckyblunted#var$ + 0.05"
+#              3:
+#                costs:
+#                  inherit^not: 2
+#                variables:
+#                  luckyblunted: "$luckyblunted#var$ - 0.05"

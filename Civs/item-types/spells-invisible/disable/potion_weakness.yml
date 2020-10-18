@@ -1,0 +1,31 @@
+#enabled: true
+#icon: FERMENTED_SPIDER_EYE
+#type: spell
+#is-in-shop: false
+#level: 1
+#groups:
+#  - disable
+#
+#pre-reqs: []
+#
+#allowed-actions:
+#  - WEAKNESS.99
+#
+#exp-per-use: 15
+#
+#conditions:
+#  cooldown: 75000
+#  mana: 50
+#
+#components:
+#  1:
+#    yield:
+#      mana: -50
+#      cooldown: 75000
+#      sound: BLOCK_BREWING_STAND_BREW
+#      item:
+#        item: SPLASH_POTION
+#        potion:
+#          type: WEAKNESS
+#          upgraded: false
+#          extended: false

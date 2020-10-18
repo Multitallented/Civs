@@ -1,0 +1,76 @@
+#enabled: true
+#icon: TNT
+#type: spell
+#is-in-shop: false
+#level: 1
+#groups:
+#  - escape
+#
+#pre-reqs:
+#  - backflip:level=10
+#
+#allowed-actions: []
+#
+#exp-per-use: 20
+#
+#targets:
+#  nearby1:
+#    type: nearby
+#    range: 0
+#    radius: 6
+#
+#conditions:
+#  cooldown: 60000
+#  mana: 30
+#
+#components:
+#  1:
+#    yield:
+#      mana: -30
+#      cooldown: 60000
+#      exemption:
+#        exemption: FLY
+#        duration: 8000
+#      exemption^1:
+#        exemption: FALL
+#        duration: 8000
+#      particle^1: EXPLOSION_HUGE
+#      particle^2:
+#        particle: FLAME
+#        duration: 8000
+#        period: 2
+#      sound^1:
+#        sound: ENTITY_GENERIC_EXPLODE
+#        volume: 1.5
+#        pitch: 0.75
+#      exemption^2: KILL_AURA
+#      damage:
+#        target: nearby1
+#        damage: 10
+#      velocity^1:
+#        y: 1
+#        multiplier: 3
+#      potion^1:
+#        type: SLOW_FALLING
+#        duration: 240
+#        level: 1
+#      duration^2:
+#        delay: 60
+#        section:
+#          components:
+#            2:
+#              yield:
+#                fall: -50
+#      duration^1:
+#        delay: 20
+#        section:
+#          components:
+#            3:
+#              yield:
+#                fall: -50
+#                particle^3:
+#                  particle: REDSTONE
+#                  red: 255
+#                  green: 255
+#                  blue: 255
+#                  pattern: fairy wings

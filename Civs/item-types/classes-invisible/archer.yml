@@ -1,0 +1,52 @@
+#enabled: true
+#type: class
+#name: archer
+#icon: BOW
+#is-in-shop: false
+#level: 1
+#groups: []
+#
+#children: []
+#pre-reqs:
+#  - skill:bow=7|skill:crossbow=7
+#  - skill:exploration=1
+#  - arrow_storm:level=6
+#
+#mana-title: mana
+#mana-per-second: 2
+#max-mana: 100
+#max-health: 26
+#max-level: 16
+#
+#allowed-actions:
+#  - BOW
+#  - CROSSBOW
+#  - LEATHER_CHESTPLATE
+#  - LEATHER_LEGGINGS
+#  - LEATHER_BOOTS
+#  - PROTECTION.3
+#  - POWER.5
+#  - PIERCING.5
+#  - PUNCH.5
+#  - MULTISHOT.5
+#  - QUICK_CHARGE.5
+#  - PROJECTILE_PROTECTION.4
+#  - FLAME
+#
+#spells:
+#  1:
+#    - arrow_storm
+#    - burst_shot #TODO
+#    - homing_arrow #TODO
+#    - long_shot #TODO
+#  2:
+#    - g:escape
+#  3:
+#    - g:disable
+#  4:
+#    - flare #TODO
+#    - g:damage-over-time
+#  5:
+#    - carpet_bomb #TODO
+#    - strafe #TODO
+#    - bring_the_rain #TODO

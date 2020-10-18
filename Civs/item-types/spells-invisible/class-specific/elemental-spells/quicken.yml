@@ -1,0 +1,44 @@
+#enabled: true
+#icon: ORANGE_DYE
+#type: spell
+#is-in-shop: false
+#level: 1
+#groups: []
+#
+#pre-reqs: []
+#
+#allowed-actions: []
+#
+#exp-per-use: 15
+#
+#conditions:
+#  cooldown: 5000
+#  mana: 10
+#
+#components:
+#  1:
+#    yield:
+#      mana: -10
+#      cooldown: 5000
+#      sound: ENTITY_PARROT_IMITATE_BLAZE
+#      particle:
+#        particle: FLAME
+#        pattern: fairy wings
+#        duration: 6000
+#      civstate:
+#        type: ROOT
+#        duration: 6000
+#      duration:
+#        delay: 120
+#        section:
+#          components:
+#            2:
+#              yield:
+#                particle:
+#                  particle: EXPLOSION_LARGE
+#                  count: 3
+#                sound: ENTITY_HORSE_ANGRY
+#                potion^1:
+#                  type: SPEED
+#                  ticks: 6000
+#                  level: 2

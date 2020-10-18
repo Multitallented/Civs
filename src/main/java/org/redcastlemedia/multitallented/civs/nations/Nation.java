@@ -82,6 +82,9 @@ public class Nation {
             if (desc != null) {
                 currentIcon.setLore(Util.textWrap(desc));
             }
+            if (currentIcon.getMat() == null) {
+                currentIcon.setMat(Material.STONE);
+            }
             return currentIcon;
         }
         if (members.isEmpty()) {

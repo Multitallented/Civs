@@ -1,0 +1,31 @@
+#enabled: true
+#icon: SPIDER_EYE
+#type: spell
+#is-in-shop: false
+#level: 1
+#groups:
+#  - damage-over-time
+#
+#pre-reqs: []
+#
+#allowed-actions:
+#  - POISON.99
+#
+#exp-per-use: 15
+#
+#conditions:
+#  cooldown: 20000
+#  mana: 25
+#
+#components:
+#  1:
+#    yield:
+#      mana: -25
+#      cooldown: 20000
+#      sound: BLOCK_BREWING_STAND_BREW
+#      item:
+#        item: SPLASH_POTION
+#        potion:
+#          type: POISON
+#          upgraded: true
+#          extended: false
