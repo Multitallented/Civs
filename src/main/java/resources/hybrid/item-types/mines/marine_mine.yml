@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: PRISMARINE_SHARD
+dynmap-marker: anchor
 name: Marine_Mine
 max: 1
 price: 150
@@ -43,4 +44,18 @@ upkeep:
     - STONE_PICKAXE
     output:
     - PRISMARINE_SHARD*6
+  2:
+    reagents:
+      - NETHERITE_PICKAXE
+      - STONE_PICKAXE
+    input:
+      - STONE_PICKAXE
+    output:
+      - PRISMARINE_SHARD*8
 
+biomes:
+- DEEP_OCEAN
+- DEEP_FROZEN_OCEAN
+- DEEP_COLD_OCEAN
+- DEEP_LUKEWARM_OCEAN
+- DEEP_WARM_OCEAN

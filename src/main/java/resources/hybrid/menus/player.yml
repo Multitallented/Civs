@@ -1,7 +1,15 @@
 size: 18
 name: Player
 # variables
-#  uuid the uuid of the player
+#  uuid: the uuid of the player
+#  name
+#  points
+#  karma
+#  money
+#  kills
+#  deaths
+#  killstreak
+#  highest-killstreak
 # actions
 #  add-friend
 #  remove-friend
@@ -20,7 +28,7 @@ items:
   money:
     index: 2
     icon: EMERALD
-    name: money
+    name: money{$money$
     actions: []
   towns:
     index: 3
@@ -34,7 +42,9 @@ items:
     icon: SKELETON_SKULL
     name: bounty
     # desc list of bounties
-    actions: []
+    actions:
+      - typing:click-me:bounty-command{$name$
+      - close
   add-friend:
     index: 6
     icon: EMERALD_BLOCK
@@ -54,31 +64,43 @@ items:
   points:
     index: 9
     icon: DIAMOND
-    name: points
+    name: points{$points$
     actions: []
   karma:
     index: 10
     icon: CREEPER_HEAD
-    name: karma
+    name: karma{$karma$
     desc: karma-desc
     actions: []
-  kills:
+  hardship:
     index: 11
+    icon: WITHER_SKELETON_SKULL
+    name: hardship{$hardship$
+    desc: hardship-desc
+    actions: []
+  kills:
+    index: 12
     icon: PLAYER_HEAD
-    name: kills
+    name: kills{$kills$
     actions: []
   deaths:
-    index: 12
+    index: 13
     icon: SKELETON_SKULL
-    name: deaths
+    name: deaths{$deaths$
     actions: []
   killstreak:
-    index: 13
+    index: 14
     icon: IRON_SWORD
-    name: killstreak
+    name: killstreak{$killstreak$
     actions: []
   highest-killstreak:
-    index: 14
+    index: 15
     icon: DIAMOND_SWORD
-    name: highest-killstreak
+    name: highest-killstreak{$highest-killstreak$
     actions: []
+  skills:
+    index: 17
+    icon: BOOK
+    name: skills
+    actions:
+      - menu:skills?uuid=$uuid$

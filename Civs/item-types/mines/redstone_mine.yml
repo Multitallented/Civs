@@ -1,52 +1,60 @@
-#enabled: true
 #type: region
 #icon: CHEST
 #shop-icon: REDSTONE_ORE
+#dynmap-marker: ruby
+#name: Redstone_Mine
 #max: 1
 #price: 250
 #groups:
-#- mine
+#  - mine
 #level: 1
 #
 #build-reqs:
-#- IRON_BARS*2
-#- g:door*1
-#- CHEST*2
-#- FURNACE*2
-#- REDSTONE_ORE*4
-#- g:primary*55
-#- g:secondary*6
+#  - IRON_BARS*2
+#  - g:door*1
+#  - CHEST*2
+#  - FURNACE*2
+#  - REDSTONE_ORE*4
+#  - g:primary*55
+#  - g:secondary*6
 #
 #build-radius: 4
 #
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- conveyor:REDSTONE
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - conveyor:REDSTONE
 #
 #period: 3600 #1 hour
 #upkeep:
 #  0:
 #    input:
-#    - STONE_PICKAXE
+#      - STONE_PICKAXE
 #    output:
-#    - REDSTONE*6
+#      - REDSTONE*6
 #  1:
 #    reagents:
-#    - IRON_PICKAXE
-#    - STONE_PICKAXE
+#      - IRON_PICKAXE
+#      - STONE_PICKAXE
 #    input:
-#    - STONE_PICKAXE
+#      - STONE_PICKAXE
 #    output:
-#    - REDSTONE*8
+#      - REDSTONE*8
 #  2:
 #    reagents:
-#    - DIAMOND_PICKAXE
-#    - STONE_PICKAXE
+#      - DIAMOND_PICKAXE
+#      - STONE_PICKAXE
 #    input:
-#    - STONE_PICKAXE
+#      - STONE_PICKAXE
 #    output:
-#    - REDSTONE*12
-#
+#      - REDSTONE*12
+#  3:
+#    reagents:
+#      - NETHERITE_PICKAXE
+#      - STONE_PICKAXE
+#    input:
+#      - STONE_PICKAXE
+#    output:
+#      - REDSTONE*18

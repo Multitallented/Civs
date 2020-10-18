@@ -2,6 +2,7 @@ type: region
 name: Bakery
 icon: CHEST
 shop-icon: PUMPKIN_PIE
+dynmap-marker: cake
 price: 200
 max: 1
 groups:

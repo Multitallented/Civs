@@ -1,23 +1,39 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.bukkit.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.logging.Level;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionUpkeepEvent;
+import org.redcastlemedia.multitallented.civs.items.CVInventory;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
-import org.redcastlemedia.multitallented.civs.towns.*;
+import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.CommandUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
@@ -25,8 +41,8 @@ import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.*;
-import java.util.logging.Level;
+import lombok.Getter;
+import lombok.Setter;
 
 public class Region {
 
@@ -56,6 +72,10 @@ public class Region {
     private double forSale = -1;
     @Getter @Setter
     private boolean warehouseEnabled = true;
+    @Getter @Setter
+    private List<List<CVItem>> missingBlocks = new ArrayList<>();
+    @Getter
+    private List<String> chests = new ArrayList<>();
 
     public Region(String type,
                   HashMap<UUID, String> people,
@@ -244,16 +264,21 @@ public class Region {
         return itemCheck;
     }
 
-    public boolean hasRequiredBlocks() {
+    public RegionBlockCheckResponse hasRequiredBlocks() {
         ItemManager itemManager = ItemManager.getInstance();
         RegionType regionType = (RegionType) itemManager.getItemType(type);
         List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs());
 
+        RegionPoints regionPoints = new RegionPoints(radiusXP, radiusXN, radiusYP, radiusYN, radiusZP, radiusZN);
         if (itemCheck.isEmpty()) {
-            return true;
+            return new RegionBlockCheckResponse(regionPoints, itemCheck);
         }
 
-        return addItemCheck(itemCheck);
+        if (!addItemCheck(itemCheck)) {
+            return new RegionBlockCheckResponse(new RegionPoints(), itemCheck);
+        } else {
+            return new RegionBlockCheckResponse(regionPoints, itemCheck);
+        }
     }
 
     private boolean addItemCheck(List<HashMap<Material, Integer>> itemCheck) {
@@ -480,15 +505,15 @@ public class Region {
         return radii;
     }
 
-    public static RegionPoints hasRequiredBlocksOnCenter(RegionType regionType, Location location) {
+    public static RegionBlockCheckResponse hasRequiredBlocksOnCenter(RegionType regionType, Location location) {
         if (regionType.getBuildRadiusX() != regionType.getBuildRadiusZ() ||
                 regionType.getBuildRadiusX() != regionType.getBuildRadiusY()) {
-            return new RegionPoints();
+            return new RegionBlockCheckResponse(new RegionPoints(), null);
         }
         List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs());
         World currentWorld = location.getWorld();
         if (currentWorld == null) {
-            return new RegionPoints();
+            return new RegionBlockCheckResponse(new RegionPoints(), null);
         }
 
         RegionPoints regionPoints = new RegionPoints(regionType.getBuildRadiusX(),
@@ -543,9 +568,9 @@ public class Region {
             }
         }
         if (!itemCheck.isEmpty()) {
-            return new RegionPoints();
+            return new RegionBlockCheckResponse(new RegionPoints(), itemCheck);
         } else {
-            return regionPoints;
+            return new RegionBlockCheckResponse(regionPoints, null);
         }
     }
 
@@ -661,21 +686,10 @@ public class Region {
             return true;
         }
         Location location = getLocation();
-        Block block = location.getBlock();
-        BlockState state = null;
-        try {
-            state = block.getState();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return needsReagentsOrInput();
-        }
-        if (!(state instanceof Chest)) {
-            return needsReagentsOrInput();
-        }
-        Chest chest = (Chest) state;
+        CVInventory cvInventory = UnloadedInventoryHandler.getInstance().getChestInventory(location);
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
-            if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory())) &&
-                    Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory())) {
+            if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), cvInventory)) &&
+                    Util.containsItems(regionUpkeep.getInputs(), cvInventory)) {
                 if ((!ignoreReagents && regionUpkeep.getPowerReagent() > 0) || regionUpkeep.getPowerInput() > 0) {
                     Town town = TownManager.getInstance().getTownAt(location);
                     if (town == null || town.getPower() < Math.max(regionUpkeep.getPowerReagent(), regionUpkeep.getPowerInput())) {
@@ -700,15 +714,10 @@ public class Region {
             return false;
         }
         RegionUpkeep regionUpkeep = regionType.getUpkeeps().get(upkeepIndex);
-        Block block = getLocation().getBlock();
-        BlockState state = block.getState();
-        if (!(state instanceof Chest)) {
-            return needsReagentsOrInput();
-        }
-        Chest chest = (Chest) state;
+        CVInventory cvInventory = UnloadedInventoryHandler.getInstance().getChestInventory(getLocation());
 
-        if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), chest.getBlockInventory())) &&
-                Util.containsItems(regionUpkeep.getInputs(), chest.getBlockInventory())) {
+        if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), cvInventory)) &&
+                Util.containsItems(regionUpkeep.getInputs(), cvInventory)) {
             return true;
         }
         return false;
@@ -735,6 +744,9 @@ public class Region {
     }
 
     public boolean runUpkeep(boolean checkTick) {
+        if (!missingBlocks.isEmpty()) {
+            return false;
+        }
         if (checkTick && !shouldTick()) {
             return false;
         }
@@ -747,9 +759,8 @@ public class Region {
 
         Location location = getLocation();
         boolean hadUpkeep = false;
-        Inventory chestInventory = null;
+        CVInventory chestInventory = null;
         boolean hasItemUpkeep = false;
-        boolean chunkLoaded = Util.isChunkLoadedAt(getLocation());
         int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             if (!hasUpkeepPerm(regionUpkeep)) {
@@ -765,13 +776,10 @@ public class Region {
 
             if (chestInventory == null && needsItems &&
                     RegionManager.getInstance().hasRegionChestChanged(this)) {
-                if (!chunkLoaded && ConfigManager.getInstance().isUseAsyncUpkeeps()) {
-                    UnloadedInventoryHandler.getInstance().addUpkeep(getLocation(), i);
-                    continue;
-                }
                 chestInventory = UnloadedInventoryHandler.getInstance().getChestInventory(getLocation());
+                RegionManager.getInstance().addCheckedRegion(this);
             }
-            if (needsItems && chestInventory == null) {
+            if (needsItems && (chestInventory == null || !chestInventory.isValid())) {
                 continue;
             }
             boolean containsReagents = !needsItems || Util.containsItems(regionUpkeep.getReagents(), chestInventory);
@@ -783,16 +791,13 @@ public class Region {
             }
 
             boolean emptyOutput = regionUpkeep.getOutputs().isEmpty();
-            boolean fullChest = chestInventory == null || chestInventory.firstEmpty() == -1;
+            ItemStack[] output = Util.getItems(regionUpkeep.getOutputs());
+            boolean fullChest = chestInventory == null ||
+                    !chestInventory.checkAddItems(output).isEmpty();
             if (fullChest) {
                 failingUpkeeps.remove(i);
             }
             if (!emptyOutput && fullChest) {
-                i++;
-                continue;
-            }
-            hasItemUpkeep = true;
-            if (!runRegionUpkeepPayout(regionUpkeep)) {
                 i++;
                 continue;
             }
@@ -813,20 +818,30 @@ public class Region {
                     TownManager.getInstance().saveTown(town);
                 }
             }
+            if (!runRegionUpkeepPayout(regionUpkeep)) {
+                i++;
+                continue;
+            }
             if (regionUpkeep.getCommand() != null && !regionUpkeep.getCommand().isEmpty()) {
                 Set<UUID> owners = getOwners();
                 if (!owners.isEmpty()) {
                     OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(owners.iterator().next());
-                    CommandUtil.performCommand(offlinePlayer, regionUpkeep.getCommand());
+                    String regionCommand = regionUpkeep.getCommand();
+                    regionCommand = regionCommand.replace("$region_x$", "" + location.getX());
+                    regionCommand = regionCommand.replace("$region_y$", "" + location.getY());
+                    regionCommand = regionCommand.replace("$region_z$", "" + location.getZ());
+
+                    CommandUtil.performCommand(offlinePlayer, regionCommand);
                 }
             }
+            hasItemUpkeep = true;
             if (chestInventory != null) {
                 if (ConfigManager.getInstance().isDebugLog()) {
                     DebugLogger.incrementRegion(this);
                     DebugLogger.inventoryModifications++;
                 }
                 Util.removeItems(regionUpkeep.getInputs(), chestInventory);
-                Util.addItems(regionUpkeep.getOutputs(), chestInventory);
+                chestInventory.addItem(output);
 
                 containsReagents = Util.containsItems(regionUpkeep.getReagents(), chestInventory);
                 containsInputs = Util.containsItems(regionUpkeep.getInputs(), chestInventory);
@@ -837,7 +852,10 @@ public class Region {
             if (regionUpkeep.getExp() > 0) {
                 exp += regionUpkeep.getExp();
             }
-            upkeepHistory.put(System.currentTimeMillis(), i);
+            if (regionUpkeep.getPayout() != 0 || regionUpkeep.getPowerInput() != 0 ||
+                    regionUpkeep.getPowerOutput() != 0) {
+                upkeepHistory.put(System.currentTimeMillis(), i);
+            }
 
             if (checkTick) {
                 tick();
@@ -857,93 +875,12 @@ public class Region {
                 TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.UPKEEP, type);
             }
         }
-        if (!hasItemUpkeep && chunkLoaded) {
+        if (!hasItemUpkeep && Util.isChunkLoadedAt(getLocation())) {
             RegionManager.getInstance().addCheckedRegion(this);
         } else if (hasItemUpkeep) {
             RegionManager.getInstance().removeCheckedRegion(this);
         }
         return hadUpkeep;
-    }
-
-    public void runUpkeep(int i) {
-        Location location = getLocation();
-        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(getType());
-        if (regionType.getUpkeeps().size() <= i) {
-            return;
-        }
-        RegionUpkeep regionUpkeep = regionType.getUpkeeps().get(i);
-        if (!hasUpkeepPerm(regionUpkeep)) {
-            return;
-        }
-
-        boolean needsItems = !regionUpkeep.getReagents().isEmpty() ||
-                !regionUpkeep.getInputs().isEmpty();
-
-        if (needsItems) {
-            failingUpkeeps.add(i);
-        }
-
-        Inventory chestInventory = UnloadedInventoryHandler.getInstance().getChestInventory(getLocation());
-        if (chestInventory == null && needsItems &&
-                RegionManager.getInstance().hasRegionChestChanged(this)) {
-
-            RegionManager.getInstance().addCheckedRegion(this);
-        }
-        if (needsItems && chestInventory == null) {
-            return;
-        }
-        boolean containsReagents = chestInventory != null &&
-                Util.containsItems(regionUpkeep.getReagents(), chestInventory);
-        boolean containsInputs = chestInventory != null &&
-                Util.containsItems(regionUpkeep.getInputs(), chestInventory);
-        boolean hasReagents = !needsItems || (containsReagents && containsInputs);
-        if (!hasReagents) {
-            return;
-        }
-
-        boolean emptyOutput = regionUpkeep.getOutputs().isEmpty();
-        boolean fullChest = chestInventory == null || chestInventory.firstEmpty() == -1;
-        if (fullChest) {
-            failingUpkeeps.remove(i);
-        }
-        if (!emptyOutput && fullChest) {
-            return;
-        }
-        failingUpkeeps.remove(i);
-
-        if (!runRegionUpkeepPayout(regionUpkeep)) {
-            return;
-        }
-        if (regionUpkeep.getPowerReagent() > 0 || regionUpkeep.getPowerInput() > 0 || regionUpkeep.getPowerOutput() > 0) {
-            Town town = TownManager.getInstance().getTownAt(location);
-            if (town == null || town.getPower() < Math.max(regionUpkeep.getPowerReagent(), regionUpkeep.getPowerInput())) {
-                return;
-            }
-            boolean powerMod = regionUpkeep.getPowerInput() > 0 || regionUpkeep.getPowerOutput() > 0;
-            if (regionUpkeep.getPowerInput() > 0) {
-                TownManager.getInstance().setTownPower(town, town.getPower() - regionUpkeep.getPowerInput());
-            }
-            if (regionUpkeep.getPowerOutput() > 0) {
-                TownManager.getInstance().setTownPower(town, town.getPower() + regionUpkeep.getPowerOutput());
-            }
-            if (powerMod) {
-                TownManager.getInstance().saveTown(town);
-            }
-        }
-        if (chestInventory != null) {
-            if (ConfigManager.getInstance().isDebugLog()) {
-                DebugLogger.incrementRegion(this);
-                DebugLogger.inventoryModifications++;
-            }
-            Util.removeItems(regionUpkeep.getInputs(), chestInventory);
-            Util.addItems(regionUpkeep.getOutputs(), chestInventory);
-        }
-        if (regionUpkeep.getExp() > 0) {
-            exp += regionUpkeep.getExp();
-            RegionManager.getInstance().saveRegion(this);
-        }
-
-        Bukkit.getPluginManager().callEvent(new RegionUpkeepEvent(this, i));
     }
 
     private boolean hasUpkeepPerm(RegionUpkeep regionUpkeep) {
@@ -995,27 +932,31 @@ public class Region {
                         hasMoney = true;
                     }
                 } else if (government.getGovernmentType() == GovernmentType.COOPERATIVE) {
-                    double coopCut = payout * 0.1;
-                    town.setBankAccount(town.getBankAccount() + coopCut);
-                    HashMap<UUID, Double> payouts = OwnershipUtil.getCooperativeSplit(town);
+                    Map<UUID, Double> payouts = OwnershipUtil.getCooperativeSplit(town, this);
                     for (UUID uuid : payouts.keySet()) {
                         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
                         Civs.econ.depositPlayer(offlinePlayer, payouts.get(uuid) * payout);
                         hasMoney = true;
                     }
+                    if (hasMoney) {
+                        double coopCut = payout * 0.1;
+                        town.setBankAccount(town.getBankAccount() + coopCut);
+                    }
                 }
             } else {
                 payout = payout / (double) getOwners().size();
-                for (UUID uuid : getOwners()) {
-                    OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-                    if (payout == 0) {
-                        hasMoney = true;
-                    } else if (payout > 0) {
-                        Civs.econ.depositPlayer(player, payout);
-                        hasMoney = true;
-                    } else if (Civs.econ.has(player, payout)) {
-                        Civs.econ.withdrawPlayer(player, Math.abs(payout));
-                        hasMoney = true;
+                if (payout == 0) {
+                    hasMoney = true;
+                } else {
+                    for (UUID uuid : getOwners()) {
+                        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+                        if (payout > 0) {
+                            Civs.econ.depositPlayer(player, payout);
+                            hasMoney = true;
+                        } else if (Civs.econ.has(player, payout)) {
+                            Civs.econ.withdrawPlayer(player, Math.abs(payout));
+                            hasMoney = true;
+                        }
                     }
                 }
             }

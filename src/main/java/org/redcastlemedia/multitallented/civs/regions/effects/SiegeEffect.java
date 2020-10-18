@@ -1,8 +1,13 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -15,18 +20,20 @@ import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
 @CivsSingleton
@@ -54,7 +61,8 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         String damageString = region.getEffects().get(KEY);
         int damage = 1;
         if (damageString != null) {
-            damage = Integer.parseInt(damageString);
+            String[] damageStringSplit = damageString.split("\\.");
+            damage = Integer.parseInt(damageStringSplit[0]);
         }
 
         //Check if valid siege machine position
@@ -107,6 +115,34 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             return;
         }
 
+        if (town.isDevolvedToday()) {
+            sign.setLine(2, "max damage");
+            sign.setLine(3, "reached for today");
+            return;
+        }
+
+        double hardshipBuffer = 0;
+        if (Civs.econ == null) {
+            hardshipBuffer += 20000;
+        }
+        Set<UUID> siegeMachineOwners = region.getOwners();
+        if (!siegeMachineOwners.isEmpty()) {
+            OfflinePlayer player = Bukkit.getOfflinePlayer(siegeMachineOwners.iterator().next());
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            hardshipBuffer = civilian.getHardship();
+
+            if (Civs.econ != null) {
+                hardshipBuffer += Civs.econ.getBalance(player);
+            }
+        }
+        if (town.getHardship() > hardshipBuffer) {
+            sign.setLine(1,"hardship");
+            sign.setLine(2,"limit");
+            sign.setLine(3,"exceeded");
+            sign.update();
+            return;
+        }
+
         Location spawnLoc = l.getBlock().getRelative(BlockFace.UP, 3).getLocation();
         Location loc = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 15, spawnLoc.getZ());
         final Location loc1 = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 20, spawnLoc.getZ());
@@ -138,7 +174,17 @@ public class SiegeEffect implements Listener, CreateRegionListener {
             }
         }, 15L);
 
+        reducePowerAndExchangeKarma(region, damage, town);
+    }
+
+    private void reducePowerAndExchangeKarma(Region region, int damage, Town town) {
         TownManager.getInstance().setTownPower(town, town.getPower() - damage);
+        double karmaChange = (double) damage / (double) town.getMaxPower() * town.getPrice();
+        if (!region.getOwners().isEmpty()) {
+            CivilianManager.getInstance().exchangeHardship(town, region.getOwners().iterator().next(), karmaChange);
+        } else {
+            CivilianManager.getInstance().exchangeHardship(town, null, karmaChange);
+        }
     }
 
     @EventHandler
@@ -183,13 +229,13 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         BlockState state = b.getState();
         if (!(state instanceof Sign)) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
-                    .getTranslation(civilian.getLocale(), "raid-sign"));
+                    .getTranslation(player, "raid-sign"));
             return false;
         }
 
         if (l.getBlock().getY() + 2 < l.getWorld().getHighestBlockAt(l).getY()) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    "no-blocks-above-chest").replace("$1", regionType.getName()));
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                    "no-blocks-above-chest").replace("$1", regionType.getDisplayName(player)));
             return false;
         }
 
@@ -225,14 +271,13 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         }
         for (Player p : Bukkit.getOnlinePlayers()) {
             Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
-            String siegeMachineLocalName = LocaleManager.getInstance().getTranslation(civ.getLocale(), regionType.getProcessedName() + "-name");
+            String siegeMachineLocalName = regionType.getDisplayName(p);
             p.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
                     civ.getLocale(), "siege-built").replace("$1", player.getDisplayName())
                     .replace("$2", siegeMachineLocalName).replace("$3", town.getName()));
         }
         if (Civs.discordSRV != null) {
-            String siegeLocalName = LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(),
-                    regionType.getProcessedName() + "-name");
+            String siegeLocalName = regionType.getDisplayName();
             String defaultMessage = Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
                     ConfigManager.getInstance().getDefaultLanguage(), "siege-built").replace("$1", player.getDisplayName())
                     .replace("$2", siegeLocalName).replace("$3", town.getName());

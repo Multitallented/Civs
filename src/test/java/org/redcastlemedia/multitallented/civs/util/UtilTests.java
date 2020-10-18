@@ -1,9 +1,6 @@
 package org.redcastlemedia.multitallented.civs.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -12,7 +9,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -20,15 +16,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.CVInventory;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
@@ -49,6 +45,14 @@ public class UtilTests extends TestUtil {
         CVItem cvItem = new CVItem(Material.COBBLESTONE,1, 100, "CustomCobble");
         ItemStack is = cvItem.createItemStack();
         assertEquals(Material.COBBLESTONE, is.getType());
+    }
+
+    @Test
+    public void hexColorShouldTranslateProperly() {
+        String parsedColors = Util.parseColors("@{#FF0000}Whatever");
+        assertEquals(ChatColor.of("#FF0000") + "Whatever", parsedColors);
+        String parsedColors2 = Util.parseColors("@{#FF0000}test@{#00FF00}test2");
+        assertEquals(ChatColor.of("#FF0000") + "test" + ChatColor.of("#00FF00") + "test2", parsedColors2);
     }
 
     @Test
@@ -89,7 +93,7 @@ public class UtilTests extends TestUtil {
 
     @Test
     public void addItemsShouldAddProperItems() {
-        Inventory inventory = mock(Inventory.class);
+        TestUtil.world.setChunkLoaded(false);
         List<ItemStack> inventoryContents = new ArrayList<>();
         inventoryContents.add(new ItemStack(Material.COBBLESTONE, 6));
         inventoryContents.add(new ItemStack(Material.WOODEN_AXE));
@@ -100,17 +104,19 @@ public class UtilTests extends TestUtil {
         inventoryContents.add(null);
         inventoryContents.add(null);
         inventoryContents.add(null);
-        ListIterator<ItemStack> itemStacks = inventoryContents.listIterator();
-        when(inventory.iterator()).thenReturn(itemStacks);
-        ArgumentCaptor<ItemStack> itemStackArgumentCaptor = ArgumentCaptor.forClass(ItemStack.class);
         List<CVItem> tempList = new ArrayList<>();
         tempList.add(CVItem.createCVItemFromString("GRASS"));
         List<List<CVItem>> returnList = new ArrayList<>();
         returnList.add(tempList);
-        Util.addItems(returnList, inventory);
-        verify(inventory).addItem(itemStackArgumentCaptor.capture());
-        List<ItemStack> stacks = itemStackArgumentCaptor.getAllValues();
-        assertEquals(Material.GRASS, stacks.get(0).getType());
+        CVInventory cvInventory = UnloadedInventoryHandler.getInstance().getChestInventory(new Location(TestUtil.world, 0, 0, 0));
+        Util.addItems(returnList, cvInventory);
+        for (ItemStack itemStack : cvInventory.getContents()) {
+            System.out.println(itemStack.getType().name());
+            if (itemStack.getType() == Material.GRASS) {
+                return;
+            }
+        }
+        fail("No Grass found in inventory");
     }
 
     @Test
@@ -186,10 +192,10 @@ public class UtilTests extends TestUtil {
 
     @Test
     public void formatTimeShouldReturnCorrectFormat() {
-        assertEquals("54s", AnnouncementUtil.formatTime(54));
-        assertEquals("1m 22s", AnnouncementUtil.formatTime(82));
-        assertEquals("1h 20m 30s", AnnouncementUtil.formatTime(4830));
-        assertEquals("2h 20m 30s", AnnouncementUtil.formatTime(8430));
+        assertEquals("54s", Util.formatTime(54));
+        assertEquals("1m 22s", Util.formatTime(82));
+        assertEquals("1h 20m 30s", Util.formatTime(4830));
+        assertEquals("2h 20m 30s", Util.formatTime(8430));
     }
 
     @Test
@@ -270,5 +276,10 @@ public class UtilTests extends TestUtil {
     public void returnCharacterShouldCreateNewLinePlusExtra() {
         String testString = "something with a really long line that should be returned for being long\nsomething";
         assertEquals(3, Util.textWrap(testString).size());
+    }
+
+    @Test
+    public void numberFormatShouldNotBeEmpty() {
+        assertEquals("100", Util.getNumberFormat(100, "zh"));
     }
 }

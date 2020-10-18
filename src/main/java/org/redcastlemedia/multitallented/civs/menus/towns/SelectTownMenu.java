@@ -2,8 +2,12 @@ package org.redcastlemedia.multitallented.civs.menus.towns;
 
 import java.util.*;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -37,6 +41,11 @@ public class SelectTownMenu extends CustomMenu {
             for (String townName : params.get("townList").split(",")) {
                 towns.add(TownManager.getInstance().getTown(townName));
             }
+        } else if (params.containsKey("ally")) {
+            data.put("allyTown", params.get("allyTown"));
+            boolean isAlly = params.get("ally").equals("true");
+            data.put("ally", isAlly);
+            towns.addAll(TownManager.getInstance().getOwnedTowns(civilian));
         } else {
             towns.addAll(TownManager.getInstance().getTowns());
         }
@@ -46,7 +55,7 @@ public class SelectTownMenu extends CustomMenu {
         data.put("maxPage", maxPage);
 
         for (String key : params.keySet()) {
-            if (key.equals("page") || key.equals("maxPage")) {
+            if (key.equals("page") || key.equals("maxPage") || "ally".equals(key)) {
                 continue;
             }
             data.put(key, params.get(key));
@@ -55,7 +64,7 @@ public class SelectTownMenu extends CustomMenu {
         return data;
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         if (menuIcon.getKey().equals("towns")) {
             Set<Town> towns = (Set<Town>) MenuManager.getData(civilian.getUuid(), "towns");
@@ -71,9 +80,48 @@ public class SelectTownMenu extends CustomMenu {
             cvItem.setDisplayName(town.getName());
             cvItem.getLore().clear();
             ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack, count);
+            boolean isAllianceSelect = MenuManager.getAllData(civilian.getUuid()).containsKey("ally");
+            if (isAllianceSelect) {
+                boolean ally = (boolean) MenuManager.getData(civilian.getUuid(), "ally");
+                List<String> currentActions = new ArrayList<>();
+
+                if (ally) {
+                    currentActions.add("ally");
+                } else {
+                    currentActions.add("unally");
+                }
+                actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName(), currentActions);
+            } else {
+                putActions(civilian, menuIcon, itemStack, count);
+            }
             return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
+    }
+
+    @Override
+    public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack itemStack) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return true;
+        }
+        boolean isAllianceSelect = MenuManager.getAllData(civilian.getUuid()).containsKey("ally");
+        if (isAllianceSelect) {
+            String townName = ChatColor.stripColor(itemStack.getItemMeta().getDisplayName());
+            Town fromTown = TownManager.getInstance().getTown(townName);
+            String allianceTown = (String) MenuManager.getData(civilian.getUuid(), "allyTown");
+            Town toTown = TownManager.getInstance().getTown(allianceTown);
+            if (toTown == null || fromTown == null) {
+                return true;
+            }
+            if ("ally".equals(actionString)) {
+                AllianceManager.getInstance().sendAllyInvites(toTown, fromTown, player);
+            } else if ("unally".equals(actionString)) {
+                AllianceManager.getInstance().unAllyBroadcast(toTown, fromTown);
+            }
+            player.closeInventory();
+            return true;
+        }
+        return super.doActionAndCancel(civilian, actionString, itemStack);
     }
 }

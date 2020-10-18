@@ -1,8 +1,8 @@
 type: region
 icon: CHEST
 shop-icon: PINK_BED
+dynmap-marker: default
 name: House
-max: 2
 price: 800
 groups:
 - housing
@@ -27,7 +27,6 @@ build-reqs:
 - g:primary*175
 
 rebuild: basedwelling
-rebuild-required: true
 build-radius: 6 #13x13x13
 effects:
 - block_break

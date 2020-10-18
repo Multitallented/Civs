@@ -46,8 +46,10 @@ public class ChatChannelListMenu extends CustomMenu {
             }
         }
         if (ConfigManager.getInstance().getChatChannels().containsKey(ChatChannel.ChatChannelType.TOWN)) {
-            for (Town town : TownManager.getInstance().getOwnedTowns(civilian)) {
-                channelList.add(new ChatChannel(ChatChannel.ChatChannelType.TOWN, town));
+            for (Town town : TownManager.getInstance().getTowns()) {
+                if (town.getRawPeople().containsKey(civilian.getUuid())) {
+                    channelList.add(new ChatChannel(ChatChannel.ChatChannelType.TOWN, town));
+                }
             }
         }
         if (ConfigManager.getInstance().getChatChannels().containsKey(ChatChannel.ChatChannelType.ALLIANCE)) {
@@ -84,8 +86,7 @@ public class ChatChannelListMenu extends CustomMenu {
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(player, count);
             cvItem.setDisplayName(civilian.getChatChannel().getName(player));
-            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslationWithPlaceholders(player,
-                    civilian.getChatChannel().getDesc(player))));
+            cvItem.setLore(Util.textWrap(civilian, civilian.getChatChannel().getDesc(player)));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
@@ -103,11 +104,11 @@ public class ChatChannelListMenu extends CustomMenu {
                 Town town = (Town) chatChannel.getTarget();
                 TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
                 cvItem = new CVItem(townType.getMat(), 1, 1, chatChannel.getName(player),
-                        Util.textWrap(chatChannel.getDesc(player)));
+                        Util.textWrap(civilian, chatChannel.getDesc(player)));
             } else {
                 cvItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getChatChannels().get(chatChannel.getChatChannelType()));
                 cvItem.setDisplayName(chatChannel.getName(player));
-                cvItem.setLore(Util.textWrap(chatChannel.getDesc(player)));
+                cvItem.setLore(Util.textWrap(civilian, chatChannel.getDesc(player)));
             }
             ItemStack itemStack = cvItem.createItemStack();
             ((HashMap<ItemStack, ChatChannel>) MenuManager.getData(civilian.getUuid(), "channelMap"))
@@ -127,7 +128,7 @@ public class ChatChannelListMenu extends CustomMenu {
                 civilian.setChatChannel(chatChannel);
                 Player player = Bukkit.getPlayer(civilian.getUuid());
                 if (player != null) {
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getRawTranslationWithPlaceholders(player,
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getRawTranslation(player,
                             "chat-channel-set").replace("$1", chatChannel.getName(player)));
                 }
             }

@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -15,6 +17,8 @@ import lombok.Setter;
 public class MenuIcon {
     @Getter
     private List<String> actions = new ArrayList<>();
+    @Getter
+    private List<String> rightClickActions = new ArrayList<>();
     @Getter @Setter
     private ArrayList<Integer> index;
     @Getter @Setter
@@ -52,6 +56,12 @@ public class MenuIcon {
                 this.name = section.getString("name", "");
                 this.desc = section.getString("desc", "");
                 this.actions = section.getStringList("actions");
+                List<String> actionsRightClick = section.getStringList("actions-right-click");
+                if (actionsRightClick.isEmpty()) {
+                    this.rightClickActions = this.actions;
+                } else {
+                    this.rightClickActions = actionsRightClick;
+                }
                 this.perm = section.getString("permission", "");
             }
         }
@@ -90,15 +100,16 @@ public class MenuIcon {
 
     public CVItem createCVItem(Player player, int count) {
         CVItem cvItem = CVItem.createCVItemFromString(icon);
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (!name.isEmpty()) {
             String countString = count > 0 ? count + "" : "";
 
             cvItem.setDisplayName(LocaleManager.getInstance()
-                    .getTranslationWithPlaceholders(player, name) + countString);
+                    .getTranslation(player, CustomMenu.replaceVariables(civilian, name)) + countString);
         }
         if (!desc.isEmpty()) {
-            cvItem.setLore(Util.textWrap(LocaleManager.getInstance()
-                    .getTranslationWithPlaceholders(player, desc)));
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance()
+                    .getTranslation(player, CustomMenu.replaceVariables(civilian, desc))));
         }
         return cvItem;
     }

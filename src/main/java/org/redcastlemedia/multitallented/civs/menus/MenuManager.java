@@ -2,7 +2,6 @@ package org.redcastlemedia.multitallented.civs.menus;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -33,10 +32,10 @@ import lombok.Getter;
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class MenuManager implements Listener {
     private static MenuManager instance = null;
-    private static Map<UUID, CycleGUI> cycleGuis = new HashMap<>();
-    private static Map<UUID, Map<String, Object>> data = new HashMap<>();
-    private static Map<UUID, ArrayList<MenuHistoryState>> history = new HashMap<>();
-    private static Map<UUID, String> openMenus = new HashMap<>();
+    private static final Map<UUID, CycleGUI> cycleGuis = new HashMap<>();
+    private static final Map<UUID, Map<String, Object>> data = new HashMap<>();
+    private static final Map<UUID, ArrayList<MenuHistoryState>> history = new HashMap<>();
+    private static final Map<UUID, String> openMenus = new HashMap<>();
     protected static Map<String, CustomMenu> menus = new HashMap<>();
 
     @Getter
@@ -77,7 +76,7 @@ public class MenuManager implements Listener {
                 gui.advanceItemPositions();
             }
         } catch (Exception e) {
-            Civs.logger.warning(Arrays.toString(e.getStackTrace()));
+            Civs.logger.log(Level.WARNING, "Cycle items error", e);
         }
     }
 
@@ -144,6 +143,7 @@ public class MenuManager implements Listener {
             Civs.logger.log(Level.SEVERE, "Exception thrown during inventory click", e);
             event.setCancelled(true);
             event.getWhoClicked().closeInventory();
+            clearCycleItems(event.getWhoClicked().getUniqueId());
         }
     }
 

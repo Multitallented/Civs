@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.ai.AIManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -27,6 +29,7 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 import org.reflections.Reflections;
+import org.reflections.ReflectionsException;
 import org.reflections.scanners.ResourcesScanner;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
@@ -53,15 +56,19 @@ public class GovernmentManager {
         boolean govTypeFolderExists = govTypeFolder.exists();
         String path = "resources." + ConfigManager.getInstance().getDefaultConfigSet() + "." + GOV_TYPE_FOLDER_NAME;
         Reflections reflections = new Reflections(path , new ResourcesScanner());
-        for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
-            FileConfiguration config;
-            if (govTypeFolderExists) {
-                config = FallbackConfigUtil.getConfigFullPath(
-                        new File(govTypeFolder, fileName), "/" + fileName);
-            } else {
-                config = FallbackConfigUtil.getConfigFullPath(null, "/" + fileName);
+        try {
+            for (String fileName : reflections.getResources(Pattern.compile(".*\\.yml"))) {
+                FileConfiguration config;
+                if (govTypeFolderExists) {
+                    config = FallbackConfigUtil.getConfigFullPath(
+                            new File(govTypeFolder, fileName), "/" + fileName);
+                } else {
+                    config = FallbackConfigUtil.getConfigFullPath(null, "/" + fileName);
+                }
+                loadGovType(config, fileName.substring(fileName.lastIndexOf("/") + 1).replace(".yml", ""));
             }
-            loadGovType(config, fileName.substring(fileName.lastIndexOf("/") + 1).replace(".yml", ""));
+        } catch (ReflectionsException reflectionsException) {
+            Civs.logger.log(Level.WARNING, "No government types found");
         }
         if (govTypeFolderExists) {
             for (File file : govTypeFolder.listFiles()) {
@@ -146,9 +153,9 @@ public class GovernmentManager {
             }
             Civilian civilian1 = CivilianManager.getInstance().getCivilian(uuid);
             String oldGovName = LocaleManager.getInstance().getTranslation(civilian1.getLocale(),
-                    town.getGovernmentType().toLowerCase() + "-name");
+                    town.getGovernmentType().toLowerCase() + LocaleConstants.NAME_SUFFIX);
             String newGovName = LocaleManager.getInstance().getTranslation(civilian1.getLocale(),
-                    governmentType.toLowerCase() + "-name");
+                    governmentType.toLowerCase() + LocaleConstants.NAME_SUFFIX);
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
                     .getTranslation(civilian1.getLocale(), "gov-type-change")
                     .replace("$1", town.getName())

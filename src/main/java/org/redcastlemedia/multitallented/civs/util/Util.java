@@ -4,14 +4,18 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.*;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -22,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.items.CVInventory;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -32,6 +37,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.*;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public final class Util {
@@ -195,8 +201,16 @@ public final class Util {
         return xEq && yEq && zEq;
     }
 
-    public static ArrayList<String> textWrap(String input) {
+    public static List<String> textWrap(String input) {
         int lineLength = ConfigManager.getInstance().getLineBreakLength();
+        return textWrap(lineLength, input);
+    }
+
+    public static List<String> textWrap(Civilian civilian, String input) {
+        return textWrap(ConfigManager.getInstance().getLineBreakLength(civilian.getLocale()), input);
+    }
+
+    private static List<String> textWrap(int lineLength, String input) {
         int longestLength = (int) Math.ceil((double) lineLength * 0.625);
         int longestSection = 0;
         for (String subString : input.split(" ")) {
@@ -295,6 +309,19 @@ public final class Util {
             return null;
         }
         String returnInput = new String(input);
+        boolean continueLoop = true;
+        int i = 0;
+        while (continueLoop && i < 99) {
+            Pattern pattern = Pattern.compile("@\\{#[0-9A-Fa-f]{6}}");
+            Matcher matcher = pattern.matcher(returnInput);
+            continueLoop = matcher.find();
+            if (continueLoop) {
+                String group = matcher.group();
+                returnInput = returnInput.replace(matcher.group(),
+                        ChatColor.of(group.substring(2, group.length() - 1)) + "");
+            }
+            i++;
+        }
         for (ChatColor color : ChatColor.values()) {
             returnInput = returnInput.replaceAll("@\\{" + color.name() + "\\}", color + "");
         }
@@ -371,7 +398,12 @@ public final class Util {
     public static boolean isSolidBlock(Material type) {
         return type != Material.AIR &&
                 type != Material.LEVER &&
-                type != Material.WALL_SIGN &&
+                type != Material.OAK_WALL_SIGN &&
+                type != Material.BIRCH_WALL_SIGN &&
+                type != Material.JUNGLE_WALL_SIGN &&
+                type != Material.SPRUCE_WALL_SIGN &&
+                type != Material.DARK_OAK_WALL_SIGN &&
+                type != Material.ACACIA_WALL_SIGN &&
                 type != Material.TORCH &&
                 type != Material.STONE_BUTTON &&
                 type != Material.BIRCH_BUTTON &&
@@ -386,32 +418,34 @@ public final class Util {
                 && getValidFileName(fileName).length()>0;
     }
 
-    public static String getValidFileName(String fileName) throws IllegalStateException {
-        String newFileName = fileName.replaceAll("^[.\\\\/:*?\"<>|]?[\\\\/:*?\"<>|]*", "");
-        if(newFileName.length()==0)
-            throw new IllegalStateException(
-                    "File Name " + fileName + " results in a empty fileName!");
-        return newFileName;
+    public static String getValidFileName(String fileName) {
+        return fileName.replaceAll("^[.\\\\/:*?\"<>|]?[\\\\/:*?\"<>|]*", "");
     }
     public static Locale getNumberFormatLocale(String locale) {
         Locale localeEnum = Locale.forLanguageTag(locale);
         if (localeEnum == null) {
-            Civs.logger.severe("Unable to find locale " + locale);
+            Civs.logger.log(Level.SEVERE, "Unable to find locale {0}", locale);
             return Locale.getDefault();
         }
         return localeEnum;
     }
     public static String getNumberFormat(double number, String locale) {
-        return NumberFormat.getInstance(getNumberFormatLocale(locale)).format(number);
+        String numberFormat = NumberFormat.getInstance(getNumberFormatLocale(locale)).format(number);
+        if (numberFormat.isEmpty()) {
+            return NumberFormat.getCurrencyInstance().format(number);
+        } else {
+            return numberFormat;
+        }
     }
 
     public static int createPageButtons(Inventory inventory, int page, Civilian civilian, int totalSize) {
         LocaleManager localeManager = LocaleManager.getInstance();
+        Player player = Bukkit.getPlayer(civilian.getUuid());
 
         //0 Prev button
         if (page > 0) {
             CVItem cvItem = CVItem.createCVItemFromString("REDSTONE");
-            cvItem.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+            cvItem.setDisplayName(localeManager.getTranslation(player,
                     "prev-button"));
             inventory.setItem(0, cvItem.createItemStack());
         }
@@ -420,14 +454,14 @@ public final class Util {
         //8 Next button
         if (startIndex + 36 < totalSize) {
             CVItem cvItem1 = CVItem.createCVItemFromString("EMERALD");
-            cvItem1.setDisplayName(localeManager.getTranslation(civilian.getLocale(),
+            cvItem1.setDisplayName(localeManager.getTranslation(player,
                     "next-button"));
             inventory.setItem(8, cvItem1.createItemStack());
         }
         return startIndex;
     }
 
-    public static boolean containsItems(List<List<CVItem>> req, Inventory inv) {
+    public static boolean containsItems(List<List<CVItem>> req, CVInventory inv) {
         if (req.isEmpty()) {
             return true;
         }
@@ -444,7 +478,7 @@ public final class Util {
                         continue;
                     }
 
-                    if (orReq.equivalentItem(iss, true)) {
+                    if (orReq.equivalentItem(iss, orReq.getDisplayName() != null, !orReq.getLore().isEmpty())) {
                         if ((iss.getAmount() + amount) >= orReq.getQty()) {
                             continue outer;
                         } else {
@@ -475,7 +509,7 @@ public final class Util {
         return bountyList;
     }
 
-    public static boolean removeItems(List<List<CVItem>> req, Inventory inv) {
+    public static boolean removeItems(List<List<CVItem>> req, CVInventory inv) {
         if (inv == null) {
             return false;
         }
@@ -504,7 +538,7 @@ public final class Util {
             boolean removeIndex = false;
             outer1: for (ArrayList<CVItem> hsItems : hsItemsList) {
                 for (CVItem hsItem : hsItems) {
-                    if (hsItem.equivalentItem(item, true)) {
+                    if (hsItem.equivalentItem(item, hsItem.getDisplayName() != null, !hsItem.getLore().isEmpty())) {
 
                         if (item.getAmount() > hsItem.getQty()) {
                             reduceItems.put(i, hsItem.getQty());
@@ -542,7 +576,41 @@ public final class Util {
         return true;
     }
 
-    public static ArrayList<ItemStack> addItems(List<List<CVItem>> addItems, Inventory inv) {
+    public static ItemStack[] getItems(List<List<CVItem>> addItems) {
+        List<ItemStack> output = new ArrayList<>();
+        outer: for (List<CVItem> tempItems : addItems) {
+            double rand = Math.random();
+            double prevChance = 0;
+            for (CVItem item : tempItems) {
+                if ((prevChance < rand) && (prevChance + item.getChance() > rand)) {
+                    ItemStack is = item.createItemStack();
+                    is.setAmount(1);
+                    int amount = item.getQty();
+                    int max = is.getMaxStackSize();
+                    for (;;) {
+                        ItemStack isa;
+                        if (amount > max) {
+                            isa = item.createItemStack();
+                            isa.setAmount(max);
+                        } else {
+                            isa = item.createItemStack();
+                            isa.setAmount(amount);
+                        }
+                        output.add(isa);
+                        if (amount > max) {
+                            amount -= max;
+                        } else {
+                            continue outer;
+                        }
+                    }
+                }
+                prevChance += item.getChance();
+            }
+        }
+        return output.toArray(new ItemStack[0]);
+    }
+
+    public static ArrayList<ItemStack> addItems(List<List<CVItem>> addItems, CVInventory inv) {
         ArrayList<ItemStack> remainingItems = new ArrayList<>();
 
         outer: for (List<CVItem> tempItems : addItems) {
@@ -558,7 +626,7 @@ public final class Util {
                     }
                     int amount = item.getQty();
                     int max = is.getMaxStackSize();
-                    for (ItemStack iss : inv) {
+                    for (ItemStack iss : inv.getContents()) {
                         if (iss == null) {
                             ItemStack isa;
                             if (amount > max) {
@@ -576,7 +644,7 @@ public final class Util {
                                 continue outer;
                             }
                         }
-                        if (item.equivalentItem(iss)) {
+                        if (item.equivalentItem(iss, item.getDisplayName() != null, !item.getLore().isEmpty())) {
                             if (amount + iss.getAmount() > iss.getMaxStackSize()) {
                                 amount = amount - (iss.getMaxStackSize() - iss.getAmount());
                                 iss.setAmount(iss.getMaxStackSize());
@@ -601,7 +669,7 @@ public final class Util {
         return remainingItems;
     }
 
-    public static boolean isChestEmpty(Inventory inv) {
+    public static boolean isChestEmpty(CVInventory inv) {
         for (ItemStack item : inv.getContents()) {
             if (item != null) {
                 return false;
@@ -634,6 +702,9 @@ public final class Util {
     }
 
     public static void spawnRandomFirework(Player player) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
         FireworkMeta fireworkMeta = firework.getFireworkMeta();
 
@@ -729,5 +800,29 @@ public final class Util {
         }
 
         return c;
+    }
+
+    public static void sendMessageToPlayerOrConsole(CommandSender commandSender, String key, String message) {
+        Player player = null;
+        if (commandSender instanceof Player) {
+            player = (Player) commandSender;
+        }
+        if (player != null) {
+            player.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(player, key));
+        } else {
+            commandSender.sendMessage(message);
+        }
+    }
+
+    public static String formatTime(long duration) {
+        if (duration < 60) {
+            return duration + "s";
+        } else if (duration < 3600) {
+            return (int) (duration / 60) + "m " + (int) (duration % 60) + "s";
+        } else {
+            int hours = (int) (duration / 3600);
+            return hours + "h " + (int) ((duration - hours * 3600) / 60) + "m " + (int) (duration % 60) + "s";
+        }
     }
 }

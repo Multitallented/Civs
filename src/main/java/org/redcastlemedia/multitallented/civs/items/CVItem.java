@@ -1,24 +1,31 @@
 package org.redcastlemedia.multitallented.civs.items;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.Indyuce.mmoitems.api.Type;
-import net.Indyuce.mmoitems.api.item.MMOItem;
-import net.Indyuce.mmoitems.api.item.NBTItem;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import net.Indyuce.mmoitems.MMOItems;
+import net.Indyuce.mmoitems.api.Type;
+import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
+import net.mmogroup.mmolib.api.item.NBTItem;
 
 /**
  *
@@ -27,7 +34,7 @@ import java.util.List;
 public class CVItem {
     private Material mat;
     private int qty;
-    private final double chance;
+    private double chance;
     private String displayName = null;
 
     @Getter @Setter
@@ -67,12 +74,17 @@ public class CVItem {
         this.chance = 1;
     }
 
+    public void setChance(double chance) {
+        this.chance = chance / 100;
+    }
+
     public static CVItem createCVItemFromString(String materialString) {
         return createCVItemFromString(ConfigManager.getInstance().getDefaultLanguage(), materialString);
     }
 
     public static CVItem createCVItemFromString(String locale, String materialString)  {
         boolean isMMOItem = materialString.contains("mi:");
+        boolean isCivItem = materialString.contains("civ:");
         if (isMMOItem) {
             materialString = materialString.replace("mi:", "");
         }
@@ -80,7 +92,8 @@ public class CVItem {
         String quantityString = "1";
         String chanceString = "100";
         String nameString = null;
-        String mmoType = "";
+        String itemType = "";
+        String data = "";
         Material mat;
 
         String[] splitString;
@@ -90,21 +103,29 @@ public class CVItem {
             int asteriskIndex = materialString.indexOf("*");
             int percentIndex = materialString.indexOf("%");
             int nameIndex = materialString.indexOf(".");
-            if (asteriskIndex != -1 && asteriskIndex > percentIndex && asteriskIndex > nameIndex) {
+            int dataIndex = materialString.indexOf("^");
+            if (asteriskIndex != -1 && asteriskIndex > percentIndex && asteriskIndex > nameIndex && asteriskIndex > dataIndex) {
                 splitString = materialString.split("\\*");
                 quantityString = splitString[splitString.length - 1];
                 materialString = splitString[0];
-            } else if (percentIndex != -1 && percentIndex > asteriskIndex && percentIndex > nameIndex) {
+            } else if (percentIndex != -1 && percentIndex > asteriskIndex && percentIndex > nameIndex && percentIndex > dataIndex) {
                 splitString = materialString.split("%");
                 chanceString = splitString[splitString.length - 1];
                 materialString = splitString[0];
-            } else if (nameIndex != -1 && nameIndex > percentIndex && nameIndex > asteriskIndex) {
+            } else if (nameIndex != -1 && nameIndex > percentIndex && nameIndex > asteriskIndex && nameIndex > dataIndex) {
                 splitString = materialString.split("\\.");
-                nameString = splitString[splitString.length -1];
+                nameString = splitString[splitString.length - 1];
+                materialString = splitString[0];
+            } else if (dataIndex != -1 && dataIndex > percentIndex && dataIndex > asteriskIndex && dataIndex > nameIndex) {
+                splitString = materialString.split("\\^");
+                data = splitString[splitString.length - 1];
                 materialString = splitString[0];
             } else {
                 if (isMMOItem) {
-                    mmoType = materialString;
+                    itemType = materialString.toUpperCase();
+                    mat = Material.STONE;
+                } else if (isCivItem) {
+                    itemType = materialString.replace("civ:", "").toLowerCase();
                     mat = Material.STONE;
                 } else {
                     mat = getMaterialFromString(materialString);
@@ -122,37 +143,60 @@ public class CVItem {
         int chance = Integer.parseInt(chanceString);
 
         if (isMMOItem) {
-            if (Civs.mmoItems == null) {
-                Civs.logger.severe(Civs.getPrefix() + "Unable to create MMOItem because MMOItems is disabled");
-                return new CVItem(mat, quantity, chance);
-            }
-            Type mmoItemType = Civs.mmoItems.getTypes().get(mmoType);
-            if (mmoItemType == null) {
-                Civs.logger.severe(Civs.getPrefix() + "MMOItem type " + mmoType + " not found");
-                return new CVItem(mat, quantity, chance);
-            }
-            if (nameString == null) {
-                Civs.logger.severe(Civs.getPrefix() + "Invalid MMOItem " + mmoType + " did not provide item name");
-                return new CVItem(mat, quantity, chance);
-            }
-            MMOItem mmoItem = Civs.mmoItems.getItems().getMMOItem(mmoItemType, nameString);
-            ItemStack item = mmoItem.newBuilder().build();
-            CVItem cvItem = new CVItem(item.getType(), quantity, chance, item.getItemMeta().getDisplayName(),
-                    item.getItemMeta().getLore());
-            cvItem.mmoItemName = nameString;
-            cvItem.mmoItemType = mmoType;
-            return cvItem;
+            return getMmoItemAsCvItem(nameString, itemType, mat, quantity, chance, data);
+        }
+        if (isCivItem) {
+            return getCivItem(itemType, quantity, chance);
         }
         if (nameString == null) {
             return new CVItem(mat, quantity, chance);
         } else {
-            String displayName = LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-name");
+            String displayName = LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + LocaleConstants.NAME_SUFFIX);
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.BLACK + nameString);
             lore.addAll(Util.textWrap(ConfigManager.getInstance().getCivsItemPrefix() +
-                    LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-desc")));
+                    LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + LocaleConstants.DESC_SUFFIX)));
             return new CVItem(mat, quantity, chance, displayName, lore);
         }
+    }
+
+    private static CVItem getCivItem(String itemType, int quantity, int chance) {
+        CivItem civItem = ItemManager.getInstance().getItemType(itemType);
+        if (civItem == null) {
+            return null;
+        }
+        CVItem cvItem = civItem.clone();
+        cvItem.setQty(quantity);
+        cvItem.setChance(chance);
+        return cvItem;
+    }
+
+    @NotNull
+    private static CVItem getMmoItemAsCvItem(String nameString, String itemType, Material mat, int quantity, int chance, String data) {
+        if (Civs.mmoItems == null) {
+            Civs.logger.severe(Civs.getPrefix() + "Unable to create MMOItem because MMOItems is disabled");
+            return new CVItem(mat, quantity, chance);
+        }
+        Type mmoItemType = Civs.mmoItems.getTypes().get(itemType);
+        if (mmoItemType == null) {
+            Civs.logger.severe(Civs.getPrefix() + "MMOItem type " + itemType + " not found");
+            return new CVItem(mat, quantity, chance);
+        }
+        if (nameString == null) {
+            Civs.logger.severe(Civs.getPrefix() + "Invalid MMOItem " + itemType + " did not provide item name");
+            return new CVItem(mat, quantity, chance);
+        }
+        int level = 0;
+        if (data != null && !data.isEmpty()) {
+            level = Integer.parseInt(data);
+        }
+        MMOItem mmoItem = MMOItems.plugin.getMMOItem(mmoItemType, nameString, level, null);
+        ItemStack item = mmoItem.newBuilder().build();
+        CVItem cvItem = new CVItem(item.getType(), quantity, chance, item.getItemMeta().getDisplayName(),
+                item.getItemMeta().getLore());
+        cvItem.mmoItemName = nameString;
+        cvItem.mmoItemType = itemType;
+        return cvItem;
     }
 
     public static boolean isCustomItem(ItemStack itemStack) {
@@ -161,15 +205,18 @@ public class CVItem {
                 isCustomItem(itemStack.getItemMeta().getLore());
     }
 
-    public static void translateItem(String locale, ItemStack itemStack) {
+    public static void translateItem(Civilian civilian, ItemStack itemStack) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
         String itemDisplayName = itemStack.getItemMeta().getLore().get(1);
         String nameString = ChatColor.stripColor(itemDisplayName
                 .replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase());
-        String displayName = LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-name");
+        String displayName = LocaleManager.getInstance().getTranslation(player,
+                "item-" + nameString + LocaleConstants.NAME_SUFFIX);
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.BLACK + nameString);
-        lore.addAll(Util.textWrap(
-                LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + "-desc")));
+        lore.addAll(Util.textWrap(civilian,
+                LocaleManager.getInstance().getTranslation(player,
+                        "item-" + nameString + LocaleConstants.DESC_SUFFIX)));
         itemStack.getItemMeta().setDisplayName(displayName);
         itemStack.getItemMeta().setLore(lore);
     }
@@ -182,7 +229,7 @@ public class CVItem {
         return lore != null && !lore.isEmpty() &&
                 LocaleManager.getInstance().hasTranslation(
                         ConfigManager.getInstance().getDefaultLanguage(),
-                        "item-" + ChatColor.stripColor(lore.get(0)) + "-name");
+                        "item-" + ChatColor.stripColor(lore.get(0)) + LocaleConstants.NAME_SUFFIX);
     }
 
     private static Material getMaterialFromString(String materialString) {
@@ -201,7 +248,8 @@ public class CVItem {
         if (im == null || im.getDisplayName() == null) {
             return false;
         }
-        if (im.getLore() == null || im.getLore().size() < 2 || ItemManager.getInstance().getItemType(im.getLore().get(1)) == null) {
+        if (im.getLore() == null || im.getLore().size() < 2 ||
+                ItemManager.getInstance().getItemType(ChatColor.stripColor(im.getLore().get(1))) == null) {
             return false;
         }
         return true;
@@ -227,29 +275,15 @@ public class CVItem {
     }
     public static List<CVItem> createListFromString(String input) {
         String groupName = null;
-        group: if (input.contains("g:")) {
-            String itemGroup = null;
-            String params = null;
-            for (String currKey : ConfigManager.getInstance().getItemGroups().keySet()) {
-                if (input.matches("g:" + currKey + "\\*.*")) {
-                    groupName = currKey;
-                    itemGroup = ConfigManager.getInstance().getItemGroups().get(groupName);
-                    params = input.replaceAll("g:" + currKey + "(?=\\*)", "");
-                }
-            }
-            if (groupName == null || itemGroup == null || params == null) {
-                break group;
-            }
-            StringBuilder stringBuilder = new StringBuilder();
-            for (String chunk : itemGroup.split(",")) {
-                stringBuilder.append(chunk);
-                stringBuilder.append(params);
-                stringBuilder.append(",");
-            }
-            stringBuilder.substring(stringBuilder.length() - 1);
-            input = stringBuilder.toString();
-        }
         List<CVItem> reqs = new ArrayList<>();
+        ItemGroupList itemGroupList = new ItemGroupList();
+        itemGroupList.findAllGroupsRecursively(input);
+        if (itemGroupList.getCircularDependency() != null) {
+            Civs.logger.log(Level.SEVERE, "Unable to create items due to circular item group {0}", itemGroupList.getCircularDependency());
+            return reqs;
+        }
+        input = itemGroupList.getInput();
+        groupName = itemGroupList.getMainGroup();
         for (String req : input.split(",")) {
             CVItem cvItem = createCVItemFromString(req);
             if (groupName != null) {
@@ -271,6 +305,7 @@ public class CVItem {
             if (!lore.isEmpty()) {
                 itemStack.getItemMeta().setLore(lore);
             }
+            itemStack.setAmount(qty);
             return itemStack;
         }
 
@@ -283,9 +318,7 @@ public class CVItem {
             if (displayName != null) {
                 im.setDisplayName(displayName);
             }
-            if (lore == null) {
-                lore = new ArrayList<>();
-            } else if (!lore.isEmpty()) {
+            if (lore != null && !lore.isEmpty()) {
                 im.setLore(lore);
             }
             im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);

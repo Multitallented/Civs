@@ -19,8 +19,9 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.spells.Vector3D;
-import org.redcastlemedia.multitallented.civs.util.AnnouncementUtil;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -54,7 +55,7 @@ public class JammerEffect implements Listener, RegionCreatedListener {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
                 event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "cooldown")
-                        .replace("$1", AnnouncementUtil.formatTime(cooldown)));
+                        .replace("$1", Util.formatTime(cooldown)));
                 return;
             } else {
                 cooldowns.remove(event.getPlayer().getUniqueId());
@@ -65,7 +66,7 @@ public class JammerEffect implements Listener, RegionCreatedListener {
         }
 
         Player player = event.getPlayer();
-        if (Civs.perm != null && Civs.perm.has(player, "civs.bypasspvp")) {
+        if (Civs.perm != null && Civs.perm.has(player, Constants.PVP_EXEMPT_PERMISSION)) {
             return;
         }
 
@@ -109,10 +110,8 @@ public class JammerEffect implements Listener, RegionCreatedListener {
                 Location targetLocation = HuntEffect.findNearbyLocationForTeleport(region.getLocation(), landingRadius, player);
                 if (targetLocation != null) {
                     event.setTo(targetLocation);
-                    Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                     RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-                    String localizedRegionName = LocaleManager.getInstance().getTranslation(
-                            civilian.getLocale(), regionType.getProcessedName() + "-name");
+                    String localizedRegionName = regionType.getDisplayName(player);
                     HuntEffect.messageNearbyPlayers(player, "jammer-redirect", localizedRegionName);
                 }
             }
@@ -126,13 +125,12 @@ public class JammerEffect implements Listener, RegionCreatedListener {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         for (Player p : Bukkit.getOnlinePlayers()) {
             Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
-            String jammerLocalName = LocaleManager.getInstance().getTranslation(civ.getLocale(), regionType.getProcessedName() + "-name");
+            String jammerLocalName = regionType.getDisplayName(p);
             p.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
                     civ.getLocale(), "jammer-built").replace("$1", jammerLocalName));
         }
         if (Civs.discordSRV != null) {
-            String jammerLocalName = LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(),
-                    regionType.getProcessedName() + "-name");
+            String jammerLocalName = regionType.getDisplayName();
             String defaultMessage = Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
                     ConfigManager.getInstance().getDefaultLanguage(), "jammer-built")
                     .replace("$1", jammerLocalName);

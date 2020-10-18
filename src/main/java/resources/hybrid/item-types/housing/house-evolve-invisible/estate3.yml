@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: BLUE_BED
+dynmap-marker: bighouse
 name: Estate3
 max: 2
 price: 16000
@@ -48,7 +49,7 @@ towns:
 period: 3600 #1 hour
 upkeep:
   0:
-    power-input: 1
+    power-input: 4
   1:
     input: #2.11
     - GOLDEN_CARROT*4  # 96 or 1.5 stacks / day

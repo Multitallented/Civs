@@ -1,9 +1,10 @@
 type: region
 icon: CHEST
 shop-icon: GOLD_ORE
+dynmap-marker: hammer
 name: Gold_Mine
 max: 1
-price: 350
+price: 3000
 groups:
 - mine
 level: 5
@@ -18,7 +19,7 @@ towns:
 
 build-reqs:
 - IRON_BARS*2
-- IRON_ORE*4
+- GOLD_ORE*4
 - g:door*1
 - CHEST*2
 - FURNACE*2
@@ -40,12 +41,18 @@ upkeep:
     input:
     - IRON_PICKAXE
     output:
-    - GOLD_INGOT*4
+    - GOLD_INGOT*6
   1:
     reagents:
     - DIAMOND_PICKAXE
     input:
     - IRON_PICKAXE
     output:
-    - GOLD_INGOT*6
-
+    - GOLD_INGOT*10
+  2:
+    reagents:
+    - NETHERITE_PICKAXE
+    input:
+    - IRON_PICKAXE
+    output:
+    - GOLD_INGOT*14

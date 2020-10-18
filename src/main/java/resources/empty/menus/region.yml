@@ -33,7 +33,7 @@ items:
     name: operation
     desc: region-not-working
     actions:
-      - menu:recipe?regionType=$regionTypeName$&recipe=failing:$failingUpkeeps$
+      - menu:recipe?region=$region$&regionType=$regionTypeName$&recipe=failing:$failingUpkeeps$
   location:
     index: 3
     icon: OAK_DOOR
@@ -87,7 +87,7 @@ items:
     name: buy-region
     actions:
       - buy-region
-      - close
+      - refresh
   warehouse-enabled:
     index: 14
     icon: GREEN_WOOL

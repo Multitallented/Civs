@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.logging.Level;
 
 public final class FallbackConfigUtil {
     private FallbackConfigUtil() {
@@ -40,7 +40,13 @@ public final class FallbackConfigUtil {
                 }
             }
         } catch (Exception e) {
-            Civs.logger.warning(Arrays.toString(e.getStackTrace()));
+            if (originalFile != null) {
+                Civs.logger.log(Level.SEVERE, "File name: {0}", originalFile.getName());
+            }
+            if (url != null) {
+                Civs.logger.log(Level.SEVERE, "Resource path: {0}", url);
+            }
+            Civs.logger.log(Level.SEVERE, "Unable to load config", e);
         }
 
         return config;

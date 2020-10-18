@@ -6,8 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.minecart.StorageMinecart;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,7 +13,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
@@ -23,6 +20,7 @@ import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.events.TwoSecondEvent;
+import org.redcastlemedia.multitallented.civs.items.CVInventory;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -32,8 +30,7 @@ import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
-
-import static org.redcastlemedia.multitallented.civs.util.Util.isLocationWithinSightOfPlayer;
+import java.util.logging.Level;
 
 @CivsSingleton
 public class ConveyorEffect implements Listener, RegionCreatedListener {
@@ -47,6 +44,12 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
 
     public ConveyorEffect() {
         RegionManager.getInstance().addRegionCreatedListener(KEY, this);
+        for (Region region : RegionManager.getInstance().getAllRegions()) {
+            if (!region.getEffects().containsKey(KEY)) {
+                continue;
+            }
+            checkForPoweredRail(region);
+        }
     }
 
     public static ConveyorEffect getInstance() {
@@ -149,7 +152,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
 
         Location loc = cacheSpawnPoints.get(r);
 
-        Inventory regionInventory = UnloadedInventoryHandler.getInstance().getChestInventory(l);
+        CVInventory regionInventory = UnloadedInventoryHandler.getInstance().getChestInventory(l);
         if (regionInventory == null) {
             return;
         }
@@ -177,7 +180,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
             if (!cacheDestinationRegions.containsKey(r)) {
                 return;
             }
-            Inventory cachedDestinationInventory = UnloadedInventoryHandler.getInstance().getChestInventory(cacheDestinationRegions.get(r).getLocation());
+            CVInventory cachedDestinationInventory = UnloadedInventoryHandler.getInstance().getChestInventory(cacheDestinationRegions.get(r).getLocation());
             if (cachedDestinationInventory.firstEmpty() < 0 ||
                     cachedDestinationInventory.firstEmpty() > cachedDestinationInventory.getSize() - 3) {
                 return;
@@ -195,6 +198,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
                 }
                 RegionManager.getInstance().removeCheckedRegion(cacheDestinationRegions.get(r));
             } catch (Exception e) {
+                Civs.logger.log(Level.WARNING, "Exception from offline conveyor: ", e);
             }
             return;
         } else {
@@ -257,7 +261,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         }
         StorageMinecart sm = carts.get(region);
         try {
-            Inventory returnInventory = UnloadedInventoryHandler.getInstance().getChestInventory(region.getLocation());
+            CVInventory returnInventory = UnloadedInventoryHandler.getInstance().getChestInventory(region.getLocation());
             if (returnInventory.firstEmpty() > -1) {
                 returnInventory.addItem(new ItemStack(Material.CHEST_MINECART));
             } else {
@@ -292,7 +296,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         if (destinationRegion == null) {
             return true;
         }
-        Inventory destinationInventory = UnloadedInventoryHandler.getInstance()
+        CVInventory destinationInventory = UnloadedInventoryHandler.getInstance()
                 .getChestInventory(destinationRegion.getLocation());
         return destinationInventory == null || destinationInventory.firstEmpty() < 0 ||
                 destinationInventory.firstEmpty() > destinationInventory.getSize() - 3;
@@ -324,10 +328,10 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
             return;
         }
 
-        Inventory destinationInventory = UnloadedInventoryHandler.getInstance().getChestInventory(region.getLocation());
+        CVInventory destinationInventory = UnloadedInventoryHandler.getInstance().getChestInventory(region.getLocation());
         HashSet<ItemStack> cartInventory = new HashSet<>(Arrays.asList(sm.getInventory().getContents()));
 
-        Inventory originInv = UnloadedInventoryHandler.getInstance().getChestInventory(carts.get(r).getLocation());
+        CVInventory originInv = UnloadedInventoryHandler.getInstance().getChestInventory(carts.get(r).getLocation());
         boolean isDestinationChestFull = false;
         for (ItemStack is : cartInventory) {
             if (is == null || is.getType() == Material.AIR) {

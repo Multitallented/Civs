@@ -3,45 +3,35 @@ icon: GLOWSTONE
 shop-icon: EMERALD_BLOCK
 name: City
 max: 1
-price: 50000
+price: 66000
 groups:
 - superregion
 level: 6
 
 pre-reqs:
-- town:population=20
+- town:population=1
 
 build-reqs:
 - city_hall:1
 - quarry:1
 - farm:3
-- utility:6
-- allhousing:19
+- utility:2
 
 limits:
-- allshack:9
-- allhovel:8
-- alldwelling:8
-- allhouse:7
-- allchalet:6
-- allmansion:5
-- allmanor:4
-- allmansion:2
-- arrowtrapgroup:15
-- npchousing:49
-- library:1
-- smithy:1
-- purifier:1
-- church:1
-- bank:1
-- warehouse:2
-- barracks:2
-- inn:2
+- allhousing:162
+- shop:96
+- arrowtrapgroup:18
+- library:4
+- smithy:2
+- purifier:3
+- church:5
+- bank:2
+- warehouse:3
+- barracks:3
+- inn:3
 - jail:1
-- alchemical_lab:1
-- power_capacitor:4
+- vault:4
 - embassy:8
-- diamond_mine:1
 - idolgroup:4
 - jammer_trap:0
 
@@ -49,11 +39,12 @@ critical-build-reqs:
 - town_center
 
 child: town
-child-population: 30
+child-population: 80
 build-radius: 150
 build-radius-y: 500
 effects:
 - block_break
+- door_use
 - block_build
 - block_liquid
 - block_fire
@@ -62,5 +53,5 @@ effects:
 - control_override
 - anticamp:2.1500.800 #2 damage for 25 minutes costs $800
 
-power: 3000
-max-power: 8100
+power: 3300
+max-power: 19000

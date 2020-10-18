@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: HORSE_SPAWN_EGG
+dynmap-marker: dog
 name: Stables
 max: 1
 price: 1500
@@ -36,6 +37,6 @@ period: 3600 # 1 hour
 upkeep:
   0:
     reagents:
-    - APPLE*64
+    - GOLDEN_CARROT*32
     output:
     - SADDLE*1

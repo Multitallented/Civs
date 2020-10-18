@@ -7,14 +7,17 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 
@@ -59,6 +62,30 @@ public class CivilianTests extends TestUtil {
         civilian.setBounties(bountyArrayList);
         Bounty bounty = civilian.getHighestBounty();
         assertEquals(20.0, bounty.getAmount(), 0.1);
+    }
+
+    @Test
+    public void droppingAnItemShouldPutItInBlueprints() {
+        RegionsTests.loadRegionTypeCobble();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        civilian.getStashItems().clear();
+        ItemStack itemStack = TestUtil.createUniqueItemStack(Material.COBBLESTONE, "cobble");
+        Item item = mock(Item.class);
+        when(item.getItemStack()).thenReturn(itemStack);
+        PlayerDropItemEvent playerDropItemEvent = new PlayerDropItemEvent(TestUtil.player, item);
+        CivilianListener.getInstance().onCivilianDropItem(playerDropItemEvent);
+        assertTrue(civilian.getStashItems().containsKey("cobble"));
+    }
+
+    @Test
+    public void civilianShouldBeAtMaxWithoutRebuild() {
+        RegionsTests.createNewRegion("shack", TestUtil.player.getUniqueId());
+        RegionsTests.createNewRegion("shack", TestUtil.player.getUniqueId());
+        RegionsTests.createNewRegion("shack", TestUtil.player.getUniqueId());
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        CivItem hovel = ItemManager.getInstance().getItemType("hovel");
+        assertNull(civilian.isAtMax(hovel, true));
+        assertEquals("housing", civilian.isAtMax(hovel));
     }
 
     public static void loadCivilian(Player player) {

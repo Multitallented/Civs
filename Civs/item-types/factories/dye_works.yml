@@ -2,35 +2,37 @@
 #type: region
 #icon: CHEST
 #shop-icon: INK_SAC
+#dynmap-marker: factory
+#name: Dye_Works
 #price: 20
 #groups:
-#- factory
+#  - factory
 #level: 1
 #
 #build-reqs:
-#- g:window*4
-#- g:door*1
-#- g:roof*20
-#- g:wool*6
-#- g:primary*45
-#- g:secondary*12
+#  - g:window*4
+#  - g:door*1
+#  - g:roof*20
+#  - g:wool*6
+#  - g:primary*45
+#  - g:secondary*12
 #
 #build-radius: 4
 #
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
 #
 #period: 15 #15 seconds
 #upkeep:
 #  0:
 #    reagents:
-#    - ROSE_RED
-#    - INK_SAC
-#    - LAPIS_LAZULI
-#    - BONE_MEAL
-#    - DANDELION_YELLOW
+#      - RED_DYE
+#      - BLACK_DYE
+#      - BLUE_DYE
+#      - WHITE_DYE
+#      - YELLOW_DYE
 #    output:
-#    - ROSE_RED%7,INK_SAC%6,LAPIS_LAZULI%7,COCOA_BEANS%6,CYAN_DYE%6,GRAY_DYE%6,CACTUS_GREEN%7,LIGHT_BLUE_DYE%6,LIGHT_GRAY_DYE%6,LIME_DYE%6,MAGENTA_DYE%6,ORANGE_DYE%6,PINK_DYE%6,PURPLE_DYE%6,BONE_MEAL%6,DANDELION_YELLOW%7
+#      - RED_DYE%7,BLACK_DYE%6,BLUE_DYE%7,BROWN_DYE%6,CYAN_DYE%6,GRAY_DYE%6,GREEN_DYE%7,LIGHT_BLUE_DYE%6,LIGHT_GRAY_DYE%6,LIME_DYE%6,MAGENTA_DYE%6,ORANGE_DYE%6,PINK_DYE%6,PURPLE_DYE%6,WHITE_DYE%6,YELLOW_DYE%7

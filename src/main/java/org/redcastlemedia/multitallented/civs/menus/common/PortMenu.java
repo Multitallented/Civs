@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.commands.PortCommand;
@@ -27,6 +28,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.TeleportEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsMenu(name = "port")
 public class PortMenu extends CustomMenu {
@@ -34,20 +36,19 @@ public class PortMenu extends CustomMenu {
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         Map<String, Object> data = new HashMap<>();
 
-        if (params.containsKey("page")) {
-            data.put("page", Integer.parseInt(params.get("page")));
+        if (params.containsKey(Constants.PAGE)) {
+            data.put(Constants.PAGE, Integer.parseInt(params.get(Constants.PAGE)));
         } else {
-            data.put("page", 0);
+            data.put(Constants.PAGE, 0);
         }
         Region region = null;
-        if (params.containsKey("region")) {
-            region = RegionManager.getInstance().getRegionById(params.get("region"));
-            data.put("region", region);
+        if (params.containsKey(Constants.REGION)) {
+            region = RegionManager.getInstance().getRegionById(params.get(Constants.REGION));
+            data.put(Constants.REGION, region);
         }
         List<Region> regions = new ArrayList<>();
         Set<Region> regionSet = RegionManager.getInstance().getAllRegions();
 
-        outer:
         for (Region currentRegion : regionSet) {
             if (regions.contains(currentRegion) || currentRegion.equals(region)) {
                 continue;
@@ -68,6 +69,7 @@ public class PortMenu extends CustomMenu {
             regions.add(currentRegion);
         }
         data.put("ports", regions);
+        data.put("portMap", new HashMap<ItemStack, Region>());
         int maxPage = (int) Math.ceil((double) regions.size() / (double) itemsPerPage.get("ports"));
         maxPage = maxPage > 0 ? maxPage - 1 : 0;
         data.put("maxPage", maxPage);
@@ -75,11 +77,12 @@ public class PortMenu extends CustomMenu {
         return data;
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
+        Player player = Bukkit.getPlayer(civilian.getUuid());
         if ("ports".equals(menuIcon.getKey())) {
             List<Region> regions = (List<Region>) MenuManager.getData(civilian.getUuid(), "ports");
-            int page = (int) MenuManager.getData(civilian.getUuid(), "page");
+            int page = (int) MenuManager.getData(civilian.getUuid(), Constants.PAGE);
             int startIndex = page * menuIcon.getIndex().size();
             Region[] regionArray = new Region[regions.size()];
             regionArray = regions.toArray(regionArray);
@@ -88,11 +91,9 @@ public class PortMenu extends CustomMenu {
             }
             Region region = regionArray[startIndex + count];
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            CVItem cvItem = regionType.getShopIcon(civilian.getLocale());
-            cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    region.getType() + "-name"));
+            CVItem cvItem = regionType.getShopIcon(player);
+            cvItem.setDisplayName(regionType.getDisplayName(player));
             cvItem.getLore().clear();
-            cvItem.getLore().add(ChatColor.BLACK + region.getId());
             cvItem.getLore().add(region.getLocation().getWorld().getName() + " " +
                     ((int) region.getLocation().getX()) + "x " +
                     ((int) region.getLocation().getY()) + "y " +
@@ -102,10 +103,11 @@ public class PortMenu extends CustomMenu {
                 cvItem.getLore().add(town.getName());
             }
             ItemStack itemStack = cvItem.createItemStack();
-            if (MenuManager.getData(civilian.getUuid(), "region") != null) {
+            ((Map<ItemStack, Region>) MenuManager.getData(civilian.getUuid(), "portMap")).put(itemStack, region);
+            if (MenuManager.getData(civilian.getUuid(), Constants.REGION) != null) {
                 ArrayList<String> actionStrings = new ArrayList<>();
                 actionStrings.add("set-teleport");
-                actions.get(civilian.getUuid()).put(itemStack, actionStrings);
+                putActionList(civilian, itemStack, actionStrings);
             } else {
                 putActions(civilian, menuIcon, itemStack, count);
             }
@@ -114,10 +116,10 @@ public class PortMenu extends CustomMenu {
         return super.createItemStack(civilian, menuIcon, count);
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
         if (actionString.equals("teleport")) {
-            String id = ChatColor.stripColor(clickedItem.getItemMeta().getLore().get(0));
+            String id = ((Map<ItemStack, Region>) MenuManager.getData(civilian.getUuid(), "portMap")).get(clickedItem).getId();
             Player player = Bukkit.getPlayer(civilian.getUuid());
             PlayerCommandPreprocessEvent commandPreprocessEvent = new PlayerCommandPreprocessEvent(player, "/cv port " + id);
             Bukkit.getPluginManager().callEvent(commandPreprocessEvent);
@@ -126,7 +128,7 @@ public class PortMenu extends CustomMenu {
             }
             return true;
         } else if (actionString.equals("set-teleport")) {
-            Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
+            Region region = (Region) MenuManager.getData(civilian.getUuid(), Constants.REGION);
             String id = ChatColor.stripColor(clickedItem.getItemMeta().getLore().get(0));
             region.getEffects().put(TeleportEffect.KEY, id);
             RegionManager.getInstance().saveRegion(region);

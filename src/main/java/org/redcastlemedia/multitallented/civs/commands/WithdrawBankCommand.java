@@ -1,5 +1,7 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -13,7 +15,7 @@ import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsCommand(keys = { "withdraw" })
-public class WithdrawBankCommand implements CivCommand {
+public class WithdrawBankCommand extends CivCommand {
     @Override
     public boolean runCommand(CommandSender commandSender, Command command, String label, String[] args) {
         if (!(commandSender instanceof Player) || args.length < 3 || Civs.econ == null) {
@@ -39,5 +41,21 @@ public class WithdrawBankCommand implements CivCommand {
                 "withdrawn-money").replace("$1", Util.getNumberFormat(amount, civilian.getLocale()))
                 .replace("$2", town.getName()));
         return true;
+    }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return commandSender instanceof Player && Civs.econ != null;
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        if (args.length == 2) {
+            return getTownNames(args[1]);
+        }
+        if (args.length == 3) {
+            return getListOfAmounts();
+        }
+        return super.getWord(commandSender, args);
     }
 }

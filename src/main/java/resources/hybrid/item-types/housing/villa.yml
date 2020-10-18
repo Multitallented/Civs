@@ -1,8 +1,8 @@
 type: region
 icon: CHEST
 shop-icon: CYAN_BED
+dynmap-marker: bighouse
 name: Villa
-max: 2
 price: 8000
 groups:
 - housing
@@ -46,7 +46,7 @@ towns:
 period: 3600 #1 hour
 upkeep:
   0:
-    power-input: 1
+    power-input: 4
   1:
     input: #2.11
     - GOLDEN_CARROT*6  # 144 or 2.25 stacks / day

@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
+import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
 
 import java.util.HashMap;
 
@@ -17,23 +18,24 @@ public class TeleportEffect extends Effect {
     private boolean other = false;
     private double x = 0,y = 0,z = 0;
 
-    public TeleportEffect(Spell spell, String key, Object target, Entity origin, int level, ConfigurationSection section) {
-        super(spell, key, target, origin, level, section);
-        String tempTarget = section.getString("target", "not-a-string");
-        this.x = section.getDouble("x",0);
-        this.y = section.getDouble("y",0);
-        this.z = section.getDouble("z",0);
-        this.setPos = section.getBoolean("set", false);
-        this.other = section.getBoolean("other", false);
-        if (!tempTarget.equals("not-a-string")) {
-            this.target = tempTarget;
+    public TeleportEffect(Spell spell, String key, Object target, Entity origin, int level, Object value) {
+        super(spell, key, target, origin, level);
+        if (value instanceof ConfigurationSection) {
+            ConfigurationSection section = (ConfigurationSection) value;
+            String tempTarget = section.getString(SpellConstants.TARGET, SpellConstants.NOT_A_STRING);
+            this.x = section.getDouble("x",0);
+            this.y = section.getDouble("y",0);
+            this.z = section.getDouble("z",0);
+            this.setPos = section.getBoolean(SpellConstants.SET, false);
+            this.other = section.getBoolean("other", false);
+            if (!SpellConstants.NOT_A_STRING.equals(tempTarget)) {
+                this.target = tempTarget;
+            } else {
+                this.target = SpellConstants.SELF;
+            }
         } else {
-            this.target = "self";
+            setPos = false;
         }
-    }
-    public TeleportEffect(Spell spell, String key, Object target, Entity origin, int level, String value) {
-        super(spell, key, target, origin, level, value);
-        setPos = false;
     }
 
     public boolean meetsRequirement() {
@@ -74,26 +76,12 @@ public class TeleportEffect extends Effect {
         } else {
             return;
         }
-        Player player = null;
-
-        if (other && target instanceof Player) {
-            player = (Player) livingEntity;
-//            NCPExemptionManager.exemptPermanently(player, CheckType.MOVING);
-        } else if (!other && origin instanceof Player) {
-            player = (Player) origin;
-//            NCPExemptionManager.exemptPermanently(player, CheckType.MOVING);
-        }
         livingEntity.teleport(t);
-        if (player != null) {
-//            NCPExemptionManager.unexempt(player, CheckType.MOVING);
-        }
     }
 
     @Override
-    public HashMap<String, Double> getVariables() {
-        Entity origin = getOrigin();
-        Object target = getTarget();
-        HashMap<String, Double> returnMap = new HashMap<String, Double>();
+    public HashMap<String, Double> getVariables(Object target, Entity origin, int level, Spell spell) {
+        HashMap<String, Double> returnMap = new HashMap<>();
         Location originLocation = origin.getLocation();
         returnMap.put("pitch", (double) originLocation.getPitch());
         returnMap.put("yaw", (double) originLocation.getYaw());

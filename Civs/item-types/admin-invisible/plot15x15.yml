@@ -2,22 +2,25 @@
 #type: region
 #icon: GLASS
 #shop-icon: GLASS
+#dynmap-marker: construction
+#name: Plot15x15
 #qty: 1
 #is-in-shop: false
 #level: 1
 #
 #pre-reqs:
-#- member=hamlet:village:town:city:metropolis
+#  - member=hamlet:village:town:city:metropolis
 #
 #towns:
-#- hamlet
-#- village
-#- town
-#- city
-#- metropolis
+#  - hamlet
+#  - village
+#  - town
+#  - city
+#  - metropolis
 #
 #build-radius: 7 # 15x15
 #effects:
-#- block_break
-#- block_build
-#- plot
+#  - block_break
+#  - block_build
+#  - plot
+#  - buyable

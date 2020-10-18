@@ -7,13 +7,16 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -26,9 +29,12 @@ import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 @CivsSingleton
@@ -80,19 +86,18 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
 
     @Override
     public boolean createRegionHandler(Block block, Player player, RegionType regionType) {
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (block.getRelative(BlockFace.UP, 1).getType() != Material.AIR ||
                 block.getRelative(BlockFace.UP, 2).getType() != Material.AIR) {
 
             player.sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "building-requires-2space"));
+                    LocaleManager.getInstance().getTranslation(player, "building-requires-2space"));
             return false;
         }
         Town town = TownManager.getInstance().getTownAt(block.getLocation());
         if (town == null) {
             player.sendMessage(Civs.getPrefix() +
-                    LocaleManager.getInstance().getTranslation(civilian.getLocale(), "req-build-inside-town")
-                    .replace("$1", regionType.getName()).replace("$2", "town"));
+                    LocaleManager.getInstance().getTranslation(player, "req-build-inside-town")
+                    .replace("$1", regionType.getDisplayName(player)).replace("$2", "town"));
             return false;
         }
         return true;
@@ -194,6 +199,19 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         }
         TownManager.getInstance().setTownPower(town,
                 town.getPower() - ConfigManager.getInstance().getPowerPerNPCKill());
+        double karmaChange = (double) ConfigManager.getInstance().getPowerPerNPCKill()
+                / (double) town.getMaxPower() * town.getPrice();
+        if (event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) {
+            Entity entity = ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
+            if (entity instanceof Player) {
+                CivilianManager.getInstance().exchangeHardship(town, entity.getUniqueId(), karmaChange);
+            } else if (entity instanceof Projectile) {
+                Projectile projectile = (Projectile) entity;
+                if (projectile.getShooter() instanceof Player) {
+                    CivilianManager.getInstance().exchangeHardship(town, ((Player) projectile.getShooter()).getUniqueId(), karmaChange);
+                }
+            }
+        }
     }
 
 }

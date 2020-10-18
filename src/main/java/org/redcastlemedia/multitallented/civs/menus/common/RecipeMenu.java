@@ -16,6 +16,8 @@ import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuUtil;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
@@ -44,7 +46,15 @@ public class RecipeMenu extends CustomMenu {
             items = new ArrayList<>();
             String[] failingUpkeeps = recipe.replace("failing:", "").split(",");
             for (String index : failingUpkeeps) {
-                items.addAll(regionType.getUpkeeps().get(Integer.parseInt(index)).getInputs());
+                if (!index.isEmpty()) {
+                    items.addAll(regionType.getUpkeeps().get(Integer.parseInt(index)).getInputs());
+                }
+            }
+            if (items.isEmpty()) {
+                Region region = RegionManager.getInstance().getRegionById(params.get("region"));
+                if (!region.getMissingBlocks().isEmpty()) {
+                    items = new ArrayList<>(region.getMissingBlocks());
+                }
             }
         } else if (recipe.equals("reqs")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
@@ -61,15 +71,16 @@ public class RecipeMenu extends CustomMenu {
             int index = Integer.parseInt(recipe.replace("output", ""));
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = regionType.getUpkeeps().get(index).getOutputs();
+        } else if (recipe.startsWith("broken")) {
+            Region region = RegionManager.getInstance().getRegionById(params.get("region"));
+            items = new ArrayList<>(region.getMissingBlocks());
         } else if (recipe.startsWith("g:")) {
             items = new ArrayList<>();
-            String groupName = recipe.replace("g:", "");
-            String groupString = ConfigManager.getInstance().getItemGroups().get(groupName);
-            for (String matString : groupString.split(",")) {
-                List<CVItem> tempMap = new ArrayList<>();
-                CVItem cvItem = CVItem.createCVItemFromString(matString);
-                tempMap.add(cvItem);
-                items.add(tempMap);
+            List<CVItem> cvItems = CVItem.createListFromString(recipe);
+            for (CVItem cvItem : cvItems) {
+                List<CVItem> singleList = new ArrayList<>();
+                singleList.add(cvItem);
+                items.add(singleList);
             }
         } else {
             items = new ArrayList<>();
@@ -120,7 +131,7 @@ public class RecipeMenu extends CustomMenu {
                 if (cvItem.getGroup() != null) {
                     ArrayList<String> actionList = new ArrayList<>();
                     actionList.add("menu:recipe?recipe=g:" + cvItem.getGroup() + "&regionType=" + regionType.getProcessedName());
-                    actions.get(civilian.getUuid()).put(itemStack, actionList);
+                    putActionList(civilian, itemStack, actionList);
                 }
             }
             if (firstStack != null) {

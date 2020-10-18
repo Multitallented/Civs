@@ -65,11 +65,12 @@ public class RegionListMenu extends CustomMenu {
 
     @Override @SuppressWarnings("unchecked")
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
-        if (clickedItem.getItemMeta() != null && clickedItem.getItemMeta().getLore() != null &&
-                !clickedItem.getItemMeta().getLore().isEmpty()) {
+        if ("view-region".equals(actionString)) {
             Region region = ((HashMap<ItemStack, Region>) MenuManager.getData(civilian.getUuid(), "regionMap")).get(clickedItem);
             if (region != null) {
                 MenuManager.putData(civilian.getUuid(), "region", region);
+                MenuManager.openMenuFromString(civilian, "region?region=" + region.getId() + "&preserveData=true");
+                return true;
             }
         }
         return super.doActionAndCancel(civilian, actionString, clickedItem);
@@ -104,12 +105,8 @@ public class RegionListMenu extends CustomMenu {
             }
             ItemStack itemStack = cvItem.createItemStack();
             ((HashMap<ItemStack, Region>) MenuManager.getData(civilian.getUuid(), "regionMap")).put(itemStack, region);
+            List<String> actionList = getActions(civilian, itemStack);
             putActions(civilian, menuIcon, itemStack, count);
-            if (actions.get(civilian.getUuid()).get(itemStack).contains("view-region")) {
-                int index = actions.get(civilian.getUuid()).get(itemStack).indexOf("view-region");
-                actions.get(civilian.getUuid()).get(itemStack).set(index,
-                        "menu:region?region=" + region.getId() + "&preserveData=true");
-            }
 
             return itemStack;
         }

@@ -1,23 +1,26 @@
 type: region
 icon: REDSTONE_BLOCK
 name: Raid_Porter_Active
+dynmap-marker: portal
 max: 1
 is-in-shop: false
+price: 150
 groups:
 - offense
 - raidport
 
 build-reqs:
-  - TNT*5
-  - SIGN*1,WALL_SIGN*1
-  - OBSIDIAN*9
-  - g:fence*12
+- TNT*2
+- g:sign*1
+- OBSIDIAN*5
+- g:fence*12
+- REDSTONE_WIRE*4
 
 build-radius: 3 #7x7x7
 effects:
 - block_break
 - block_build
-- raid_port:20 # 20 second cooldown
+- raid_port:200.20 # 200 range 20 second cooldown
 - temporary:1800 # 30 minutes
 - bypass_hostile_port
 - port:member

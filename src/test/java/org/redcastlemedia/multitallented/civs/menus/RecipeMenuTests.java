@@ -69,9 +69,9 @@ public class RecipeMenuTests extends TestUtil {
         Inventory inventory = MenuManager.getInstance().openMenu(TestUtil.player, "recipe", params);
         assertEquals(Material.CHEST, regionType.getReqs().get(0).get(0).getMat());
         assertEquals(Material.QUARTZ_STAIRS, regionType.getReqs().get(3).get(0).getMat());
-        assertEquals(Material.JUNGLE_PLANKS, regionType.getReqs().get(8).get(2).getMat());
+        assertEquals(Material.BIRCH_PLANKS, regionType.getReqs().get(8).get(2).getMat());
         assertEquals(Material.BOOKSHELF, regionType.getReqs().get(5).get(0).getMat());
-        assertEquals(Material.RED_STAINED_GLASS_PANE, regionType.getReqs().get(2).get(3).getMat());
+        assertEquals(Material.BLUE_STAINED_GLASS, regionType.getReqs().get(2).get(3).getMat());
         assertEquals(Material.CHEST, inventory.getItem(9).getType());
     }
 
@@ -87,7 +87,7 @@ public class RecipeMenuTests extends TestUtil {
 
     public static void loadRegionTypeCouncilRoom() {
         FileConfiguration config = new YamlConfiguration();
-        config.set("icon", "SIGN");
+        config.set("icon", "OAK_SIGN");
         config.set("type", "region");
         ArrayList<String> reqs = new ArrayList<>();
         reqs.add("CHEST*4");

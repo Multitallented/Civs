@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: COAL
+dynmap-marker: coins
 name: Coal_Shop
 max: 1
 price: 100
@@ -27,9 +28,7 @@ effects:
 period: 3600 #1 hour
 upkeep:
   0:
-    power-input: 1
-  1:
     input:
-    - COAL*6,CHARCOAL*30 # 144 coal or 720 charcoal / day
-    payout: 18          # $432 / day
+    - COAL*6,CHARCOAL*20 # 144 coal or 480 charcoal / day
+    payout: 12          # $288 / day
 

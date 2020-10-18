@@ -9,6 +9,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
+import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 
 import java.util.HashMap;
@@ -18,23 +19,25 @@ public class IgniteEffect extends Effect {
     private String target = "self";
     private ConfigurationSection config = null;
 
-    public IgniteEffect(Spell spell, String key, Object target, Entity origin, int level, ConfigurationSection section) {
-        super(spell, key, target, origin, level, section);
-        String configDamage = section.getString("ticks", "60");
-        this.ticks = (int) Math.round(Spell.getLevelAdjustedValue(configDamage, level, target, spell));
-        String tempTarget = section.getString("target", "not-a-string");
-        if (!tempTarget.equals("not-a-string")) {
-            this.target = tempTarget;
-        } else {
-            this.target = "self";
+    public IgniteEffect(Spell spell, String key, Object target, Entity origin, int level, Object value) {
+        super(spell, key, target, origin, level);
+        if (value instanceof ConfigurationSection) {
+            ConfigurationSection section = (ConfigurationSection) value;
+            String configDamage = section.getString(SpellConstants.TICKS, "60");
+            if (configDamage != null) {
+                this.ticks = (int) Math.round(Spell.getLevelAdjustedValue(configDamage, level, target, spell));
+            }
+            String tempTarget = section.getString(SpellConstants.TARGET, SpellConstants.NOT_A_STRING);
+            if (!SpellConstants.NOT_A_STRING.equals(tempTarget)) {
+                this.target = tempTarget;
+            } else {
+                this.target = SpellConstants.SELF;
+            }
+            this.config = section;
+        } else if (value instanceof String) {
+            this.ticks = (int) Math.round(Spell.getLevelAdjustedValue((String) value, level, target, spell));
+            this.target = SpellConstants.SELF;
         }
-        this.config = section;
-    }
-
-    public IgniteEffect(Spell spell, String key, Object target, Entity origin, int level, String value) {
-        super(spell, key, target, origin, level, value);
-        this.ticks = (int) Math.round(Spell.getLevelAdjustedValue(value, level, target, spell));
-        this.target = "self";
     }
 
     public boolean meetsRequirement() {
@@ -93,19 +96,13 @@ public class IgniteEffect extends Effect {
     }
 
     @Override
-    public void remove() {
-        Entity origin = getOrigin();
-        if (!(origin instanceof LivingEntity)) {
-            return;
-        }
-        LivingEntity livingEntity = (LivingEntity) origin;
-        livingEntity.setFireTicks(0);
+    public void remove(LivingEntity origin, int level, Spell spell) {
+        origin.setFireTicks(0);
     }
 
     @Override
-    public HashMap<String, Double> getVariables() {
-        Object target = getTarget();
-        HashMap<String, Double> returnMap = new HashMap<String, Double>();
+    public HashMap<String, Double> getVariables(Object target, Entity origin, int level, Spell spell) {
+        HashMap<String, Double> returnMap = new HashMap<>();
         if (!(target instanceof LivingEntity)) {
             return returnMap;
         }

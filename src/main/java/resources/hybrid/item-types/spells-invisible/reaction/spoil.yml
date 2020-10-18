@@ -1,0 +1,74 @@
+icon: ROTTEN_FLESH
+type: spell
+is-in-shop: false
+level: 1
+groups: []
+
+pre-reqs: []
+
+allowed-actions: []
+
+exp-per-use: 50
+
+targets:
+  vector1:
+    type: vector
+    range: 30
+    penetration: true
+    allow-multiple: false
+    cancel-if-empty: true
+
+conditions:
+  cooldown: 5000
+  mana: 10
+
+components:
+  1:
+    yield:
+      mana: -10
+      cooldown: 3000
+      sound:
+        sound: ENTITY_ZOMBIE_AMBIENT
+        target: vector1
+      item^2:
+        target: vector1
+        transform: true
+        item: POISONOUS_POTATO
+        transform-reqs:
+          - BAKED_POTATO
+          - POTATO
+          - COOKIE
+          - BEETROOT_SOUP
+          - BREAD
+          - CARROT
+          - GOLDEN_APPLE
+          - ENCHANTED_GOLDEN_APPLE
+          - GOLDEN_CARROT
+          - PUMPKIN_PIE
+          - MELON_SLICE
+      item^3:
+        target: vector1
+        item: SUSPICIOUS_STEW
+        transform: true
+        transform-reqs:
+          - RABBIT_STEW
+          - MUSHROOM_STEW
+      item^1:
+        target: vector1
+        item: ROTTEN_FLESH
+        transform: true
+        transform-reqs:
+          - COOKED_BEEF
+          - COOKED_PORKCHOP
+          - COOKED_COD
+          - COOKED_SALMON
+          - COOKED_CHICKEN
+          - COOKED_MUTTON
+          - COOKED_RABBIT
+          - BEEF
+          - PORKCHOP
+          - MUTTON
+          - COD
+          - SALMON
+          - RABBIT
+

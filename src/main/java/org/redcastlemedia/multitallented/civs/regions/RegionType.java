@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import org.bukkit.block.Biome;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -16,11 +17,8 @@ import java.util.Set;
 
 public class RegionType extends CivItem {
 
-    private final String name;
     private final List<List<CVItem>> reqs;
-
     private final HashMap<String, String> effects;
-
     private final int buildRadius;
     private final int buildRadiusX;
     private final int buildRadiusY;
@@ -37,8 +35,14 @@ public class RegionType extends CivItem {
 
     @Getter
     private final boolean rebuildRequired;
+    @Getter
+    private final List<String> commandsOnCreation;
+    @Getter
+    private final List<String> commandsOnDestruction;
+    @Getter @Setter
+    private String dynmapMarkerKey = "";
 
-    public RegionType(String name,
+    public RegionType(String key, String name,
                       CVItem icon,
                       CVItem shopIcon,
                       List<String> civReqs,
@@ -68,6 +72,7 @@ public class RegionType extends CivItem {
         super(civReqs,
                 true,
                 ItemType.REGION,
+                key,
                 name, icon.getMat(),
                 shopIcon,
                 civQty,
@@ -78,7 +83,6 @@ public class RegionType extends CivItem {
                 groups,
                 isInShop,
                 level);
-        this.name = name;
         this.reqs = reqs;
         this.upkeeps = upkeeps;
         this.effects = effects;
@@ -94,9 +98,8 @@ public class RegionType extends CivItem {
         this.biomes = biomes;
         this.rebuildRequired = rebuildRequired;
         this.worlds = worlds;
-    }
-    public String getName() {
-        return name;
+        this.commandsOnCreation = new ArrayList<>();
+        this.commandsOnDestruction = new ArrayList<>();
     }
     public List<List<CVItem>> getReqs() {
         return cloneReqMap(reqs);

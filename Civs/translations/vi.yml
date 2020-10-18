@@ -58,7 +58,7 @@
 #cost-buff-desc: Hoàn trả $1% chi phí cho tất cả  $2
 #shop: Cửa hàng
 #buy-item: Mua
-#price: Giá
+#price: Giá $1
 #buy: Mua $1
 #cancel: Huỷ bỏ
 #item-bought: Bạn mua thành công $1 với gia $2
@@ -672,8 +672,8 @@
 #inn-name: Quán trọ
 #inn-desc: Thêm 12 điểm Nhà ở và cũng có thẻ xem như là Cổng. Thường được dùng để thêm
 #  người vào thị trấn mà chưa xây nhà trước
-#jade_mine-name: Mỏ đào ngọc
-#jade_mine-desc: Khai thác 16 viên ngọc mỗi ngày và có thể bán cho Cửa hàng ngọc. Mỏ đào ngọc
+#jade-mine-name: Mỏ đào ngọc
+#jade-mine-desc: Khai thác 16 viên ngọc mỗi ngày và có thể bán cho Cửa hàng ngọc. Mỏ đào ngọc
 #  không thể xây dựng trên thị trấn đã có Cửa hàng ngọc
 #coal_mine-name: Mỏ than
 #coal_mine-desc: Khai thác những quặng than bằng cách dùng cúp. Bỏ vào rương một chiếc xe mỏ có

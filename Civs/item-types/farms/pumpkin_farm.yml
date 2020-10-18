@@ -2,38 +2,49 @@
 #type: region
 #icon: CHEST
 #shop-icon: PUMPKIN
+#dynmap-marker: cutlery
+#name: Pumpkin_Farm
 #max: 1
 #price: 300
 #groups:
-#- farm
+#  - farm
 #level: 5
 #
 #pre-reqs:
-#- member=town:city:metropolis
+#  - member=town:city:metropolis
 #
 #build-reqs:
-#- g:fencegate*1
-#- g:fence*16
-#- WATER*1
-#- PUMPKIN*10
+#  - g:fencegate*1
+#  - g:fence*16
+#  - WATER*1
+#  - PUMPKIN*10
 #
 #towns:
-#- town
-#- city
-#- metropolis
+#  - town
+#  - city
+#  - metropolis
 #
 #build-radius: 5
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- conveyor:PUMPKIN
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - conveyor:PUMPKIN
 #period: 600
 #upkeep:
 #  0:
 #    reagents:
-#    - IRON_HOE
+#      - STONE_HOE
 #    output:
-#    - PUMPKIN*16
-#
+#      - PUMPKIN*4
+#  1:
+#    reagents:
+#      - IRON_HOE
+#    output:
+#      - PUMPKIN*8
+#  2:
+#    reagents:
+#      - DIAMOND_HOE
+#    output:
+#      - PUMPKIN*16

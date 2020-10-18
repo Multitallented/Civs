@@ -2,37 +2,43 @@
 #type: region
 #icon: CHEST
 #shop-icon: COBBLESTONE
+#dynmap-marker: minecart
+#name: Cobble_Quarry
 #price: 40
 #groups:
-#- raw
-#- quarry
+#  - raw
+#  - quarry
 #level: 1
 #
 #build-reqs:
-#- FURNACE*2
-#- LAVA
-#- WATER
+#  - FURNACE*2
+#  - LAVA
+#  - WATER
 #
 #build-radius: 2
 #effects:
-#- block_break
-#- block_build
+#  - block_break
+#  - block_build
 #
 #period: 30
 #upkeep:
 #  0:
 #    reagents:
-#    - STONE_PICKAXE
+#      - STONE_PICKAXE
 #    output:
-#    - COBBLESTONE*4%24,GRANITE*4%18,DIORITE*4%18,ANDESITE*4%18,GRAVEL*4%17,MOSSY_COBBLESTONE*4%5
+#      - COBBLESTONE*4%24,GRANITE*4%18,DIORITE*4%18,ANDESITE*4%18,GRAVEL*4%17,MOSSY_COBBLESTONE*4%5
 #  1:
 #    reagents:
-#    - IRON_PICKAXE
+#      - IRON_PICKAXE
 #    output:
-#    - COBBLESTONE*8%24,GRANITE*8%18,DIORITE*8%18,ANDESITE*8%18,GRAVEL*8%17,MOSSY_COBBLESTONE*8%5
+#      - COBBLESTONE*8%24,GRANITE*8%18,DIORITE*8%18,ANDESITE*8%18,GRAVEL*8%17,MOSSY_COBBLESTONE*8%5
 #  2:
 #    reagents:
-#    - DIAMOND_PICKAXE
+#      - DIAMOND_PICKAXE
 #    output:
-#    - COBBLESTONE*12%24,GRANITE*12%18,DIORITE*12%18,ANDESITE*12%18,GRAVEL*12%17,MOSSY_COBBLESTONE*12%5
-#
+#      - COBBLESTONE*12%24,GRANITE*12%18,DIORITE*12%18,ANDESITE*12%18,GRAVEL*12%17,MOSSY_COBBLESTONE*12%5
+#  3:
+#    reagents:
+#      - NETHERITE_PICKAXE
+#    output:
+#      - COBBLESTONE*16%24,GRANITE*16%18,DIORITE*16%18,ANDESITE*16%18,GRAVEL*16%17,MOSSY_COBBLESTONE*16%5

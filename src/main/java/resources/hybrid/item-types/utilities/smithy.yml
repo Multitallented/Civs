@@ -1,6 +1,7 @@
 type: region
 icon: IRON_BLOCK
 name: Smithy
+dynmap-marker: wrench
 price: 150
 groups:
 - utility
@@ -31,7 +32,7 @@ effects:
 - block_build
 - block_liquid
 - block_fire
-- repair
+- repair:IRON_BLOCK
 
 period: 900 #15 minutes
 upkeep:

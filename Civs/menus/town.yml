@@ -3,6 +3,7 @@
 ## variables
 ##  town
 ##  selectedTown
+##  townType
 ## actions
 ##  ally: send an alliance invite
 ##  unally: break alliance
@@ -14,7 +15,8 @@
 #    # icon: town shop-icon
 #    # name: town name
 #    # desc: town desc
-#    actions: []
+#    actions:
+#      - menu:town-type?townType=$townType$
 #  power-protected:
 #    index: 1
 #    icon: GREEN_WOOL
@@ -40,7 +42,6 @@
 #    # desc which towns will be allied
 #    actions:
 #      - ally
-#      - refresh
 #  remove-ally:
 #    index: 3
 #    icon: CREEPER_HEAD
@@ -48,7 +49,6 @@
 #    # desc which towns will be allied
 #    actions:
 #      - unally
-#      - refresh
 #  population:
 #    index: 4
 #    icon: PLAYER_HEAD
@@ -61,19 +61,23 @@
 #    icon: SKELETON_SKULL
 #    name: bounty
 #    # desc top 5 list of bounties
-#    actions: []
+#    actions:
+#      - typing:click-me:bounty-command{$town$
+#      - close
 #  destroy:
 #    index: 6
 #    icon: BARRIER
 #    name: destroy
 #    actions:
-#      - menu:confirmation?town=$town$
+#      - menu:confirmation?town=$town$&type=destroy
 #  rename:
 #    index: 7
 #    icon: PAPER
 #    name: rename-town
 #    desc: rename-desc
-#    actions: []
+#    actions:
+#      - typing:click-me:rename-command{$town$
+#      - close
 #  back:
 #    index: 8
 #  people:
@@ -94,7 +98,6 @@
 #    name: leave-town
 #    actions:
 #      - menu:confirmation?town=$town$&type=leave
-#      - close
 #  alliance-invites:
 #    index: 12
 #    icon: GOLDEN_SWORD
@@ -130,3 +133,9 @@
 #    actions:
 #      - leave-revolt
 #      - refresh
+#  karma:
+#    index: 17
+#    icon: SOUL_SAND
+#    name: karma-display{$hardship$,,$worth$
+#    desc: karma-town-desc
+#    actions: []

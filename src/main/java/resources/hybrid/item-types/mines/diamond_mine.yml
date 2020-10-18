@@ -1,9 +1,10 @@
 type: region
 icon: CHEST
 shop-icon: DIAMOND_ORE
+dynmap-marker: diamond
 name: Diamond_Mine
 max: 1
-price: 2000
+price: 10000
 groups:
 - mine
 level: 7
@@ -46,3 +47,10 @@ upkeep:
     - IRON_PICKAXE
     output:
     - DIAMOND*2
+  2:
+    reagents:
+    - NETHERITE_PICKAXE
+    input:
+    - IRON_PICKAXE
+    output:
+    - DIAMOND*3

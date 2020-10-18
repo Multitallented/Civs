@@ -4,35 +4,51 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import org.bukkit.Bukkit;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
 
 public class AllianceMenuTests extends TestUtil {
     private Town town1;
     private Town town2;
     private Town town3;
     private Town town4;
+    private Town town5;
+    private Town town6;
 
     @Before
     public void setup() {
         TownManager.getInstance().reload();
         AllianceManager.getInstance().reload();
-        town1 = TownTests.loadTown("town1", "hamlet", TestUtil.block.getLocation());
-        town2 = TownTests.loadTown("town2", "hamlet", TestUtil.block14.getLocation());
-        town3 = TownTests.loadTown("town3", "hamlet", TestUtil.block8.getLocation());
-        town4 = TownTests.loadTown("town4", "hamlet", TestUtil.block6.getLocation());
+        TownType townType = (TownType) ItemManager.getInstance().getItemType("hamlet");
+        town1 = TownTests.loadTown("town1", townType.getProcessedName(), TestUtil.block.getLocation());
+        town2 = TownTests.loadTown("town2", townType.getProcessedName(), TestUtil.block14.getLocation());
+        town3 = TownTests.loadTown("town3", townType.getProcessedName(), TestUtil.block8.getLocation());
+        town4 = TownTests.loadTown("town4", townType.getProcessedName(), TestUtil.block6.getLocation());
+        town5 = TownTests.loadTown("town5", townType.getProcessedName(), TestUtil.block9.getLocation());
+        town6 = TownTests.loadTown("town6", townType.getProcessedName(), TestUtil.goldBlock0x1y1z.getLocation());
     }
 
     @Test
     public void townsShouldBeAllied() {
         AllianceManager.getInstance().allyTheseTowns(town1, town2);
         assertTrue(AllianceManager.getInstance().isAllied(town1, town2));
+    }
+    @Test
+    public void townsShouldBeAlliedOnlyOnce() {
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        assertTrue(AllianceManager.getInstance().isAllied(town1, town2));
+        assertEquals(1, AllianceManager.getInstance().getAllAlliances().size());
     }
 
     @Test
@@ -50,6 +66,39 @@ public class AllianceMenuTests extends TestUtil {
         AllianceManager.getInstance().allyTheseTowns(town1, town3);
         assertEquals(1, AllianceManager.getInstance().getAllAlliances().size());
         assertEquals(3, AllianceManager.getInstance().getAllAlliances().get(0).getMembers().size());
+    }
+
+    @Test
+    public void splitAlliances() {
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        AllianceManager.getInstance().allyTheseTowns(town3, town2);
+        AllianceManager.getInstance().allyTheseTowns(town1, town3);
+        AllianceManager.getInstance().unAlly(town1, town2);
+        assertEquals(2, AllianceManager.getInstance().getAllAlliances().size());
+        AllianceManager.getInstance().unAlly(town1, town3);
+        assertEquals(1, AllianceManager.getInstance().getAllAlliances().size());
+    }
+    @Test
+    public void splitAlliancesShouldNotWorkForTownsThatArentAllied() {
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        AllianceManager.getInstance().allyTheseTowns(town3, town2);
+        AllianceManager.getInstance().allyTheseTowns(town1, town3);
+        AllianceManager.getInstance().unAlly(town1, town4);
+        assertEquals(1, AllianceManager.getInstance().getAllAlliances().size());
+        assertEquals(3, AllianceManager.getInstance().getAllAlliances().get(0).getMembers().size());
+    }
+
+    @Test
+    public void unrelatedAlliancesShouldNotBeSplit() {
+        AllianceManager.getInstance().allyTheseTowns(town1, town2);
+        AllianceManager.getInstance().allyTheseTowns(town3, town2);
+        AllianceManager.getInstance().allyTheseTowns(town1, town3);
+        AllianceManager.getInstance().allyTheseTowns(town5, town4);
+        AllianceManager.getInstance().allyTheseTowns(town6, town4);
+        AllianceManager.getInstance().allyTheseTowns(town6, town5);
+        AllianceManager.getInstance().unAlly(town1, town3);
+        assertEquals(3, AllianceManager.getInstance().getAllAlliances().size());
+        assertTrue(AllianceManager.getInstance().isAllied(town4, town5));
     }
 
     @Test

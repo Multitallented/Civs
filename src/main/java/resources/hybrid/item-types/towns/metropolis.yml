@@ -3,51 +3,45 @@ icon: GLOWSTONE
 shop-icon: DIAMOND_BLOCK
 name: Metropolis
 max: 1
-price: 120000
+price: 200000
 groups:
 - superregion
 level: 7
 
 pre-reqs:
-- city:population=30
+- city:population=1
 
 build-reqs:
 - capitol:1
 - quarry:1
 - farm:3
-- utility:8
-- allhousing:25
+- utility:2
 
 limits:
-- arrowtrapgroup:22
-- npchousing:43
-- library:1
-- smithy:1
-- purifier:1
-- church:1
-- bank:1
-- warehouse:3
-- barracks:3
-- inn:3
+- arrowtrapgroup:28
+- library:6
+- smithy:3
+- purifier:6
+- church:10
+- bank:3
+- warehouse:6
+- barracks:4
+- inn:4
 - jail:1
-- alchemical_lab:1
-- power_capacitor:8
-- diamond_mine:1
-- obsidian_mine:1
-- ender_pearl_farm:1
-- blaze_sifter:1
-- idolgroup:6
+- vault:60
+- idolgroup:8
 - jammer_trap:0
 
 critical-build-reqs:
 - town_center
 
 child: city
-child-population: 50
+child-population: 160
 build-radius: 200
 build-radius-y: 500
 effects:
 - block_break
+- door_use
 - block_build
 - block_liquid
 - block_fire
@@ -57,5 +51,5 @@ effects:
 - potion:SATURATION.80
 - anticamp:2.1500.1000 #2 damage for 25 minutes costs $1000
 
-power: 6500
-max-power: 15000
+power: 4000
+max-power: 20700

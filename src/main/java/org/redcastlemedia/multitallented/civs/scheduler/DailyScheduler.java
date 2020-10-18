@@ -5,11 +5,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -30,10 +33,46 @@ public class DailyScheduler implements Runnable {
             }
         }
 
+        for (Town town : TownManager.getInstance().getTowns()) {
+            if (town.isDevolvedToday()) {
+                town.setDevolvedToday(false);
+                TownManager.getInstance().saveTown(town);
+            }
+        }
+
         doTaxes();
         doVotes();
         addDailyPower();
+        depreciateHardship();
         TownTransitionUtil.checkTownTransitions();
+    }
+
+    private void depreciateHardship() {
+        long hardshipDepreciationPeriod = ConfigManager.getInstance().getHardshipDepreciationPeriod();
+        for (Civilian civilian : CivilianManager.getInstance().getCivilians()) {
+            if (civilian.getHardship() < 2 && civilian.getHardship() > -2) {
+                continue;
+            }
+            if (civilian.getDaysSinceLastHardshipDepreciation() < hardshipDepreciationPeriod) {
+                civilian.setDaysSinceLastHardshipDepreciation(civilian.getDaysSinceLastHardshipDepreciation() + 1);
+                CivilianManager.getInstance().saveCivilian(civilian);
+                continue;
+            }
+            civilian.setDaysSinceLastHardshipDepreciation(0);
+
+            double baseHardship = 0;
+            String townName = TownManager.getInstance().getBiggestTown(civilian);
+            if (townName != null) {
+                Town town = TownManager.getInstance().getTown(townName);
+                if (town != null) {
+                    baseHardship = town.getPrice() / (double) town.getRawPeople().size();
+                }
+            }
+
+            double newHardship = ((civilian.getHardship() - baseHardship) / 2.0) + baseHardship;
+            civilian.setHardship(newHardship);
+            CivilianManager.getInstance().saveCivilian(civilian);
+        }
     }
 
     private void addDailyPower() {

@@ -17,10 +17,12 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @CivsCommand(keys = { "setguest" })
-public class SetGuestCommand implements CivCommand {
+public class SetGuestCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = null;
@@ -39,7 +41,7 @@ public class SetGuestCommand implements CivCommand {
         }
         if (strings.length < 3) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         "specify-player-region"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Please specify a player and a region");
@@ -60,7 +62,7 @@ public class SetGuestCommand implements CivCommand {
         }
         if (region == null && town == null) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         "no-permission"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Invalid region");
@@ -69,7 +71,7 @@ public class SetGuestCommand implements CivCommand {
         }
         if (region != null && !isAdmin && !Util.hasOverride(region, civilian) && player != null &&
                 !region.getPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "no-permission"));
             return true;
         }
@@ -85,11 +87,11 @@ public class SetGuestCommand implements CivCommand {
         String name = town == null ? region.getType() : town.getName();
         if (invitee.isOnline()) {
             Player invitePlayer = (Player) invitee;
-            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(invitePlayer,
+            invitePlayer.sendMessage(Civs.getPrefix() + localeManager.getTranslation(invitePlayer,
                     "add-guest-region").replace("$1", name));
         }
         if (player != null && civilian!= null && invitee.getName() != null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "guest-added-region").replace("$1", invitee.getName())
                     .replace("$2", name));
         } else {
@@ -105,5 +107,28 @@ public class SetGuestCommand implements CivCommand {
             TownManager.getInstance().saveTown(town);
         }
         return true;
+    }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return true;
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        List<String> suggestions = new ArrayList<>();
+        if (args.length == 2) {
+            addAllOnlinePlayers(suggestions, args[1]);
+            return suggestions;
+        }
+        if (args.length == 3 && commandSender instanceof Player) {
+            Player player = (Player) commandSender;
+            Region region = RegionManager.getInstance().getRegionAt(player.getLocation());
+            if (region != null) {
+                suggestions.add(region.getId());
+                return suggestions;
+            }
+        }
+        return super.getWord(commandSender, args);
     }
 }

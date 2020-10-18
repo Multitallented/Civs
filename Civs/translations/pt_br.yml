@@ -6,6 +6,26 @@
 #language-menu: Selecione sua linguagem
 #language-set: "Sua língua foi definida para: $1"
 #back-button: Voltar
+#north: Norte
+#east: Leste
+#south: Sul
+#west: Oeste
+#orientation-name: "Apontando: $1"
+#orientation-desc: Clique para girar o mapa 90 graus
+#constitution: Constituição
+#claim-map: Ver terrenos próximos
+#capture-claim: Capturar terreno
+#pay-capture-claim: Pague 8 redstones para capturar esse terreno /cv captureclaim
+#claim-unclaimed-chunks: Você pode apenas clamar terrenos não reinvidicados
+#not-enough-claim-items: Você só pode clamar um terreno se tiver 8 redstones
+#need-nation-to-claim: Você precisa estar em uma nação para clamar terrenos.
+#chunk-claimed: Você clamou esse terreno $1 por $2
+#nation-own-adjacent: Para clamar este terreno, sua nação deve ter um terreno adjacente
+#claim-safe: Não Contestado
+#claim-unsafe: "Desprotegido em: $1"
+#claim-capture-desc: " "
+#claim-map-desc: Aqui estão todos os terremos clamados por nações perto de você. Cada terreno é
+#  um Chunk de 16x16
 #start-tutorial: Conquistas Habilidatas
 #start-tutorial-desc: Receba itens e dinheiro por completar conquistas
 #skip: Conquistas Desabilitadas
@@ -13,6 +33,12 @@
 #tutorial-wiki: Wiki do Civs
 #click-info: Clique para mais informações
 #guide: Guia
+#income: Entrada
+#item-received: Você recebeu um item
+#income-desc: Seu $1 produziu $2 no ultimo dia e $3 na semana passada
+#rebuild: Reconstruir
+#rebuild-req-desc: Essa construção precisa ser construída em cima da seguinte construção
+#rebuild-opt-desc: Essa construção pode ser construída em cima da seguinte construção
 #guide-desc: Clique aqui para saber seu próximo objetivo
 #choose-path: Escolha seu caminho
 #new-owner-town: $1 substituiu $2 como dono de $3
@@ -35,6 +61,8 @@
 #capitalism-voting-cost: Votos extras custam $1
 #voted: Você votou em $1
 #gov-type-change: $1 trocou de $2 para $3
+#gov-type-changed-recently: Seu tipo de governo já foi trocado hoje. Espere até amanhã para trocar
+#  novamente.
 #cant-change-gov-type-daily: Você não pode trocar o tipo de governo de uma vila mais de uma vez por dia.
 #revolt: Revolta
 #revolt-desc: Clique para unir-se à revolta contra $1. Custa $2 $3
@@ -42,6 +70,11 @@
 #cancel-revolt: Clique para deixar a revolta contra $1.
 #item-cost: Essa ação custa $1 $2.
 #cost-buff: Você foi ressarcido $1 por construções $2 na vila $3.
+#refund: Você foi reembolsado $$1
+#insufficient-exp: "XP insuficiente "
+#action-not-allowed: $1 não permite você ter $2
+#spell-cast: "@{BLUE}$1 @{WHITE}usou @{RED}$2"
+#exp-gained: Você ganhou $1 de XP em $2
 #merit-new-owner: Parabéns! Você superou $1. Você agora é o novo dono da vila!
 #item-locked: Você não destravou esse item ainda.
 #ai-invite: Olá, @$1, gostaria de juntar-se a minha vila?
@@ -59,6 +92,7 @@
 #item-bought: Parabéns! Você acabou de comprar $1 por $2
 #max-item: Você não pode comprar mais de $2 $1
 #max-qty: $1 possui muitas $2 e não pode ter mais
+#any-region: Qualquer uma dessas regiões
 #items: Itens
 #click-for-item-group: Clique para ver todos os itens neste grupo
 #classes: Classes
@@ -68,6 +102,7 @@
 #community: Comunidade
 #players: Jogadores
 #towns: Vilas
+#town: Vila
 #your-towns: Suas vilas
 #wars: Guerras
 #alliances: Alianças
@@ -83,7 +118,7 @@
 #confirm: Confirmar
 #reject: Rejeitar
 #effects: Efeitos
-#size: Tamanho
+#size: TaSolarho
 #range: Alcance
 #build-reqs-title: Requisitos da construção
 #population: População
@@ -91,28 +126,47 @@
 #biomes: Biomas
 #devolve-town: $1 ficou sem energia e foi rebaixada a $2!
 #pop-desc: $1 População / $2 Habitações / $3 Aldeões
+#max-housing: Suas habitações estão cheias. Construa mais casas se quiser convidar mais
+#  jogadores para sua vila.
 #build-reqs: Todos os blocos que necessitam ser colocados para construir $1
 #reagents-title: Reagentes
 #reagents: Todos os itens que você precisa no bau de $1
+#upkeep-title: Consumo
 #upkeep: Todos os itens consumidos por $1
+#output-title: Produção
 #output: Todos os itens criados por $1
+#payout-title: Pagamento
 #payout: Essa região ganha $$1
+#power-input-title: Consumo de Energia
 #power-input: Essa região consome $1 de poder
+#power-output-title: Produção de Energia
 #power-output: Essa região gera $1 de poder
+#power-history: Seu histórico de energia nos últimos $1 dias.
 #too-close-region: Sua $1 esta próxima de mais de uma $2
 #too-close-town: Sua $1 esta próxima de mais de uma outra vila
 #town-created: $1 foi construída
 #town-destroyed: $1 foi destruída
 #region-built: Você construiu com sucesso uma $1
+#wonder-built: "@{RED}$1 construiu a maravilha: $2"
+#wonder-destroyed: "@{RED}A maravilha $1 foi destruída!"
+#cant-build-wonder: "$1 já construiu essa maravilha. Você precisa destrui-la primeiro "
 #region-type: Tipo de região
 #destroy: Destruir
 #region-in-town: Sua região esta em $1
 #town-req-desc: "Sua região precisa ser construída em:"
 #view-members: Ver membros
 #add-member: Adicionar membros
-#operation: Operação
+#time-seconds: $1s
+#time-minutes: $1m $2s
+#time-hours: $1h $2m $3s
+#region-cooldown: "$1 até o próximo "
 #region-working: Sua região esta funcionando corretamente
 #region-not-working: Tem algo faltando em sua região
+#filter-online: Filtrar por jogadores online apenas.
+#sort-alphabetical: Ordenar alfabeticamente
+#sort-points: Ordenar por pontos
+#sort-rank: Ordenar por rank
+#sort-power: Ordenar por energia
 #owner: Dono
 #member: Membro
 #guest: Convidado
@@ -148,6 +202,8 @@
 #click-for-req-regions: Clique aqui para ver a lista de regiões requeridas
 #town-instructions: Para criar $1, use /cv town NomeDaVila
 #town-enter: Você entrou em $1 ($2)
+#town-enter-warning: "@{RED}Perigo! Essa vila tem defesas ativas. Use um Porto de Invasão ou cerque
+#  a vila se quiser atacar"
 #town-exit: Você saiu de $1 ($2)
 #wild: Selvagem
 #new-town-member: $1 se juntou a $2
@@ -155,6 +211,7 @@
 #town-power: "Poder: $1/$2"
 #port-warmup: Você será teletransportado em $1s
 #teleported: Você foi teletransportado!
+#location: Localização
 #location-set: $1 local selecionado
 #rename-town: Renomear vila
 #rename-desc: Use /cv rename nomeVelho nomeNovo
@@ -167,6 +224,10 @@
 #friend-added: $1 foi adicionado a sua lista de amigos
 #friend-removed: $1 foi removido da sua lista de amigos
 #bounty: "Colocar recompensa: /cv bounty $1 quantidade"
+#click-me: ">>>Clique aqui<<<"
+#bounty-command: " /cv bounty $1 quantidade"
+#rename-command: /cv rename $1 NovoNome
+#really-command: " /cv really $1 NovoNome"
 #town-ally: Definir $1 como aliados
 #town-unally: Definir $1 como inimigos
 #town-ally-invites: Você tem pedidos de alianças
@@ -174,6 +235,9 @@
 #town-ally-request-accepted: Uma aliança foi formada entre $1 e $2
 #town-ally-request-denied: A proposta de aliança com $1 foi rejeitada
 #town-ally-removed: A aliança entre $1 e $2 foi dissolvida
+#decline-all: Rejeitar todos os convites
+#accept-invite: Aceitar convite
+#region-evolve: $1 evolui para $2
 #region-evolved: Sua $1 evoluiu para uma $2
 #anti-camp-active: O anti-camp de $1 foi ativado
 #anti-camp-expired: O anti-camp de $1 acabou
@@ -185,8 +249,13 @@
 #regions-for-sale: Região a venda
 #use-sell-command: Digite /cv sell PreçoVemAqui
 #region-bought: Você comprou essa $1 por $2
+#region-sold: Seu $1 foi vendido para $2. Você ganhou $3
 #sort-by-level: Organizar regiões por nível
 #level: Nível $1
+#level-up: Clique para gastar exp de encantamento para melhorar essa classe. Você não
+#  pode gastar exp se seu nível de encantamento é menor que seu nível de classe.
+#level-up-max: Você atingiu o nível máximo.
+#not-enough-levels: Você precisa de mais $1 para fazer isso.
 #rename-alliance: Renomear Aliança
 #rename-alliance-desc: Digite really $1 novoNomeDaAliança
 #alliance-renamed: $1 foi renomeada para $2
@@ -195,6 +264,7 @@
 #last-renamed-by: "Ultima mudança de nome: $1"
 #leave-alliance: Sair da aliança
 #hunting-players: "@{RED}Cuidado! Alguém esta caçando jogadores na sua área."
+#no-hunting-new-players: Você não pode caçar um jogador que não é membro de nenhuma vila.
 #target-not-in-world: $1 não esta no mesmo mundo que você.
 #cant-place-town: Datilografar /cv town nome_da_cidade_vai_aqui
 #no-region-type-found: Nenhuma região encontrada para $1
@@ -202,6 +272,7 @@
 #no-required-blocks: Você não colocou todos os blocos requeridos para $1
 #cant-build-on-region: Você não pode construir uma $1 em cima de uma $2
 #rebuild-required: Você precisa construir uma $1 em cima de uma $2
+#max-rebuild-required: Você já tem $1 de $2 $3. Você só pode usar esse $4 para melhorar um $5.
 #prevent-civs-item-share: Você não tem permissão para compartilhar itens de Civs
 #region-protected: Esta região esta protegida
 #region-destroyed: A região $1 foi destruída!
@@ -215,12 +286,13 @@
 #already-member: $1 já é um membro de $2
 #broke-own-region: Sua $1 esta com falta de blocos
 #no-permission: Permissão Negada
+#no-anti-camp-duing-raidporter: Você não pode ativar um anticamp com um Porto de Invasão ativo. Destrua o
+#  Porto de Invasão!
 #class-changed: Sua classe mudou para $1
 #not-enough-money: Você não tem $$1
 #not-allowed-place: Você não tem permissão para colocar $1
 #hold-town: Por favor, segure um item de vila
 #no-commands-in-jail: Você não pode usar comandos na prisão por mais $1
-#mana-use-exp: Você não pode usar isso sem estar com a mana cheia
 #building-requires-2space: Essa construção requer 2 blocos de ar em cima do baú central
 #missing-blocks-build: Você precisa colocar esses blocos que faltam para construir uma $1
 #intruder-enter: "@{RED[ALERTA] $1 entrou em $2"
@@ -238,6 +310,9 @@
 #raid-target-blocked: Teletransportador de ataque bloqueado
 #raid-porter-warning: ALERTA! $1 criou um $2 atacando $3
 #siege-built: ALERTA! $1 criou um $2 atacando $3
+#cant-nether-portal: "Você não pode usar um portal do nether levando a uma vila inimiga ou região "
+#jammer-built: "@{RED}[ALERTA] Um $1 foi construído nas redondezas. Tenha cuidado ao
+#  teletransportar."
 #raid-remote: Foi dado a você um item para controlar $1
 #raid-sign: Você precisa de uma placa com o nome da vila alvo em cima do baú
 #no-blocks-above-chest: Não deve haver blocos acima do tórax central
@@ -248,7 +323,9 @@
 #req-build-inside-town: Essa $1 precisa ser construída dentro de uma $2
 #missing-region-requirements: Sua $1 esta com falta de construções requeridas
 #friendly-fire: Você não pode atacar alguém da sua lista de amigos
+#catapult-elytra-equipped: Você não pode atirar com uma catapulta usando um Élitro
 #limits: Limites
+#item-limit: Você tem $1 de $2 $3
 #region-limit-reached: Um $1 só pode ter $2 $3
 #region-in-biome: Você não pode construir uma $1 em um $2
 #not-enough-housing: Você precisa de mais habitações para convidar mais jogadores
@@ -267,8 +344,27 @@
 #killjoy-points: "Bônus por Killjoy: $1"
 #total-points: "Total de pontos: $1"
 #karma: "Karma: $1"
+#karma-desc: Karma é um medidor de infâmia. Quanto menor o karma, maior a recompensa por
+#  sua morte.
+#hardship: "Dificuldade: $1"
+#hardship-desc: Dificuldade é a medição de quão frequentemente você foi atacado. Quanto mais
+#  alta a dificuldade, mais caro é de se atacar. Dificuldade decai a cada 7 dias.
+#hardship-too-high: Essa ação não é permitida. A dificuldade para $1 esta muito alta.
 #karma-gained: "Karma: +$1, $2 de dinheiro ganho"
 #karma-lost: "Karma: -$1, $2 de dinheiro perdido"
+#claims: Terrenos
+#claim-desc: Nações podem clamar terreno usando Energia de Nação.
+#claim-no-nation: Não Clamado
+#capture-not-started: Terreno Incontestado
+#cant-build-in-nation: Você não pode construir em um terreno de $1,
+#neutralized-claim: A proteção de terreno de $1 foi removida.
+#alliance-chunk-claimed: "Esse terreno foi clamado pela aliança: $1"
+#nation-created: $1 atingiu um nível alto o suficiente e se transformou em uma nação!
+#karma-display: "Carma: $1 / Valor: $2"
+#karma-town-desc: Carma de vilas é a medição de dano que uma vila merece. Em guerras e invasões,
+#  se o dano ultrapassa o carma, o atacante paga a diferença.
+#combat-tagged: "@{RED}Você foi marcado em combate por $1s. Não desconecte. Zonas seguras não
+#  te protegerão."
 #ann-limit: "[Info] Você tem $1 de $2 $3 construções"
 #ann-achievement: "[Info] Confira o guia para ver sua próxima conquista disponível"
 #ann-town-join: "[Info] Você pode ser membro de múltiplas vilas. Usualmente vilas adoram
@@ -289,6 +385,7 @@
 #ann-missing-input: "[Info] Sua $1 precisa de itens. Use o livro do Civs para checar os
 #  reagentes/itens consumidos necessários."
 #ann-bounty: "[Info] $1 tem uma recompensa de $2 cabeça dele ou dela."
+#and-more: Adicionar mais
 #tut-default-0: Primeiro, abra o livro, vá até Projetos, retire o Abrigo e coloque-o no chão.
 #tut-default-1: Em seguida, colete 4 pães, 32 cenouras, 32 bifes ou 32 batatas. Coloque-os no
 #  baú do abrigo.
@@ -297,6 +394,8 @@
 #tut-default-3: Coloque 25 lãs, 14 cercas e 2 baús. Em seguida, coloque a loja de carvão.
 #tut-default-4: Parabéns! Você concluiu o tutorial padrão. Agora escolha seu caminho.
 #tut-warrior-name: Guerreiro
+#tut-warrior-desc: "Vilas são fortalezas defensivas. Escolha esse caminho se deseja aprender a
+#  invadir, destruir ou saqueá-las "
 #tut-warrior-0: Primeiro, compre o altar. Você pode usá-lo para obter equipamentos de diamante.
 #tut-warrior-1: Agora, ponha uma espada de ferro no baú do altar. Se você tiver $300, receberá
 #  seu equipamento.
@@ -318,6 +417,8 @@
 #tut-warrior-9: Parabéns! Você agora é sábio nos caminhos da guerra. Isso conclui o caminho do
 #  guerreiro.
 #tut-builder-name: Construtor
+#tut-builder-desc: Você quer sua própria vila? Escolha esse caminho se deseja construir, melhorar
+#  e fazer defesas mais fortes.
 #tut-builder-0: Comece construindo uma Sala do Conselho. Ele é o coração da cidade. Cria poder
 #  e provê 2 habitações.
 #tut-builder-1: Agora construa a Sala do Conselho.
@@ -346,6 +447,8 @@
 #  Compre e construa a Prefeitura dentro da sua Sala do Conselho.
 #tut-builder-13: Parabéns! Você é um um arquiteto nato. Isso conclui o caminho do construtor.
 #tut-merchant-name: Mercador
+#tut-merchant-desc: Você esta interessado em dinheiro? Junte-se a uma vila e escolha esse caminho.
+#  Você vai aprender sobre habitações, lojas e a indústria por traz delas.
 #tut-merchant-0: Filie-se a uma cidade. Então, compre um barraco de alguém da cidade. Assim que
 #  eles lhe tornarem dono do Barraco, ponha alguns pães dentro do baú dele.
 #tut-merchant-1: Casas podem ser atualizadas para dar mais dinheiro. Compre uma Cabana da Loja.
@@ -368,6 +471,11 @@
 #  3.
 #tut-merchant-11: Parabéns, Você agora pode vender itens que você comprar da Mina de Jade de
 #  outra cidade. Isso conclui o caminho do mercador.
+#tut-merchant-12: Cada jogador pode ter apenas 3 lojas. A mais lucrativa das lojas, é uma loja
+#  de troca. Construa uma Loja de Jade. Destrua uma de suas outras lojas se você
+#  já tem 3.
+#tut-merchant-13: Parabéns! Você Agora você pode vender itens que você compra de uma Mina de
+#  Jade de outra vila. Isso conclui o caminho do mercador.
 #anarchy-name: Anarquia
 #anarchy-desc: Qualquer um pode gerenciar a cidade. Sem impostos. Sem alianças
 #capitalism-name: Capitalismo
@@ -487,7 +595,7 @@
 #  um trilho elétrico inclinado no começo da linha.
 #weapons_factory-name: Fábrica de Armas
 #weapons_factory-desc: Transforma 3 pólvoras e 5 areias em explosivos.
-#jammer_trap-name: Armadilha de Disrupção
+#jammer_trap-name: "Armadilha de Disrupção "
 #jammer_trap-desc: Uma construção que intercepta teletransportes que viajariam em um raio de 100
 #  blocos. Redireciona o destino para perto da armadilha.
 #chicken_coop-name: Galinheiro
@@ -559,6 +667,8 @@
 #  elétrico inclinado no começo da linha.
 #potato_farm-name: Fazenda de Batata
 #potato_farm-desc: Produz batatas comuns e venenosas a cada 5 minutos.
+#potato_farm1-name: Fazenda de Batata
+#potato_farm1-desc: Produz batatas comuns e venenosas a cada 5 minutos.
 #pumpkin_farm-name: Fazenda de Abóbora
 #pumpkin_farm-desc: Produz abóboras a cada 10 minutos. Coloque um carrinho com baú no baú.
 #  Construa trilhos da Fazenda Abóbora até a região de destino. Coloque um trilho
@@ -651,8 +761,8 @@
 #inn-desc: Provê 12 habitações e um porto. Útil para adicionar pessoas à cidade sem ter
 #  que construir habitações primeiro.
 #jade_mine-name: Mina de Jade
-#jade_mine-desc: Cria 16 Jades  uma vez por dia, que podem ser vendidas numa Loja de Jade. Não
-#  pode ser construída numa cidade com uma Loja de Jade.
+#jade_mine-desc: Cria 16 Jades por dia que podem ser vendidas em uma Loja de Jade. Não pode ser
+#  construída na mesma cidade de uma Loja de Jade.
 #coal_mine-name: Mina de Carvão
 #coal_mine-desc: Cria Carvão utilizando picaretas. Coloque um carrinho com baú no baú. Construa
 #  trilhos da Mina de carvão até a região de destino. Coloque um trilho elétrico
@@ -708,6 +818,7 @@
 #siege_machine2-desc: Destrói 1 de poder a cada 2 minutos. Se atualiza após 4 tiros.
 #siege_machine3-name: Máquina de  Cerco3
 #siege_machine3-desc: Destrói 1 de poder a cada 1,5 minutos.
+#no-tp-pearl-chorus: Você não pode usar Pérolas do Fim nem Frutas do Coro dentro de vilas inimigas
 #altar-name: Altar
 #altar-desc: Cria um conjunto completo de armadura de diamante, espada, arco e flechas por
 #  $300 uma vez a cada hora.
@@ -763,6 +874,8 @@
 #iron_shop-desc: Vende 288 ferros para o servidor por $576 por dia.
 #leather_shop-name: Loja de Couro
 #leather_shop-desc: Vende couro para o servidor por $360 por dia.
+#lapis_shop-name: Loja de Lápis
+#lapis_shop-desc: Vende lápis para o servidor por $600 por dia
 #city-name: Cidade
 #city-desc: O quinto nível de uma cidade. Requer 30 habitantes.
 #hamlet-name: Aldeia
@@ -808,6 +921,9 @@
 #warehouse-name: Armazém
 #warehouse-desc: Distribui itens de qualquer um dos seus muitos baús para regiões que precisem
 #  deles.
+#warehouse-toggle-on: "Carregamentos do Armazém: LIGADOS"
+#warehouse-toggle-off: "Carregamentos do Armazém: DESLIGADOS"
+#warehouse-toggle-desc: Clique para ativar ou desativar os carregamentos do Armazém para esta região.
 #item-jade-name: Jade
 #item-jade-desc: Entregue 16 Jades na loja de Jade por $1000
 #farms-name: Fazendas
@@ -854,6 +970,251 @@
 #trade-mines-name: Minas Comerciais
 #trade-mines-desc: Minas que produzem itens para serem vendidos em outras cidades.
 #defense-evolve-name: Evoluir
-#defense-evolve-desc: Formas evoluídas ocultas de vários edifícios.
+#defense-evolve-desc: Evoluções escondidas de diversas construções
 #evolve-name: Evoluir
 #evolve-desc: Formas evoluídas ocultas de vários edifícios.
+#plot7x7-name: Terreno 7x7
+#plot7x7-desc: Um molde para regiões 7x7 e menores
+#plot11x11-name: Terreno 11x11
+#plot11x11-desc: Um molde para regiões 11x11 e menores
+#plot15x15-name: Terreno 15x15
+#plot15x15-desc: Um molde para regiões 15x15 e menores
+#plot19x19-name: Terreno 19x19
+#plot19x19-desc: Um molde para regiões 19x19 e menores
+#vault-name: Cofre
+#vault-desc: Aumenta a energia máxima da vila em 500 pontos. Produz 96 de energia para a
+#  vila por dia.
+#housing-group: Habitação
+#defense-group: Defesas
+#trap-group: Armadilhas
+#arrowtrapgroup-group: Armadilhas de Flecha
+#publichousing-group: Habitação Pública
+#idolgroup-group: Idolos
+#factory-group: Fábricas
+#farm-group: Fazendas
+#raw-group: Materiais de produção brutos
+#woodwork-group: Lenharias
+#allchalet-group: Qualquer Chalé
+#basechalet-group: Chalé Não-NPC
+#allhousing-group: Qualquer Habitação
+#npchousinggroup-group: Habitação de NPC
+#alldwelling-group: Qualquer Casa
+#basedwelling-group: Casa Não-NPC
+#allestate-group: Qualquer Palácio
+#baseestate-group: Palácio Não-NPC
+#allhouse-group: Qualquer Casa-grande
+#basehouse-group: Casa-grande Não-NPC
+#allhovel-group: Qualquer Cabana
+#basehovel-group: Cabana Não-NPC
+#allmanor-group: Qualquer Solar
+#basemanor-group: Solar Não-NPC
+#allmansion-group: Qualquer Mansão
+#basemansion-group: Mansão Não-NPC
+#allshack-group: Qualquer Barrraco
+#baseshack-group: Barraco Não-NPC
+#allvilla-group: Qualquer Vila
+#basevilla-group: Vila Não-NPC
+#trademine-group: Mina de Troca
+#trading-group: Troca
+#mine-group: Minas
+#offense-group: Ofensivo
+#basecenter-group: Base
+#raidport-group: Teletransportadores de Ataque
+#siegemachinegroup-group: Máquinas de Cerco
+#townpowerreduce-group: Equipamento de Cerco
+#quarry-group: Escavadoras
+#tradeshop-group: Lojas de Troca
+#shop-group: Lojas
+#oreshop-group: Lojas de Minério
+#superregion-group: Cidades
+#utility-group: Utilidades
+#town_center-group: Centro da Cidade
+#maxpower-group: Estruturas de Energia Máxima
+#skills: Habilidades
+#armor-skill: Armadura
+#armor-skill-desc: "Nível: $1 ($2/$3) Leve dano usando diferentes tipos de armadura. Concede
+#  descontos em construções de defesa."
+#building-skill: Construção
+#building-skill-desc: "Nível: $1 ($2/$3) Construa diversas regiões para ganhar exp. Concede
+#  descontos em casas/casas npc."
+#sword-skill: Espadas
+#sword-skill-desc: "Nível: $1 ($2/$3) Mate diversos mobs usando espadas. Concede descontos em
+#  construções chaves de postos avançados."
+#axe-skill: Machados
+#axe-skill-desc: "Nível: $1 ($2/$3) Mate diversos mobs usando machados. Concede descontos em
+#  madeireiras, portos de invasão, armadilhas de disrupção e cabanas de caça."
+#bow-skill: Arcos
+#bow-skill-desc: "Nível: $1 ($2/$3) Mate diversos mobs usando arcos. Concede descontos em
+#  máquinas de cerco e construções relacionadas a flechas."
+#crossbow-skill: Bestas
+#crossbow-skill-desc: "Nível: $1 ($2/$3) Mate diversos mobs usando bestas. Concede descontos em
+#  máquinas de cerco e construções relacionadas a flechas."
+#enchant-skill: Encantamento
+#enchant-skill-desc: "Nível: $1 ($2/$3) Crie encantamentos diversos. Concede desconto em utilidades
+#  e construções de energia."
+#mining-skill: Mineração
+#mining-skill-desc: "Nível: $1 ($2/$3) Minere diversos minérios sem toque suave. Concede descontos
+#  em minas."
+#trident-skill: Tridente
+#trident-skill-desc: "Nível: $1 ($2/$3) Mate diversos mobs usando tridentes. Concede descontos em
+#  construções relacionadas a água."
+#crafting-skill: Fabricação
+#crafting-skill-desc: "Nível: $1 ($2/$3) Monte itens diversos para ganhar exp. Concede descontos em
+#  fábricas de produção."
+#exploration-skill: Exploração
+#exploration-skill-desc: "Nível: $1 ($2/$3) Explore biomas diferentes para ganhar exp. Concede
+#  descontos em melhorias de vila e estábulos."
+#food-skill: Comida
+#food-skill-desc: "Nível: $1 ($2/$3) Coma diferentes tipos de comida para ganhar exp. Concede
+#  desconto em fazendas"
+#shield-skill: Escudos
+#shield-skill-desc: "Nível: $1 ($2/$3) Bloqueie flechas e dano para ganhar exp. Concede descontos
+#  em defesas e utilidades."
+#potion-skill: Poções
+#potion-skill-desc: "Nível: $1 ($2/$3) Beba/Arremesse poções para ganhar exp. Concede descontos em
+#  construções de energia."
+#skill-bar: "@{GREEN}$1@{RED}$2"
+#chat-channels: Canais de Conversa
+#chat-change-chat: Trocado canal de conversa de $1
+#friend-channel: Amigos
+#friend-channel-desc: Apenas jogadores definidos como amigos
+#global-channel: Global
+#global-channel-desc: Todos os jogadores
+#local-channel: Local
+#local-channel-desc: Apenas jogadores dentro de 100 blocos
+#town-channel-desc: Apenas jogadores em $1
+#alliance-channel-desc: Apenas jogadores na aliança $1
+#chat-channel-set: Você esta agora conversando no canal $1
+#click-change-chat: Clique para trocar de canal
+#no-recipients: Não existe ninguém online no canal $1
+#change-class: Trocar de Classe
+#change-class-desc: Selecione uma nova ou uma classe previamente salva.
+#health: Vida
+#health-desc: "Max: $1"
+#mana: Mana
+#heat: Calor
+#stamina: "Folego "
+#or: OU
+#mana-desc: "Max: $1 Regen: $2"
+#spell-slot-desc: Botão esquerdo para selecionar uma nova magia. Botão direito para mudar a
+#  ordem dessas magias.
+#spell-slot-desc-change-order: Botão direito para trocar a ordem dessas magias.
+#empty-spell-slot: Slot Vazio de Magia
+#empty-spell-slot-desc: Pegue uma magia para esse slot.
+#allowed-items: Itens Permitidos
+#allowed-items-desc: Todos os itens que $1 tem permissão de usar
+#see-all-spells: Ver todas as magias
+#see-all-spells-desc: Ver todas as magias disponíveis para $1
+#req-skill-level: Você precisa ao menos ser nível $2 em $1
+#req-item: Você precisa primeiro comprar um $1
+#req-build: Você precisa primeiro construir um $1
+#spell-command: Troque para suas magias com /cv spells
+#switch-spell-cast: "Troque para esse item para usa-lo "
+#infinite-cooldown: "@{RED]$1 tem uma recarga infinita"
+#view-all-classes: Ver todas as classes
+#new-class: Nova Classe
+#new-class-desc: Comece uma nova classe sem perder seu progresso atual.
+#spell-block: "@{RED}Uma magia esta impedindo você de fazer isso."
+#default-name: Soldado
+#default-desc: "HP: 16 Mana: 50 Regen: 1/s Armas: Todas Armadura: Pesada Grande Variedade de
+#  magias. A classe mais customizável."
+#alchemist-name: Alquimista
+#alchemist-desc: "HP: 28 Mana: 500 Regen 2/s Armas: Machado Armadura: Leve Larga variedade de
+#  poções e granadas para combos."
+#elemental-name: Elemental de Chamas
+#elemental-desc: "HP: 16 Mana: 50 Regen 10/s Armas: Besta, Tridente, Espada Armadura: Pesada
+#  Classe rápida de dano em área de fogo."
+#archer-name: Arqueiro
+#archer-desc: "HP: 26 Mana: 100 Regen: 2/s Armas: Arco, Besta Armadura: Leve Ataques a
+#  distância incapacitante e fuga rápida."
+#potion_poison-name: "Poção: Veneno"
+#potion_poison-desc: "Mana: 25 Recarga: 20s Cria uma granada de veneno 2."
+#potion_strength-name: "Poção: Força"
+#potion_strength-desc: "Mana: 25 Recarga: 20s Cria uma poção de força 2."
+#potion_speed-name: "Poção: Velocidade"
+#potion_speed-desc: "Mana: 25 Recarga: 20s Cria uma poção de velocidade 2."
+#potion_harm-name: "Poção: Dano"
+#potion_harm-desc: "Mana: 25 Recarga: 20s Cria uma granada de dano 2."
+#potion_regen-name: "Poção: Regeneração"
+#potion_regen-desc: "Mana: 25 Recarga: 20s Cria uma poção de regeneração 2."
+#potion_heal-name: "Poção: Cura"
+#potion_heal-desc: "Mana: 35 Recarga: 25s Cria uma granada de cura 2."
+#potion_invis-name: "Poção: Invisibilidade"
+#potion_invis-desc: "Mana: 50 Recarga: 75s Cria uma poção de invisibilidade estendida. "
+#potion_weakness-name: "Poção: Fraqueza"
+#potion_weakness-desc: "Mana: 50 Recarga: 75s Cria uma poção de fraqueza."
+#petrify-name: Petrificar
+#petrify-desc: "Mana: 60 Recarga: 45s Limpa você de efeitos, enraíza e você se torna
+#  invulnerável por 10 segundos."
+#evaporate-name: Evaporar
+#evaporate-desc: "Mana: 10 Recarga: 5s Alcance: 30 Esvazia um balde ou poção que um inimigo
+#  esta segurando."
+#spoil-name: Estragar
+#spoil-desc: "Mana: 10 Recarga: 3s Alcance: 30 Transmuta a comida que o alvo esta segurando
+#  em algo estragado."
+#jump-name: Pular
+#jump-desc: "Mana: 10 Recarga: 10s Pula pra frente no ar."
+#backflip-name: "Salto para traz "
+#backflip-desc: "Mana: 10 Recarga: 10s Pula pra traz no ar."
+#disentangle-name: Desemaranhar
+#disentangle-desc: "Mana: 20 Recarga: 14s Alcance: 20 Cura você de efeitos e detona uma explosão
+#  que força você e seu alvo para longe."
+#empathy-name: Empatia
+#empathy-desc: "Mana: 35 Recarga: 15s Alcance: 20 Causa dano baseado em 60% de sua vida
+#  perdida."
+#chug-name: Engolir
+#chug-desc: "Passiva Instantaneamente bebe qualquer poção ou leite. "
+#burning-presence-name: Presença Quente
+#burning-presence-desc: "Raio: 7 Passiva Ativável Causa 1 de dano verdadeiro a cada 4s a alvos
+#  próximos."
+#quicken-name: "Rapidez "
+#quicken-desc: "Mana: 20 Recarga: 10s Reduz sua velocidade por 5s e depois ganhe velocidade2
+#  por 5m."
+#sap-strength-name: Sabotar Força
+#sap-strength-desc: "Mana: 30 Recarga: 55s Raio: 9 Por cada 2s que você estiver ao alcance de um
+#  alvo pelos próximos 10s, aplique +1 de fraqueza nele e +1 de força em você. "
+#launch-name: Lançar
+#launch-desc: "Mana: 30 Recarga: 1m Raio: 6 Causa 10 de dano em um raio e lança você alto na
+#  ar com queda lenta."
+#screech-name: Grito Penetrante
+#screech-desc: "Mana: 25 Recarga: 30s Raio: 7 Após meio segundo de carga, atordoe todos os
+#  alvos perto por 3s."
+#dodge-name: Esquivar
+#dodge-desc: " Mana: 10 Recarga: 5s Faz você invulnerável por 1s."
+#blunted_arrows-name: Flechas Pesadas
+#blunted_arrows-desc: Passiva 25% de chance de atordoar o alvo por 0.5s ao atingir a flecha.
+#webbed_arrows-name: Flechas Pegajosas
+#webbed_arrows-desc: Passiva 25% de chance de enraizar o alvo por 1s ao atingir a flecha.
+#arrow_storm-name: Tempestade de Flechas
+#arrow_storm-desc: "Mana: 25 Recarga: 20s Atira 5 flechas em alta velocidade com precisão
+#  reduzida."
+#wild_jump-name: "Salto Selvagem "
+#wild_jump-desc: "Mana: 10 Recarga: 10s Pula para uma direção aleatória com uma velocidade
+#  aleatória."
+#nation-destroyed: "@{RED}$1 foi destruída!"
+#set-nation-icon-name: Definir o ícone da nação
+#set-nation-icon-desc: Segure o item que você deseje como ícone da nação e digite /cv nation-icon
+#hold-nation-icon: Segure um item que você deseje que seja o ícone da nação
+#nation-icon-set: Ícone da nação $1 definido
+#hold-lore: Segure um livro escrito que você deseje que seja a descrição
+#lore-set: A descrição de $1 foi definida
+#constitution-name: Descrição de $1
+#constitution-desc: Clique para receber a descrição da nação como um livro. Você pode definir a
+#  descrição da nação usando /cv nation-lore NomeDaNação
+#set-nation-info-name: Defina a descrição de sua nação
+#set-nation-info-desc: Defina a descrição usando /cv nation-lore enquanto segura um livro escrito
+#nation-lore-command: /cv nation-lore
+#nations: Nações
+#rename-nation: Renomear Nação
+#rename-nation-desc: Renomeie usando /cv rename-nation NomeVelho NomeNovo
+#rename-nation-command: /cv rename-nation $1 NomeNovo
+#join-nation: Entrar na nação
+#join-nation-desc: Clique para requisitar a entrada de sua vila na nação
+#leave-nation: Sair da nação
+#leave-nation-desc: Clique para que sua vila saia desta nação.
+#set-capitol: Definir Capital
+#set-capitol-desc: Defina a capital da nação como a vila com maior população
+#region-summary: "@{GREEN}Tipo: $1 @{BLUE}Donos: $2 @{YELLOW}Localização: $3
+#  @{BLUE}Funcionando: $4 @{GREEN}Entrada Hoje: $5"
+#town-summary: "@{GREEN}Tipo: $1 @{BLUE}Donos: $2 @{YELLOW}Energia: $3/$4 @{GREEN}População:
+#  $5/$6"

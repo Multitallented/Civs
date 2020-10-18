@@ -15,15 +15,16 @@ critical-build-reqs:
 - town_center
 
 limits:
-- npchousing:4
-- allshack:5
-- allhovel:2
+- allhousing:6
+- shop:6
 - arrowtrapgroup:2
 - church:1
 - smithy:1
 - purifier:1
 - embassy:1
 - jammer_trap:0
+- barracks:1
+- inn:1
 
 build-radius: 40
 build-radius-y: 500
@@ -35,7 +36,8 @@ effects:
 - deny_mob_spawn
 - control_override
 - block_explosion
+- door_use
 - anticamp:4.1800.100 #4 damage for 30 minutes costs $100
 
-power: 300
-max-power: 2040
+power: 150
+max-power: 3800

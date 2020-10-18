@@ -1,5 +1,8 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,8 +16,8 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-@CivsCommand(keys = { "add" })
-public class AddMemberCommand implements CivCommand {
+@CivsCommand(keys = { "add" }) @SuppressWarnings("unused")
+public class AddMemberCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = null;
@@ -29,7 +32,7 @@ public class AddMemberCommand implements CivCommand {
         }
         if (strings.length < 3) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         "specify-player-region"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Please specify a player and a region");
@@ -46,7 +49,7 @@ public class AddMemberCommand implements CivCommand {
         Region region = RegionManager.getInstance().getRegionAt(Region.idToLocation(locationString));
         if (region == null) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         "no-permission"));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Invalid region");
@@ -55,14 +58,14 @@ public class AddMemberCommand implements CivCommand {
         }
         if (!Util.hasOverride(region, civilian) && player != null &&
                 !region.getPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "no-permission"));
             return true;
         }
         Player invitee = Bukkit.getPlayer(playerName);
         if (invitee == null) {
             if (player != null) {
-                player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         "player-not-online").replace("$1", playerName));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Player " + playerName + " is not online");
@@ -71,11 +74,11 @@ public class AddMemberCommand implements CivCommand {
         }
 
         if (invitee.isOnline()) {
-            invitee.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(invitee,
+            invitee.sendMessage(Civs.getPrefix() + localeManager.getTranslation(invitee,
                     "invite-member-region").replace("$1", region.getType()));
         }
         if (player != null) {
-            player.sendMessage(Civs.getPrefix() + localeManager.getTranslationWithPlaceholders(player,
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "member-invited-region").replace("$1", playerName)
                     .replace("$2", region.getType()));
         } else {
@@ -84,5 +87,28 @@ public class AddMemberCommand implements CivCommand {
         region.setPeople(invitee.getUniqueId(), "member");
         RegionManager.getInstance().saveRegion(region);
         return true;
+    }
+
+    @Override
+    public boolean canUseCommand(CommandSender commandSender) {
+        return true;
+    }
+
+    @Override
+    public List<String> getWord(CommandSender commandSender, String[] args) {
+        List<String> suggestions = new ArrayList<>();
+        if (args.length == 2) {
+            addAllOnlinePlayers(suggestions, args[1]);
+            return suggestions;
+        }
+        if (args.length == 3 && commandSender instanceof Player) {
+            Player player = (Player) commandSender;
+            Region region = RegionManager.getInstance().getRegionAt(player.getLocation());
+            if (region != null) {
+                suggestions.add(region.getId());
+                return suggestions;
+            }
+        }
+        return super.getWord(commandSender, args);
     }
 }

@@ -1,52 +1,53 @@
 type: region
 icon: CHEST
 shop-icon: GOLD_NUGGET
+dynmap-marker: factory
 name: Gold_Infuser
 price: 200
 groups:
-- factory
+  - factory
 level: 5
 
 pre-reqs:
-- gold_mine:built=1
-- carrot_farm:built=1
-- member=town:city:metropolis
+  - gold_mine:built=1
+  - carrot_farm:built=1
+  - member=town:city:metropolis
 
 towns:
-- town
-- city
-- metropolis
+  - town
+  - city
+  - metropolis
 
 build-reqs:
-- g:window*2
-- g:door*1
-- FURNACE*2
-- g:roof*15
-- CARROTS*2
-- GOLD_BLOCK
-- g:primary*40
-- g:secondary*10
+  - g:window*2
+  - g:door*1
+  - FURNACE*2
+  - g:roof*15
+  - CARROTS*2
+  - GOLD_BLOCK
+  - g:primary*40
+  - g:secondary*10
 
 build-radius: 3
 
 effects:
-- block_break
-- block_build
-- block_liquid
-- block_fire
-- conveyor:GOLDEN_CARROT
+  - block_break
+  - block_build
+  - block_liquid
+  - block_fire
+  - conveyor:GOLDEN_CARROT
 
 period: 60 #1 minute
 upkeep:
   0:
     input:
-    - CARROT*9
-    - GOLD_INGOT
+      - CARROT*9
+      - GOLD_INGOT
     output:
-    - GOLDEN_CARROT*9
+      - GOLDEN_CARROT*9
   1:
     input:
-    - APPLE*2
-    - GOLD_INGOT
+      - APPLE
+      - GOLD_INGOT*54
     output:
-    - GOLDEN_APPLE*2
+      - GOLDEN_APPLE*1

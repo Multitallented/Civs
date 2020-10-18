@@ -61,7 +61,7 @@
 #cost-buff-desc: Für alle $2 werden $1% der Kosten rückerstattet.
 #shop: Shop
 #buy-item: Zu verkaufen
-#price: Preis
+#price: Preis $1
 #buy: Kaufe $1
 #cancel: Abbrechen
 #item-bought: Du hast $1 für $2 gekauft.
@@ -683,8 +683,8 @@
 #inn-name: Gasthaus
 #inn-desc: Bietet 12 Unterkünfte und einen Teleport. Nützlich, um Leute in die Stadt zu
 #  holen, ohne erst eine Wohnung bauen zu müssen.
-#jade_mine-name: Jademine
-#jade_mine-desc: Erzeugt 16 Jade am Tag, welche an einen Jadeshop verkauft werden kann. Kann
+#jade-mine-name: Jademine
+#jade-mine-desc: Erzeugt 16 Jade am Tag, welche an einen Jadeshop verkauft werden kann. Kann
 #  nicht in einer Stadt gebaut werden welche einen Jadeshop hat. Jade ist eine
 #  Handelsware.
 #coal_mine-name: Kohlemine

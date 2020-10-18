@@ -1,9 +1,7 @@
 package org.redcastlemedia.multitallented.civs.spells.effects;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -12,9 +10,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
-
-import java.util.HashMap;
+import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
 
 /**
  *
@@ -26,18 +24,19 @@ public class DamageEffect extends Effect {
     private boolean silent = true;
 
 
-    public DamageEffect(Spell spell, String key, Object target, Entity origin, int level, ConfigurationSection section) {
-        super(spell, key, target, origin, level, section);
-        String configDamage = section.getString("damage", "0");
-        this.damage = (int) Math.round(Spell.getLevelAdjustedValue(configDamage, level, target, spell));
-        this.silent = section.getBoolean("silent", true);
-        this.ignoreArmor = section.getBoolean("ignore-armor", false);
-    }
-    public DamageEffect(Spell spell, String key, Object target, Entity origin, int level, String value) {
-        super(spell, key, target, origin, level, value);
-        this.damage = (int) Math.round(Spell.getLevelAdjustedValue(value, level, target, spell));
-        this.ignoreArmor = false;
-        this.silent = true;
+    public DamageEffect(Spell spell, String key, Object target, Entity origin, int level, Object config) {
+        super(spell, key, target, origin, level);
+        if (config instanceof ConfigurationSection) {
+            ConfigurationSection section = (ConfigurationSection) config;
+            String configDamage = section.getString(SpellEffectConstants.DAMAGE, "0");
+            this.damage = (int) Math.round(Spell.getLevelAdjustedValue(configDamage, level, target, spell));
+            this.silent = section.getBoolean(SpellConstants.SILENT, true);
+            this.ignoreArmor = section.getBoolean("ignore-armor", false);
+        } else if (config instanceof String) {
+            this.damage = (int) Math.round(Spell.getLevelAdjustedValue((String) config, level, target, spell));
+            this.ignoreArmor = false;
+            this.silent = true;
+        }
     }
 
     @Override
@@ -46,22 +45,19 @@ public class DamageEffect extends Effect {
         Entity origin = getOrigin();
         if (!(target instanceof LivingEntity)) {
             if (!this.silent && origin instanceof Player) {
-                ((Player) origin).sendMessage(Civs.getPrefix() + " target cant't take damage.");
+                Player originPlayer = (Player) origin;
+                originPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                        .getTranslation(originPlayer, "invalid-target"));
             }
             return false;
         }
         LivingEntity livingEntity = (LivingEntity) target;
-        Player player = null;
-        if (livingEntity instanceof Player) {
-            player = (Player) livingEntity;
-//            NCPExemptionManager.exemptPermanently(player, CheckType.FIGHT);
-        }
         if (livingEntity.getHealth() < damage) {
             if (!this.silent && origin instanceof Player) {
-                ((Player) origin).sendMessage(Civs.getPrefix() + " target cant't take " + damage + " damage.");
-            }
-            if (player != null) {
-//                NCPExemptionManager.unexempt(player, CheckType.FIGHT);
+                Player originPlayer = (Player) origin;
+                originPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                        .getTranslation(originPlayer,
+                                "need-more-health").replace("$1", "" + Math.abs(damage)));
             }
             return false;
         }
@@ -69,15 +65,11 @@ public class DamageEffect extends Effect {
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             if (!this.silent && origin instanceof Player) {
-                ((Player) origin).sendMessage(Civs.getPrefix() + " target can't be damaged.");
-            }
-            if (player != null) {
-//                NCPExemptionManager.unexempt(player, CheckType.FIGHT);
+                Player originPlayer = (Player) origin;
+                originPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                        .getTranslation(originPlayer, "invalid-target"));
             }
             return false;
-        }
-        if (player != null) {
-//            NCPExemptionManager.unexempt(player, CheckType.FIGHT);
         }
         return true;
     }

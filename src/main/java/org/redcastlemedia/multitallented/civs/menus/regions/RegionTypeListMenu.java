@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -21,7 +20,6 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -45,29 +43,26 @@ public class RegionTypeListMenu extends CustomMenu {
         if (regionList != null) {
             String[] regionListSplit = regionList.split(",");
             regionTypes = new HashMap<>();
-            for (String region : regionListSplit) {
-                String[] regionSplit = region.split(":");
+            for (String regionString : regionListSplit) {
+                String[] regionSplit = regionString.split(":");
                 if (regionSplit.length < 2) {
-                    regionTypes.put(region, 1);
+                    addType(regionTypes, regionString, 1);
                 } else {
-                    regionTypes.put(regionSplit[0], Integer.parseInt(regionSplit[1]));
+                    addType(regionTypes, regionSplit[0], Integer.parseInt(regionSplit[1]));
                 }
             }
         } else if (category == null || townName == null) {
             regionTypes = new HashMap<>();
         } else if (category.equals("reqs")) {
             TownType townType = (TownType) ItemManager.getInstance().getItemType(townName);
-            regionTypes = new HashMap<>(townType.getReqs());
+            regionTypes = new HashMap<>();
+            addAllTypes(regionTypes, townType.getReqs());
         } else if (category.equals("limits")) {
+            regionTypes = new HashMap<>();
             TownType townType = (TownType) ItemManager.getInstance().getItemType(townName);
-            regionTypes = new HashMap<>(townType.getRegionLimits());
+            addAllTypes(regionTypes, townType.getRegionLimits());
         } else {
             regionTypes = new HashMap<>();
-        }
-        for (Map.Entry<String, Integer> entry : new HashMap<>(regionTypes).entrySet()) {
-            if (entry.getValue() < 1) {
-                regionTypes.remove(entry.getKey());
-            }
         }
         data.put(REGION_TYPES, regionTypes);
 
@@ -110,10 +105,14 @@ public class RegionTypeListMenu extends CustomMenu {
                     regionTypeNames.add("g:" + regionTypeName);
                     currentItem = CVItem.createCVItemFromString("CHEST");
                     currentItem.setDisplayName("g:" + regionTypeName);
+                    currentItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
+                            "any-region")));
                 } else if (civItem instanceof FolderType) {
                     currentItem = civItem.getShopIcon(civilian.getLocale()).clone();
                     currentItem.setDisplayName("f:" + currentItem.getDisplayName());
                     regionTypeNames.add(civItem.getProcessedName());
+                    currentItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
+                            "any-region")));
                 } else {
                     regionTypeNames.add(civItem.getProcessedName());
                     currentItem = civItem.getShopIcon(civilian.getLocale());
@@ -130,7 +129,7 @@ public class RegionTypeListMenu extends CustomMenu {
             ItemStack itemStack;
             if (cvItem.getDisplayName().startsWith("g:")) {
                 String groupKey = cvItem.getDisplayName().replace("g:", "");
-                String localGroupName = LocaleManager.getInstance().getTranslationWithPlaceholders(player,
+                String localGroupName = LocaleManager.getInstance().getTranslation(player,
                         groupKey + LocaleConstants.GROUP_SUFFIX);
                 cvItem.setDisplayName(localGroupName);
                 itemStack = cvItem.createItemStack();
@@ -142,7 +141,7 @@ public class RegionTypeListMenu extends CustomMenu {
                 }
                 action = new StringBuilder(action.substring(0, action.length() - 1));
                 actionList.add(action.toString());
-                actions.get(civilian.getUuid()).put(itemStack, actionList);
+                putActionList(civilian, itemStack, actionList);
             } else if (cvItem.getDisplayName().startsWith("f:")) {
                 String folderName = cvItem.getDisplayName().replace("f:", "");
                 cvItem.setDisplayName(folderName);
@@ -156,18 +155,33 @@ public class RegionTypeListMenu extends CustomMenu {
                 }
                 action = new StringBuilder(action.substring(0, action.length() - 1));
                 actionList.add(action.toString());
-                actions.get(civilian.getUuid()).put(itemStack, actionList);
+                putActionList(civilian, itemStack, actionList);
             } else {
                 itemStack = cvItem.createItemStack();
                 putActions(civilian, menuIcon, itemStack, count);
-                if (actions.get(civilian.getUuid()).get(itemStack).contains("view-type")) {
-                    int index = actions.get(civilian.getUuid()).get(itemStack).indexOf("view-type");
-                    actions.get(civilian.getUuid()).get(itemStack).set(index,
-                            "menu:region-type?regionType=" + regionTypeNames.get(startIndex + count));
+                List<String> actionList = getActions(civilian, itemStack);
+                if (actionList.contains("view-type")) {
+                    int index = actionList.indexOf("view-type");
+                    actionList.set(index, "menu:region-type?regionType=" + regionTypeNames.get(startIndex + count));
                 }
             }
             return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
+    }
+
+    private void addAllTypes(Map<String, Integer> typeMap, Map<String, Integer> inputMap) {
+        for (Map.Entry<String, Integer> entry : inputMap.entrySet()) {
+            addType(typeMap, entry.getKey(), entry.getValue());
+        }
+    }
+
+    private void addType(Map<String, Integer> typeMap, String type, int count) {
+        if (count > 0) {
+            CivItem civItem = ItemManager.getInstance().getItemType(type);
+            if (civItem == null || civItem.getInShop()) {
+                typeMap.put(type, count);
+            }
+        }
     }
 }

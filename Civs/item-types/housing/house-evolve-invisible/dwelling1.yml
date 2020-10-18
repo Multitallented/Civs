@@ -2,18 +2,20 @@
 #type: region
 #icon: CHEST
 #shop-icon: GREEN_BED
+#dynmap-marker: default
+#name: Dwelling1
 #max: 2
 #price: 400
 #is-in-shop: false
 #groups:
-#- housing
-#- alldwelling
-#- basedwelling
-#- allhousing
+#  - housing
+#  - alldwelling
+#  - basedwelling
+#  - allhousing
 #level: 3
 #
 #pre-reqs:
-#- member=hamlet:village:town:city:metropolis
+#  - member=hamlet:village:town:city:metropolis
 #
 #build-reqs:
 #  - CHEST*4
@@ -29,22 +31,22 @@
 #
 #build-radius: 5 #11x11x11
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- door_use
-#- chest_use
-#- housing:1
-#- evolve:dwelling2.36
-#- buyable
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - door_use
+#  - chest_use
+#  - housing:1
+#  - evolve:dwelling2.36
+#  - buyable
 #
 #towns:
-#- hamlet
-#- village
-#- town
-#- city
-#- metropolis
+#  - hamlet
+#  - village
+#  - town
+#  - city
+#  - metropolis
 #
 #period: 3600 #1 hour
 #upkeep:
@@ -52,11 +54,11 @@
 #    power-input: 1
 #  1:
 #    input:
-#    - POTATO*32  # 768 or 12 stacks / day
+#      - POTATO*32  # 768 or 12 stacks / day
 #    payout: 5.12 # $122.88 / day
 #  2:
 #    input:
-#    - APPLE*5   # 120 or 1.87 stacks / day
+#      - APPLE*5   # 120 or 1.87 stacks / day
 #    payout: 8.5 # 204 / day
 #    exp: 1
 #

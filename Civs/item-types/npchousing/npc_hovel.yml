@@ -2,51 +2,50 @@
 #type: region
 #icon: CRAFTING_TABLE
 #shop-icon: BROWN_BED
-#max: 2
-#price: 200
+#dynmap-marker: house
+#name: NPC_Hovel
+#price: 250
 #groups:
-#- npchousinggroup
-#- allhovel
-#- allhousing
+#  - npchousinggroup
+#  - allhovel
+#  - allhousing
 #level: 2
 #
 #pre-reqs:
-#- member=settlement:hamlet:village:town:city:metropolis
-#- basehovel:built=1|npc_shack:built=1
+#  - member=settlement:hamlet:village:town:city:metropolis
 #
 #build-reqs:
-#- CHEST*2
-#- g:door*1
-#- g:window*4
-#- g:bed*1
-#- g:sign*1
-#- FURNACE
-#- CRAFTING_TABLE
-#- g:roof*30
-#- g:secondary*13
-#- g:primary*50
+#  - CHEST*2
+#  - g:door*1
+#  - g:window*4
+#  - g:bed*1
+#  - g:sign*1
+#  - FURNACE
+#  - CRAFTING_TABLE
+#  - g:roof*30
+#  - g:secondary*13
+#  - g:primary*50
 #
 #rebuild:
-#- basehovel
-#- npc_shack
-#rebuild-required: true
+#  - basehovel
+#  - npc_shack
 #build-radius: 4 #9x9x9
 #effects:
-#- block_break
-#- block_build
-#- block_liquid
-#- block_fire
-#- chest_use
-#- housing:1
-#- villager
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - chest_use
+#  - housing:2
+#  - villager:2
 #
 #towns:
-#- settlement
-#- hamlet
-#- village
-#- town
-#- city
-#- metropolis
+#  - settlement
+#  - hamlet
+#  - village
+#  - town
+#  - city
+#  - metropolis
 #
 #period: 3600 #1 hour
 #upkeep:

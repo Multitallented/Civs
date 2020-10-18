@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.regions.effects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.HashMap;
 
@@ -51,7 +53,8 @@ public class IntruderEffect implements Listener {
         }
 
         Player player = Bukkit.getPlayer(event.getUuid());
-        if (Civs.perm != null && Civs.perm.has(player, "civs.bypasspvp")) {
+        if (player == null || player.getGameMode() == GameMode.SPECTATOR ||
+                (Civs.perm != null && Civs.perm.has(player, Constants.PVP_EXEMPT_PERMISSION))) {
             return;
         }
 
@@ -77,7 +80,8 @@ public class IntruderEffect implements Listener {
             return;
         }
         Player player = Bukkit.getPlayer(event.getUuid());
-        if (Civs.perm != null && Civs.perm.has(player, "civs.bypasspvp")) {
+        if (player == null || player.getGameMode() == GameMode.SPECTATOR ||
+                (Civs.perm != null && Civs.perm.has(player, Constants.PVP_EXEMPT_PERMISSION))) {
             return;
         }
 
@@ -125,7 +129,7 @@ public class IntruderEffect implements Listener {
                             "intruder-exit").replace("$1", playerName).replace("$2", town.getName());
                 }
                 p.sendMessage(Civs.getPrefix() + ChatColor.RED + message);
-                p.playSound(p.getLocation(), Sound.ENTITY_WOLF_HOWL, 1, 1);
+                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1, 1);
             }
         }
     }

@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: NETHER_QUARTZ_ORE
+dynmap-marker: hammer
 name: Quartz_Mine
 max: 1
 price: 150
@@ -43,4 +44,18 @@ upkeep:
     - STONE_PICKAXE
     output:
     - QUARTZ*6
+  2:
+    reagents:
+      - NETHERITE_PICKAXE
+      - STONE_PICKAXE
+    input:
+      - STONE_PICKAXE
+    output:
+      - QUARTZ*8
 
+biomes:
+  - BASALT_DELTAS
+  - NETHER_WASTES
+  - SOUL_SAND_VALLEY
+  - CRIMSON_FOREST
+  - WARPED_FOREST

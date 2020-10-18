@@ -1,9 +1,9 @@
 type: region
 icon: CRAFTING_TABLE
 shop-icon: PINK_BED
+dynmap-marker: default
 name: NPC_House
-max: 2
-price: 800
+price: 1000
 groups:
 - npchousinggroup
 - allhouse
@@ -12,7 +12,6 @@ level: 3
 
 pre-reqs:
 - member=hamlet:village:town:city:metropolis
-- basehouse:built=1|npc_dwelling:built=1
 
 build-reqs:
 - CHEST*4
@@ -29,7 +28,6 @@ build-reqs:
 rebuild:
 - basehouse
 - npc_dwelling
-rebuild-required: true
 build-radius: 5 #11x11x11
 effects:
 - block_break
@@ -37,8 +35,8 @@ effects:
 - block_liquid
 - block_fire
 - chest_use
-- housing:2
-- villager:2
+- housing:4
+- villager:4
 
 towns:
 - hamlet

@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: LAPIS_ORE
+dynmap-marker: hammer
 name: Lapis_Mine
 max: 1
 price: 300
@@ -45,7 +46,7 @@ upkeep:
     input:
     - STONE_PICKAXE
     output:
-    - LAPIS_LAZULI*8
+    - LAPIS_LAZULI*6
   1:
     reagents:
     - DIAMOND_PICKAXE
@@ -53,4 +54,20 @@ upkeep:
     input:
     - STONE_PICKAXE
     output:
+    - LAPIS_LAZULI*10
+  2:
+    reagents:
+    - NETHERITE_PICKAXE
+    - STONE_PICKAXE
+    input:
+    - STONE_PICKAXE
+    output:
     - LAPIS_LAZULI*12
+  1:
+    reagents:
+    - NETHERITE_PICKAXE
+    - STONE_PICKAXE
+    input:
+    - STONE_PICKAXE
+    output:
+    - LAPIS_LAZULI*16

@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: MELON_SLICE
+dynmap-marker: cutlery
 name: Melon_Farm
 max: 1
 price: 100
@@ -34,6 +35,16 @@ period: 600
 upkeep:
   0:
     reagents:
+      - STONE_HOE
+    output:
+      - MELON_SLICE*8
+  1:
+    reagents:
       - IRON_HOE
     output:
       - MELON_SLICE*16
+  2:
+    reagents:
+      - DIAMOND_HOE
+    output:
+      - MELON_SLICE*32

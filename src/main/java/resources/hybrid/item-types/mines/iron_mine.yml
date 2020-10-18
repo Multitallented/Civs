@@ -1,9 +1,10 @@
 type: region
 icon: CHEST
 shop-icon: IRON_ORE
+dynmap-marker: hammer
 name: Iron_Mine
 max: 1
-price: 150
+price: 400
 groups:
 - mine
 level: 2
@@ -60,4 +61,11 @@ upkeep:
     - STONE_PICKAXE
     output:
     - IRON_INGOT*12
-
+  3:
+    reagents:
+    - NETHERITE_PICKAXE
+    - STONE_PICKAXE
+    input:
+    - STONE_PICKAXE
+    output:
+    - IRON_INGOT*18

@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: LEATHER
+dynmap-marker: coins
 name: Leather_Shop
 max: 1
 price: 10
@@ -26,9 +27,7 @@ effects:
 period: 600 #10 minutes
 upkeep:
   0:
-    power-input: 1
-  1:
     input:
-    - LEATHER*8
+    - LEATHER*6
     payout: 2.5 # $360 per day
 

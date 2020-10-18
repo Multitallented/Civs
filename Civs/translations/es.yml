@@ -49,6 +49,11 @@
 #cancel-revolt: Click para dejar la revuelta contra $1.
 #item-cost: Esta acción cuesta $1 $2
 #cost-buff: Se te ha reembolsado $1 por construir un/a $2 en una ciudad de $3.
+#refund: Te han reembolsado $$1
+#insufficient-exp: Experiencia insuficiente
+#action-not-allowed: $1 no te permite tener $2
+#spell-cast: "@{BLUE}$1 @{WHITE} usó @{RED}$2"
+#exp-gained: Has adquirido experiencia $1 $2
 #merit-new-owner: ¡Felicidades, has superado a $1!. ¡Eres el nuevo dueño de la ciudad!
 #item-locked: Aún no has desbloqueado este objeto.
 #ai-invite: Hey @$1 , ¿te gustaría unirte a mi ciudad?
@@ -60,7 +65,7 @@
 #cost-buff-desc: $1% de reembolso de costos para todos los/las $2
 #shop: Tienda
 #buy-item: En venta
-#price: Precio
+#price: Precio $1
 #buy: Comprar $1
 #cancel: Cancelar
 #item-bought: ¡Felicidades! Has comprado $1 por $2
@@ -75,6 +80,7 @@
 #community: Comunidad
 #players: Jugadores
 #towns: Ciudades
+#town: Ciudad
 #your-towns: Tus ciudades
 #wars: Guerras
 #alliances: Alianzas
@@ -165,6 +171,8 @@
 #click-for-req-regions: Click aquí para obtener una lista de las regiones requeridas
 #town-instructions: Crea una $1, usando  /cv town [NombreDeLaCiudad]
 #town-enter: Has entrado a $1 ($2)
+#town-enter-warning: "@{RED}¡Peligro! Esta ciudad tiene defensas activas. Tal vez use un
+#  teletransportador de incursiones o asedie la ciudad si quiere atacar."
 #town-exit: Has abandonado $1 ($2)
 #wild: Desierto
 #new-town-member: $1 se ha unido a $2
@@ -185,6 +193,10 @@
 #friend-added: $1 ha sido añadido/a a tu lista de amigos
 #friend-removed: $1 ha sido eliminado/a de tu lista de amigos
 #bounty: Pon una recompensa /cv bounty $1 cantidad
+#click-me: ">>>Haz clic en mí<<<"
+#bounty-command: /cv bounty $1 cantidad
+#rename-command: /cv rename $1 NuevoNombre
+#really-command: /cv really $1 NuevoNombre
 #town-ally: Establecer $1 como aliados
 #town-unally: Establecer $1 como enemigos
 #town-ally-invites: Tienes invitaciones de alianza
@@ -192,6 +204,8 @@
 #town-ally-request-accepted: Se ha formado una alianza entre $1 y $2
 #town-ally-request-denied: Solicitud de alianza con $1 denegada
 #town-ally-removed: Se ha disuelto la alianza entre $1 y $2
+#decline-all: Rechazas la invitación
+#accept-invite: Aceptas la invitación
 #region-evolve: $1 evoluciona a $2
 #region-evolved: Tu $1 evolucionó a $2
 #anti-camp-active: El anti-camp de $1 ha sido activado
@@ -204,8 +218,13 @@
 #regions-for-sale: Regiones en venta
 #use-sell-command: Escribe /cv sell [precio]
 #region-bought: Has comprado esta $1 por $2
+#region-sold: Su $1 ha sido vendido a $2. Ganaste $3
 #sort-by-level: Ordenar regiones por nivel
 #level: Nivel $1
+#level-up: Haga clic para gastar minecraft xp para subir de nivel esta clase. No puedes
+#  gastar xp si tu nivel de minecraft es más bajo que tu nivel de clase.
+#level-up-max: Has alcanzado el nivel máximo.
+#not-enough-levels: Necesitas $1 niveles más para hacer esto.
 #rename-alliance: Renombrar alianza
 #rename-alliance-desc: Escribe /cv really $1 [nombreDeLaNuevaAlianza]
 #alliance-renamed: $1 ha sido renombrado a $2
@@ -214,6 +233,7 @@
 #last-renamed-by: "Renombrado por última vez por: $1"
 #leave-alliance: Dejar alianza
 #hunting-players: ¡Cuidado! Alguien está cazando jugadores en tu área.
+#no-hunting-new-players: No puedes cazar a un jugador que no sea miembro de ninguna ciudad.
 #target-not-in-world: $1 no está en el mismo mundo que tú.
 #cant-place-town: Escribe /cv town [nombre]
 #no-region-type-found: No se ha encontrado el tipo de región para $1
@@ -221,6 +241,7 @@
 #no-required-blocks: No has colocado los bloques requeridos para hacer un $1
 #cant-build-on-region: No puedes construir un/a $1 encima de un $2
 #rebuild-required: Necesitas construir este/a $1 encima de un/a $2
+#max-rebuild-required: Ya tienes $1 de $2 $3. Solo puede usar este $4 para actualizar un $5.
 #prevent-civs-item-share: No tienes permitido compartir objetos de Civs
 #region-protected: Esta región esta protegida
 #region-destroyed: La región $1 ha sido destruida!
@@ -234,12 +255,13 @@
 #already-member: $1 ya es un miembro de $2
 #broke-own-region: A tu $1 le faltan bloques
 #no-permission: Permiso denegado
+#no-anti-camp-duing-raidporter: No puede activar las defensas contra el camping mientras un puerto de invasión
+#  está activo. Destruir el puerto de invasión!
 #class-changed: Tu clase ha cambiado a $1
 #not-enough-money: No tienes $$1
 #not-allowed-place: $1 no puede ser colocado
 #hold-town: Por favor, sujeta un objeto de ciudad
 #no-commands-in-jail: No puedes usar comandos en la cárcel durante otros $1
-#mana-use-exp: No puedes usar esto a menos que tengas maná completo
 #building-requires-2space: Este edificio requiere 2 espacios vacíos sobre el cofre central.
 #missing-blocks-build: Necesitas colocar estos bloques faltantes para construir un/a $1
 #intruder-enter: "@{RED}[ADVERTENCIA]$1 ha entrado en $2"
@@ -269,6 +291,7 @@
 #req-build-inside-town: Esta $1 debe ser construida dentro de $2
 #missing-region-requirements: A tu $1 le faltan las regiones requeridas
 #friendly-fire: No puedes dañar a alguien en tu lista de amigos
+#catapult-elytra-equipped: No puedes disparar la catapulta mientras llevas un Elytra.
 #limits: Límites
 #item-limit: Tienes $1 de $2 $3
 #region-limit-reached: Una $1 solo puede tener $2 $3
@@ -291,8 +314,17 @@
 #karma: "Karma: $1"
 #karma-desc: El karma es una medida de infamia. Cuanto más bajo es el karma, mayor es la
 #  recompensa por su muerte.
+#hardship: "Sufrimiento: $1"
+#hardship-desc: El sufrimiento mide con qué frecuencia has sido atacado. Cuanto mayor sea el
+#  sufrimiento, más caro será atacarlos. El sufrimiento disminuye cada 7 días.
+#hardship-too-high: Esa acción no está permitida. $1 tiene demasiado sufrimiento.
 #karma-gained: "Karma: +$1, $2 de dinero ganado"
 #karma-lost: "Karma: -$1, $2 de dinero perdido"
+#karma-display: "Sufrimiento: $1 / Valor: $2"
+#karma-town-desc: El sufrimiento de la ciudad es una medida del daño que merece. En redadas y
+#  guerras, si el daño excede el sufrimiento, el atacante paga la diferencia.
+#combat-tagged: "@{RED}Has sido marcado como en combate. No cerrar sesión. Las áreas seguras
+#  no lo protegerán."
 #ann-limit: "[Info] Tienes $1 de $2 $3 construcciones"
 #ann-achievement: "[Info] Consulta la guía para ver tu próximo logro disponible."
 #ann-town-join: "[Info] Puedes ser miembro de varias ciudades. Normalmente las ciudades aman a
@@ -313,6 +345,7 @@
 #ann-missing-input: "[Info] Tu $1 necesita objetos. Haz click con el libro de Civs en él para ver
 #  qué reactivos / entradas necesita."
 #ann-bounty: "[Info] $1 tiene una recompensa de $2 por su cabeza."
+#and-more: Y más...
 #tut-default-0: Primero, abre tu libro, ve a planos, coge tu refugio, y colocalo.
 #tut-default-1: Luego, reúne 4 panes, 32 zanahorias, 32 chuletas o 32 papas. Ponlos en el
 #  cofre del refugio.
@@ -321,6 +354,8 @@
 #tut-default-3: Coloca 25 lanas, 14 vallas, y 2 cofres. Después, colca la tienda de carbón.
 #tut-default-4: ¡Felicidades! Has completado el tutorial por defecto. Ahora elige tu camino.
 #tut-warrior-name: Guerrero
+#tut-warrior-desc: Las ciudades son fortalezas defensivas. Elija este camino para aprender cómo
+#  robarlos, invadirlos o destruirlos.
 #tut-warrior-0: Primero, compra el altar. Puedes utilizar este altar para obtener equipamiento
 #  de diamante.
 #tut-warrior-1: Ahora, pon una espada de hierro en el cofre del altar. Si tienes $300,
@@ -343,6 +378,8 @@
 #tut-warrior-9: Felicitaciones! Ahora eres sabio en los caminos de la guerra. Esto concluye el
 #  camino del guerrero.
 #tut-builder-name: Constructor
+#tut-builder-desc: ¿Quieres tu propio pueblo? Elige este camino para construir tu ciudad,
+#  mejorarla y construir defensas fuertes.
 #tut-builder-0: Comienza comprando la sala del consejo. Este es el corazón de una ciudad. Crea
 #  poder y proporciona 2 alojamientos .
 #tut-builder-1: Ahora contruye la sala del consejo.
@@ -372,29 +409,34 @@
 #tut-builder-13: ¡Felicidades! Ya eres todo un arquitecto consumado. Esto concluye el camino
 #  del constructor.
 #tut-merchant-name: Comerciante
-#tut-merchant-0: Únete a una ciudad. Luego, compra una choza de alguien en esa ciudad. Una vez
-#  que te hayan establecido como propietario de la choza, pon un poco de pan en
-#  el cofre de la choza.
-#tut-merchant-1: Las casas pueden ser mejoradas para darte más dinero. Compra una Cabaña en la
-#  tienda.
-#tut-merchant-2: Añadela a tu choza para convertirla en una región de 9x9x9, luego coloca el
+#tut-merchant-desc: ¿Amas el dinero? Únete a una ciudad y elige este camino. Aprenderá sobre
+#  viviendas, tiendas y la economía.
+#tut-merchant-0: Únete a una ciudad. Una vez que haya hecho eso, vaya a sus planes, tome un
+#  Plot7x7 y colóquelo en algún lugar. Este será su reclamo que se puede vender
+#  con /cv sell cantidad
+#tut-merchant-1: Anímate y compra un Choza de la tienda y constrúyelo. Choza también se puede
+#  vender usando /cv sell cantidad
+#tut-merchant-2: Ahora pon algunas papas en el baúl Choza
+#tut-merchant-3: Las casas pueden ser mejoradas para darte más dinero. Compra una Cabaña en la
+#  tienda
+#tut-merchant-4: Añadela a tu choza para convertirla en una región de 9x9x9, luego coloca el
 #  cofre de la cabaña dentro.
-#tut-merchant-3: Pon 384 patatas en el cofre de tu cabaña. En 24 horas, tu cabaña las venderá y
+#tut-merchant-5: Pon 384 patatas en el cofre de tu cabaña. En 24 horas, tu cabaña las venderá y
 #  se mejorará a una Cabaña1.
-#tut-merchant-4: Compra y construye un huerto de manzanas. Construye una vía de vagonetas desde
+#tut-merchant-6: Compra y construye un huerto de manzanas. Construye una vía de vagonetas desde
 #  dentro de tu huerto de manzanas hasta dentro de tu Cabaña. Coloca un rail
 #  propulsado inclinado dentro del huerto de manzanas. Finalmente, coloca una
 #  vagoneta con cofre dentro del huerto de manzanas.
-#tut-merchant-5: Hora de mejorar de nuevo, Compra y coloca una Vivienda dentro de tu Cabaña.
-#tut-merchant-6: Las viviendas te dan un montón de dinero, pero una Casa te da más. Compra y
+#tut-merchant-7: Hora de mejorar de nuevo, Compra y coloca una Vivienda dentro de tu Cabaña.
+#tut-merchant-8: Las viviendas te dan un montón de dinero, pero una Casa te da más. Compra y
 #  mejora tu Vivienda a una Casa.
-#tut-merchant-7: Pon este pan en tu casa y mejorala a una Casa1
-#tut-merchant-8: Pon este salmón en tu Casa1 y mejorala a una Casa2.
-#tut-merchant-9: Ahora construye una tienda de hierro para aumentar aún más tus ingresos.
-#tut-merchant-10: Cada jugador solo puede tener 3 tiendas. La tienda más lucrativa es una tienda
+#tut-merchant-9: Pon este pan en tu casa y mejorala a una Casa1
+#tut-merchant-10: Pon este salmón en tu Casa1 y mejorala a una Casa2.
+#tut-merchant-11: Ahora construye una tienda de hierro para aumentar aún más tus ingresos.
+#tut-merchant-12: Cada jugador solo puede tener 3 tiendas. La tienda más lucrativa es una tienda
 #  de comercio. Construye el la tienda de Jade. Destruye una de tus otras tiendas
 #  si ya tienes 3.
-#tut-merchant-11: ¡Felicidades! Ahora puedes vender objetos que compres en la Mina de Jade de
+#tut-merchant-13: ¡Felicidades! Ahora puedes vender objetos que compres en la Mina de Jade de
 #  otra ciudad. Esto concluye el camino del comerciante.
 #anarchy-name: Anarquía
 #anarchy-desc: Cualquiera puede gestionar los miembros y regiones de la ciudad. Sin
@@ -594,6 +636,8 @@
 #potato_farm-desc: Produce patatas y patatas venenosas cada 5 minutos. Coloca una vagoneta con
 #  cofre en el cofre. Construye railes desde la Granja de patatas hasta una
 #  región de destino. Coloca un rail propulsado inclinado al principio.
+#potato_farm1-name: Granja de papas
+#potato_farm1-desc: Produzca papas y papas venenosas cada 5 minutos.
 #pumpkin_farm-name: Granja de calabazas
 #pumpkin_farm-desc: Produce calabazas cada 10 minutos. Coloca una vagoneta con cofre en el cofre.
 #  Construye railes desde la Granja de calabazas hasta una región de destino.
@@ -688,6 +732,9 @@
 #jade_mine-name: Mina de Jade
 #jade_mine-desc: Crea 16 de jade una vez al día que puede ser vendida usando una tienda de
 #  jade. No se puede construir en una ciudad con una tienda de jade.
+#jade-mine-name: Mina de Jade
+#jade-mine-desc: Crea 16 de jade una vez al día que puede ser vendida usando una tienda de
+#  jade. No se puede construir en una ciudad con una tienda de jade.
 #coal_mine-name: Mina de carbón
 #coal_mine-desc: Crea carbón usando picos. Coloca una vagoneta con cofre en el cofre. Construye
 #  railes desde la Mina de Carbón hasta una región de destino. Coloca un rail
@@ -742,6 +789,7 @@
 #siege_machine2-desc: Destruye 1 de poder cada 2 minutos. Mejora después de 4 disparos.
 #siege_machine3-name: Máquina de asedio3
 #siege_machine3-desc: Destruye 1 de poder cada 1.5 minutos.
+#no-tp-pearl-chorus: No puedes usar perla de ender o fruta coral dentro de las ciudades enemigas
 #altar-name: Altar
 #altar-desc: Crea un set completo de armadura de diamante, espada, arco y flechas por $300
 #  cada hora.
@@ -756,10 +804,10 @@
 #command_tent-name: Tienda de mando
 #command_tent-desc: El centro del puesto de avanzada. Te permite asediar una ciudad cercana. Crea
 #  1 de poder cada 15 minutos.
-#hunting_lodge-name: Pabellón de caza
-#hunting_lodge-desc: Al colocar un cartel sobre el bloque de obsidiana con el nombre de tu víctima,
-#  puedes hacer click derecho en la obsidiana para teletransportarte cerca de tu
-#  objetivo.
+#hunting_lodge-name: Pabellón de Caza
+#hunting_lodge-desc: Coloque un letrero en el bloque central con el nombre de su objetivo. Luego
+#  haga clic derecho sobre él para teletransportarse a 200 bloques de ese
+#  jugador.
 #memorial-name: Memorial
 #memorial-desc: Un lugar para que los miembros de la ciudad reaparezcan. También protege del
 #  daño.
@@ -798,6 +846,8 @@
 #iron_shop-desc: Vende 288 de hierro al servidor por $576 por día
 #leather_shop-name: Tienda de cuero
 #leather_shop-desc: Vende cuero al servidor por $360 por día
+#lapis_shop-name: Tienda Lapis
+#lapis_shop-desc: Vende lapis al servidor por $600 por día
 #city-name: Ciudad
 #city-desc: El quinto nivel de una ciudad. Requiere 30 de población.
 #hamlet-name: Aldea
@@ -895,7 +945,7 @@
 #trade-mines-name: Minas Comerciales
 #trade-mines-desc: Minas que producen artículos para vender en otras ciudades.
 #defense-evolve-name: Evolucionar
-#defense-evolve-desc: Formas evolucionadas ocultas de varios edificios.
+#defense-evolve-desc: Formas ocultas evolucionadas de varios edificios
 #evolve-name: Evolucionar
 #evolve-desc: Formas evolucionadas ocultas de varios edificios.
 #plot7x7-name: Parcela7x7
@@ -906,3 +956,112 @@
 #plot15x15-desc: Un marcador de posición para edificios 15x15 y más pequeños
 #plot19x19-name: Parcela19x19
 #plot19x19-desc: Un marcador de posición para edificios 19x19 y más pequeños
+#vault-name: Sótano
+#vault-desc: Aumenta la potencia máxima de la ciudad en 500. Proporciona 96 de energía a la
+#  ciudad cada día.
+#housing-group: Alojamiento
+#defense-group: Defensas
+#trap-group: Trampas
+#arrowtrapgroup-group: Trampas de Flecha
+#publichousing-group: Vivienda Pública
+#idolgroup-group: Estatuas
+#factory-group: Fabricación
+#farm-group: Granjas
+#raw-group: Producción de materia prima
+#woodwork-group: Almacén de Madera
+#allchalet-group: Ninguna Chalet
+#basechalet-group: No-NPC Chalet
+#allhousing-group: Ninguna Viviendas
+#npchousinggroup-group: NPC Viviendas
+#alldwelling-group: Ninguna Vivienda
+#basedwelling-group: No-NPC Vivienda
+#allestate-group: Ninguna Finca
+#baseestate-group: No-NPC Finca
+#allhouse-group: Ninguna Casa
+#basehouse-group: No-NPC Casa
+#allhovel-group: Ninguna Cabaña
+#basehovel-group: No-NPC Cabaña
+#allmanor-group: Ninguna Señorío
+#basemanor-group: No-NPC Señorío
+#allmansion-group: Ninguna Mansión
+#basemansion-group: No-NPC Mansión
+#allshack-group: Ninguna Choza
+#baseshack-group: No-NPC Choza
+#allvilla-group: Ninguna Pueblo
+#basevilla-group: No-NPC Pueblo
+#trademine-group: Mina Comerciale
+#trading-group: Comercio
+#mine-group: Minas
+#offense-group: Ofensa
+#basecenter-group: Acampar
+#raidport-group: Puertos de invasión
+#siegemachinegroup-group: Máquinas de asedio
+#townpowerreduce-group: Equipo de asedio
+#quarry-group: Canteras
+#tradeshop-group: Tiendas Comerciales
+#shop-group: Tiendas
+#oreshop-group: Tiendas de Mineral
+#superregion-group: Ciudades
+#utility-group: Servicios Públicos
+#town_center-group: Centro de la Ciudad
+#maxpower-group: Estructuras de máxima potencia
+#skills: Habilidades
+#armor-skill: Armadura
+#armor-skill-desc: "Nivel: $1 ($2/$3)\\nToma daño mientras usas diferentes armaduras.\\nOfrece
+#  descuentos en edificios de defensa."
+#building-skill: Construcción
+#sword-skill: Espadas
+#axe-skill: Hachas
+#axe-skill-desc: "Nivel: $1 ($2/$3)\\nMata a diferentes monstruos con hachas.\\nOfrece
+#  descuentos en astilleros, teletransportadores de invasión, trampas de
+#  teletransportación y pabellón de caza."
+#bow-skill: Arcos
+#crossbow-skill: Ballestas
+#crossbow-skill-desc: "Level: $1 ($2/$3) Mata a diferentes mobs con ballestas. Ofrece descuentos en
+#  máquinas de asedio y edificios relacionados con flechas."
+#enchant-skill: Encantamiento
+#enchant-skill-desc: "Level: $1 ($2/$3) Crea diferentes encantamientos. Ofrece descuentos en
+#  edificios de servicios públicos y de poder."
+#mining-skill: Minería
+#trident-skill: Tridente
+#crafting-skill: Fabricación
+#crafting-skill-desc: "Nivel: $1 ($2/$3)\\nHaz diferentes artículos para ganar exp.\\nOfrece
+#  descuentos en fábricas de fabricación."
+#exploration-skill: Exploración
+#food-skill: Comiendo
+#shield-skill: Escudos
+#potion-skill: Pociones
+#skill-bar: "@{GREEN}$1@{RED}$2"
+#chat-channels: Canals de Charla
+#chat-change-chat: Cambiar el canal de chat de $1
+#friend-channel: Amigos
+#friend-channel-desc: Solo jugadores establecidos como amigos
+#global-channel: Global
+#global-channel-desc: Todos los jugadores
+#local-channel: Local
+#local-channel-desc: Solo jugadores dentro de 100 bloques
+#town-channel-desc: Solo jugadores en $1
+#alliance-channel-desc: Solo jugadores en alianza $1
+#chat-channel-set: Ahora estás chateando en el canal $1
+#click-change-chat: Haga clic para cambiar el canal de chat
+#no-recipients: No hay nadie en línea en el canal de chat $1
+#change-class: Cambio de Clase
+#change-class-desc: Seleccione una clase nueva o guardada previamente.
+#health: Salud
+#health-desc: "Max: $1"
+#mana: Magia
+#heat: Calor
+#stamina: Aguante
+#or: O
+#mana-desc: "Max: $1 Regeneración: $2"
+#empty-spell-slot: Espacio de hechizos vacío
+#empty-spell-slot-desc: Elige un hechizo para este espacio
+#allowed-items: Artículos Permitidos
+#allowed-items-desc: Todos los artículos que $1 puede usar
+#req-skill-level: Debes tener al menos el nivel $2 en $1
+#req-item: Primero debes comprar un $1
+#req-build: Primero debes construir un $1
+#switch-spell-cast: Cambie a este elemento para usarlo.
+#view-all-classes: Ver todas las clases
+#new-class: Nueva Clase
+#default-name: Soldado

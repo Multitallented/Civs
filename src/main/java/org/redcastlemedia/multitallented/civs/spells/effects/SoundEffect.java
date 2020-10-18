@@ -9,6 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
+import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
 
 public class SoundEffect extends Effect {
     private String soundName = "EXPLODE";
@@ -16,25 +17,25 @@ public class SoundEffect extends Effect {
     private float volume = 1;
     private float pitch = 1;
 
-    public SoundEffect(Spell spell, String key, Object target, Entity origin, int level, ConfigurationSection section) {
-        super(spell, key, target, origin, level, section);
-        this.soundName = section.getString("sound", "EXPLODE").toUpperCase();
-        this.volume = (float) section.getDouble("volume", 1);
-        this.pitch = (float) section.getDouble("pitch", 1);
-        String tempTarget = section.getString("target", "not-a-string");
-        if (!tempTarget.equals("not-a-string")) {
-            this.target = tempTarget;
-        } else {
+    public SoundEffect(Spell spell, String key, Object target, Entity origin, int level, Object value) {
+        super(spell, key, target, origin, level);
+        if (value instanceof ConfigurationSection) {
+            ConfigurationSection section = (ConfigurationSection) value;
+            this.soundName = section.getString(SpellEffectConstants.SOUND, "EXPLODE").toUpperCase();
+            this.volume = (float) section.getDouble("volume", 1);
+            this.pitch = (float) section.getDouble("pitch", 1);
+            String tempTarget = section.getString(SpellConstants.TARGET, SpellConstants.NOT_A_STRING);
+            if (!SpellConstants.NOT_A_STRING.equals(tempTarget)) {
+                this.target = tempTarget;
+            } else {
+                this.target = "self";
+            }
+        } else if (value instanceof String) {
             this.target = "self";
+            this.soundName = ((String) value).toUpperCase();
+            this.volume = 1;
+            this.pitch = 1;
         }
-    }
-
-    public SoundEffect(Spell spell, String key, Object target, Entity origin, int level, String value) {
-        super(spell, key, target, origin, level, value);
-        this.target = "self";
-        this.soundName = value.toUpperCase();
-        this.volume = 1;
-        this.pitch = 1;
     }
 
     public boolean meetsRequirement() {

@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.util;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -37,7 +38,7 @@ public final class OwnershipUtil {
         boolean inviteeIsOwner = town.getRawPeople().containsKey(invitee.getUuid()) &&
                 !town.getRawPeople().get(invitee.getUuid()).contains(Constants.OWNER);
 
-        double price = townType.getPrice() * 2;
+        double price = townType.getPrice(civilian) * 2;
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         boolean oligarchyOverride = player != null && !isOwner && inviteeIsOwner &&
                 government.getGovernmentType() == GovernmentType.OLIGARCHY;
@@ -124,12 +125,8 @@ public final class OwnershipUtil {
         }
 
         boolean colonialOverride = hasColonialOverride(town, civilian);
-        boolean isOwner = false;
-        for (UUID uuid : town.getRawPeople().keySet()) {
-            if (town.getRawPeople().get(uuid).contains(Constants.OWNER)) {
-                isOwner = true;
-            }
-        }
+        boolean isOwner = town.getRawPeople().containsKey(civilian.getUuid()) &&
+                town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         if (!isOwner && !colonialOverride) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     "no-permission"));
@@ -139,10 +136,23 @@ public final class OwnershipUtil {
         return amount;
     }
 
-    public static HashMap<UUID, Double> getCooperativeSplit(Town town) {
+    public static Map<UUID, Double> getCooperativeSplit(Town town, Region originRegion) {
         HashMap<UUID, Double> payoutSplit = new HashMap<>();
         int total = 0;
         for (Region region : TownManager.getInstance().getContainingRegions(town.getName())) {
+            if (region.equals(originRegion)) {
+                Set<UUID> owners = region.getOwners();
+                for (UUID uuid : owners) {
+                    double amount = 1 / (double) owners.size();
+                    if (payoutSplit.containsKey(uuid)) {
+                        payoutSplit.put(uuid, payoutSplit.get(uuid) + amount);
+                    } else {
+                        payoutSplit.put(uuid, amount);
+                    }
+                }
+                total++;
+                continue;
+            }
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             int i=0;
             for (RegionUpkeep upkeep : regionType.getUpkeeps()) {

@@ -66,7 +66,7 @@ public class TownInvitesMenu extends CustomMenu {
             TownType inviteTownType = (TownType) ItemManager.getInstance().getItemType(inviteTown.getType());
             CVItem cvItem = inviteTownType.getShopIcon(civilian.getLocale()).clone();
             cvItem.setDisplayName(inviteTown.getName());
-            cvItem.setLore(Util.textWrap(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                     menuIcon.getDesc())));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
@@ -84,6 +84,7 @@ public class TownInvitesMenu extends CustomMenu {
         if ("accept-invite".equals(actionString)) {
             String townName = itemStack.getItemMeta().getDisplayName();
             Town inviteTown = TownManager.getInstance().getTown(townName);
+            town.getAllyInvites().remove(townName);
             AllianceManager.getInstance().allyTheseTowns(town, inviteTown);
             for (Player cPlayer : Bukkit.getOnlinePlayers()) {
                 Civilian civilian1 = CivilianManager.getInstance().getCivilian(cPlayer.getUniqueId());
@@ -91,6 +92,7 @@ public class TownInvitesMenu extends CustomMenu {
                         "town-ally-request-accepted").replace("$1", town.getName())
                         .replace("$2", inviteTown.getName()));
             }
+            TownManager.getInstance().saveTown(town);
             return true;
         } else if ("decline-all-invites".equals(actionString)) {
             town.getAllyInvites().clear();

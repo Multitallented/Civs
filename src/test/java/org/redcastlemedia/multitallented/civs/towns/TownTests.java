@@ -7,14 +7,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.commands.TownCommand;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -350,6 +348,10 @@ public class TownTests extends TestUtil {
     public void townTransitionTest() {
         TownTests.loadTownTypeHamlet2();
         Town town = TownTests.loadTown("test", "hamlet2", TestUtil.player.getLocation());
+        town.getRawPeople().put(new UUID(1, 6), "owner");
+        town.getRawPeople().put(new UUID(1, 7), "member");
+        town.getRawPeople().put(new UUID(1, 8), "member");
+
         town.setPower(2);
         town.getRawPeople().put(TestUtil.player.getUniqueId(), Constants.OWNER);
         town.getRawPeople().put(TestUtil.player2.getUniqueId(), "member");
@@ -373,6 +375,9 @@ public class TownTests extends TestUtil {
     public void townShouldNotTransition() {
         TownTests.loadTownTypeHamlet2();
         Town town = TownTests.loadTown("test", "hamlet2", TestUtil.player.getLocation());
+        town.getRawPeople().put(new UUID(1, 6), "owner");
+        town.getRawPeople().put(new UUID(1, 7), "member");
+        town.getRawPeople().put(new UUID(1, 8), "member");
         town.setPower(160);
         ArrayList<GovTransition> transitions = new ArrayList<>();
         GovTransition govTransition = new GovTransition(-1, -1, 30, -1,
@@ -389,6 +394,9 @@ public class TownTests extends TestUtil {
     public void townShouldNotInactiveTransition() {
         TownTests.loadTownTypeHamlet2();
         Town town = TownTests.loadTown("test", "hamlet2", TestUtil.player.getLocation());
+        town.getRawPeople().put(new UUID(1, 6), "owner");
+        town.getRawPeople().put(new UUID(1, 7), "member");
+        town.getRawPeople().put(new UUID(1, 8), "member");
         town.setPower(160);
         town.setLastActive(System.currentTimeMillis());
         ArrayList<GovTransition> transitions = new ArrayList<>();

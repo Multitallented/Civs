@@ -1,6 +1,7 @@
 type: region
 icon: CHEST
 shop-icon: REDSTONE_ORE
+dynmap-marker: ruby
 name: Redstone_Mine
 max: 1
 price: 250
@@ -49,4 +50,11 @@ upkeep:
     - STONE_PICKAXE
     output:
     - REDSTONE*12
-
+  3:
+    reagents:
+    - NETHERITE_PICKAXE
+    - STONE_PICKAXE
+    input:
+    - STONE_PICKAXE
+    output:
+    - REDSTONE*18

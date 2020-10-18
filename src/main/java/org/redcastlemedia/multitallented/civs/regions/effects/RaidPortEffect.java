@@ -1,6 +1,16 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import org.bukkit.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -14,7 +24,6 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
@@ -22,6 +31,8 @@ import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -29,10 +40,6 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
-
-import java.util.HashMap;
-import java.util.Set;
-import java.util.UUID;
 
 @CivsSingleton
 public class RaidPortEffect implements Listener, CreateRegionListener {
@@ -60,9 +67,8 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
 
         Town town = hasValidSign(l, rt, player.getUniqueId());
 
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         if (town == null) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "raid-sign"));
             return false;
         }
@@ -78,25 +84,37 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             }
             if (!isOnline) {
                 player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(civilian.getLocale(), "raid-porter-offline")
+                        LocaleManager.getInstance().getTranslation(player, "raid-porter-offline")
                         .replace("$1", town.getName()));
                 return false;
             }
         }
 
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        double hardshipBuffer;
+        if (Civs.econ == null) {
+            hardshipBuffer = 20000;
+        } else {
+            hardshipBuffer = Civs.econ.getBalance(player);
+        }
+        if (town.getHardship() > civilian.getHardship() + hardshipBuffer) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                    "hardship-too-high").replace("$1", town.getName()));
+            return false;
+        }
+
         for (Player player1 : Bukkit.getOnlinePlayers()) {
-            Civilian civilian1 = CivilianManager.getInstance().getCivilian(player1.getUniqueId());
-            String raidLocalName = LocaleManager.getInstance().getTranslation(civilian1.getLocale(),
-                    rt.getProcessedName() + "-name");
+            String raidLocalName = LocaleManager.getInstance().getTranslation(player1,
+                    rt.getProcessedName() + LocaleConstants.NAME_SUFFIX);
             player1.sendMessage(Civs.getPrefix() + ChatColor.RED +
-                    LocaleManager.getInstance().getTranslation(civilian1.getLocale(), "raid-porter-warning")
+                    LocaleManager.getInstance().getTranslation(player1, "raid-porter-warning")
                             .replace("$1", player.getDisplayName())
                             .replace("$2", raidLocalName)
                             .replace("$3", town.getName()));
         }
         if (Civs.discordSRV != null) {
             String raidLocalName = LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(),
-                    rt.getProcessedName() + "-name");
+                    rt.getProcessedName() + LocaleConstants.NAME_SUFFIX);
             String defaultMessage = Civs.getPrefix() + ChatColor.RED +
                     LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(), "raid-porter-warning")
                             .replace("$1", player.getDisplayName())
@@ -106,28 +124,30 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             DiscordUtil.sendMessageToMainChannel(defaultMessage);
         }
         CVItem raidRemote = CVItem.createCVItemFromString("STICK");
-        raidRemote.setDisplayName("Controller " + rt.getName() + " " + Region.locationToString(l));
+        raidRemote.setDisplayName(rt.getDisplayName(player));
+        raidRemote.getLore().add(ChatColor.BLACK + Region.locationToString(l));
 
         l.getWorld().dropItemNaturally(l, raidRemote.createItemStack());
         player.sendMessage(Civs.getPrefix() + ChatColor.RED +
-                LocaleManager.getInstance().getTranslation(civilian.getLocale(), "raid-remote")
-                .replace("$1", rt.getName()));
+                LocaleManager.getInstance().getTranslation(player, "raid-remote")
+                .replace("$1", rt.getDisplayName(player)));
         return true;
     }
 
     private Town hasValidSign(Location l, RegionType rt, UUID uuid) {
         Player player = Bukkit.getPlayer(uuid);
-        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
         Block block = l.getBlock().getRelative(BlockFace.UP);
         BlockState state = block.getState();
         if (!(state instanceof Sign)) {
             return null;
         }
 
-        String stringDistance = rt.getEffects().get(KEY);
         int distance = 200;
-        if (stringDistance != null) {
-            distance = Integer.parseInt(stringDistance);
+        if (rt.getEffects().get(KEY) != null) {
+            String[] split = rt.getEffects().get(KEY).split("\\.");
+            if (!split[0].isEmpty()) {
+                distance = Integer.parseInt(split[0]);
+            }
         }
 
         Sign sign = (Sign) state;
@@ -137,7 +157,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             town = TownManager.getInstance().getTown(sign.getLine(0));
         } catch (Exception e) {
             block.breakNaturally();
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "raid-target-lost").replace("$1", sign.getLine(0))
                     .replace("$2", distance + ""));
             return null;
@@ -151,7 +171,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             }
             if (town == null) {
                 block.breakNaturally();
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "raid-target-lost").replace("$1", sign.getLine(0))
                         .replace("$2", distance + ""));
                 return null;
@@ -161,7 +181,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
 
         if (townType.getBuildRadius() + distance < l.distance(town.getLocation())) {
             block.breakNaturally();
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "raid-target-lost").replace("$1", town.getName())
                     .replace("$2", distance + ""));
             return null;
@@ -172,7 +192,6 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
     @EventHandler
     public void onPlayerInRegion(PlayerInRegionEvent event) {
         Region r = event.getRegion();
-        Civilian civilian = CivilianManager.getInstance().getCivilian(event.getUuid());
         Player player = Bukkit.getPlayer(event.getUuid());
         if (!r.getEffects().containsKey(KEY)) {
             return;
@@ -191,7 +210,10 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
 
         long cooldown = 20;
         if (r.getEffects().get(KEY) != null) {
-            cooldown = Long.parseLong(r.getEffects().get(KEY));
+            String[] split = r.getEffects().get(KEY).split("\\.");
+            if (split.length > 1) {
+                cooldown = Long.parseLong(split[1]);
+            }
         }
 
         if (cooldowns.containsKey(town) &&
@@ -208,7 +230,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             targetLoc = findTargetLocation(town);
 
             if (targetLoc == null) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "searching-for-target"));
                 return;
             }
@@ -221,7 +243,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
                 raidLocations.remove(r);
             }
             l.getBlock().getRelative(BlockFace.UP).breakNaturally();
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "raid-target-blocked"));
             return;
         }
@@ -230,7 +252,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         r.runUpkeep();
         player.teleport(targetLoc);
         cooldowns.put(town, System.currentTimeMillis());
-        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+        player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                 "teleported"));
     }
 
@@ -372,8 +394,8 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         if (itemInHand.getType() != Material.STICK || !itemInHand.hasItemMeta()) {
             return;
         }
-        String[] displayName = ChatColor.stripColor(itemInHand.getItemMeta().getDisplayName()).split(" ");
-        if (!displayName[0].equals("Controller") || displayName.length < 3) {
+        List<String> lore = itemInHand.getItemMeta().getLore();
+        if (lore == null || lore.isEmpty()) {
             return;
         }
 
@@ -382,12 +404,12 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         RegionType rt;
         RegionManager rm = RegionManager.getInstance();
         try {
-            r = rm.getRegionAt(Region.idToLocation(displayName[2]));
+            r = rm.getRegionAt(Region.idToLocation(ChatColor.stripColor(lore.get(0))));
             if (r == null) {
                 return;
             }
             rt = (RegionType) ItemManager.getInstance().getItemType(r.getType());
-            if (rt == null) {
+            if (rt == null || !rt.getEffects().containsKey(KEY)) {
                 return;
             }
         } catch (Exception e) {
