@@ -115,14 +115,14 @@
             <artifactId>MMOItems</artifactId>
             <scope>system</scope>
             <systemPath>${basedir}/lib/MMOItems Premium.jar</systemPath>
-            <version>4.7.17</version>
+            <version>6.2.1</version>
         </dependency>
         <dependency>
             <groupId>net.mmogroup.mmolib</groupId>
             <artifactId>MMOLib</artifactId>
             <scope>system</scope>
             <systemPath>${basedir}/lib/MMOLib.jar</systemPath>
-            <version>1.0.4</version>
+            <version>1.3.7.1</version>
         </dependency>
         <dependency>
             <groupId>me.vagdedes.spartan.api</groupId>
