@@ -205,9 +205,9 @@ public class NationManager implements Listener {
         Nation nation = nations.get(oldName);
         NationRenamedEvent renameNationEvent = new NationRenamedEvent(nation, newName);
         Bukkit.getPluginManager().callEvent(renameNationEvent);
-        File allianceFolder = new File(Civs.getInstance().getDataFolder(), "alliances");
-        File allianceFile = new File(allianceFolder, oldName + ".yml");
-        if (!allianceFile.delete()) {
+        File nationFolder = new File(Civs.getInstance().getDataFolder(), "nations");
+        File nationFile = new File(nationFolder, oldName + ".yml");
+        if (!nationFile.delete()) {
             return false;
         }
         nations.remove(oldName);
@@ -686,7 +686,23 @@ public class NationManager implements Listener {
 
     public void createNation(Town newTown) {
         Nation nation = new Nation();
-        nation.setName(newTown.getName());
+        String name = newTown.getName();
+        if (nations.containsKey(newTown.getName())) {
+            int i = 0;
+            for (;;) {
+                i++;
+                if (!nations.containsKey(name + i)) {
+                    name = name + i;
+                    break;
+                }
+                if (i == 10) {
+                    Civs.logger.log(Level.SEVERE, "Unable to create new nation named: {0}", name);
+                    return;
+                }
+            }
+        }
+
+        nation.setName(name);
         nation.setCapitol(newTown.getName());
         nation.getMembers().add(newTown.getName());
         fillClaims(nation);
