@@ -258,7 +258,7 @@ public class NationManager implements Listener {
         String townName = event.getTown().getName();
         Nation nation = getNationByTownName(townName);
 
-        if (!nationHasEnoughMembers(nation)) {
+        if (nation != null && !nationHasEnoughMembers(nation)) {
             NationManager.getInstance().removeNation(nation);
         }
     }
