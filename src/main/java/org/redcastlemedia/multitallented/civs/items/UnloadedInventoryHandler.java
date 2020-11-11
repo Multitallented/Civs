@@ -3,11 +3,14 @@ package org.redcastlemedia.multitallented.civs.items;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsSingleton()
 public class UnloadedInventoryHandler {
@@ -56,15 +59,18 @@ public class UnloadedInventoryHandler {
             return;
         }
         String chunkString = getChunkString(chunk);
-        if (unloadedChestInventories.containsKey(chunkString)) {
-            for (String key : unloadedChestInventories.get(chunkString).keySet()) {
-                updateInventoryAtLocation(Region.idToLocation(key));
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> {
+            if (unloadedChestInventories.containsKey(chunkString)) {
+                for (String key : unloadedChestInventories.get(chunkString).keySet()) {
+                    updateInventoryAtLocation(Region.idToLocation(key));
+                }
             }
-        }
+        }, 1L);
+
     }
 
     public void updateInventoryAtLocation(Location location) {
-        if (location == null) {
+        if (location == null || !Util.isChunkLoadedAt(location)) {
             return;
         }
         String chunkString = getChunkString(location);
