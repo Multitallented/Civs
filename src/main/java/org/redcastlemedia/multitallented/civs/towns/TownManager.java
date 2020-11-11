@@ -372,7 +372,7 @@ public class TownManager {
             player.sendMessage(ChatColor.RED + ChatColor.stripColor(Civs.getPrefix()) +
                     LocaleManager.getInstance().getTranslation(player, "devolve-town")
                     .replace("$1", town.getName())
-                    .replace("$2", childTownType.getProcessedName()));
+                    .replace("$2", childTownType.getDisplayName(player)));
         }
     }
 
