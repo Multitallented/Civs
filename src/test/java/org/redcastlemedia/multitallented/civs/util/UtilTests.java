@@ -54,6 +54,11 @@ public class UtilTests extends TestUtil {
         String parsedColors2 = Util.parseColors("@{#FF0000}test@{#00FF00}test2");
         assertEquals(ChatColor.of("#FF0000") + "test" + ChatColor.of("#00FF00") + "test2", parsedColors2);
     }
+    @Test
+    public void hexColorShouldTranslateProperlyWithoutColor() {
+        String parsedColors = Util.parseColors("Civs");
+        assertEquals("Civs", parsedColors);
+    }
 
     @Test
     public void cvItemFromStringShouldSetValuesProperly() {
