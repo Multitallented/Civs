@@ -60,9 +60,13 @@ public class SiegeEffect implements Listener, CreateRegionListener {
 
         String damageString = region.getEffects().get(KEY);
         int damage = 1;
+        int distance = 150;
         if (damageString != null) {
             String[] damageStringSplit = damageString.split("\\.");
             damage = Integer.parseInt(damageStringSplit[0]);
+            if (damageStringSplit.length > 1) {
+                distance = Integer.parseInt(damageStringSplit[1]);
+            }
         }
 
         //Check if valid siege machine position
@@ -98,7 +102,7 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         double rawRadius = townType.getBuildRadius();
         try {
-            if (town.getLocation().distance(l) - rawRadius >  150) {
+            if (town.getLocation().distance(l) - rawRadius > distance) {
                 sign.setLine(2, "out of");
                 sign.setLine(3, "range");
                 sign.update();

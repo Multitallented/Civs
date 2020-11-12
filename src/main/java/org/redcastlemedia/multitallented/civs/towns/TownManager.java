@@ -77,7 +77,7 @@ public class TownManager {
                 try {
                     config.load(file);
 
-                    loadTown(config);
+                    loadTown(config, file);
                 } catch (Exception e) {
                     Civs.logger.warning("Unable to read from towns/" + file.getName());
                     e.printStackTrace();
@@ -187,8 +187,17 @@ public class TownManager {
         return townArrayList;
     }
 
-    private void loadTown(FileConfiguration config) {
+    private void loadTown(FileConfiguration config, File file) {
 
+        Location location = Region.idToLocation(config.getString("location"));
+        if (location == null || location.getWorld() == null) {
+            Civs.logger.log(Level.SEVERE, "Invalid town attempted to load {0}", file.getName());
+            if (ConfigManager.getInstance().isDeleteInvalidRegions()) {
+                Civs.logger.log(Level.SEVERE, "Deleteing invalid town file {0}", file.getName());
+                file.delete();
+            }
+            return;
+        }
         HashMap<UUID, String> people = new HashMap<>();
         ConfigurationSection peopleSection = config.getConfigurationSection("people");
         if (config.isSet("people") && peopleSection != null && !peopleSection.getKeys(false).isEmpty()) {
@@ -204,7 +213,7 @@ public class TownManager {
         String governmentType = config.getString("gov-type", GovernmentType.DICTATORSHIP.name());
         Town town = new Town(config.getString("name", "NameNotFound"),
                 config.getString("type"),
-                Region.idToLocation(config.getString("location")),
+                location,
                 people,
                 power,
                 maxPower,

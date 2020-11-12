@@ -35,7 +35,7 @@ effects:
 - block_build
 - block_fire
 - door_use
-- potion:HEAL.4
+- potion:REGENERATION.80.1
 
 period: 900 #15 minutes
 upkeep:

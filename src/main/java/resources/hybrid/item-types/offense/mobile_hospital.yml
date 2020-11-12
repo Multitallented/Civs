@@ -25,6 +25,6 @@ effects:
 - block_build
 - block_fire
 - door_use
-- potion:HEAL.80
+- potion:REGENERATION.80.1
 - temporary:7200 # 2 hours
 
