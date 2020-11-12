@@ -43,9 +43,13 @@ public class CVInventory {
     }
 
     public void setInventory() {
-        Block block = this.location.getBlock();
-        if (block.getType() != Material.CHEST || location.getWorld() == null ||
+        if (location.getWorld() == null ||
                 Bukkit.getWorld(location.getWorld().getUID()) == null) {
+            this.valid = false;
+            return;
+        }
+        Block block = this.location.getBlock();
+        if (block.getType() != Material.CHEST) {
             this.valid = false;
             return;
         }
