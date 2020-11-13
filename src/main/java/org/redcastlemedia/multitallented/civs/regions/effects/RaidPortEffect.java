@@ -276,9 +276,10 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
     private Location findTargetLocation(Town town) {
         Set<Region> potentialTargets = TownManager.getInstance().getContainingRegions(town.getName());
         int i = 0;
+        double rand = Math.random();
         for (Region currentRegion : potentialTargets) {
-            double rand = Math.random();
-            if (i+1 < potentialTargets.size() && rand < (1 / (double) potentialTargets.size())) {
+            i++;
+            if (i >= potentialTargets.size() || rand > ((double) i / (double) potentialTargets.size())) {
                 continue;
             }
             RegionType rt = (RegionType) ItemManager.getInstance().getItemType(currentRegion.getType());
@@ -289,11 +290,6 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             Location teleportTarget = findSafeTeleportTarget(currentRegion);
             if (teleportTarget != null) {
                 return teleportTarget;
-            }
-
-            i++;
-            if (i > 4) {
-                break;
             }
         }
         return null;
