@@ -1039,6 +1039,21 @@ public class RegionManager {
         return regionManager;
     }
 
+    public void cleanupUnloadedRegions() {
+        if (!ConfigManager.getInstance().isDeleteInvalidRegions()) {
+            return;
+        }
+        Set<Region> removeThese = new HashSet<>();
+        for (Map.Entry<UUID, ArrayList<Region>> entry : new HashSet<>(regions.entrySet())) {
+            if (Bukkit.getWorld(entry.getKey()) == null) {
+                removeThese.addAll(entry.getValue());
+            }
+        }
+        for (Region region : removeThese) {
+            removeRegion(region);
+        }
+    }
+
     public boolean hasRegionChestChanged(Region region) {
         return !checkedRegions.contains(region);
     }
