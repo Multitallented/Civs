@@ -281,6 +281,9 @@ public final class Util {
     public static boolean isChunkLoadedAt(Location location) {
         int x = (int) Math.floor(location.getX() / 16);
         int z = (int) Math.floor(location.getZ() / 16);
+        if (location.getWorld() == null) {
+            return false;
+        }
         return location.getWorld().isChunkLoaded(x, z);
     }
 

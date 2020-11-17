@@ -60,9 +60,13 @@ public class SiegeEffect implements Listener, CreateRegionListener {
 
         String damageString = region.getEffects().get(KEY);
         int damage = 1;
+        int distance = 150;
         if (damageString != null) {
             String[] damageStringSplit = damageString.split("\\.");
             damage = Integer.parseInt(damageStringSplit[0]);
+            if (damageStringSplit.length > 1) {
+                distance = Integer.parseInt(damageStringSplit[1]);
+            }
         }
 
         //Check if valid siege machine position
@@ -98,7 +102,7 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         double rawRadius = townType.getBuildRadius();
         try {
-            if (town.getLocation().distance(l) - rawRadius >  150) {
+            if (town.getLocation().distance(l) - rawRadius > distance) {
                 sign.setLine(2, "out of");
                 sign.setLine(3, "range");
                 sign.update();
@@ -271,14 +275,13 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         }
         for (Player p : Bukkit.getOnlinePlayers()) {
             Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
-            String siegeMachineLocalName = LocaleManager.getInstance().getTranslation(civ.getLocale(), regionType.getProcessedName() + "-name");
+            String siegeMachineLocalName = regionType.getDisplayName(p);
             p.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
                     civ.getLocale(), "siege-built").replace("$1", player.getDisplayName())
                     .replace("$2", siegeMachineLocalName).replace("$3", town.getName()));
         }
         if (Civs.discordSRV != null) {
-            String siegeLocalName = LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(),
-                    regionType.getProcessedName() + "-name");
+            String siegeLocalName = regionType.getDisplayName();
             String defaultMessage = Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
                     ConfigManager.getInstance().getDefaultLanguage(), "siege-built").replace("$1", player.getDisplayName())
                     .replace("$2", siegeLocalName).replace("$3", town.getName());

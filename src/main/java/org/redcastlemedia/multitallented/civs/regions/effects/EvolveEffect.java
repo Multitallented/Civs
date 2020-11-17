@@ -55,8 +55,10 @@ public class EvolveEffect implements Listener {
             if (player == null) {
                 continue;
             }
-            String typeName = LocaleManager.getInstance().getTranslation(player, r.getType().toLowerCase() + "-name");
-            String evolveName = LocaleManager.getInstance().getTranslation(player, evolveTarget.toLowerCase() + "-name");
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(r.getType());
+            String typeName = regionType.getDisplayName(player);
+            RegionType evolveType = (RegionType) ItemManager.getInstance().getItemType(evolveTarget.toLowerCase());
+            String evolveName = evolveType.getDisplayName(player);
             if (player.isOnline()) {
                 player.sendMessage(Civs.getPrefix() +
                         LocaleManager.getInstance().getTranslation(player,

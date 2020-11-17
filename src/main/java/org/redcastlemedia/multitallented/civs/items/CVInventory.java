@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -42,6 +43,11 @@ public class CVInventory {
     }
 
     public void setInventory() {
+        if (location.getWorld() == null ||
+                Bukkit.getWorld(location.getWorld().getUID()) == null) {
+            this.valid = false;
+            return;
+        }
         Block block = this.location.getBlock();
         if (block.getType() != Material.CHEST) {
             this.valid = false;

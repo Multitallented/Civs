@@ -109,10 +109,8 @@ public class JammerEffect implements Listener, RegionCreatedListener {
                 Location targetLocation = HuntEffect.findNearbyLocationForTeleport(region.getLocation(), landingRadius, player);
                 if (targetLocation != null) {
                     event.setTo(targetLocation);
-                    Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
                     RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-                    String localizedRegionName = LocaleManager.getInstance().getTranslation(
-                            civilian.getLocale(), regionType.getProcessedName() + "-name");
+                    String localizedRegionName = regionType.getDisplayName(player);
                     HuntEffect.messageNearbyPlayers(player, "jammer-redirect", localizedRegionName);
                 }
             }
@@ -126,13 +124,12 @@ public class JammerEffect implements Listener, RegionCreatedListener {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         for (Player p : Bukkit.getOnlinePlayers()) {
             Civilian civ = CivilianManager.getInstance().getCivilian(p.getUniqueId());
-            String jammerLocalName = LocaleManager.getInstance().getTranslation(civ.getLocale(), regionType.getProcessedName() + "-name");
+            String jammerLocalName = regionType.getDisplayName(p);
             p.sendMessage(Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
                     civ.getLocale(), "jammer-built").replace("$1", jammerLocalName));
         }
         if (Civs.discordSRV != null) {
-            String jammerLocalName = LocaleManager.getInstance().getTranslation(ConfigManager.getInstance().getDefaultLanguage(),
-                    regionType.getProcessedName() + "-name");
+            String jammerLocalName = regionType.getDisplayName();
             String defaultMessage = Civs.getPrefix() + ChatColor.RED + LocaleManager.getInstance().getTranslation(
                     ConfigManager.getInstance().getDefaultLanguage(), "jammer-built")
                     .replace("$1", jammerLocalName);

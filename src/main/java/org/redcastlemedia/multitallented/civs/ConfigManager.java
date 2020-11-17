@@ -174,6 +174,7 @@ public class ConfigManager {
     @Getter boolean useSkills;
     @Getter boolean silentExp;
     @Getter boolean connectTownsWithNationClaims;
+    @Getter boolean deleteInvalidRegions;
 
     @Getter
     String chatChannelFormat;
@@ -413,6 +414,7 @@ public class ConfigManager {
             useHardshipSystem = config.getBoolean("hardship-should-pay-damages", false);
             keepRegionChunksLoaded = config.getBoolean("keep-region-chunks-loaded", true);
             silentExp = config.getBoolean("no-exp-chat-messages", false);
+            deleteInvalidRegions = config.getBoolean("delete-invalid-regions", false);
             unclaimNationChunksWithTnt = config.getBoolean("unclaim-nation-chunks-with-tnt", true);
             lineLengthMap = new HashMap<>();
             useSkills = config.getBoolean("use-skills", true);
@@ -489,6 +491,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        deleteInvalidRegions = false;
         connectTownsWithNationClaims = true;
         unclaimNationChunksWithTnt = true;
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
