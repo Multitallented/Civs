@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -20,12 +21,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.PlayerExitRegionEvent;
 import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
@@ -47,6 +50,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
     public static String CHARGING_KEY = "charging_raid_port";
     private HashMap<Region, Location> raidLocations = new HashMap<>();
     private HashMap<Town, Long> cooldowns = new HashMap<>();
+    public static Set<Player> portedTo = new HashSet<>();
 
     public static void getInstance() {
         Bukkit.getPluginManager().registerEvents(new RaidPortEffect(), Civs.getInstance());
@@ -55,6 +59,19 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
     public RaidPortEffect() {
         RegionManager.getInstance().addCreateRegionListener(KEY, this);
         RegionManager.getInstance().addCreateRegionListener(CHARGING_KEY, this);
+    }
+
+    @EventHandler
+    public void onPlayerExitRegion(PlayerExitRegionEvent event) {
+        Player player = Bukkit.getPlayer(event.getUuid());
+        if (player != null && event.getRegion().getEffects().containsKey(KEY)) {
+            portedTo.remove(player);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        portedTo.remove(event.getPlayer());
     }
 
     @Override
@@ -193,7 +210,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
     public void onPlayerInRegion(PlayerInRegionEvent event) {
         Region r = event.getRegion();
         Player player = Bukkit.getPlayer(event.getUuid());
-        if (!r.getEffects().containsKey(KEY)) {
+        if (!r.getEffects().containsKey(KEY) || portedTo.contains(player)) {
             return;
         }
         if (!r.getLocation().getBlock().getRelative(BlockFace.UP).equals(player.getLocation().getBlock()) &&
@@ -259,9 +276,10 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
     private Location findTargetLocation(Town town) {
         Set<Region> potentialTargets = TownManager.getInstance().getContainingRegions(town.getName());
         int i = 0;
+        double rand = Math.random();
         for (Region currentRegion : potentialTargets) {
-            double rand = Math.random();
-            if (i+1 < potentialTargets.size() && rand < (1 / (double) potentialTargets.size())) {
+            i++;
+            if (i >= potentialTargets.size() || rand > ((double) i / (double) potentialTargets.size())) {
                 continue;
             }
             RegionType rt = (RegionType) ItemManager.getInstance().getItemType(currentRegion.getType());
@@ -272,11 +290,6 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
             Location teleportTarget = findSafeTeleportTarget(currentRegion);
             if (teleportTarget != null) {
                 return teleportTarget;
-            }
-
-            i++;
-            if (i > 4) {
-                break;
             }
         }
         return null;

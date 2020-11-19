@@ -4,7 +4,7 @@ shop-icon: COAL
 dynmap-marker: coins
 name: Coal_Shop
 max: 1
-price: 100
+price: 50
 groups:
 - shop
 - oreshop
@@ -29,6 +29,6 @@ period: 3600 #1 hour
 upkeep:
   0:
     input:
-    - COAL*6,CHARCOAL*20 # 144 coal or 480 charcoal / day
-    payout: 12          # $288 / day
+    - COAL*8,CHARCOAL*24 # 144 coal or 480 charcoal / day
+    payout: 8.33         # $200 / day
 

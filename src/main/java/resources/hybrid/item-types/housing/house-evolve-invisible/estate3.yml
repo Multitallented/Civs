@@ -2,9 +2,9 @@ type: region
 icon: CHEST
 shop-icon: BLUE_BED
 dynmap-marker: bighouse
-name: Estate3
+name: Estate
 max: 2
-price: 16000
+price: 18000
 is-in-shop: false
 groups:
 - housing
@@ -52,19 +52,22 @@ upkeep:
     power-input: 4
   1:
     input: #2.11
-    - GOLDEN_CARROT*4  # 96 or 1.5 stacks / day
-    - GOLDEN_APPLE*1 # 24 / day
-    payout: 40.8 # $980 / day
+    - GOLDEN_CARROT*1  # 24 / day
+    payout: 10.4 # $249.6 / day
   2:
     input:
-    - PUMPKIN_PIE*1 # 24 stacks / day
-    payout: 22.8 # $547 / day
+      - GOLDEN_APPLE*1 # 24 / day
+    payout: 10     # $240 / day
   3:
     input:
-    - RABBIT_STEW # 24 stacks / day
-    payout: 22.8 # $547 / day
+    - PUMPKIN_PIE # 24 stacks / day
+    payout: 11.4 # $273.6 / day
   4:
     input:
+    - RABBIT_STEW # 24 stacks / day
+    payout: 11.4 # $273.6 / day
+  5:
+    input:
     - CAKE # 24 / day
-    payout: 22.8 # $547 / day
+    payout: 11.4 # $273.6 / day
 

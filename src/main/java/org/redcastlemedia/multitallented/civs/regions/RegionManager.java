@@ -375,8 +375,13 @@ public class RegionManager {
             radii[4] = regionConfig.getInt("yp-radius");
             radii[5] = regionConfig.getInt("yn-radius");
             Location location = Region.idToLocation(Objects.requireNonNull(regionConfig.getString("location")));
-            if (location == null) {
-                throw new NullPointerException();
+            if (location == null || location.getWorld() == null) {
+                Civs.logger.log(Level.SEVERE, "Attempted to load invalid region {0}", regionFile.getName());
+                if (ConfigManager.getInstance().isDeleteInvalidRegions()) {
+                    Civs.logger.log(Level.SEVERE, "Deleting invalid region {0}", regionFile.getName());
+                    regionFile.delete();
+                }
+                return null;
             }
 
             double exp = regionConfig.getDouble("exp");
@@ -1032,6 +1037,21 @@ public class RegionManager {
             }
         }
         return regionManager;
+    }
+
+    public void cleanupUnloadedRegions() {
+        if (!ConfigManager.getInstance().isDeleteInvalidRegions()) {
+            return;
+        }
+        Set<Region> removeThese = new HashSet<>();
+        for (Map.Entry<UUID, ArrayList<Region>> entry : new HashSet<>(regions.entrySet())) {
+            if (Bukkit.getWorld(entry.getKey()) == null) {
+                removeThese.addAll(entry.getValue());
+            }
+        }
+        for (Region region : removeThese) {
+            removeRegion(region);
+        }
     }
 
     public boolean hasRegionChestChanged(Region region) {

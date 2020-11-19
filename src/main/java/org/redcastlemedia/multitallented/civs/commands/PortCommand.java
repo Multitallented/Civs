@@ -18,6 +18,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.effects.RaidPortEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
@@ -142,6 +143,9 @@ public class PortCommand extends CivCommand {
         long warmup = ConfigManager.getInstance().getPortWarmup() * 20L;
         if (warmup > 0) {
             delay = warmup;
+        }
+        if (r.getEffects().containsKey(RaidPortEffect.KEY)) {
+            RaidPortEffect.portedTo.add(player);
         }
         player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                 "port-warmup").replace("$1", (warmup / 20) + ""));

@@ -1,5 +1,7 @@
 default-config-set: hybrid
 
+#deletes regions in worlds that no longer exist
+delete-invalid-regions: false
 black-list-worlds:
   - Hub
 
