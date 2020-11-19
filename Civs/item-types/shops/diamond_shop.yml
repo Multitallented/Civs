@@ -5,7 +5,7 @@
 #dynmap-marker: coins
 #name: Diamond_Shop
 #max: 1
-#price: 2000
+#price: 300
 #groups:
 #  - shop
 #  - oreshop
@@ -37,5 +37,5 @@
 #  0:
 #    input:
 #      - DIAMOND*1 # 24 / day
-#    payout: 64          # $1536 / day
+#    payout: 25          # $768 / day
 #

@@ -284,7 +284,9 @@ public class RegionTypeMenu extends CustomMenu {
                     return replaceItemStackWithRegionTypeName(civilian, menuIcon, regionType.getDisplayName(player), count, player);
 
                 case "payout":
-                    if (regionType.getUpkeeps().get(count).getPayout() <= 0) {
+                    if (regionType.getUpkeeps().get(count).getPayout() <= 0 &&
+                            regionType.getUpkeeps().get(count).getPowerInput() <= 0 &&
+                            regionType.getUpkeeps().get(count).getPowerOutput() <= 0) {
                         return new ItemStack(Material.AIR);
                     }
                     return getPayoutItemStack(civilian, menuIcon, count, regionType, player);
@@ -294,18 +296,6 @@ public class RegionTypeMenu extends CustomMenu {
                         return new ItemStack(Material.AIR);
                     }
                     return replaceItemStackWithRegionTypeName(civilian, menuIcon, regionType.getDisplayName(player), count, player);
-
-                case "power-input":
-                    if (regionType.getUpkeeps().get(count).getPowerInput() <= 0) {
-                        return new ItemStack(Material.AIR);
-                    }
-                    return getPowerInputItemStack(civilian, menuIcon, count, regionType, player);
-
-                case "power-output":
-                    if (regionType.getUpkeeps().get(count).getPowerOutput() <= 0) {
-                        return new ItemStack(Material.AIR);
-                    }
-                    return getPowerOutputItemStack(civilian, menuIcon, count, regionType, player);
                 default:
                     return new ItemStack(Material.AIR);
             }
@@ -313,31 +303,25 @@ public class RegionTypeMenu extends CustomMenu {
         return super.createItemStack(civilian, menuIcon, count);
     }
 
-    private ItemStack getPowerOutputItemStack(Civilian civilian, MenuIcon menuIcon, int count, RegionType regionType, Player player) {
-        CVItem cvItem = menuIcon.createCVItem(player, count);
-        String powerOutput = "" + regionType.getUpkeeps().get(count).getPowerOutput();
-        cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
-                menuIcon.getDesc()).replace("$1", powerOutput)));
-        ItemStack itemStack = cvItem.createItemStack();
-        putActions(civilian, menuIcon, itemStack, count);
-        return itemStack;
-    }
-
     private ItemStack getPayoutItemStack(Civilian civilian, MenuIcon menuIcon, int count, RegionType regionType, Player player) {
         CVItem cvItem = menuIcon.createCVItem(player, count);
-        String payout = Util.getNumberFormat(regionType.getUpkeeps().get(count).getPayout(), civilian.getLocale());
-        cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
-                menuIcon.getDesc()).replace("$1", payout)));
-        ItemStack itemStack = cvItem.createItemStack();
-        putActions(civilian, menuIcon, itemStack, count);
-        return itemStack;
-    }
-
-    private ItemStack getPowerInputItemStack(Civilian civilian, MenuIcon menuIcon, int count, RegionType regionType, Player player) {
-        CVItem cvItem = menuIcon.createCVItem(player, count);
-        String powerInput = "" + regionType.getUpkeeps().get(count).getPowerInput();
-        cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
-                menuIcon.getDesc()).replace("$1", powerInput)));
+        List<String> lore = new ArrayList<>();
+        if (regionType.getUpkeeps().get(count).getPayout() <= 0) {
+            String payout = Util.getNumberFormat(regionType.getUpkeeps().get(count).getPayout(), civilian.getLocale());
+            lore.addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
+                    menuIcon.getDesc()).replace("$1", payout)));
+        }
+        if (regionType.getUpkeeps().get(count).getPowerInput() <= 0) {
+            String powerInput = "" + regionType.getUpkeeps().get(count).getPowerInput();
+            lore.addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
+                    menuIcon.getDesc()).replace("$1", powerInput)));
+        }
+        if (regionType.getUpkeeps().get(count).getPowerOutput() <= 0) {
+            String powerInput = "" + regionType.getUpkeeps().get(count).getPowerInput();
+            lore.addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
+                    menuIcon.getDesc()).replace("$1", powerInput)));
+        }
+        cvItem.setLore(lore);
         ItemStack itemStack = cvItem.createItemStack();
         putActions(civilian, menuIcon, itemStack, count);
         return itemStack;
