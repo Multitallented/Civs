@@ -52,16 +52,15 @@ upkeep:
     power-input: 1
   1:
     input: #2.11
-    - BREAD*6  # 144 or 2.25 stacks / day
-    payout: 12.6 # $303.84 / day
+      - BREAD*5  # 120 or 1.88 stacks / day
+    payout: 6.3 # $151.2 / day
   2:
     input:
-    - CARROT*16   # 384 or 6 stacks / day
-    payout: 10.2 # $244.8 / day
-    exp: 1
+      - CARROT*12   # 288 or 4.5 stacks / day
+    payout: 8.19 # $196.56 / day
   3:
     input:
-    - SALMON*6,TROPICAL_FISH*5,PUFFERFISH*5,COD*6
-    payout: 6 # $144 / day
+    - TROPICAL_FISH*5
+    payout: 3 # $72 / day
     exp: 1
 

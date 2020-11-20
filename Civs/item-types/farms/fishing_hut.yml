@@ -5,7 +5,7 @@
 #name: Fishing_Hut
 #dynmap-marker: anchor
 #max: 1
-#price: 200
+#price: 400
 #groups:
 #  - farm
 #level: 3
@@ -31,7 +31,7 @@
 #  - block_build
 #  - block_liquid
 #  - block_fire
-#  - conveyor:SALMON
+#  - conveyor:TROPICAL_FISH
 #period: 300 #5 minutes
 #upkeep:
 #  0:
