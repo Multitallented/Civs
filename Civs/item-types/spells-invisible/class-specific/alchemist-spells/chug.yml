@@ -1,0 +1,21 @@
+#enabled: true
+#icon: BUCKET
+#type: spell
+#is-in-shop: false
+#level: 1
+#groups: []
+#
+#pre-reqs:
+#  - skill:food=9
+#  - potion_invis:level=10|potion_regen:level=10|potion_speed:level=10|potion_strength:level=10
+#  - alchemist:level=13
+#
+#allowed-actions: []
+#
+#passives:
+#  components:
+#    1:
+#      yield:
+#        civstate:
+#          type: INSTANT_DRINK
+#          duration: -1

@@ -1,0 +1,55 @@
+#enabled: true
+#type: class
+#name: alchemist
+#icon: SPLASH_POTION
+#is-in-shop: false
+#level: 1
+#groups: []
+#
+#children: []
+#pre-reqs:
+#  - skill:crafting=3
+#  - skill:food=4
+#  - skill:exploration=2
+#  - skill:axe=1
+#  - potion_weakness:level=3
+#
+#mana-title: mana
+#mana-per-second: 2
+#max-mana: 400
+#max-health: 30
+#max-level: 24
+#
+#allowed-actions:
+#  - GOLDEN_AXE
+#  - DIAMOND_HELMET
+#  - IRON_CHESTPLATE
+#  - GOLDEN_LEGGINGS
+#  - GOLDEN_BOOTS
+#  - SHARPNESS.5
+#  - PROTECTION.4
+#  - FIRE_PROTECTION.4
+#  - BLAST_PROTECTION.4
+#  - FALL_PROTECTION.3
+#
+#spells:
+#  1:
+#    - potion_poison
+#    - potion_strength
+#    - potion_harm
+#  2:
+#    - petrify
+#    - chug
+#    - g:escape
+#    - potion_invis
+#  3:
+#    - potion_weakness
+#    - amplify # TODO
+#  4:
+#    - potion_regen
+#    - potion_speed
+#    - potion_heal
+#  5:
+#    - evaporate
+#    - spoil
+#

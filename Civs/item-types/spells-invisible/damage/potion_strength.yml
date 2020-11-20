@@ -1,0 +1,33 @@
+#enabled: true
+#icon: BLAZE_POWDER
+#type: spell
+#is-in-shop: false
+#level: 1
+#groups:
+#  - damage
+#
+#pre-reqs:
+#  - potion_harm:level=5
+#  - skill:sword=6|skill:axe=6|skill:trident=6
+#
+#allowed-actions:
+#  - INCREASE_DAMAGE.99
+#
+#exp-per-use: 15
+#
+#conditions:
+#  cooldown: 20000
+#  mana: 25
+#
+#components:
+#  1:
+#    yield:
+#      mana: -25
+#      cooldown: 20000
+#      sound: BLOCK_BREWING_STAND_BREW
+#      item:
+#        item: POTION
+#        potion:
+#          type: STRENGTH
+#          upgraded: true
+#          extended: false
