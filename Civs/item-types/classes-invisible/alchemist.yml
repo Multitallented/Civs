@@ -18,7 +18,7 @@
 #mana-per-second: 2
 #max-mana: 400
 #max-health: 30
-#max-level: 16
+#max-level: 24
 #
 #allowed-actions:
 #  - GOLDEN_AXE

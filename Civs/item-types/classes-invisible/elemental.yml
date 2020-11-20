@@ -14,7 +14,7 @@
 #mana-per-second: 10
 #max-mana: 50
 #max-health: 16
-#max-level: 16
+#max-level: 24
 #
 #allowed-actions:
 #  - CROSSBOW
