@@ -2,7 +2,7 @@ type: region
 icon: CHEST
 shop-icon: PURPLE_BED
 dynmap-marker: bighouse
-name: Mansion
+name: Mansion2
 is-in-shop: false
 max: 2
 price: 2000

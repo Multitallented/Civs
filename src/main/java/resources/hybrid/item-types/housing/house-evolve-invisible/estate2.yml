@@ -2,7 +2,7 @@ type: region
 icon: CHEST
 shop-icon: BLUE_BED
 dynmap-marker: bighouse
-name: Estate
+name: Estate2
 max: 2
 price: 18000
 is-in-shop: false

@@ -2,7 +2,7 @@ type: region
 icon: CHEST
 shop-icon: PINK_BED
 dynmap-marker: default
-name: House
+name: House2
 max: 2
 is-in-shop: false
 price: 900

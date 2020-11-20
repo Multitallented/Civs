@@ -2,7 +2,7 @@ type: region
 icon: CHEST
 shop-icon: CYAN_BED
 dynmap-marker: bighouse
-name: Villa
+name: Villa3
 is-in-shop: false
 max: 2
 price: 8000
@@ -64,11 +64,10 @@ upkeep:
     input:
       - MILK_BUCKET # 24 stacks / day
     payout: 3.26 # $78.2 / day
-    exp: 1
   5:
     input:
       - GOLDEN_APPLE*1 # 24 / day
-    payout: 8 # $192 / day
+    payout: 9 # $216 / day
   6:
     input:
       - CHORUS_FRUIT*3  # 72 / day

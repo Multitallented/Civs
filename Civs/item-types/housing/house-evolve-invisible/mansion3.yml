@@ -3,7 +3,7 @@
 #icon: CHEST
 #shop-icon: PURPLE_BED
 #dynmap-marker: bighouse
-#name: Mansion
+#name: Mansion3
 #is-in-shop: false
 #max: 2
 #price: 2000
@@ -70,4 +70,8 @@
 #    input:
 #      - MILK_BUCKET # 24 / day
 #    payout: 2.93 # $70.2 / day
+#  6:
+#    input:
+#      - PUFFERFISH*5 # 120 / day
+#    payout: 3 # $72 / day
 #
