@@ -4,7 +4,7 @@ shop-icon: CHICKEN_SPAWN_EGG
 dynmap-marker: dog
 name: Chicken_Coop
 max: 1
-price: 10
+price: 100
 groups:
 - farm
 level: 1

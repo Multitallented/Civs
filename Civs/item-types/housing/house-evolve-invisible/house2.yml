@@ -6,7 +6,7 @@
 #name: House2
 #max: 2
 #is-in-shop: false
-#price: 800
+#price: 900
 #groups:
 #  - housing
 #  - allhouse
@@ -52,16 +52,19 @@
 #  0:
 #    power-input: 1
 #  1:
-#    input: #2.11
+#    input:
 #      - BREAD*6  # 144 or 2.25 stacks / day
-#      - SALMON*6,TROPICAL_FISH*5,PUFFERFISH*5,COD*6
-#    payout: 18.6 # $303.84 + 144 = 447.84 / day
+#    payout: 6.3 # $151.2 / day
 #  2:
 #    input:
 #      - APPLE*5   # 120 or 1.87 stacks / day
-#    payout: 7.8 # $187.2 / day
+#    payout: 3.9 # $93.6 / day
 #  3:
-#    input: #.32
+#    input:
+#      - SALMON*6
+#    payout: 3 # $72 / day
+#  4:
+#    input:
 #      - MELON_SLICE*32 # 768 or 12 stacks / day
-#    payout: 8.24 # $197.76 / day
+#    payout: 4 # $96 / day
 #

@@ -2,7 +2,7 @@ type: region
 icon: CHEST
 shop-icon: MAGENTA_BED
 dynmap-marker: bighouse
-name: Chalet1
+name: Chalet2
 max: 2
 price: 1400
 is-in-shop: false
@@ -51,18 +51,21 @@ upkeep:
   0:
     power-input: 1
   1:
-    input: #2.11
-    - BREAD*6  # 144 or 2.25 stacks / day
-    - SALMON*6,TROPICAL_FISH*5,PUFFERFISH*5,COD*6
-    payout: 18.6 # $303.84 + 144 = 447.84 / day
+    input:
+      - BREAD*5  # 120 or 1.88 stacks / day
+    payout: 6.3 # $151.2 / day
     exp: 1
   2:
     input:
-    - CARROT*16   # 384 or 6 stacks / day
-    payout: 10.2 # $244.8 / day
+      - CARROT*12   # 288 or 4.5 stacks / day
+    payout: 9.1 # $218.4 / day
   3:
-    input: #.32
-    - MELON_SLICE*28 # 672 or 10.5 stacks / day
-    payout: 8.24 # $197.76 / day
+    input:
+      - TROPICAL_FISH*5
+    payout: 3 # $72 / day
+  4:
+    input:
+      - MELON_SLICE*32  #768 or 12 stacks / day
+    payout: 4   # $96 / day
     exp: 1
 

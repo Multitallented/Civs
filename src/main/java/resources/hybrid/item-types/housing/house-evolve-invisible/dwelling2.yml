@@ -57,9 +57,13 @@ upkeep:
   2:
     input:
     - APPLE*5   # 120 or 1.87 stacks / day
-    payout: 7.8 # 187.2 / day
+    payout: 3.9 # 93.6 / day
   3:
     input:
-    - SALMON*6,TROPICAL_FISH*5,PUFFERFISH*5,COD*6
-    payout: 12 # $288 / day
+      - COD*6 #144 / day
+    payout: 2.7 # $64.8 / day
+  4:
+    input:
+      - COOKED_MUTTON*4,MUTTON*32 # 96 / day
+    payout: 2.29        # 55 / day
 
