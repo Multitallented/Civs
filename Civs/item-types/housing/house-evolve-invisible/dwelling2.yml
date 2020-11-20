@@ -3,7 +3,7 @@
 #icon: CHEST
 #shop-icon: GREEN_BED
 #dynmap-marker: default
-#name: Dwelling2
+#name: Dwelling
 #max: 2
 #price: 400
 #is-in-shop: false
@@ -54,13 +54,17 @@
 #  1:
 #    input:
 #      - POTATO*32  # 768 or 12 stacks / day
-#    payout: 5      # $120 / day
+#    payout: 5 # $120 / day
 #  2:
 #    input:
 #      - APPLE*5   # 120 or 1.87 stacks / day
-#    payout: 7.8 # 187.2 / day
+#    payout: 3.9 # 93.6 / day
 #  3:
 #    input:
-#      - SALMON*6,TROPICAL_FISH*5,PUFFERFISH*5,COD*6
-#    payout: 12 # $288 / day
+#      - COD*6 #144 / day
+#    payout: 2.7 # $64.8 / day
+#  4:
+#    input:
+#      - COOKED_MUTTON*4 # 96 / day
+#    payout: 2.29        # 55 / day
 #

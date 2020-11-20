@@ -57,9 +57,9 @@
 #  2:
 #    input:
 #      - PUMPKIN_PIE*1 # 24 stacks / day
-#    payout: 10.4 # $273.6 / day
+#    payout: 11.4 # $273.6 / day
 #  3:
 #    input:
 #      - GOLDEN_APPLE*1 # 24 / day
-#    payout: 10 # $240 / day
+#    payout: 9 # $216 / day
 #    exp: 1

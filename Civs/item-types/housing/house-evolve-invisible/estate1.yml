@@ -51,7 +51,7 @@
 #period: 3600 #1 hour
 #upkeep:
 #  0:
-#    power-input: 6
+#    power-input: 5
 #  1:
 #    input: #2.11
 #      - GOLDEN_CARROT*1  # 24 / day
@@ -67,6 +67,6 @@
 #  4:
 #    input:
 #      - CAKE # 24 / day
-#    payout: 9.08 # 218 / day
+#    payout: 9.12 # 218.88 / day
 #    exp: 1
 #

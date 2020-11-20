@@ -4,7 +4,7 @@ shop-icon: GOLD_INGOT
 dynmap-marker: coins
 name: Gold_Shop
 max: 1
-price: 250
+price: 1000
 groups:
 - shop
 - oreshop

@@ -1,0 +1,42 @@
+type: region
+icon: CHEST
+shop-icon: GUNPOWDER
+dynmap-marker: coins
+name: Gunpowder_Shop
+max: 1
+price: 1000
+groups:
+  - shop
+level: 4
+
+pre-reqs:
+  - member=village:town:city:metropolis
+
+towns:
+  - village
+  - town
+  - city
+  - metropolis
+
+build-reqs:
+  - g:fence*7
+  - CHEST*1
+  - TNT*1
+  - g:wool*25
+
+build-radius: 2
+
+effects:
+  - block_break
+  - block_build
+  - chest_use
+  - block_liquid
+  - block_fire
+
+period: 3600 #1 hour
+upkeep:
+  0:
+    input:
+      - GUNPOWDER*8     # 192 / day
+    payout: 15          # $360 / day
+
