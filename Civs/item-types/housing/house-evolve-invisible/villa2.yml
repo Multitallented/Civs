@@ -63,7 +63,7 @@
 #    payout: 11.4 # $273.6 / day
 #  4:
 #    input:
-#      - MILK_BUCKET # 24 stacks / day
+#      - HONEY_BOTTLE # 24 / day
 #    payout: 3.26 # $78.2 / day
 #  5:
 #    input:
