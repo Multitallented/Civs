@@ -12,7 +12,7 @@ mana-title: mana
 mana-per-second: 1
 max-mana: 50
 max-health: 20
-max-level: 8
+max-level: 12
 
 allowed-actions:
   - BOW
