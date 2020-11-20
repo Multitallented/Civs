@@ -78,45 +78,45 @@
 #    #desc: list of region type effects
 #  back:
 #    index: 8
-#  limits:
-#    index: 17
-#    icon: RED_WOOL
-#    name: limits
-#    desc: item-limit
-#    actions: []
-#  reagents:
-#    index: 9,18,27,36,45
-#    icon: CHEST
-#    name: reagents-title
-#    desc: reagents
-#    actions:
-#      - menu:recipe?regionType=$regionType$&recipe=reagent$count$
-#  input:
-#    index: 10,19,28,37,46
-#    icon: HOPPER
-#    name: upkeep-title
-#    desc: upkeep
-#    actions:
-#      - menu:recipe?regionType=$regionType$&recipe=input$count$
-#  output:
-#    index: 11,20,29,38,47
-#    icon: DISPENSER
-#    name: output-title
-#    desc: output
-#    actions:
-#      - menu:recipe?regionType=$regionType$&recipe=output$count$
-#  payout:
-#    index: 12,21,30,39,48
-#    icon: EMERALD_BLOCK
-#    name: payout-title
-#    desc: payout
-#  power-input:
-#    index: 13,22,31,40,49
-#    icon: REDSTONE_ORE
-#    name: power-input-title
-#    desc: power-input
-#  power-output:
-#    index: 14,23,32,41,50
-#    icon: REDSTONE_TORCH
-#    name: power-output-title
-#    desc: power-output
+#limits:
+#  index: 13
+#  icon: RED_WOOL
+#  name: limits
+#  desc: item-limit
+#  actions: []
+#reagents:
+#  index: 9,14,18,23,27,32,36,41,45
+#  icon: CHEST
+#  name: reagents-title
+#  desc: reagents
+#  actions:
+#    - menu:recipe?regionType=$regionType$&recipe=reagent$count$
+#input:
+#  index: 10,15,19,24,28,33,37,42,46
+#  icon: HOPPER
+#  name: upkeep-title
+#  desc: upkeep
+#  actions:
+#    - menu:recipe?regionType=$regionType$&recipe=input$count$
+#output:
+#  index: 11,16,20,25,29,34,38,43,47
+#  icon: DISPENSER
+#  name: output-title
+#  desc: output
+#  actions:
+#    - menu:recipe?regionType=$regionType$&recipe=output$count$
+#payout:
+#  index: 12,17,21,26,30,35,39,44,48
+#  icon: EMERALD_BLOCK
+#  name: payout-title
+##    desc: payout
+##  power-input:
+##    index: 13,22,31,40,49
+##    icon: REDSTONE_ORE
+##    name: power-input-title
+##    desc: power-input
+##  power-output:
+##    index: 14,23,32,41,50
+##    icon: REDSTONE_TORCH
+##    name: power-output-title
+##    desc: power-output

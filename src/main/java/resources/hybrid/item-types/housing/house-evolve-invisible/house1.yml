@@ -5,7 +5,7 @@ dynmap-marker: default
 name: House1
 max: 2
 is-in-shop: false
-price: 800
+price: 900
 groups:
 - housing
 - allhouse
@@ -52,16 +52,16 @@ upkeep:
   0:
     power-input: 1
   1:
-    input: #2.11
+    input:
     - BREAD*6  # 144 or 2.25 stacks / day
-    payout: 12.6 # $303.84 / day
+    payout: 5.67 # $136.08 / day
   2:
     input:
     - APPLE*5   # 120 or 1.87 stacks / day
-    payout: 7.8 # $187.2 / day
+    payout: 3.9 # $93.6 / day
   3:
     input:
-    - SALMON*6,TROPICAL_FISH*5,PUFFERFISH*5,COD*6
-    payout: 6 # $144 / day
+    - SALMON*6
+    payout: 3 # $72 / day
     exp: 1
 

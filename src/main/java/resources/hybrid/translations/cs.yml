@@ -678,80 +678,81 @@ wheat_farm-desc: Produkuje obylí a dead bushes každých 5 minut. Dejte náklad
   Postavte koleje z Obylného políčka do cílové stavby. Na začátek postavte
   svažitou napájenou kolej.
 shack-name: Přístřešek
-shack-desc: Nejjednodušší obytná stavba. Vydělává $122 denně prodáváním brambor.
+shack-desc: Nejjednodušší obytná stavba. Vydělává $96 denně prodáváním brambor.
 hovel-name: Bouda
-hovel-desc: 2. úroveň obytné stavby. Vydělává $144 denně prodáváním brambor. Dostupná
-  pouze jako vylepšený Přístřešek.
+hovel-desc: 2. úroveň obytné stavby. Vydělává $182,88 denně prodáváním brambor.
 hovel1-name: Bouda1
-hovel1-desc: 2. úroveň obytné stavby. Vydělává $310 denně prodáváním brambor a jablek.
+hovel1-desc: 2. úroveň obytné stavby. Vydělává $204,24 denně prodáváním brambor a jablek.
 dwelling-name: Chatrč
-dwelling-desc: 3. úroveň obytné stavby. Vydělává $309 denně prodáváním brambor a jablek.
+dwelling-desc: 3. úroveň obytné stavby. Vydělává $213,6 denně prodáváním brambor a jablek.
 dwelling1-name: Chatrč1
-dwelling1-desc: 3. úroveň obytné stavby. Vydělává $326 denně prodáváním brambor a jablek.
+dwelling1-desc: 3. úroveň obytné stavby. Vydělává $271,2 denně prodáváním brambor a jablek.
 dwelling2-name: Chatrč2
-dwelling2-desc: 3. úroveň obytné stavby. Vydělává $598 denně prodáváním brambor, jablek a ryb.
+dwelling2-desc: 3. úroveň obytné stavby. Vydělává $333,4 denně prodáváním brambor, jablek a ryb.
 house-name: Domeček
-house-desc: 4. úroveň obytné stavby. Vydělává $491 denně prodáváním chleba a jablek.
-  Dostupný pouze jako vylepšení Chatrče.
+house-desc: 4. úroveň obytné stavby. Vydělává $213,6 denně prodáváním chleba a jablek.
 house1-name: Domeček1
-house1-desc: 4. úroveň obytné stavby. Vydělává $635 denně prodáváním chleba, jablek a ryb.
+house1-desc: 4. úroveň obytné stavby. Vydělává $301,68 denně prodáváním chleba, jablek a ryb.
 house2-name: Domeček2
-house2-desc: 4. úroveň obytné stavby. Vydělává $832 denně prodáváním chleba a ryb, jablek a
+house2-desc: 4. úroveň obytné stavby. Vydělává $412,8 denně prodáváním chleba a ryb, jablek a
   plátků melounu.
 chalet-name: Chata
-chalet-desc: 5. úroveň obytné stavby. Vydělává $548 denně prodáváním chleba a mrkve.
+chalet-desc: 5. úroveň obytné stavby. Vydělává $325,92 denně prodáváním chleba a mrkve.
 chalet1-name: Chata1
-chalet1-desc: 5. úroveň obytné stavby. Vydělává $692 denně prodáváním chleba, mrkve a ryb.
+chalet1-desc: 5. úroveň obytné stavby. Vydělává $419,76 denně prodáváním chleba, mrkve a ryb.
 chalet2-name: Chata2
-chalet2-desc: 5. úroveň obytné stavby. Vydělává $890 denně prodáváním chleba a ryb, mrkve a
+chalet2-desc: 5. úroveň obytné stavby. Vydělává $537,6 denně prodáváním chleba a ryb, mrkve a
   plátků melounu.
 chalet3-name: Chata3
-chalet3-desc: 5. úroveň obytné stavby. Vydělává $1022 denně prodáváním chleba a ryb, mrkve a
+chalet3-desc: 5. úroveň obytné stavby. Vydělává $633,6 denně prodáváním chleba a ryb, mrkve a
   sušenek a plátků melounu.
 mansion-name: Dům
-mansion-desc: 6. úroveň obytné stavby. Vydělává $648 denně prodáváním chleba, mrkve a
-  hovězího. Dostupný pouze jako vylepšení Chaty.
+mansion-desc: 6. úroveň obytné stavby. Vydělává $425,76 denně prodáváním chleba, mrkve a
+  hovězího.
 mansion1-name: Dům1
-mansion1-desc: 6. úroveň obytné stavby. Vydělává $894 denně prodáváním chleba, mrkve,
+mansion1-desc: 6. úroveň obytné stavby. Vydělává $521,76 denně prodáváním chleba, mrkve,
   hovězího a sušenek.
 mansion2-name: Dům2
-mansion2-desc: 6. úroveň obytné stavby. Vydělává $1167 denně prodáváním chleba, mrkve,
+mansion2-desc: 6. úroveň obytné stavby. Vydělává $596,16 denně prodáváním chleba, mrkve,
   hovězího a sušenek.
 mansion3-name: Dům3
-mansion3-desc: 6. úroveň obytné stavby. Vydělává $1407 denně prodáváním chleba, mrkve,
+mansion3-desc: 6. úroveň obytné stavby. Vydělává $687,96 denně prodáváním chleba, mrkve,
   hovězího a sušenek a mléka.
 manor-name: Rezidence
-manor-desc: 7. úroveň obytné stavby. Vydělává $1032 denně prodáváním zlatých mrkví,
-  sušenek a hovězího. Dostupný pouze jako vylepšení Rezidence.
+manor-desc: 7. úroveň obytné stavby. Vydělává $382,08 denně prodáváním zlatých mrkví,
+  sušenek a hovězího.
 manor1-name: Rezidence1
-manor1-desc: 7. úroveň obytné stavby. Vydělává $1276 denně prodáváním zlatých mrkví,
+manor1-desc: 7. úroveň obytné stavby. Vydělává $485,24 denně prodáváním zlatých mrkví,
   sušenek, hovězího a mléka.
 manor2-name: Rezidence2
-manor2-desc: 7. úroveň obytné stavby. Vydělává $1679 denně prodáváním zlatých mrkví,
+manor2-desc: 7. úroveň obytné stavby. Vydělává $729,08 denně prodáváním zlatých mrkví,
   dýňových koláčů, hovězího a sušenek a mléka.
 manor3-name: Rezidence3
-manor3-desc: 7. úroveň obytné stavby. Vydělává $1751 denně prodáváním zlatých mrkví,
+manor3-desc: 7. úroveň obytné stavby. Vydělává $826,44 denně prodáváním zlatých mrkví,
   dýňových koláčů, hovězího a sušenek a mléka.
 villa-name: Vila
-villa-desc: 8. úroveň obytné stavby. Vydělává $1100 denně prodáváním zlatých mrkví,
+villa-desc: 8. úroveň obytné stavby. Vydělává $585,6 denně prodáváním zlatých mrkví,
   dýňových koláčů a hovězího.
 villa1-name: Vila1
-villa1-desc: 8. úroveň obytné stavby. Vydělává $1397 denně prodáváním zlatých mrkví,
+villa1-desc: 8. úroveň obytné stavby. Vydělává $663,8 denně prodáváním zlatých mrkví,
   dýňových koláčů, hovězího a mléka.
 villa2-name: Vila2
-villa2-desc: 8. úroveň obytné stavby. Vydělává $1877 denně prodáváním zlatých mrkví a
+villa2-desc: 8. úroveň obytné stavby. Vydělává $855,8 denně prodáváním zlatých mrkví a
+  dýňových koláčů, mléka, hovězího a zlatých jablek.
+villa3-name: Vila3
+villa3-desc: 8. úroveň obytné stavby. Vydělává $964,8 denně prodáváním zlatých mrkví a
   dýňových koláčů, mléka, hovězího a zlatých jablek.
 estate-name: Sídlo
-estate-desc: 9. úroveň obytné stavby. Vydělává $1480 denně prodáváním zlatých mrkví,
-  dýňových koláčů a zlatých jablek. Dostupný pouze jako vylepšení Vily.
+estate-desc: 9. úroveň obytné stavby. Vydělává $763,2 denně prodáváním zlatých mrkví,
+  dýňových koláčů a zlatých jablek.
 estate1-name: Sídlo1
-estate1-desc: 9. úroveň obytné stavby. Vydělává $1917 denně prodáváním zlatých mrkví,
+estate1-desc: 9. úroveň obytné stavby. Vydělává $982,08 denně prodáváním zlatých mrkví,
   dýňových koláčů, zlatých jablek a dortů.
 estate2-name: Sídlo2
-estate2-desc: 9. úroveň obytné stavby. Vydělává $2397 denně prodáváním zlatých mrkví a
+estate2-desc: 9. úroveň obytné stavby. Vydělává $1255,44 denně prodáváním zlatých mrkví a
   zlatých jakblek, dýňových koláčů, rabbit stew a dortů.
 estate3-name: Sídlo3
-estate3-desc: 9. úroveň obytné stavby. Vydělává $2621 denně prodáváním zlatých mrkví a
+estate3-desc: 9. úroveň obytné stavby. Vydělává $1410,4 denně prodáváním zlatých mrkví a
   zlatých jakblek, dýňových koláčů, rabbit stew a dortů.
 inn-name: Hostinec
 inn-desc: Přidává 12 ubytování. Užitečný pro přidávání lidí do města aniž by se muselo

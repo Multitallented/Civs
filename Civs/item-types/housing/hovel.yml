@@ -55,5 +55,9 @@
 #  1:
 #    input:
 #      - POTATO*32  # 768 or 12 stacks / day
-#    payout: 6 # $144 / day
+#    payout: 4.5 # $108 / day
 #    exp: 1
+#  2:
+#    input:
+#      - APPLE*6   # 144 or 2.25 stacks / day
+#    payout: 3.12 # 74.88 / day

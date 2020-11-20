@@ -1,20 +1,18 @@
 type: region
 icon: CHEST
-shop-icon: LAPIS_LAZULI
+shop-icon: GUNPOWDER
 dynmap-marker: coins
-name: Lapis_Shop
+name: Gunpowder_Shop
 max: 1
-price: 100
+price: 1000
 groups:
   - shop
-  - oreshop
-level: 3
+level: 4
 
 pre-reqs:
-  - member=hamlet:village:town:city:metropolis
+  - member=village:town:city:metropolis
 
 towns:
-  - hamlet
   - village
   - town
   - city
@@ -23,7 +21,7 @@ towns:
 build-reqs:
   - g:fence*7
   - CHEST*1
-  - LAPIS_BLOCK*1
+  - TNT*1
   - g:wool*25
 
 build-radius: 2
@@ -39,6 +37,6 @@ period: 3600 #1 hour
 upkeep:
   0:
     input:
-      - LAPIS_LAZULI*20 # 480 lapis / day
-    payout: 10          # $240 / day
+      - GUNPOWDER*8     # 192 / day
+    payout: 15          # $360 / day
 

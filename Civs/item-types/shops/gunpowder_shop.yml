@@ -1,26 +1,28 @@
 #enabled: true
 #type: region
 #icon: CHEST
-#shop-icon: DIAMOND
+#shop-icon: GUNPOWDER
 #dynmap-marker: coins
-#name: Diamond_Shop
+#name: Gunpowder_Shop
 #max: 1
-#price: 300
+#price: 1000
 #groups:
 #  - shop
-#  - oreshop
-#level: 7
+#level: 4
 #
 #pre-reqs:
-#  - member=metropolis
+#  - member=village:town:city:metropolis
 #
 #towns:
+#  - village
+#  - town
+#  - city
 #  - metropolis
 #
 #build-reqs:
 #  - g:fence*7
 #  - CHEST*1
-#  - DIAMOND_BLOCK*1
+#  - TNT*1
 #  - g:wool*25
 #
 #build-radius: 2
@@ -36,6 +38,6 @@
 #upkeep:
 #  0:
 #    input:
-#      - DIAMOND*1 # 24 / day
-#    payout: 25          # $768 / day
+#      - GUNPOWDER*8     # 192 / day
+#    payout: 15          # $360 / day
 #
