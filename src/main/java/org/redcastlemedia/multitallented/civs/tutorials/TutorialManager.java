@@ -335,7 +335,7 @@ public class TutorialManager {
     }
 
     public void printTutorial(HumanEntity player, Civilian civilian) {
-        String tutorialUrl = ConfigManager.getInstance().getTutorialUrl();
+        String tutorialUrl = LocaleManager.getInstance().getTranslation((Player) player, "tutorial-url");
         player.sendMessage(Util.parseColors(ConfigManager.getInstance().getTopGuideSpacer()));
         TutorialManager.getInstance().sendMessageForCurrentTutorialStep(civilian, false);
         player.sendMessage(LocaleManager.getInstance().getTranslation(civilian.getLocale(), "tutorial-click"));

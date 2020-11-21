@@ -52,7 +52,7 @@ upkeep:
   1:
     input: #2.11
       - GOLDEN_CARROT*1  # 24 / day
-      payout: 9.36 # $224.64 / day
+    payout: 9.36 # $224.64 / day
   2:
     input:
       - COOKIE*12 # 288 or 4.5 stacks / day
