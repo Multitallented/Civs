@@ -83,8 +83,6 @@ public class ConfigManager {
     @Getter
     boolean useGuide;
     @Getter
-    String tutorialUrl;
-    @Getter
     List<String> levelList;
     @Getter
     boolean allowTeleportInCombat;
@@ -363,7 +361,6 @@ public class ConfigManager {
             useClassesAndSpells = config.getBoolean("use-classes-and-spells", false);
             useTutorial = config.getBoolean("tutorial.use-tutorial", true);
             useGuide = config.getBoolean("tutorial.use-guide", true);
-            tutorialUrl = config.getString("tutorial.url");
             checkWaterSpread = config.getBoolean("check-water-spread", true);
             customItemDescriptions = processMap(config.getConfigurationSection("custom-items"));
             levelList = config.getStringList("levels");
