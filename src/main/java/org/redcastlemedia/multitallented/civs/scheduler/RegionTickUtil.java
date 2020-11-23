@@ -24,6 +24,7 @@ public final class RegionTickUtil {
     }
 
     public static void runUpkeeps() {
+        RegionManager.getInstance().cleanupUnloadedRegions();
         List<Region> regionList = new ArrayList<>(RegionManager.getInstance().getAllRegions());
         int chunk = regionList.size() / MAX_TPCycle;
         for (int j = chunk * i; j < (i == MAX_TPCycle - 1 ? regionList.size() : chunk * (i + 1)); j++) {

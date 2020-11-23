@@ -5,7 +5,7 @@
 #dynmap-marker: cutlery
 #name: Wheat_Farm
 #max: 1
-#price: 100
+#price: 400
 #groups:
 #  - farm
 #level: 3

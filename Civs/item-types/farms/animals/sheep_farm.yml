@@ -5,7 +5,7 @@
 #dynmap-marker: dog
 #name: Sheep_Farm
 #max: 1
-#price: 10
+#price: 50
 #groups:
 #  - farm
 #level: 1

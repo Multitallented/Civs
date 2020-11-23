@@ -4,7 +4,7 @@ shop-icon: LEATHER
 dynmap-marker: coins
 name: Leather_Shop
 max: 1
-price: 10
+price: 45
 groups:
 - shop
 level: 1
@@ -24,10 +24,10 @@ effects:
 - block_liquid
 - block_fire
 
-period: 600 #10 minutes
+period: 1800 #30 minutes
 upkeep:
   0:
     input:
     - LEATHER*6
-    payout: 2.5 # $360 per day
+    payout: 4 # $192 per day
 

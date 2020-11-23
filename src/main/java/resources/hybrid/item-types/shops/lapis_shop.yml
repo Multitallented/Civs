@@ -4,7 +4,7 @@ shop-icon: LAPIS_LAZULI
 dynmap-marker: coins
 name: Lapis_Shop
 max: 1
-price: 200
+price: 100
 groups:
   - shop
   - oreshop
@@ -39,6 +39,6 @@ period: 3600 #1 hour
 upkeep:
   0:
     input:
-      - LAPIS_LAZULI*10 # 240 lapis / day
-    payout: 25          # $600 / day
+      - LAPIS_LAZULI*20 # 480 lapis / day
+    payout: 10          # $240 / day
 

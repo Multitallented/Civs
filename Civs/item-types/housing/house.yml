@@ -4,7 +4,7 @@
 #shop-icon: PINK_BED
 #dynmap-marker: default
 #name: House
-#price: 800
+#price: 900
 #groups:
 #  - housing
 #  - allhouse
@@ -54,10 +54,10 @@
 #  1:
 #    input: #2.11
 #      - BREAD*6  # 144 or 2.25 stacks / day
-#    payout: 12.6 # $303.84 / day
+#    payout: 5.04 # $120.96 / day
 #    exp: 1
 #  2:
 #    input:
 #      - APPLE*5   # 120 or 1.87 stacks / day
-#    payout: 7.8 # $187.2 / day
+#    payout: 3.9 # $93.6 / day
 #
