@@ -2,7 +2,7 @@ type: region
 icon: CHEST
 shop-icon: BEE_SPAWN_EGG
 dynmap-marker: dog
-name: Bee_Hive
+name: Apiary
 max: 1
 price: 1000
 groups:
