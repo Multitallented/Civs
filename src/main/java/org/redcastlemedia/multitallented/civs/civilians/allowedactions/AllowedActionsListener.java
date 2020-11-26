@@ -431,6 +431,10 @@ public class AllowedActionsListener implements Listener {
                 player.getInventory().setBoots(new ItemStack(Material.AIR));
                 removed = true;
             }
+            if (!removed && player.getInventory().getItemInOffHand() != null && itemStack.isSimilar(player.getInventory().getItemInOffHand())) {
+                player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+                removed = true;
+            }
             if (removed) {
                 player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
                 ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());

@@ -219,7 +219,6 @@ port:
 tutorial:
   use-tutorial: true
   use-guide: true
-  url: "https://youtu.be/pa_rfrpUAS8"
 top-guide-spacer: "-----------------Civs-----------------"
 bottom-guide-spacer: "--------------------------------------"
 civs-chat-prefix: "@{GREEN}[Civs]"
