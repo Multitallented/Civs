@@ -124,8 +124,9 @@ public class InviteTownCommand extends CivCommand {
         acceptComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv accept"));
         component.addExtra(acceptComponent);
 
-        invitee.spigot().sendMessage(component);
-        townManager.addInvite(invitee.getUniqueId(), town);
+        if (townManager.addInvite(invitee.getUniqueId(), town)) {
+            invitee.spigot().sendMessage(component);
+        }
         return true;
     }
 
