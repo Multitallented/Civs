@@ -7,6 +7,7 @@ name: TownInvites
 #  decline-all-invites
 items:
   decline:
+    icon: BARRIER
     index: 4
     name: decline-all
     actions:

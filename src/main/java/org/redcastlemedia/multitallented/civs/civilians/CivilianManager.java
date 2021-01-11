@@ -157,7 +157,7 @@ public class CivilianManager {
                 }
             }
 
-            int tutorialIndex = civConfig.getInt("tutorial-index", -1);
+            int tutorialIndex = civConfig.getInt("tutorial-index", 0);
             int tutorialProgress = civConfig.getInt("tutorial-progress", 0);
             String tutorialPath = civConfig.getString("tutorial-path", "default");
 
@@ -225,7 +225,7 @@ public class CivilianManager {
                 new HashMap<>(), 0, 0, 0, 0, 0, 0);
         civilian.getStashItems().putAll(ItemManager.getInstance().getNewItems(civilian));
         civilian.setTutorialPath("default");
-        civilian.setTutorialIndex(-1);
+        civilian.setTutorialIndex(0);
         civilian.setUseAnnouncements(true);
         civilian.setTutorialProgress(0);
 

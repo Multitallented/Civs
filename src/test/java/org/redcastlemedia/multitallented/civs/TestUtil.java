@@ -165,7 +165,7 @@ public abstract class TestUtil {
         block11 = createBlock(Material.GOLD_BLOCK, new Location(world, 4, 101,1));
         block12 = createBlock(Material.OAK_DOOR, new Location(world, 2, 0,1));
         block13 = createBlock(Material.CHEST, new Location(world, 301, 101, 1));
-        block14 = createBlock(Material.WALL_SIGN, new Location(world, -8197, 68, 3196));
+        block14 = createBlock(Material.OAK_WALL_SIGN, new Location(world, -8197, 68, 3196));
 
 
         world.putBlock(0,0,0,block);
@@ -255,7 +255,7 @@ public abstract class TestUtil {
             matList.add(Material.OAK_STAIRS);
         }
         for (int i = 0; i < 8; i++) {
-            matList.add(Material.SIGN);
+            matList.add(Material.OAK_SIGN);
         }
         matList.add(Material.OAK_DOOR);
         matList.add(Material.OAK_DOOR);

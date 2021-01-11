@@ -30,6 +30,18 @@ public final class MenuUtil {
             item.setType(Material.POTATO);
         } else if (mat == Material.CARROTS) {
             item.setType(Material.CARROT);
+        } else if (mat == Material.OAK_WALL_SIGN) {
+            item.setType(Material.OAK_SIGN);
+        } else if (mat == Material.BIRCH_WALL_SIGN) {
+            item.setType(Material.BIRCH_SIGN);
+        } else if (mat == Material.DARK_OAK_WALL_SIGN) {
+            item.setType(Material.DARK_OAK_SIGN);
+        } else if (mat == Material.SPRUCE_WALL_SIGN) {
+            item.setType(Material.SPRUCE_SIGN);
+        } else if (mat == Material.JUNGLE_WALL_SIGN) {
+            item.setType(Material.JUNGLE_SIGN);
+        } else if (mat == Material.ACACIA_WALL_SIGN) {
+            item.setType(Material.ACACIA_SIGN);
         } else if (mat == Material.COCOA) {
             item.setType(Material.COCOA_BEANS);
         }

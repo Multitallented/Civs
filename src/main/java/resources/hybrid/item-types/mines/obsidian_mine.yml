@@ -41,4 +41,8 @@ upkeep:
     - DIAMOND_PICKAXE
     output:
     - OBSIDIAN*4
-
+  1:
+    reagents:
+    - NETHERITE_PICKAXE
+    output:
+    - OBSIDIAN*8
