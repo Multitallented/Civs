@@ -162,6 +162,7 @@ public class ConfigManager {
     @Getter boolean useSkills;
     @Getter boolean silentExp;
     @Getter boolean deleteInvalidRegions;
+    @Getter boolean regionStandby;
 
     @Getter
     String chatChannelFormat;
@@ -389,6 +390,7 @@ public class ConfigManager {
             keepRegionChunksLoaded = config.getBoolean("keep-region-chunks-loaded", true);
             silentExp = config.getBoolean("no-exp-chat-messages", false);
             deleteInvalidRegions = config.getBoolean("delete-invalid-regions", false);
+            regionStandby = config.getBoolean("region-standby", true);
             lineLengthMap = new HashMap<>();
             useSkills = config.getBoolean("use-skills", true);
             if (config.isSet("line-break-length-per-language")) {
@@ -458,6 +460,7 @@ public class ConfigManager {
 
     private void loadDefaults() {
         deleteInvalidRegions = false;
+        regionStandby = true;
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         silentExp = false;
         useSkills = true;

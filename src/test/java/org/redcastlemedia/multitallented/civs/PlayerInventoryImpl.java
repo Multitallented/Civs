@@ -386,7 +386,7 @@ public class PlayerInventoryImpl implements PlayerInventory {
         itemMeta.setDisplayName("Civs Tribe");
         ArrayList<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
-        lore.add("Civs Tribe");
+        lore.add("Tribe");
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
