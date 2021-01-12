@@ -124,11 +124,12 @@ public class AI {
             public void run() {
                 Civilian inviteCiv = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                        "invite-player").replace("$1", getDisplayName() + ChatColor.GREEN)
-                        .replace("$2", town.getType())
-                        .replace("$3", townName));
-                TownManager.getInstance().addInvite(player.getUniqueId(), town);
+                if (TownManager.getInstance().addInvite(player.getUniqueId(), town)) {
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                            "invite-player").replace("$1", getDisplayName() + ChatColor.GREEN)
+                            .replace("$2", town.getType())
+                            .replace("$3", townName));
+                }
             }
         }, 120);
 

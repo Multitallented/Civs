@@ -13,15 +13,11 @@ import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.events.*;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
-import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
-import org.redcastlemedia.multitallented.civs.events.TownDevolveEvent;
-import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
@@ -417,8 +413,15 @@ public class TownManager {
         return Math.max(0, town.getLastDisable() - System.currentTimeMillis());
     }
 
-    public void addInvite(UUID uuid, Town town) {
+    public boolean addInvite(UUID uuid, Town town) {
+        TownInvitesPlayerEvent event = new TownInvitesPlayerEvent(uuid, town);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            return false;
+        }
+
         invites.put(uuid, town);
+        return true;
     }
     public void clearInvite(UUID uuid) {
         invites.remove(uuid);
@@ -430,7 +433,15 @@ public class TownManager {
         if (!invites.containsKey(uuid)) {
             return false;
         }
+
         Town town = invites.get(uuid);
+
+        PlayerAcceptsTownInviteEvent event = new PlayerAcceptsTownInviteEvent(uuid, town);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            return false;
+        }
+
         town.setPeople(uuid, Constants.MEMBER);
         saveTown(town);
         invites.remove(uuid);
@@ -701,11 +712,6 @@ public class TownManager {
         newTown.setChildLocations(childLocations);
         newTown.setBankAccount(bank);
         Government government = setGovTypeAndMaxPower(governmentType, newTown);
-        saveTown(newTown);
-        addTown(newTown);
-        player.getInventory().remove(player.getInventory().getItemInMainHand());
-
-
 
         if (childTownType != null) {
             evolveTown(player, civilian, townType, townTypeLocalName, childTownType, newTown, government);
@@ -714,7 +720,14 @@ public class TownManager {
             TownCreatedEvent townCreatedEvent = new TownCreatedEvent(newTown, townType);
             newTown.setLastVote(System.currentTimeMillis());
             Bukkit.getPluginManager().callEvent(townCreatedEvent);
+            if (townCreatedEvent.isCancelled()) {
+                return;
+            }
         }
+
+        saveTown(newTown);
+        addTown(newTown);
+        player.getInventory().remove(player.getInventory().getItemInMainHand());
 
         player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                 "town-created").replace("$1", newTown.getName()));
