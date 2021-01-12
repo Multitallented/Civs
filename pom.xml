@@ -44,10 +44,6 @@
             <url>https://repo.janmm14.de/repository/public/</url>
         </repository>
         <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-        <repository>
             <id>reflex.public</id>
             <name>Public Reflex Repository</name>
             <url>https://archiva.reflex.rip/repository/public/</url>
