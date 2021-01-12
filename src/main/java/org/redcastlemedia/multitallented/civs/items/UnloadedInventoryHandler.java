@@ -27,11 +27,18 @@ public class UnloadedInventoryHandler {
             for (Map.Entry<String, CVInventory> entry : outerEntry.getValue().entrySet()) {
                 CVInventory cvInventory = entry.getValue();
                 if (cvInventory.getLastUnloadedModification() != -1 &&
+                        ConfigManager.getInstance().getUnloadedChestRefreshRate() != -1 &&
                         System.currentTimeMillis() > ConfigManager.getInstance().getUnloadedChestRefreshRate() +
                                 cvInventory.getLastUnloadedModification()) {
-                    Chunk chunk = cvInventory.getLocation().getChunk();
-                    if (!chunk.isLoaded()) {
-                        chunk.load();
+                    if (!Util.isChunkLoadedAt(cvInventory.getLocation())) {
+                        Chunk chunk = cvInventory.getLocation().getChunk();
+                        if (!chunk.isLoaded()) {
+                            chunk.load();
+                        }
+                        if (ConfigManager.getInstance().isKeepRegionChunksLoaded()) {
+                            chunk.setForceLoaded(true);
+                        }
+                        break;
                     }
                 }
             }

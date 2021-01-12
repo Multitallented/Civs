@@ -304,7 +304,7 @@ public abstract class TestUtil {
         is.getItemMeta().setDisplayName(name);
         ArrayList<String> lore = new ArrayList<>();
         lore.add("");
-        lore.add(name);
+        lore.add(name.replace("Civs ", ""));
         is.getItemMeta().setLore(lore);
         return is;
     }

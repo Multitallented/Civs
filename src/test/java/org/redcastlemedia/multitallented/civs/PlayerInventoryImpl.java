@@ -32,7 +32,7 @@ public class PlayerInventoryImpl implements PlayerInventory {
         itemMeta.setDisplayName("Civs Tribe");
         ArrayList<String> lore = new ArrayList<>();
         lore.add(new UUID(1,2).toString());
-        lore.add("Civs Tribe");
+        lore.add("Tribe");
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         mainHandItem = itemStack;

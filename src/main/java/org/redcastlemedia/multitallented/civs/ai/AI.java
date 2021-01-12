@@ -122,11 +122,12 @@ public class AI {
         Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
             @Override
             public void run() {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                        "invite-player").replace("$1", getDisplayName() + ChatColor.GREEN)
-                        .replace("$2", town.getType())
-                        .replace("$3", townName));
-                TownManager.getInstance().addInvite(player.getUniqueId(), town);
+                if (TownManager.getInstance().addInvite(player.getUniqueId(), town)) {
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                            "invite-player").replace("$1", getDisplayName() + ChatColor.GREEN)
+                            .replace("$2", town.getType())
+                            .replace("$3", townName));
+                }
             }
         }, 120);
 

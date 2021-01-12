@@ -132,7 +132,7 @@ public class DynmapHook implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onTownCreation(TownCreatedEvent event) {
         createAreaMarker(event.getTown(), event.getTownType());
     }
