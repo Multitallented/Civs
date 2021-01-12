@@ -44,10 +44,6 @@
             <url>https://repo.janmm14.de/repository/public/</url>
         </repository>
         <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-        <repository>
             <id>reflex.public</id>
             <name>Public Reflex Repository</name>
             <url>https://archiva.reflex.rip/repository/public/</url>
@@ -79,7 +75,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.13.2-R0.1-SNAPSHOT</version>
+            <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!--<dependency>-->

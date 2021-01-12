@@ -48,6 +48,14 @@ public class UtilTests extends TestUtil {
     }
 
     @Test
+    public void hexColorShouldTranslateProperly() {
+        String parsedColors = Util.parseColors("@{#FF0000}Whatever");
+        assertEquals(ChatColor.of("#FF0000") + "Whatever", parsedColors);
+        String parsedColors2 = Util.parseColors("@{#FF0000}test@{#00FF00}test2");
+        assertEquals(ChatColor.of("#FF0000") + "test" + ChatColor.of("#00FF00") + "test2", parsedColors2);
+    }
+
+    @Test
     public void cvItemFromStringShouldSetValuesProperly() {
         CVItem cvItem = CVItem.createCVItemFromString("COBBLESTONE*2%50");
         assertTrue(cvItem.getMat() == Material.COBBLESTONE && cvItem.getChance() == .5 && cvItem.getQty() == 2);

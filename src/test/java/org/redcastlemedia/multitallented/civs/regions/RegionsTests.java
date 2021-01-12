@@ -236,7 +236,7 @@ public class RegionsTests extends TestUtil {
         when(event1.getBlockPlaced()).thenReturn(chestBlock);
         List<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
-        lore.add("Civs Cobble");
+        lore.add("Cobble");
         ItemStack itemStack = TestUtil.mockItemStack(Material.CHEST, 1, "Civs Cobble", lore);
         doReturn(itemStack).when(event1).getItemInHand();
 
@@ -268,7 +268,7 @@ public class RegionsTests extends TestUtil {
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
         List<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
-        lore.add("Civs Cobble");
+        lore.add("Cobble");
         doReturn(TestUtil.mockItemStack(Material.CHEST, 1, "Civs Cobble", lore)).when(event1).getItemInHand();
 
         RegionListener regionListener = new RegionListener();
@@ -340,7 +340,7 @@ public class RegionsTests extends TestUtil {
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique3);
         List<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
-        lore.add("Civs Cobble");
+        lore.add("Cobble");
         doReturn(TestUtil.mockItemStack(Material.CHEST, 1, "Civs Cobble", lore)).when(event1).getItemInHand();
 
         RegionListener regionListener = new RegionListener();
@@ -485,7 +485,7 @@ public class RegionsTests extends TestUtil {
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique4);
         List<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
-        lore.add("Civs Cobble");
+        lore.add("Cobble");
         ItemStack itemStack = TestUtil.mockItemStack(Material.CHEST, 1, "Civs Cobble", lore);
         doReturn(itemStack).when(event1).getItemInHand();
 

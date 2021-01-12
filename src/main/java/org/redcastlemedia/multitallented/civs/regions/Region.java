@@ -803,18 +803,21 @@ public class Region {
     }
 
     public boolean runUpkeep(boolean checkTick) {
-        if (!missingBlocks.isEmpty()) {
+        ItemManager itemManager = ItemManager.getInstance();
+        RegionType regionType = (RegionType) itemManager.getItemType(getType());
+
+        if (regionType.getUpkeeps().isEmpty() || !missingBlocks.isEmpty()) {
             return false;
         }
         if (checkTick && !shouldTick()) {
             return false;
         }
+        if (checkTick && !ConfigManager.getInstance().isRegionStandby()) {
+            tick();
+        }
         if (ConfigManager.getInstance().isDisableRegionsInUnloadedChunks() && !Util.isChunkLoadedAt(getLocation())) {
             return false;
         }
-
-        ItemManager itemManager = ItemManager.getInstance();
-        RegionType regionType = (RegionType) itemManager.getItemType(getType());
 
         Location location = getLocation();
         boolean hadUpkeep = false;
@@ -836,6 +839,7 @@ public class Region {
             if (chestInventory == null && needsItems &&
                     RegionManager.getInstance().hasRegionChestChanged(this)) {
                 chestInventory = UnloadedInventoryHandler.getInstance().getChestInventory(getLocation());
+                RegionManager.getInstance().addCheckedRegion(this);
             }
             if (needsItems && (chestInventory == null || !chestInventory.isValid())) {
                 continue;

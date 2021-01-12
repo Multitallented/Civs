@@ -41,38 +41,38 @@ public class CivilianManager {
         civilians.clear();
         sortedCivilians.clear();
         listNeedsToBeSorted = true;
-        loadAllCivilians();
+//        loadAllCivilians();
     }
 
     public Collection<Civilian> getCivilians() {
         return civilians.values();
     }
 
-    private void loadAllCivilians() {
-        File civilianFolder = new File(Civs.dataLocation, "players");
-        if (!civilianFolder.exists()) {
-            return;
-        }
-        for (File currentFile : civilianFolder.listFiles()) {
-            try {
-                UUID uuid = UUID.fromString(currentFile.getName().replace(".yml",""));
-                Civilian civilian = loadFromFileCivilian(uuid);
-                civilians.put(uuid, civilian);
-                sortedCivilians.add(civilian);
-            } catch (Exception npe) {
-                Civs.logger.log(Level.SEVERE, "Unable to load civilian", npe);
-            }
-        }
-        listNeedsToBeSorted = true;
-        sortCivilians();
-    }
+//    private void loadAllCivilians() {
+//        File civilianFolder = new File(Civs.dataLocation, "players");
+//        if (!civilianFolder.exists()) {
+//            return;
+//        }
+//        for (File currentFile : civilianFolder.listFiles()) {
+//            try {
+//                UUID uuid = UUID.fromString(currentFile.getName().replace(".yml",""));
+//                Civilian civilian = loadFromFileCivilian(uuid);
+//                civilians.put(uuid, civilian);
+//                sortedCivilians.add(civilian);
+//            } catch (Exception npe) {
+//                Civs.logger.log(Level.SEVERE, "Unable to load civilian", npe);
+//            }
+//        }
+//        listNeedsToBeSorted = true;
+//        sortCivilians();
+//    }
 
     public static CivilianManager getInstance() {
         if (civilianManager == null) {
             civilianManager = new CivilianManager();
-            if (Civs.getInstance() != null) {
-                civilianManager.loadAllCivilians();
-            }
+//            if (Civs.getInstance() != null) {
+//                civilianManager.loadAllCivilians();
+//            }
         }
         return civilianManager;
     }
@@ -107,7 +107,7 @@ public class CivilianManager {
         ClassManager.getInstance().unloadPlayer(player);
         Civilian civilian = getCivilian(player.getUniqueId());
         saveCivilian(civilian);
-//        civilians.remove(player.getUniqueId());
+        civilians.remove(player.getUniqueId());
     }
     public Civilian getCivilian(UUID uuid) {
         Civilian civilian = civilians.get(uuid);
@@ -157,7 +157,7 @@ public class CivilianManager {
                 }
             }
 
-            int tutorialIndex = civConfig.getInt("tutorial-index", -1);
+            int tutorialIndex = civConfig.getInt("tutorial-index", 0);
             int tutorialProgress = civConfig.getInt("tutorial-progress", 0);
             String tutorialPath = civConfig.getString("tutorial-path", "default");
 
@@ -225,7 +225,7 @@ public class CivilianManager {
                 new HashMap<>(), 0, 0, 0, 0, 0, 0);
         civilian.getStashItems().putAll(ItemManager.getInstance().getNewItems(civilian));
         civilian.setTutorialPath("default");
-        civilian.setTutorialIndex(-1);
+        civilian.setTutorialIndex(0);
         civilian.setUseAnnouncements(true);
         civilian.setTutorialProgress(0);
 
