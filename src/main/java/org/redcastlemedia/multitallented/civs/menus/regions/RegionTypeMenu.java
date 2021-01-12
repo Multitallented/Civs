@@ -97,8 +97,10 @@ public class RegionTypeMenu extends CustomMenu {
             return itemStack;
         } else if ("build-reqs".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(player, count);
-            cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
-                    menuIcon.getDesc()).replace("$1", regionType.getDisplayName(player))));
+            if (!menuIcon.getDesc().isEmpty()) {
+                cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
+                        menuIcon.getDesc()).replace("$1", regionType.getDisplayName(player))));
+            }
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;

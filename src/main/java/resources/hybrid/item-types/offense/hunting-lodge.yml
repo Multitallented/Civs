@@ -2,7 +2,7 @@ type: region
 icon: OBSIDIAN
 shop-icon: PLAYER_HEAD
 dynmap-marker: cross
-name: Hunting_Lodge
+name: Hunting-Lodge
 price: 400
 max: 1
 groups:
