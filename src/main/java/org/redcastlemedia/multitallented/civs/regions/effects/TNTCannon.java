@@ -128,7 +128,7 @@ public class TNTCannon implements Listener, RegionCreatedListener {
         if (cooldowns.get(id) != null && cooldowns.get(id) > System.currentTimeMillis()) {
             long timeLeft = System.currentTimeMillis() - cooldowns.get(id);
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                    LocaleConstants.COOLDOWN).replace("$1", Util.formatTime(timeLeft)));
+                    LocaleConstants.COOLDOWN).replace("$1", Util.formatTime(player, timeLeft)));
             return;
         }
 
