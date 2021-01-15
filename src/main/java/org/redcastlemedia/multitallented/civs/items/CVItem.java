@@ -315,14 +315,16 @@ public class CVItem {
                 is.setItemMeta(Bukkit.getItemFactory().getItemMeta(is.getType()));
             }
             ItemMeta im = is.getItemMeta();
-            if (displayName != null) {
-                im.setDisplayName(displayName);
+            if (im != null) {
+                if (displayName != null) {
+                    im.setDisplayName(displayName);
+                }
+                if (lore != null && !lore.isEmpty()) {
+                    im.setLore(lore);
+                }
+                im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                is.setItemMeta(im);
             }
-            if (lore != null && !lore.isEmpty()) {
-                im.setLore(lore);
-            }
-            im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            is.setItemMeta(im);
         }
         return is;
     }
