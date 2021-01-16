@@ -15,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.skills.SkillManager;
+import org.redcastlemedia.multitallented.civs.skills.SkillType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -174,6 +175,10 @@ public class CivilianManager {
             String stringRespawn = civConfig.getString("respawn");
             if (civConfig.isSet("skills")) {
                 for (String skillName : civConfig.getConfigurationSection("skills").getKeys(false)) {
+                    SkillType skillType = SkillManager.getInstance().getSkillType(skillName);
+                    if (skillType == null) {
+                        continue;
+                    }
                     Skill skill = new Skill(skillName);
                     for (String accomplishment : civConfig.getConfigurationSection("skills." + skillName).getKeys(false)) {
                         int level = civConfig.getInt("skills." + skillName + "." + accomplishment);

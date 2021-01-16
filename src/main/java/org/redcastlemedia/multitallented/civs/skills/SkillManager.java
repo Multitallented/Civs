@@ -20,7 +20,7 @@ import org.reflections.scanners.ResourcesScanner;
 
 import lombok.Getter;
 
-@CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
+@CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGHER)
 public class SkillManager {
     private static SkillManager skillManager = null;
 
