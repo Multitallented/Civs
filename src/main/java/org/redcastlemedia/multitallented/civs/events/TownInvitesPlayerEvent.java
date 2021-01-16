@@ -14,6 +14,11 @@ public class TownInvitesPlayerEvent extends Event implements Cancellable {
     private final UUID player;
     private final Town town;
 
+    private static final HandlerList hList = new HandlerList();
+    public static HandlerList getHandlerList() {
+        return hList;
+    }
+
     public TownInvitesPlayerEvent(UUID player, Town town) {
         this.player = player;
         this.town = town;
@@ -37,9 +42,8 @@ public class TownInvitesPlayerEvent extends Event implements Cancellable {
         this.cancelled = cancelled;
     }
 
-    @NotNull
     @Override
     public HandlerList getHandlers() {
-        return null;
+        return hList;
     }
 }
