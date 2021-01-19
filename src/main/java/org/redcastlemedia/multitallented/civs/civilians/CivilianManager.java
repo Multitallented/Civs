@@ -15,6 +15,7 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.skills.SkillManager;
+import org.redcastlemedia.multitallented.civs.skills.SkillType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -41,38 +42,38 @@ public class CivilianManager {
         civilians.clear();
         sortedCivilians.clear();
         listNeedsToBeSorted = true;
-//        loadAllCivilians();
+        loadAllCivilians();
     }
 
     public Collection<Civilian> getCivilians() {
         return civilians.values();
     }
 
-//    private void loadAllCivilians() {
-//        File civilianFolder = new File(Civs.dataLocation, "players");
-//        if (!civilianFolder.exists()) {
-//            return;
-//        }
-//        for (File currentFile : civilianFolder.listFiles()) {
-//            try {
-//                UUID uuid = UUID.fromString(currentFile.getName().replace(".yml",""));
-//                Civilian civilian = loadFromFileCivilian(uuid);
-//                civilians.put(uuid, civilian);
-//                sortedCivilians.add(civilian);
-//            } catch (Exception npe) {
-//                Civs.logger.log(Level.SEVERE, "Unable to load civilian", npe);
-//            }
-//        }
-//        listNeedsToBeSorted = true;
-//        sortCivilians();
-//    }
+    private void loadAllCivilians() {
+        File civilianFolder = new File(Civs.dataLocation, "players");
+        if (!civilianFolder.exists()) {
+            return;
+        }
+        for (File currentFile : civilianFolder.listFiles()) {
+            try {
+                UUID uuid = UUID.fromString(currentFile.getName().replace(".yml",""));
+                Civilian civilian = loadFromFileCivilian(uuid);
+                civilians.put(uuid, civilian);
+                sortedCivilians.add(civilian);
+            } catch (Exception npe) {
+                Civs.logger.log(Level.SEVERE, "Unable to load civilian", npe);
+            }
+        }
+        listNeedsToBeSorted = true;
+        sortCivilians();
+    }
 
     public static CivilianManager getInstance() {
         if (civilianManager == null) {
             civilianManager = new CivilianManager();
-//            if (Civs.getInstance() != null) {
-//                civilianManager.loadAllCivilians();
-//            }
+            if (Civs.getInstance() != null) {
+                civilianManager.loadAllCivilians();
+            }
         }
         return civilianManager;
     }
@@ -107,7 +108,7 @@ public class CivilianManager {
         ClassManager.getInstance().unloadPlayer(player);
         Civilian civilian = getCivilian(player.getUniqueId());
         saveCivilian(civilian);
-        civilians.remove(player.getUniqueId());
+//        civilians.remove(player.getUniqueId());
     }
     public Civilian getCivilian(UUID uuid) {
         Civilian civilian = civilians.get(uuid);
@@ -174,6 +175,10 @@ public class CivilianManager {
             String stringRespawn = civConfig.getString("respawn");
             if (civConfig.isSet("skills")) {
                 for (String skillName : civConfig.getConfigurationSection("skills").getKeys(false)) {
+                    SkillType skillType = SkillManager.getInstance().getSkillType(skillName);
+                    if (skillType == null) {
+                        continue;
+                    }
                     Skill skill = new Skill(skillName);
                     for (String accomplishment : civConfig.getConfigurationSection("skills." + skillName).getKeys(false)) {
                         int level = civConfig.getInt("skills." + skillName + "." + accomplishment);
