@@ -113,7 +113,9 @@ public class ProtectionHandler implements Listener {
             DebugLogger.chunkLoads++;
         }
 //        System.out.println("chunk loaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
-        UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk());
+        Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> {
+            UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk());
+        }, 1L);
     }
 
     @EventHandler(ignoreCancelled = true)
