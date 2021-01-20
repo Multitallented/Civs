@@ -51,6 +51,9 @@ public class NationMenu extends CustomMenu {
             data.put("page", 0);
         }
         Nation nation = NationManager.getInstance().getNation(params.get(Constants.NATION));
+        if (nation == null) {
+            return data;
+        }
         data.put(Constants.NATION, nation);
         if (nation.getLastRenamedBy() != null) {
             data.put("lastRenamed", nation.getLastRenamedBy().toString());
