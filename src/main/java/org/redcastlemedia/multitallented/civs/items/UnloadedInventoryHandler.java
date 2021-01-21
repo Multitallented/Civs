@@ -66,13 +66,11 @@ public class UnloadedInventoryHandler {
             return;
         }
         String chunkString = getChunkString(chunk);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> {
-            if (unloadedChestInventories.containsKey(chunkString)) {
-                for (String key : unloadedChestInventories.get(chunkString).keySet()) {
-                    updateInventoryAtLocation(Region.idToLocation(key));
-                }
+        if (unloadedChestInventories.containsKey(chunkString)) {
+            for (String key : unloadedChestInventories.get(chunkString).keySet()) {
+                updateInventoryAtLocation(Region.idToLocation(key));
             }
-        }, 1L);
+        }
 
     }
 
