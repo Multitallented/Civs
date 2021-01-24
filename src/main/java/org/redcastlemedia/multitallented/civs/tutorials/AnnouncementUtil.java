@@ -18,7 +18,6 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
-import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -248,7 +247,7 @@ public final class AnnouncementUtil {
         sendToPlayer(player, messages.get(randIndex) + " ", keys.get(randIndex));
     }
 
-    public void doAnnouncerAction(String key, Player player) {
+    public static void doAnnouncerAction(String key, Player player) {
         if (key == null) {
             return;
         }
