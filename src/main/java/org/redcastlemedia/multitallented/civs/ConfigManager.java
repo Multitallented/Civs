@@ -163,6 +163,7 @@ public class ConfigManager {
     @Getter boolean silentExp;
     @Getter boolean deleteInvalidRegions;
     @Getter boolean regionStandby;
+    @Getter boolean skinsInMenu;
 
     @Getter
     String chatChannelFormat;
@@ -361,6 +362,7 @@ public class ConfigManager {
             civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs]");
             prefixAllText = Util.parseColors(config.getString("prefix-all-text", ""));
             civsItemPrefix = config.getString("civs-item-prefix", "Civs");
+            skinsInMenu = config.getBoolean("show-player-skins-in-menus", true);
             if ("".equals(civsItemPrefix)) {
                 civsItemPrefix = "Civs";
             }
@@ -459,6 +461,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        skinsInMenu = true;
         deleteInvalidRegions = false;
         regionStandby = true;
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();

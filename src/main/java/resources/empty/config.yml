@@ -15,6 +15,9 @@ line-break-length-per-language:
 ##It basically allows people to bypass limits and dupe civ items with min amounts (like shelter)
 allow-civ-item-sharing: false
 
+##Show player skins in menu icons
+show-player-skins-in-menus: true
+
 #allows players to earn exp in skills
 allow-skills: true
 #turns off exp chat notifications for skills

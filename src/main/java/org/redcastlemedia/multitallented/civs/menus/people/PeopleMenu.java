@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -246,7 +247,9 @@ public class PeopleMenu extends CustomMenu {
             ItemStack itemStack = cvItem.createItemStack();
             if (player != null && Bukkit.getOnlineMode()) {
                 SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-                skullMeta.setOwningPlayer(player);
+                if (ConfigManager.getInstance().isSkinsInMenu()) {
+                    skullMeta.setOwningPlayer(player);
+                }
                 itemStack.setItemMeta(skullMeta);
             }
             ((HashMap<ItemStack, UUID>) MenuManager.getData(civilian.getUuid(), "civMap")).put(itemStack, offlinePlayer.getUniqueId());
