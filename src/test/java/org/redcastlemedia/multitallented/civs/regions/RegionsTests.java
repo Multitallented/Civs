@@ -33,11 +33,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.ItemMetaImpl;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
 import org.redcastlemedia.multitallented.civs.SuccessException;
@@ -67,6 +69,26 @@ public class RegionsTests extends TestUtil {
         RegionManager.getInstance().reload();
         TownManager.getInstance().reload();
         MenuManager.getInstance().clearOpenMenus();
+    }
+
+    @After
+    public void cleanup() {
+        setRegionStandby(true);
+    }
+
+    @Test
+    public void allRegionsShouldDoUpkeep() {
+        ArrayList<Region> regions = new ArrayList<>();
+        for (int i = 0; i < 11; i++) {
+            regions.add(createNewRegion("leather_shop"));
+        }
+        setRegionStandby(false);
+        for (int i = 0; i < 10; i++) {
+            RegionTickUtil.runUpkeeps();
+        }
+        for (Region region : regions) {
+            assertNotEquals(0, region.lastTick);
+        }
     }
 
     @Test
