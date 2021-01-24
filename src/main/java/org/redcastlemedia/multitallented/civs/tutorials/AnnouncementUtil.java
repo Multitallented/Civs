@@ -7,22 +7,19 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.UUID;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
+import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
+import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -34,6 +31,11 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
+
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public final class AnnouncementUtil {
     private static HashMap<UUID, HashSet<String>> alreadySentMessages = new HashMap<>();
@@ -237,17 +239,60 @@ public final class AnnouncementUtil {
             return;
         } else if (messages.size() < 2) {
             alreadySentMessages.get(civilian.getUuid()).add(keys.get(0));
-            sendToPlayer(player, Civs.getRawPrefix() + messages.get(0) + " ");
+            sendToPlayer(player, messages.get(0) + " ", keys.get(0));
             return;
         }
         Random random = new Random();
         int randIndex = random.nextInt(messages.size());
         alreadySentMessages.get(civilian.getUuid()).add(keys.get(randIndex));
-        sendToPlayer(player, Civs.getRawPrefix() + messages.get(randIndex) + " ");
+        sendToPlayer(player, messages.get(randIndex) + " ", keys.get(randIndex));
     }
 
-    private static void sendToPlayer(Player player, String input) {
-        BaseComponent message = Util.parseColorsComponent(input);
+    public void doAnnouncerAction(String key, Player player) {
+        if (key == null) {
+            return;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if ("ann-make-allies".equals(key)) {
+            MenuManager.openMenuFromString(civilian, "select-town");
+        } else if (key.startsWith("ann-vote-")) {
+            String townName = key.replace("ann-vote-", "");
+            MenuManager.openMenuFromString(civilian, "people?town=" + townName);
+        } else if (key.startsWith("ann-town-low-power-")) {
+            MenuManager.openMenuFromString(civilian, "shop?parent=utilities");
+        } else if (key.startsWith("ann-town-housing-")) {
+            MenuManager.openMenuFromString(civilian, "shop?parent=housing");
+        } else if ("ann-town-protection".equals(key)) {
+            MenuManager.openMenuFromString(civilian, "shop?parent=towns");
+        } else if ("ann-town-join".equals(key)) {
+            MenuManager.openMenuFromString(civilian, "select-town");
+        } else if ("ann-achievement".equals(key)) {
+            TutorialManager.getInstance().printTutorial(player, civilian);
+        } else if (key.startsWith("ann-missing-input-")) {
+            String regionId = key.replace("ann-missing-input-", "");
+            MenuManager.openMenuFromString(civilian, "region?region=" + regionId);
+        } else if (key.startsWith("ann-limit-")) {
+            MenuManager.openMenuFromString(civilian, "region-list");
+        } else if (key.startsWith("ann-karma-")) {
+            String uuidString = key.replace("ann-karma-", "");
+            MenuManager.openMenuFromString(civilian, "player?uuid=" + uuidString);
+        } else if (key.startsWith("ann-bounty-")) {
+            String uuidString = key.replace("ann-bounty-", "");
+            MenuManager.openMenuFromString(civilian, "player?uuid=" + uuidString);
+        }
+    }
+
+    private static void sendToPlayer(Player player, String input, String key) {
+        BaseComponent message = Util.parseColorsComponent(Civs.getRawPrefix());
+        TextComponent mainMessage = new TextComponent(input);
+        if (key.startsWith("ann-bank")) {
+            String townName = key.replace("ann-bank-", "");
+            mainMessage.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/cv withdraw " + townName + " "));
+        } else {
+            mainMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv tutaction " + key));
+        }
+        message.addExtra(mainMessage);
+
         TextComponent unsub = new TextComponent("[X]");
         unsub.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv toggleann"));
         unsub.setColor(ChatColor.RED);
