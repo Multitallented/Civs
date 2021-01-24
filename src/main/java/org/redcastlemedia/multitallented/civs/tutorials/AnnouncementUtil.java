@@ -182,11 +182,14 @@ public final class AnnouncementUtil {
         ArrayList<String> groups = new ArrayList<>(ConfigManager.getInstance().getGroups().keySet());
         Collections.shuffle(groups);
         for (String group : groups) {
-            if (!civilian.isAtGroupMax(group) &&
-                    !alreadySentMessages.get(civilian.getUuid()).contains("ann-limit-" + group)) {
+            if (alreadySentMessages.get(civilian.getUuid()).contains("ann-limit-" + group)) {
+                continue;
+            }
+            int groupCount = civilian.getCountGroup(group);
+            if (groupCount > 0 && !civilian.isAtGroupMax(group)) {
                 keys.add("ann-limit-" + group);
                 messages.add(LocaleManager.getInstance().getRawTranslation(player, "ann-limit")
-                        .replace("$1", "" + civilian.getCountGroup(group))
+                        .replace("$1", "" + groupCount)
                         .replace("$2", "" + ConfigManager.getInstance().getGroups().get(group))
                         .replace("$3", group));
                 break;
