@@ -92,9 +92,22 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 @CivsSingleton
 public class ProtectionHandler implements Listener {
 
-    public static void getInstance() {
-        ProtectionHandler protectionHandler = new ProtectionHandler();
-        Bukkit.getPluginManager().registerEvents(protectionHandler, Civs.getInstance());
+    private static ProtectionHandler instance;
+
+    protected static void setInstance(ProtectionHandler protectionHandler) {
+        instance = protectionHandler;
+    }
+
+    public ProtectionHandler() {
+        Bukkit.getPluginManager().registerEvents(this, Civs.getInstance());
+        setInstance(this);
+    }
+
+    public static ProtectionHandler getInstance() {
+        if (instance == null) {
+            new ProtectionHandler();
+        }
+        return instance;
     }
 
     @EventHandler
@@ -346,7 +359,7 @@ public class ProtectionHandler implements Listener {
         }
     }
 
-    private void removeBlockFromMissingBlocks(Region region, Material type) {
+    protected void removeBlockFromMissingBlocks(Region region, Material type) {
         int index1 = -1;
         int index2 = -1;
         for (int i = 0; i < region.getMissingBlocks().size(); i++) {

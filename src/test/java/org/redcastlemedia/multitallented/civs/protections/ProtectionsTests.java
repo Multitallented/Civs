@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.protections;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -17,6 +18,7 @@ import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.PlayerInventoryImpl;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
@@ -27,6 +29,7 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -42,6 +45,16 @@ public class ProtectionsTests extends TestUtil {
         TownManager.getInstance().reload();
         block = mock(Block.class);
         when(block.getLocation()).thenReturn(new Location(TestUtil.world, 0, 0,0));
+    }
+
+    @Test
+    public void missingBlocksShouldBeRemoved() {
+        Region region = RegionsTests.createNewRegion("greenhouse");
+        List<CVItem> tempList = new ArrayList<>();
+        tempList.add(new CVItem(Material.DIRT, 1));
+        region.getMissingBlocks().add(tempList);
+        ProtectionHandler.getInstance().removeBlockFromMissingBlocks(region, Material.DIRT);
+        assertTrue(region.getMissingBlocks().isEmpty());
     }
 
     @Test
