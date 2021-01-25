@@ -74,6 +74,7 @@ public class RegionsTests extends TestUtil {
     @After
     public void cleanup() {
         setRegionStandby(true);
+        world.setChunkLoaded(false);
     }
 
     @Test
@@ -89,6 +90,25 @@ public class RegionsTests extends TestUtil {
         for (Region region : regions) {
             assertNotEquals(0, region.lastTick);
         }
+    }
+
+    @Test
+    public void regionShouldCheckUpkeep() {
+        setRegionStandby(false);
+        world.setChunkLoaded(true);
+        Region region = createNewRegion("greenhouse");
+        Chest chest = (Chest) blockUnique.getState();
+        chest.getInventory().setItem(0, new ItemStack(Material.SHEARS, 1));
+        for (int i = 0; i < 10; i++) {
+            RegionTickUtil.runUpkeeps();
+        }
+        ItemStack firstItem = chest.getInventory().getItem(0);
+        assertNotEquals(0, region.lastTick);
+        assertNotNull(firstItem);
+        assertEquals(Material.SHEARS, firstItem.getType());
+        ItemStack secondItem = chest.getInventory().getItem(1);
+        assertNotNull(secondItem);
+        assertNotEquals(Material.SHEARS, secondItem.getType());
     }
 
     @Test
