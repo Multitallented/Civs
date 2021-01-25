@@ -258,6 +258,13 @@ public class NationMenu extends CustomMenu {
     }
 
     public static void leaveNation(Player player, Nation nation, Town town) {
+        Nation lockedNation = TownManager.getInstance().checkForRegionLockedNation(town);
+        if (lockedNation != null && ! player.hasPermission(Constants.REGION_LOCKED_NATIONS_TOWN_LEAVE_BYPASS_PERMISSION)) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                    "left-nation-failed-region-lock").replace("$1", town.getName()).replace("$2", nation.getName()));
+            return;
+        }
+
         NationManager.getInstance().removeMemberFromNation(nation, town);
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                 "left-nation").replace("$1", town.getName())

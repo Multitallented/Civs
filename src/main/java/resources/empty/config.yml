@@ -279,3 +279,9 @@ nation-claim-effects:
   - "block_build"
   - "block_fire"
   - "block_explosion"
+
+# Towns that are automatically created within one of the regions are forced to join it`s nation
+# Towns are unable to leave nation later on
+region-locked-nations:
+  my-awesome-region: my-preset-nation
+  my-awesome-region-2: my-preset-nation-2

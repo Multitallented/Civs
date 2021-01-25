@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.world.World;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -39,6 +41,7 @@ import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
+import org.redcastlemedia.multitallented.civs.nations.Nation;
 import org.redcastlemedia.multitallented.civs.nations.NationManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -752,6 +755,12 @@ public class TownManager {
             }
         }
 
+        Nation nation = checkForRegionLockedNation(town);
+        if (nation != null) {
+            Civs.logger.log(Level.INFO,"Town {0} forced to join Nation {1}", new Object[]{town.getName(), nation.getName()});
+            NationManager.getInstance().addMemberToNation(nation, town);
+        }
+
         saveTown(newTown);
         addTown(newTown);
         player.getInventory().remove(player.getInventory().getItemInMainHand());
@@ -954,5 +963,33 @@ public class TownManager {
     private Set<Region> getRegionsInTown(Location location, int radius, int radiusY) {
         //TODO fix this to account for vertical radius being different
         return RegionManager.getInstance().getContainingRegions(location, radius);
+    }
+
+    @Nullable
+    public Nation checkForRegionLockedNation(Town town) {
+        if (Civs.getWorldGuard() != null) {
+            Map<String, String> regionLockedNations = ConfigManager.getInstance().getRegionLockedNations();
+            World wgWorld = BukkitAdapter.adapt(town.getLocation().getWorld());
+            com.sk89q.worldguard.protection.managers.RegionManager regionManager = Civs.getWorldGuard().getPlatform().getRegionContainer().get(wgWorld);
+            if (regionManager == null) {
+                Civs.logger.log(Level.SEVERE, "Unable to obtain RegionManager for world {0}", wgWorld.getName());
+                return null;
+            }
+
+            List<String> applicableRegionsIDs = regionManager.getApplicableRegionsIDs(BukkitAdapter.asBlockVector(town.getLocation()));
+            for (String applicableRegionsID : applicableRegionsIDs) {
+                String nationName = regionLockedNations.get(applicableRegionsID);
+                if (nationName != null) {
+                    Nation nation = NationManager.getInstance().getNation(nationName);
+                    if (nation == null) {
+                        Civs.logger.log(Level.SEVERE, "WG Region {0} has locked nation {1}, but such nation does not exists",
+                                new Object[]{applicableRegionsID, nationName});
+                    }
+                    return nation;
+                }
+            }
+
+        }
+        return null;
     }
 }
