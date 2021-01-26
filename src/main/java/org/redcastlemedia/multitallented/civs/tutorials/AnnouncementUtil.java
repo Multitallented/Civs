@@ -283,7 +283,7 @@ public final class AnnouncementUtil {
 
     private static void sendToPlayer(Player player, String input, String key) {
         BaseComponent message = Util.parseColorsComponent(Civs.getRawPrefix());
-        TextComponent mainMessage = new TextComponent(input);
+        TextComponent mainMessage = new TextComponent(Util.parseColorsComponent(input));
         if (key.startsWith("ann-bank")) {
             String townName = key.replace("ann-bank-", "");
             mainMessage.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/cv withdraw " + townName + " "));

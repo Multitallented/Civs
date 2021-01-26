@@ -488,7 +488,7 @@ public class DeathListener implements Listener {
             CivilianManager.getInstance().saveCivilian(dyingCiv);
         }
 
-        if (damager == null) {
+        if (damager == null || damager == player) {
             return;
         }
 

@@ -18,6 +18,9 @@ allow-civ-item-sharing: false
 ##Show player skins in menu icons
 show-player-skins-in-menus: true
 
+##Allows players to set bounties on each other and on towns
+use-bounties: true
+
 #allows players to earn exp in skills
 allow-skills: true
 #turns off exp chat notifications for skills
