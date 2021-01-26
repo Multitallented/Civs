@@ -740,10 +740,6 @@ public class NationManager implements Listener {
             NationManager.getInstance().removeNation(nation);
             return;
         }
-        if (nation.isEternal() && nation.getMembers().size() == 1) {
-            NationManager.getInstance().removeNation(nation);
-            return;
-        }
 
         removeAllClaimsInTown(town);
         nation.getMembers().remove(town.getName());

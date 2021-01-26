@@ -771,12 +771,14 @@ public class TownManager {
             MenuManager.getInstance().openMenu(player, "gov-list", params);
         }
 
+        saveTown(newTown);
+
         Nation nation = checkForRegionLockedNation(newTown);
         if (nation != null) {
             Civs.logger.log(Level.INFO,"Town {0} forced to join Nation {1}", new Object[]{newTown.getName(), nation.getName()});
             NationManager.getInstance().addMemberToNation(nation, newTown);
+            NationManager.getInstance().saveNation(nation);
         }
-        saveTown(newTown);
     }
 
     @Nullable

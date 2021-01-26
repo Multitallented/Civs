@@ -28,7 +28,7 @@ public final class Constants {
     public static final String MAX_PAGE = "maxPage";
     public static final String INFINITE_BOUNDING_BOX = "infinite-bounding-box";
     public static final String ADMIN_PERMISSION = "civs.admin";
-    public static final String REGION_LOCKED_NATIONS_TOWN_LEAVE_BYPASS_PERMISSION = "civs.bypass-region-locked-nations.town.leave";
+    public static final String REGION_LOCKED_NATIONS_TOWN_LEAVE_BYPASS_PERMISSION = "civs.bypass_region_locked_nations.town.leave";
     public static final String ADMIN_INVISIBLE = "civs.invis";
     public static final String PVP_EXEMPT_PERMISSION = "civs.bypasspvp";
     public static final String PORT_PERMISSION = "civs.port";

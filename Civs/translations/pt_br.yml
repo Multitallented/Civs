@@ -1218,3 +1218,4 @@
 #  @{BLUE}Funcionando: $4 @{GREEN}Entrada Hoje: $5"
 #town-summary: "@{GREEN}Tipo: $1 @{BLUE}Donos: $2 @{YELLOW}Energia: $3/$4 @{GREEN}População:
 #  $5/$6"
+#left-nation-failed-region-lock: "A Nação $2 não permite que membros saiam dela."
