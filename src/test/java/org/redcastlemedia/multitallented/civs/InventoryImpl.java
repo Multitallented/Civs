@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 public class InventoryImpl implements Inventory {
     private HashMap<Integer, ItemStack> contents = new HashMap<>();
@@ -278,7 +279,12 @@ public class InventoryImpl implements Inventory {
 
     @Override
     public int firstEmpty() {
-        return 0;
+        for (int i = 0; i < getSize(); i++) {
+            if (contents.get(i) == null) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override

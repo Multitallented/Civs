@@ -144,7 +144,9 @@ public class MainMenu extends CustomMenu {
         } else if ("player".equals(menuIcon.getKey())) {
             ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-            skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(civilian.getUuid()));
+            if (ConfigManager.getInstance().isSkinsInMenu()) {
+                skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(civilian.getUuid()));
+            }
             skullMeta.setDisplayName(player.getDisplayName());
             if (ConfigManager.getInstance().getUseClassesAndSpells()) {
                 CivItem civItem = ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
