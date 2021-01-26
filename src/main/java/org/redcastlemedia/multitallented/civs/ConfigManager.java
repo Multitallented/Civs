@@ -164,6 +164,7 @@ public class ConfigManager {
     @Getter boolean deleteInvalidRegions;
     @Getter boolean regionStandby;
     @Getter boolean skinsInMenu;
+    @Getter boolean useBounties;
 
     @Getter
     String chatChannelFormat;
@@ -394,6 +395,7 @@ public class ConfigManager {
             deleteInvalidRegions = config.getBoolean("delete-invalid-regions", false);
             regionStandby = config.getBoolean("region-standby", true);
             lineLengthMap = new HashMap<>();
+            useBounties = config.getBoolean("use-bounties", true);
             useSkills = config.getBoolean("use-skills", true);
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
@@ -462,6 +464,7 @@ public class ConfigManager {
 
     private void loadDefaults() {
         skinsInMenu = true;
+        useBounties = true;
         deleteInvalidRegions = false;
         regionStandby = true;
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
