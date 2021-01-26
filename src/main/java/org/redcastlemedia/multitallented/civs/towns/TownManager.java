@@ -755,13 +755,7 @@ public class TownManager {
             }
         }
 
-        Nation nation = checkForRegionLockedNation(town);
-        if (nation != null) {
-            Civs.logger.log(Level.INFO,"Town {0} forced to join Nation {1}", new Object[]{town.getName(), nation.getName()});
-            NationManager.getInstance().addMemberToNation(nation, town);
-        }
 
-        saveTown(newTown);
         addTown(newTown);
         player.getInventory().remove(player.getInventory().getItemInMainHand());
 
@@ -776,6 +770,13 @@ public class TownManager {
             params.put("town", newTown.getName());
             MenuManager.getInstance().openMenu(player, "gov-list", params);
         }
+
+        Nation nation = checkForRegionLockedNation(newTown);
+        if (nation != null) {
+            Civs.logger.log(Level.INFO,"Town {0} forced to join Nation {1}", new Object[]{newTown.getName(), nation.getName()});
+            NationManager.getInstance().addMemberToNation(nation, newTown);
+        }
+        saveTown(newTown);
     }
 
     @Nullable

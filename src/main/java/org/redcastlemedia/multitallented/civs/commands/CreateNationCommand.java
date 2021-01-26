@@ -42,16 +42,29 @@ public class CreateNationCommand extends CivCommand {
             return;
         }
 
-        if (args.length >= 3 &&
-                player.hasPermission(Constants.ADMIN_PERMISSION) &&
-                "-f".equalsIgnoreCase(args[2]) &&
-                NationManager.getInstance().getNationByTownName(town.getName()) == null) {
+        if (Civs.perm.has(player, Constants.ADMIN_PERMISSION)
+                && hasFlag(args, "f")
+                && NationManager.getInstance().getNationByTownName(town.getName()) == null) {
             NationManager.getInstance().createNation(town);
+
+            if (hasFlag(args, "e")) {
+                NationManager.getInstance().getNationByTownName(town.getName()).setEternal(true);
+            }
+
             return;
         }
 
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                 LocaleConstants.PERMISSION_DENIED));
+    }
+
+    private boolean hasFlag(String[] args, String flag) {
+        for (String arg : args) {
+            if (arg.startsWith("-") && arg.contains(flag)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
