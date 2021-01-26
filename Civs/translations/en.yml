@@ -983,3 +983,4 @@
 #wild_jump-name: "Wild Jump"
 #wild_jump-desc: "Mana: 10 Cooldown: 10s\nLeap in a random direction with a random velocity."
 #left-nation-failed-region-lock: "Nation $2 does not permit its members to leave"
+#nation-not-found: "Nation $1 does not exists"
