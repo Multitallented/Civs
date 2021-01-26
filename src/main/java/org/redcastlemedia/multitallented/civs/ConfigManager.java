@@ -174,6 +174,7 @@ public class ConfigManager {
     @Getter boolean connectTownsWithNationClaims;
     @Getter boolean deleteInvalidRegions;
     @Getter boolean regionStandby;
+    @Getter boolean useBounties;
 
     @Getter
     String chatChannelFormat;
@@ -416,6 +417,7 @@ public class ConfigManager {
             unclaimNationChunksWithTnt = config.getBoolean("unclaim-nation-chunks-with-tnt", true);
             regionStandby = config.getBoolean("region-standby", true);
             lineLengthMap = new HashMap<>();
+            useBounties = config.getBoolean("use-bounties", true);
             useSkills = config.getBoolean("use-skills", true);
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
@@ -490,6 +492,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        useBounties = true;
         deleteInvalidRegions = false;
         connectTownsWithNationClaims = true;
         unclaimNationChunksWithTnt = true;

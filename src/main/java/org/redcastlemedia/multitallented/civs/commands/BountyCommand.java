@@ -9,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
@@ -17,11 +18,16 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsCommand(keys = { "bounty" })
 public class BountyCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        if (ConfigManager.getInstance().isUseBounties()) {
+            Util.sendMessageToPlayerOrConsole(commandSender, LocaleConstants.PERMISSION_DENIED, "No Permission");
+            return true;
+        }
         Player player = null;
         if (commandSender instanceof Player) {
             player = (Player) commandSender;
@@ -38,7 +44,7 @@ public class BountyCommand extends CivCommand {
         if (strings.length < 3) {
             if (player != null) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
-                        "invalid-target"));
+                        LocaleConstants.INVALID_TARGET));
             } else {
                 commandSender.sendMessage(Civs.getPrefix() + "Invalid target");
             }
@@ -114,10 +120,15 @@ public class BountyCommand extends CivCommand {
             }
             return true;
         }
+        if (target.equals(player)) {
+            player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
+                    LocaleConstants.INVALID_TARGET));
+            return true;
+        }
         if (Civs.perm != null && Civs.perm.has(target, Constants.PVP_EXEMPT_PERMISSION)) {
             if (player != null) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
-                        "invalid-target"));
+                        LocaleConstants.INVALID_TARGET));
             }
             return true;
         }
