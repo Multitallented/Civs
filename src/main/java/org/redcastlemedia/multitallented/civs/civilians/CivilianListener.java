@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import com.sk89q.worldguard.WorldGuard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -589,6 +590,10 @@ public class CivilianListener implements Listener {
                 Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
             Civs.discordSRV = DiscordSRV.getPlugin();
             return;
+        }
+        if ("WorldGuard".equals(event.getPlugin().getName()) &&
+                Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
+            Civs.worldGuard = WorldGuard.getInstance();
         }
     }
 
