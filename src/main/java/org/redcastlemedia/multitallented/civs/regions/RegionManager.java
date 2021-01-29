@@ -687,6 +687,9 @@ public class RegionManager {
         }
 
         Region region = new Region(regionType.getProcessedName(), people, location, radii, regionType.getEffects(), 0);
+        if (!ConfigManager.getInstance().isRegionStandby()) {
+            region.lastTick = new Date().getTime() - Math.min(60000, regionType.getPeriod() * 1000);
+        }
         addRegion(region);
         StructureUtil.removeBoundingBox(civilian.getUuid());
         forceLoadRegionChunk(region);
