@@ -33,11 +33,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.ItemMetaImpl;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
 import org.redcastlemedia.multitallented.civs.SuccessException;
@@ -67,6 +69,51 @@ public class RegionsTests extends TestUtil {
         RegionManager.getInstance().reload();
         TownManager.getInstance().reload();
         MenuManager.getInstance().clearOpenMenus();
+    }
+
+    @After
+    public void cleanup() {
+        setRegionStandby(true);
+        world.setChunkLoaded(false);
+    }
+
+    @Test
+    public void allRegionsShouldDoUpkeep() {
+        ArrayList<Region> regions = new ArrayList<>();
+        for (int i = 0; i < 11; i++) {
+            regions.add(createNewRegion("leather_shop"));
+        }
+        setRegionStandby(false);
+        for (int i = 0; i < 10; i++) {
+            RegionTickUtil.runUpkeeps();
+        }
+        for (Region region : regions) {
+            assertNotEquals(0, region.lastTick);
+        }
+    }
+
+    @Test
+    public void regionShouldCheckUpkeep() {
+        setRegionStandby(false);
+        world.setChunkLoaded(true);
+        Region region = createNewRegion("greenhouse");
+        for (int i = 0; i < 10; i++) {
+            RegionTickUtil.runUpkeeps();
+        }
+        region.lastTick = 0;
+        RegionManager.getInstance().removeCheckedRegion(region);
+        Chest chest = (Chest) blockUnique.getState();
+        chest.getInventory().setItem(0, new ItemStack(Material.SHEARS, 1));
+        for (int i = 0; i < 10; i++) {
+            RegionTickUtil.runUpkeeps();
+        }
+        ItemStack firstItem = chest.getInventory().getItem(0);
+        assertNotEquals(0, region.lastTick);
+        assertNotNull(firstItem);
+        assertEquals(Material.SHEARS, firstItem.getType());
+        ItemStack secondItem = chest.getInventory().getItem(1);
+        assertNotNull(secondItem);
+        assertNotEquals(Material.SHEARS, secondItem.getType());
     }
 
     @Test

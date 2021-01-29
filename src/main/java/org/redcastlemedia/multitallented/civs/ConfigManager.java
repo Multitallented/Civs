@@ -163,6 +163,9 @@ public class ConfigManager {
     @Getter boolean silentExp;
     @Getter boolean deleteInvalidRegions;
     @Getter boolean regionStandby;
+    @Getter boolean skinsInMenu;
+    @Getter boolean useBounties;
+    @Getter boolean warningLogger;
 
     @Getter
     String chatChannelFormat;
@@ -361,6 +364,7 @@ public class ConfigManager {
             civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs]");
             prefixAllText = Util.parseColors(config.getString("prefix-all-text", ""));
             civsItemPrefix = config.getString("civs-item-prefix", "Civs");
+            skinsInMenu = config.getBoolean("show-player-skins-in-menus", true);
             if ("".equals(civsItemPrefix)) {
                 civsItemPrefix = "Civs";
             }
@@ -390,9 +394,11 @@ public class ConfigManager {
             keepRegionChunksLoaded = config.getBoolean("keep-region-chunks-loaded", true);
             silentExp = config.getBoolean("no-exp-chat-messages", false);
             deleteInvalidRegions = config.getBoolean("delete-invalid-regions", false);
-            regionStandby = config.getBoolean("region-standby", true);
+            regionStandby = config.getBoolean("region-standby", false);
             lineLengthMap = new HashMap<>();
+            useBounties = config.getBoolean("use-bounties", true);
             useSkills = config.getBoolean("use-skills", true);
+            warningLogger = config.getBoolean("show-warning-logs", false);
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
                     lineLengthMap.put(key, config.getInt("line-break-length-per-language." + key, lineBreakLength));
@@ -459,8 +465,11 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        warningLogger = false;
+        skinsInMenu = true;
+        useBounties = true;
         deleteInvalidRegions = false;
-        regionStandby = true;
+        regionStandby = false;
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         silentExp = false;
         useSkills = true;

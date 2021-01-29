@@ -136,7 +136,7 @@ public class MemberActionMenu extends CustomMenu {
             cvItem.getLore().add(localizedRanks);
             ItemStack itemStack = cvItem.createItemStack();
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-            if (skullMeta != null) {
+            if (skullMeta != null && ConfigManager.getInstance().isSkinsInMenu()) {
                 skullMeta.setOwningPlayer(offlinePlayer);
                 itemStack.setItemMeta(skullMeta);
             }

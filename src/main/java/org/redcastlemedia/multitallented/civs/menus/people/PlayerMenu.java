@@ -67,7 +67,7 @@ public class PlayerMenu extends CustomMenu {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
             ItemStack itemStack = cvItem.createItemStack();
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-            if (skullMeta != null) {
+            if (skullMeta != null && ConfigManager.getInstance().isSkinsInMenu()) {
                 skullMeta.setOwningPlayer(offlinePlayer);
                 itemStack.setItemMeta(skullMeta);
             }

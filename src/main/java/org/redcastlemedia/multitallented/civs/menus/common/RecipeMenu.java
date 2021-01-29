@@ -44,16 +44,16 @@ public class RecipeMenu extends CustomMenu {
         } else if (recipe.startsWith("failing:")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = new ArrayList<>();
-            String[] failingUpkeeps = recipe.replace("failing:", "").split(",");
-            for (String index : failingUpkeeps) {
-                if (!index.isEmpty()) {
-                    items.addAll(regionType.getUpkeeps().get(Integer.parseInt(index)).getInputs());
-                }
+            Region region = RegionManager.getInstance().getRegionById(params.get("region"));
+            if (!region.getMissingBlocks().isEmpty()) {
+                items = new ArrayList<>(region.getMissingBlocks());
             }
             if (items.isEmpty()) {
-                Region region = RegionManager.getInstance().getRegionById(params.get("region"));
-                if (!region.getMissingBlocks().isEmpty()) {
-                    items = new ArrayList<>(region.getMissingBlocks());
+                String[] failingUpkeeps = recipe.replace("failing:", "").split(",");
+                for (String index : failingUpkeeps) {
+                    if (!index.isEmpty()) {
+                        items.addAll(regionType.getUpkeeps().get(Integer.parseInt(index)).getInputs());
+                    }
                 }
             }
         } else if (recipe.equals("reqs")) {
