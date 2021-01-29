@@ -394,7 +394,7 @@ public class ConfigManager {
             keepRegionChunksLoaded = config.getBoolean("keep-region-chunks-loaded", true);
             silentExp = config.getBoolean("no-exp-chat-messages", false);
             deleteInvalidRegions = config.getBoolean("delete-invalid-regions", false);
-            regionStandby = config.getBoolean("region-standby", true);
+            regionStandby = config.getBoolean("region-standby", false);
             lineLengthMap = new HashMap<>();
             useBounties = config.getBoolean("use-bounties", true);
             useSkills = config.getBoolean("use-skills", true);
@@ -469,7 +469,7 @@ public class ConfigManager {
         skinsInMenu = true;
         useBounties = true;
         deleteInvalidRegions = false;
-        regionStandby = true;
+        regionStandby = false;
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         silentExp = false;
         useSkills = true;
