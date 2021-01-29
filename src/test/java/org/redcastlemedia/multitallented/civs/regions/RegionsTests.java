@@ -97,6 +97,11 @@ public class RegionsTests extends TestUtil {
         setRegionStandby(false);
         world.setChunkLoaded(true);
         Region region = createNewRegion("greenhouse");
+        for (int i = 0; i < 10; i++) {
+            RegionTickUtil.runUpkeeps();
+        }
+        region.lastTick = 0;
+        RegionManager.getInstance().removeCheckedRegion(region);
         Chest chest = (Chest) blockUnique.getState();
         chest.getInventory().setItem(0, new ItemStack(Material.SHEARS, 1));
         for (int i = 0; i < 10; i++) {
