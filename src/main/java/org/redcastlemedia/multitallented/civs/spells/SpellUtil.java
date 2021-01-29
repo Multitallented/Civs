@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
@@ -48,6 +49,12 @@ public final class SpellUtil {
         for (Integer index : civClass.getSelectedSpells().keySet()) {
             int mappedIndex = civClass.getSpellSlotOrder().getOrDefault(index, index);
             ItemStack itemStack = civilian.getCombatBar().getOrDefault(index, new ItemStack(Material.AIR));
+            if (CVItem.isCivsItem(itemStack)) {
+                CivItem civItem = CivItem.getFromItemStack(itemStack);
+                if (civItem != null && civItem.getItemType() == CivItem.ItemType.SPELL) {
+                    itemStack = new ItemStack(Material.AIR);
+                }
+            }
             ItemStack currentItem = player.getInventory().getItem(mappedIndex - 1);
             if (CVItem.isCivsItem(currentItem)) {
                 player.getInventory().setItem(mappedIndex - 1, itemStack);

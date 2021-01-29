@@ -11,6 +11,10 @@ line-break-length-per-language:
   en: 40
   zh: 25
 
+##should region upkeeps be on standby when empty
+##turning on this setting may cause lag
+region-standby: false
+
 ##Do not enable this unless you have tested it
 ##It basically allows people to bypass limits and dupe civ items with min amounts (like shelter)
 allow-civ-item-sharing: false

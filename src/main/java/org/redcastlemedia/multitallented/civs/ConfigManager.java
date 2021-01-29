@@ -176,6 +176,7 @@ public class ConfigManager {
     @Getter boolean regionStandby;
     @Getter boolean skinsInMenu;
     @Getter boolean useBounties;
+    @Getter boolean warningLogger;
 
     @Getter
     String chatChannelFormat;
@@ -417,10 +418,11 @@ public class ConfigManager {
             silentExp = config.getBoolean("no-exp-chat-messages", false);
             deleteInvalidRegions = config.getBoolean("delete-invalid-regions", false);
             unclaimNationChunksWithTnt = config.getBoolean("unclaim-nation-chunks-with-tnt", true);
-            regionStandby = config.getBoolean("region-standby", true);
+            regionStandby = config.getBoolean("region-standby", false);
             lineLengthMap = new HashMap<>();
             useBounties = config.getBoolean("use-bounties", true);
             useSkills = config.getBoolean("use-skills", true);
+            warningLogger = config.getBoolean("show-warning-logs", false);
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
                     lineLengthMap.put(key, config.getInt("line-break-length-per-language." + key, lineBreakLength));
@@ -494,12 +496,13 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        warningLogger = false;
         skinsInMenu = true;
         useBounties = true;
         deleteInvalidRegions = false;
+        regionStandby = false;
         connectTownsWithNationClaims = true;
         unclaimNationChunksWithTnt = true;
-        regionStandby = true;
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         silentExp = false;
         useSkills = true;
