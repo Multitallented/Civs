@@ -165,6 +165,7 @@ public class ConfigManager {
     @Getter boolean regionStandby;
     @Getter boolean skinsInMenu;
     @Getter boolean useBounties;
+    @Getter boolean warningLogger;
 
     @Getter
     String chatChannelFormat;
@@ -397,6 +398,7 @@ public class ConfigManager {
             lineLengthMap = new HashMap<>();
             useBounties = config.getBoolean("use-bounties", true);
             useSkills = config.getBoolean("use-skills", true);
+            warningLogger = config.getBoolean("show-warning-logs", false);
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
                     lineLengthMap.put(key, config.getInt("line-break-length-per-language." + key, lineBreakLength));
@@ -463,6 +465,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        warningLogger = false;
         skinsInMenu = true;
         useBounties = true;
         deleteInvalidRegions = false;
