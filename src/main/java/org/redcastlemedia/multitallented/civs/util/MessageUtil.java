@@ -18,12 +18,15 @@ public final class MessageUtil {
         if (exp > 0) {
             CivilianManager.getInstance().saveCivilian(civilian);
 
+            String localSkillName = LocaleManager.getInstance().getTranslation(player,
+                    skill.getType() + LocaleConstants.SKILL_SUFFIX);
+            String message = LocaleManager.getInstance().getTranslation(player,
+                    "exp-gained").replace("$1", "" + exp)
+                    .replace("$2", localSkillName);
             if (!ConfigManager.getInstance().isSilentExp()) {
-                String localSkillName = LocaleManager.getInstance().getTranslation(player,
-                        skill.getType() + LocaleConstants.SKILL_SUFFIX);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                        "exp-gained").replace("$1", "" + exp)
-                        .replace("$2", localSkillName));
+                player.sendMessage(Civs.getPrefix() + message);
+            } else {
+                ActionBarUtil.sendActionBar(player, message);
             }
         }
     }
