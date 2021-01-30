@@ -117,17 +117,19 @@ public abstract class CustomMenu {
     }
     protected void putActions(Civilian civilian, MenuIcon menuIcon, ItemStack itemStack, int count) {
         List<String> currentActions = new ArrayList<>();
+        String displayName = itemStack.getItemMeta() != null ?
+                itemStack.getItemMeta().getDisplayName() : "";
         if (menuIcon.getActions().isEmpty()) {
             currentActions.add(menuIcon.getKey());
         } else {
             for (String action : menuIcon.getActions()) {
                 String newAction = action.replace("$count$", "" + count);
                 newAction = newAction.replace("$itemName$",
-                        ChatColor.stripColor(itemStack.getItemMeta().getDisplayName()));
+                        ChatColor.stripColor(displayName));
                 currentActions.add(newAction);
             }
         }
-        actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName(), currentActions);
+        actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + displayName, currentActions);
         List<String> currentRightClickActions = new ArrayList<>();
         if (menuIcon.getRightClickActions().isEmpty()) {
             currentRightClickActions.add(menuIcon.getKey());
@@ -143,12 +145,16 @@ public abstract class CustomMenu {
     }
 
     protected void putActionList(Civilian civilian, ItemStack itemStack, List<String> actionList) {
-        actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName(), actionList);
+        String displayName = itemStack.getItemMeta() != null ?
+                itemStack.getItemMeta().getDisplayName() : "";
+        actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + displayName, actionList);
     }
 
     protected List<String> getActions(Civilian civilian, ItemStack itemStack) {
+        String displayName = itemStack.getItemMeta() != null ?
+                itemStack.getItemMeta().getDisplayName() : "";
         if (actions.containsKey(civilian.getUuid())) {
-            actions.get(civilian.getUuid()).get(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName());
+            actions.get(civilian.getUuid()).get(itemStack.getType().name() + ":" + displayName);
         }
         return new ArrayList<>();
     }
@@ -297,9 +303,10 @@ public abstract class CustomMenu {
     }
 
     public static String replaceVariables(Civilian civilian, ItemStack clickedItem, String actionString) {
+        String displayName = clickedItem.getItemMeta() != null ?
+                clickedItem.getItemMeta().getDisplayName() : "";
         if (clickedItem.getItemMeta() != null) {
-            actionString = actionString.replaceAll("\\$itemName\\$",
-                    clickedItem.getItemMeta().getDisplayName());
+            actionString = actionString.replaceAll("\\$itemName\\$", displayName);
         }
         return replaceVariables(civilian, actionString);
     }
