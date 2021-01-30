@@ -689,7 +689,7 @@ public class RegionManager {
 
         Region region = new Region(regionType.getProcessedName(), people, location, radii, regionType.getEffects(), 0);
         if (!ConfigManager.getInstance().isRegionStandby()) {
-            region.lastTick = new Date().getTime() - Math.min(60000, regionType.getPeriod() * 1000);
+            region.lastTick = new Date().getTime() - Math.min(120000, regionType.getPeriod() * 1000);
         }
         addRegion(region);
         StructureUtil.removeBoundingBox(civilian.getUuid());
@@ -706,6 +706,7 @@ public class RegionManager {
             RegionPoints radii = Region.hasRequiredBlocks(regionType.getProcessedName(), location, false);
             if (!radii.isValid()) {
                 event.setCancelled(true);
+                StructureUtil.showGuideBoundingBox(player, event.getBlockPlaced().getLocation(), regionType, true);
                 player.sendMessage(Civs.getPrefix() +
                         localeManager.getTranslation(player, "no-required-blocks")
                                 .replace("$1", regionType.getDisplayName(player)));
