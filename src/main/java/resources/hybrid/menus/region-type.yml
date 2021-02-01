@@ -109,7 +109,6 @@ items:
     index: 12,17,21,26,30,35,39,44,48
     icon: EMERALD_BLOCK
     name: payout-title
-#    desc: payout
 #  power-input:
 #    index: 13,22,31,40,49
 #    icon: REDSTONE_ORE

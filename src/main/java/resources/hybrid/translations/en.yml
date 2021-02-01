@@ -113,7 +113,9 @@ upkeep: "All the items consumed by the $1"
 output-title: Output
 output: "All the items created by the $1"
 payout-title: Payout
-payout: "This region earns $$1"
+payout-money: "This region earns $1"
+payout-power-input: "This region consumes $1 power"
+payout-power-output: "This region outputs $1 power"
 power-input-title: Power Input
 power-input: "This region consumes $1 power"
 power-output-title: Power Output
