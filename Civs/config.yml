@@ -77,6 +77,9 @@ jail-time-seconds: 300
 ##cooldown before spawning a new villager in seconds
 villager-cooldown: 300
 
+##Allow people to hunt other players in other worlds
+allow-hunt-cross-world: false
+
 ##stops arrow turrets from shooting at monsters
 disable-arrow-turret-shooting-at-mobs: false
 

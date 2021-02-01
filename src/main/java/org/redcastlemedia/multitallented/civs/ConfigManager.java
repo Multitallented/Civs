@@ -160,6 +160,7 @@ public class ConfigManager {
     @Getter
     boolean keepRegionChunksLoaded;
     @Getter boolean useSkills;
+    @Getter boolean huntCrossWorld;
     @Getter boolean silentExp;
     @Getter boolean deleteInvalidRegions;
     @Getter boolean regionStandby;
@@ -341,6 +342,7 @@ public class ConfigManager {
             portSlowWarmup = config.getBoolean("port.slow-warmup", true);
             portReagents = config.getStringList("port.reagents");
             combatTagDuration = config.getInt("combat-tag-duration", 60);
+            huntCrossWorld = config.getBoolean("allow-hunt-cross-world", false);
             portDuringCombat = config.getBoolean("port.port-during-combat", false);
             getTownRingSettings(config);
             karmaDepreciatePeriod = config.getLong("karma-depreciate-period", 43200);
@@ -466,6 +468,7 @@ public class ConfigManager {
 
     private void loadDefaults() {
         warningLogger = false;
+        huntCrossWorld = false;
         skinsInMenu = true;
         useBounties = true;
         deleteInvalidRegions = false;

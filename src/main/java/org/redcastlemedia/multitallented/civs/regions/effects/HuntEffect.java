@@ -99,10 +99,11 @@ public class HuntEffect implements Listener, CreateRegionListener {
             return null;
         }
 
-        if (!targetPlayer.getWorld().equals(player.getWorld())) {
+        if (!ConfigManager.getInstance().isAllowHuntNewPlayers() &&
+                !targetPlayer.getWorld().equals(player.getWorld())) {
             block.breakNaturally();
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                    "target-not-in-world"));
+                    "target-not-in-world").replace("$1", targetPlayer.getDisplayName()));
             return null;
         }
 
