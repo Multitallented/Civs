@@ -313,7 +313,7 @@ public class RegionTypeMenu extends CustomMenu {
             lore.addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                     "payout-money").replace("$1", payout)));
             if (regionType.getUpkeeps().get(count).getPayout() < cvItem.getMat().getMaxStackSize()) {
-                cvItem.setQty((int) regionType.getUpkeeps().get(count).getPayout());
+                cvItem.setQty(Math.max(1, (int) regionType.getUpkeeps().get(count).getPayout()));
             }
         }
         if (regionType.getUpkeeps().get(count).getPowerInput() > 0) {
