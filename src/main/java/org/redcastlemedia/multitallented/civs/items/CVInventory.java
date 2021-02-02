@@ -57,6 +57,7 @@ public class CVInventory {
             Chest chest = (Chest) block.getState();
             this.inventory = chest.getInventory();
             this.size = this.inventory.getSize();
+            this.valid = true;
         } catch (Exception e) {
             this.valid = false;
         }
