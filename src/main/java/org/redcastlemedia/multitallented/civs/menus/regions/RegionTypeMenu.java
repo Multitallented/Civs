@@ -308,17 +308,20 @@ public class RegionTypeMenu extends CustomMenu {
     private ItemStack getPayoutItemStack(Civilian civilian, MenuIcon menuIcon, int count, RegionType regionType, Player player) {
         CVItem cvItem = menuIcon.createCVItem(player, count);
         List<String> lore = new ArrayList<>();
-        if (regionType.getUpkeeps().get(count).getPayout() <= 0) {
+        if (regionType.getUpkeeps().get(count).getPayout() != 0) {
             String payout = Util.getNumberFormat(regionType.getUpkeeps().get(count).getPayout(), civilian.getLocale());
             lore.addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                     "payout-money").replace("$1", payout)));
+            if (regionType.getUpkeeps().get(count).getPayout() < cvItem.getMat().getMaxStackSize()) {
+                cvItem.setQty((int) regionType.getUpkeeps().get(count).getPayout());
+            }
         }
-        if (regionType.getUpkeeps().get(count).getPowerInput() <= 0) {
+        if (regionType.getUpkeeps().get(count).getPowerInput() > 0) {
             String powerInput = "" + regionType.getUpkeeps().get(count).getPowerInput();
             lore.addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                     "payout-power-input").replace("$1", powerInput)));
         }
-        if (regionType.getUpkeeps().get(count).getPowerOutput() <= 0) {
+        if (regionType.getUpkeeps().get(count).getPowerOutput() > 0) {
             String powerInput = "" + regionType.getUpkeeps().get(count).getPowerInput();
             lore.addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                     "payout-power-output").replace("$1", powerInput)));
@@ -339,21 +342,33 @@ public class RegionTypeMenu extends CustomMenu {
                 if (regionType.getUpkeeps().size() > count &&
                         regionType.getUpkeeps().get(count).getReagents().size() == 1 &&
                         regionType.getUpkeeps().get(count).getReagents().get(0).size() == 1) {
-                    cvItem.setMat(regionType.getUpkeeps().get(count).getReagents().get(0).get(0).getMat());
+                    CVItem item = regionType.getUpkeeps().get(count).getReagents().get(0).get(0);
+                    cvItem.setMat(item.getMat());
+                    if (item.getQty() <= item.getMat().getMaxStackSize()) {
+                        cvItem.setQty(item.getQty());
+                    }
                 }
                 break;
             case "input":
                 if (regionType.getUpkeeps().size() > count &&
                         regionType.getUpkeeps().get(count).getInputs().size() == 1 &&
                         regionType.getUpkeeps().get(count).getInputs().get(0).size() == 1) {
-                    cvItem.setMat(regionType.getUpkeeps().get(count).getInputs().get(0).get(0).getMat());
+                    CVItem item = regionType.getUpkeeps().get(count).getInputs().get(0).get(0);
+                    cvItem.setMat(item.getMat());
+                    if (item.getQty() <= item.getMat().getMaxStackSize()) {
+                        cvItem.setQty(item.getQty());
+                    }
                 }
                 break;
             case "output":
                 if (regionType.getUpkeeps().size() > count &&
                         regionType.getUpkeeps().get(count).getOutputs().size() == 1 &&
                         regionType.getUpkeeps().get(count).getOutputs().get(0).size() == 1) {
-                    cvItem.setMat(regionType.getUpkeeps().get(count).getOutputs().get(0).get(0).getMat());
+                    CVItem item = regionType.getUpkeeps().get(count).getOutputs().get(0).get(0);
+                    cvItem.setMat(item.getMat());
+                    if (item.getQty() <= item.getMat().getMaxStackSize()) {
+                        cvItem.setQty(item.getQty());
+                    }
                 }
                 break;
             default:
