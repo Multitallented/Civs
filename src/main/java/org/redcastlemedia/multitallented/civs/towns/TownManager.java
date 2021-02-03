@@ -927,4 +927,27 @@ public class TownManager {
         //TODO fix this to account for vertical radius being different
         return RegionManager.getInstance().getContainingRegions(location, radius);
     }
+
+    public boolean canJoinAnotherTown(Player player) {
+        ConfigManager cm = ConfigManager.getInstance();
+        if (cm.getResidenciesCount() == -1) {
+            return true;
+        }
+
+        Set<Town> townsForPlayer = getTownsForPlayer(player.getUniqueId());
+        if (townsForPlayer.size() <= cm.getResidenciesCount()) {
+            return true;
+        }
+
+        Map<Integer, String> residenciesCountOverride = cm.getResidenciesCountOverride();
+        for (Map.Entry<Integer, String> entry : residenciesCountOverride.entrySet()) {
+            int key = entry.getKey();
+            if (townsForPlayer.size() <= key) {
+                if (Civs.perm.has(player, entry.getValue())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

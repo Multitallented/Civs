@@ -977,3 +977,4 @@ arrow_storm-name: "Arrow Storm"
 arrow_storm-desc: "Mana: 25 Cooldown: 20s\nFires 5 arrows at increasing speed and decreasing accuracy"
 wild_jump-name: "Wild Jump"
 wild_jump-desc: "Mana: 10 Cooldown: 10s\nLeap in a random direction with a random velocity."
+residence-limit-reached: It`s not possible to join town $1. Maximal limit of towns, you can be resident of, has been reached.
