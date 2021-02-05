@@ -23,7 +23,7 @@
 #  - bed
 #  - active:1209600 #2 weeks
 #
-#period: 1800 # 30 minutes
+#period: 600 # 10 minutes
 #upkeep:
 #  0:
 #    input:
