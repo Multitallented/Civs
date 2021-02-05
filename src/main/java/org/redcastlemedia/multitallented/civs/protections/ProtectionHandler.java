@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Container;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Creeper;
@@ -759,15 +760,7 @@ public class ProtectionHandler implements Listener {
                 sendRegionProtectedMessage(player);
                 return true;
             }
-        } else if (mat == Material.CHEST ||
-                mat == Material.FURNACE ||
-                mat == Material.TRAPPED_CHEST ||
-                mat == Material.ENDER_CHEST ||
-                mat == Material.BOOKSHELF ||
-                mat == Material.SHULKER_BOX ||
-                mat == Material.COMPOSTER ||
-                mat == Material.BARREL ||
-                mat == Material.BLAST_FURNACE) {
+        } else if (clickedBlock.getState() instanceof Container) {
             boolean shouldCancel = shouldBlockAction(clickedBlock, player, RegionEffectConstants.CHEST_USE);
             if (shouldCancel) {
                 sendRegionProtectedMessage(player);
