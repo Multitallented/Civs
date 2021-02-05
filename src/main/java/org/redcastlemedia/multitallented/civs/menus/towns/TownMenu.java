@@ -172,20 +172,24 @@ public class TownMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("population".equals(menuIcon.getKey())) {
-            CVItem cvItem = menuIcon.createCVItem(player, count);
-            cvItem.getLore().clear();
-            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(player,
-                    menuIcon.getDesc())
-                    .replace("$1", town.getPopulation() + "")
-                    .replace("$2", town.getHousing() + "")
-                    .replace("$3", town.getVillagers() + ""));
-            if (town.getPopulation() >= town.getHousing()) {
-                cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
-                        "max-housing")));
+            if (isAdmin || (!govTypeDisable && (isOwner || govTypeOwnerOverride || colonialOverride))) {
+                CVItem cvItem = menuIcon.createCVItem(player, count);
+                cvItem.getLore().clear();
+                cvItem.getLore().add(LocaleManager.getInstance().getTranslation(player,
+                        menuIcon.getDesc())
+                        .replace("$1", town.getPopulation() + "")
+                        .replace("$2", town.getHousing() + "")
+                        .replace("$3", town.getVillagers() + ""));
+                if (town.getPopulation() >= town.getHousing()) {
+                    cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
+                            "max-housing")));
+                }
+                ItemStack itemStack = cvItem.createItemStack();
+                putActions(civilian, menuIcon, itemStack, count);
+                return itemStack;
+            } else {
+                return new ItemStack(Material.AIR);
             }
-            ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack, count);
-            return itemStack;
         } else if ("bounty".equals(menuIcon.getKey())) {
             CVItem cvItem = menuIcon.createCVItem(player, count);
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,

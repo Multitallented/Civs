@@ -1,4 +1,4 @@
-#size: 18
+#size: 27
 #name: Town
 ## variables
 ##  town
@@ -11,53 +11,53 @@
 ##  leave-revolt
 #items:
 #  icon:
-#    index: 0
+#    index: 4
 #    # icon: town shop-icon
 #    # name: town name
 #    # desc: town desc
 #    actions:
 #      - menu:town-type?townType=$townType$
 #  power-protected:
-#    index: 1
+#    index: 13
 #    icon: GREEN_WOOL
 #    name: town-power
 #    # desc: power-history #TODO
 #    actions: []
 #  power-unprotected:
-#    index: 1
+#    index: 13
 #    icon: RED_WOOL
 #    name: town-power
 #    desc: grace-period
 #    actions: []
 #  location:
-#    index: 2
+#    index: 26
 #    icon: COMPASS
 #    name: location
 #    # desc location world x y z
 #    actions: []
 #  set-ally:
-#    index: 3
+#    index: 0
 #    icon: GOLDEN_SWORD
 #    name: town-ally
 #    # desc which towns will be allied
 #    actions:
 #      - ally
 #  remove-ally:
-#    index: 3
+#    index: 0
 #    icon: CREEPER_HEAD
 #    name: town-unally
 #    # desc which towns will be allied
 #    actions:
 #      - unally
 #  population:
-#    index: 4
+#    index: 22
 #    icon: PLAYER_HEAD
 #    name: population
 #    desc: pop-desc
 #    actions:
 #      - menu:people?town=$town$
 #  bounty:
-#    index: 5
+#    index: 1
 #    icon: SKELETON_SKULL
 #    name: bounty
 #    # desc top 5 list of bounties
@@ -65,13 +65,13 @@
 #      - typing:click-me:bounty-command{$town$
 #      - close
 #  destroy:
-#    index: 6
+#    index: 18
 #    icon: BARRIER
 #    name: destroy
 #    actions:
 #      - menu:confirmation?town=$town$&type=destroy
 #  rename:
-#    index: 7
+#    index: 11
 #    icon: PAPER
 #    name: rename-town
 #    desc: rename-desc
@@ -93,32 +93,32 @@
 #    actions:
 #      - menu:people?town=$town$&invite=true
 #  leave-town:
-#    index: 11
+#    index: 19
 #    icon: OAK_DOOR
 #    name: leave-town
 #    actions:
 #      - menu:confirmation?town=$town$&type=leave
 #  alliance-invites:
-#    index: 12
+#    index: 11
 #    icon: GOLDEN_SWORD
 #    name: town-ally-invites
 #    actions:
 #      - menu:town-invites?town=$town$
 #  government-type:
-#    index: 13
+#    index: 17
 #    # icon: gov icon
 #    # name: gov name
 #    # desc: gov desc
 #    actions:
 #      - menu:gov-list?town=$town$
 #  bank:
-#    index: 14
+#    index: 16
 #    icon: EMERALD_BLOCK
 #    name: town-bank-balance
 #    # desc bank balance, town tax, and town bank desc
 #    actions: []
 #  join-revolt:
-#    index: 15
+#    index: 20
 #    icon: TORCH
 #    name: revolt
 #    desc: revolt-desc
@@ -126,7 +126,7 @@
 #      - join-revolt
 #      - refresh
 #  leave-revolt:
-#    index: 15
+#    index: 20
 #    icon: CHARCOAL
 #    name: revolt
 #    # desc cancel-revolt & revolt-display
@@ -134,7 +134,7 @@
 #      - leave-revolt
 #      - refresh
 #  karma:
-#    index: 17
+#    index: 24
 #    icon: SOUL_SAND
 #    name: karma-display{$hardship$,,$worth$
 #    desc: karma-town-desc
