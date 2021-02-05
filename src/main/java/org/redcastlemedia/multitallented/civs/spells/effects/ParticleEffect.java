@@ -77,21 +77,14 @@ public class ParticleEffect extends Effect {
     public void apply() {
         Object target = getTarget();
 
-        Location location = null;
-        if (target instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity) target;
-            location = livingEntity.getLocation();
-        } else if (target instanceof Block) {
-            location = ((Block) target).getLocation();
-        }
+        Location location = getLocationFromTarget(target);
         if (location == null) {
             return;
         }
-        final Location l = location;
         long repeatDelay = this.pattern.getRepeatDelay(this);
         if (repeatDelay > 0) {
             this.taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(),
-                    () -> pattern.update(target, l, this), repeatDelay, repeatDelay);
+                    () -> pattern.update(target, getLocationFromTarget(target), this), repeatDelay, repeatDelay);
 
             if (this.duration > 0) {
                 this.cancelTaskId = Bukkit.getScheduler().runTaskLater(Civs.getInstance(),
@@ -100,6 +93,17 @@ public class ParticleEffect extends Effect {
         } else {
             this.pattern.update(target, location, this);
         }
+    }
+
+    private Location getLocationFromTarget(Object target) {
+        Location location = null;
+        if (target instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity) target;
+            location = livingEntity.getLocation();
+        } else if (target instanceof Block) {
+            location = ((Block) target).getLocation();
+        }
+        return location;
     }
 
     @Override

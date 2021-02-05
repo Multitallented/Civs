@@ -74,6 +74,8 @@ public class TownMenu extends CustomMenu {
                 AllianceManager.getInstance().isAllied(selectedTown, town);
         boolean isOwner = town.getPeople().get(civilian.getUuid()) != null &&
                 town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER);
+        boolean isRecruiter = town.getPeople().get(civilian.getUuid()) != null &&
+                town.getPeople().get(civilian.getUuid()).contains(Constants.RECRUITER);
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         boolean colonialOverride = OwnershipUtil.hasColonialOverride(town, civilian);
         boolean govTypeDisable = government.getGovernmentType() == GovernmentType.LIBERTARIAN ||
@@ -219,7 +221,7 @@ public class TownMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
         } else if ("add-person".equals(menuIcon.getKey())) {
-            if (govTypeOpenToAnyone || isOwner || colonialOverride || isAdmin) {
+            if (govTypeOpenToAnyone || isOwner || colonialOverride || isAdmin || isRecruiter) {
                 return super.createItemStack(civilian, menuIcon, count);
             } else {
                 return new ItemStack(Material.AIR);
@@ -233,20 +235,16 @@ public class TownMenu extends CustomMenu {
             }
         } else if ("alliance-invites".equals(menuIcon.getKey())) {
             if ((!govTypeDisable || government.getGovernmentType() == GovernmentType.COMMUNISM) &&
-                    (isOwner || government.getGovernmentType() == GovernmentType.ANARCHY || colonialOverride) &&
-                    !town.getAllyInvites().isEmpty()) {
-
+                    (isOwner || colonialOverride) && !town.getAllyInvites().isEmpty()) {
                 return super.createItemStack(civilian, menuIcon, count);
             } else {
                 return new ItemStack(Material.AIR);
             }
         } else if ("government-type".equals(menuIcon.getKey())) {
-            if (!town.getRawPeople().containsKey(civilian.getUuid()) ||
-                    !town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
-                return new ItemStack(Material.AIR);
-            }
+            boolean canChangeGovType = town.getRawPeople().containsKey(civilian.getUuid()) &&
+                    town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
             CVItem cvItem = government.getIcon(civilian);
-            if (!town.isGovTypeChangedToday()) {
+            if (canChangeGovType && !town.isGovTypeChangedToday()) {
                 ItemStack itemStack = cvItem.createItemStack();
                 putActions(civilian, menuIcon, itemStack, count);
                 return itemStack;

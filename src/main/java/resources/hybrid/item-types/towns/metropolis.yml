@@ -31,6 +31,7 @@ limits:
 - vault:60
 - idolgroup:8
 - jammer_trap:0
+- catapult:0
 
 critical-build-reqs:
 - town_center

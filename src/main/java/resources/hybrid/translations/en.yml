@@ -482,7 +482,7 @@ stone_works-desc: "Automated crafting of stone tools. Place a storage minecart i
 weapons_factory-name: "Weapons Factory"
 weapons_factory-desc: "Turns gunpowder and sand into explosives."
 jammer_trap-name: "Jammer Trap"
-jammer_trap-desc: "A building that intercepts teleports that would travel within 100. Redirects the destination to nearby the jammer."
+jammer_trap-desc: "A building that intercepts teleports that would travel within 100. Redirects the destination to nearby the jammer. Destroys itself in 30m"
 chicken_coop-name: "Chicken Coop"
 chicken_coop-desc: "Automatic chicken farm. Place a storage minecart in the chest. Build rails from the Chicken Coop to a destination region. Place a sloped powered rail at the start."
 donkey_farm-name: "Donkey Farm"

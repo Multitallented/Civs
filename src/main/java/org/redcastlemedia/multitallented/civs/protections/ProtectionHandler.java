@@ -792,6 +792,8 @@ public class ProtectionHandler implements Listener {
                 mat == Material.JUNGLE_BUTTON ||
                 mat == Material.DARK_OAK_BUTTON ||
                 mat == Material.ACACIA_BUTTON ||
+                mat == Material.CRIMSON_BUTTON ||
+                mat == Material.WARPED_BUTTON ||
                 mat == Material.OAK_BUTTON) {
             boolean shouldCancel = shouldBlockAction(clickedBlock, player, RegionEffectConstants.BUTTON_USE, null);
             if (shouldCancel) {
