@@ -80,6 +80,8 @@ public class Civilian {
     @Getter @Setter
     private int tutorialIndex;
     @Getter @Setter
+    private Set<String> completedTutorialSteps = new HashSet<>();
+    @Getter @Setter
     private String tutorialPath;
     @Getter @Setter
     private int tutorialProgress;

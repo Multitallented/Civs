@@ -365,7 +365,7 @@ public class DeathListener implements Listener {
         event.setCancelled(true);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onEntityDeath(EntityDeathEvent event) {
         if (event.getEntity().getKiller() == null) {
             return;
@@ -377,6 +377,7 @@ public class DeathListener implements Listener {
         boolean isTrident = mainHand.getType() == Material.TRIDENT;
         boolean isBow = mainHand.getType() == Material.BOW;
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.KILL, event.getEntity().getType().name().toLowerCase());
         for (Skill skill : civilian.getSkills().values()) {
             double exp = 0;
             boolean swordSkill = isSword && skill.getType().equalsIgnoreCase(CivSkills.SWORD.name());
@@ -390,7 +391,7 @@ public class DeathListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler @SuppressWarnings("unused")
     public void onPlayerDeath(PlayerDeathEvent event) {
         CivilianManager.getInstance().setListNeedsToBeSorted(true);
         final Player player = event.getEntity();
