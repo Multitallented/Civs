@@ -90,7 +90,7 @@ public class NationMenu extends CustomMenu {
         boolean isOwnerOfCapitol = false;
         if (nation.getCapitol() != null) {
             Town town = TownManager.getInstance().getTown(nation.getCapitol());
-            isOwnerOfCapitol = town.getRawPeople().containsKey(civilian.getUuid()) &&
+            isOwnerOfCapitol = town != null && town.getRawPeople().containsKey(civilian.getUuid()) &&
                     town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         }
         if (menuIcon.getActions().contains("set-capitol")) {
