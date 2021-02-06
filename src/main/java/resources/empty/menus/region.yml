@@ -84,7 +84,7 @@ items:
       - refresh
   warehouse-enabled:
     index: 0
-    icon: STORAGE_MINECART
+    icon: CHEST_MINECART
     name: warehouse-toggle-on
     desc: warehouse-toggle-desc
     actions:
