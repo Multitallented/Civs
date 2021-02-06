@@ -122,6 +122,10 @@ public class NationManager implements Listener {
             }
             nation.setCapitol(config.getString("capitol"));
 
+            if (config.isSet("eternal")) {
+                nation.setEternal(config.getBoolean("eternal"));
+            }
+
             nation.getEffects().addAll(ConfigManager.getInstance().getNationClaimEffects());
 
             nations.put(nation.getName(), nation);
@@ -192,6 +196,8 @@ public class NationManager implements Listener {
             if (nation.getLore() != null && nation.getLore().getType() != Material.AIR) {
                 config.set("lore", ItemStackJsonUtil.toJson(nation.getLore()));
             }
+            config.set("eternal", nation.isEternal());
+
             config.save(nationFile);
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to save nation " + nation.getName(), e);
@@ -672,6 +678,9 @@ public class NationManager implements Listener {
     }
 
     private boolean nationHasEnoughMembers(Nation nation) {
+        if (nation.isEternal()) {
+            return true;
+        }
         int levels = 0;
         for (String townName : nation.getMembers()) {
             Town town = TownManager.getInstance().getTown(townName);
@@ -727,10 +736,11 @@ public class NationManager implements Listener {
         if (!nation.getMembers().contains(town.getName())) {
             return;
         }
-        if (nation.getMembers().size() < 2) {
+        if (!nation.isEternal() && nation.getMembers().size() < 2) {
             NationManager.getInstance().removeNation(nation);
             return;
         }
+
         removeAllClaimsInTown(town);
         nation.getMembers().remove(town.getName());
         if (town.getName().equals(nation.getCapitol())) {

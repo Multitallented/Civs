@@ -175,6 +175,7 @@ public class ConfigManager {
     @Getter boolean deleteInvalidRegions;
     @Getter boolean regionStandby;
     @Getter boolean useBounties;
+    @Getter Map<String, String> regionLockedNations;
 
     @Getter
     String chatChannelFormat;
@@ -442,6 +443,17 @@ public class ConfigManager {
             }
             chatChannelFormat = config.getString("chat-channel-format", "[$channel$]$player$: $message$");
 
+            if (config.isSet("region-locked-nations")) {
+                for (String region : config.getConfigurationSection("region-locked-nations").getKeys(false)) {
+                    try {
+                        String nation = config.getString("region-locked-nations." + region);
+                        regionLockedNations.put(region, nation);
+                    } catch (Exception e) {
+                        Civs.logger.log(Level.WARNING, "No nation specified for region {0}", region);
+                    }
+                }
+            }
+
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read from config.yml", e);
         }
@@ -592,6 +604,7 @@ public class ConfigManager {
         levelList = new ArrayList<>();
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         allowChangingOfGovType = false;
+        regionLockedNations = new HashMap<>();
     }
 
     public static ConfigManager getInstance() {
