@@ -111,6 +111,9 @@ public class MenuManager implements Listener {
         try {
             UUID uuid = event.getWhoClicked().getUniqueId();
             if (!openMenus.containsKey(uuid)) {
+                if (event.getView().getTitle().startsWith("Civs")) {
+                    event.getWhoClicked().closeInventory();
+                }
                 return;
             }
             Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
@@ -225,52 +228,64 @@ public class MenuManager implements Listener {
         if (!menus.containsKey(menuName)) {
             return null;
         }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        if (openMenus.containsKey(civilian.getUuid())) {
-            menus.get(openMenus.get(civilian.getUuid())).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
-            openMenus.remove(civilian.getUuid());
+        try {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            if (openMenus.containsKey(civilian.getUuid())) {
+                menus.get(openMenus.get(civilian.getUuid())).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
+                openMenus.remove(civilian.getUuid());
+            }
+            Inventory inventory = menus.get(menuName).createMenuFromHistory(civilian, data);
+            player.openInventory(inventory);
+            if (menus.get(menuName).cycleItems.containsKey(civilian.getUuid())) {
+                cycleGuis.put(civilian.getUuid(), menus.get(menuName).cycleItems.get(civilian.getUuid()));
+                menus.get(menuName).cycleItems.remove(civilian.getUuid());
+            }
+            openMenus.put(player.getUniqueId(), menuName);
+            if (!history.containsKey(player.getUniqueId())) {
+                history.put(player.getUniqueId(), new ArrayList<>());
+            }
+            MenuHistoryState menuHistoryState = new MenuHistoryState(menuName, getAllData(player.getUniqueId()));
+            history.get(player.getUniqueId()).add(menuHistoryState);
+            return inventory;
+        } catch (Exception e) {
+            Civs.logger.log(Level.SEVERE, "Exception when creating menu from history", e);
+            player.closeInventory();
+            return null;
         }
-        Inventory inventory = menus.get(menuName).createMenuFromHistory(civilian, data);
-        player.openInventory(inventory);
-        if (menus.get(menuName).cycleItems.containsKey(civilian.getUuid())) {
-            cycleGuis.put(civilian.getUuid(), menus.get(menuName).cycleItems.get(civilian.getUuid()));
-            menus.get(menuName).cycleItems.remove(civilian.getUuid());
-        }
-        openMenus.put(player.getUniqueId(), menuName);
-        if (!history.containsKey(player.getUniqueId())) {
-            history.put(player.getUniqueId(), new ArrayList<>());
-        }
-        MenuHistoryState menuHistoryState = new MenuHistoryState(menuName, getAllData(player.getUniqueId()));
-        history.get(player.getUniqueId()).add(menuHistoryState);
-        return inventory;
     }
 
     public Inventory openMenu(Player player, String menuName, Map<String, String> params) {
         if (!menus.containsKey(menuName)) {
             return null;
         }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        String redirectMenu = menus.get(menuName).beforeOpenMenu(civilian);
-        if (redirectMenu != null) {
-            return openMenuFromString(civilian, redirectMenu);
+        try {
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            String redirectMenu = menus.get(menuName).beforeOpenMenu(civilian);
+            if (redirectMenu != null) {
+                return openMenuFromString(civilian, redirectMenu);
+            }
+            if (openMenus.containsKey(civilian.getUuid())) {
+                menus.get(openMenus.get(civilian.getUuid())).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
+                openMenus.remove(civilian.getUuid());
+            }
+            Inventory inventory = menus.get(menuName).createMenu(civilian, params);
+            player.openInventory(inventory);
+            if (menus.get(menuName).cycleItems.containsKey(civilian.getUuid())) {
+                cycleGuis.put(civilian.getUuid(), menus.get(menuName).cycleItems.get(civilian.getUuid()));
+                menus.get(menuName).cycleItems.remove(civilian.getUuid());
+            }
+            openMenus.put(player.getUniqueId(), menuName);
+            if (!history.containsKey(player.getUniqueId())) {
+                history.put(player.getUniqueId(), new ArrayList<>());
+            }
+            MenuHistoryState menuHistoryState = new MenuHistoryState(menuName, getAllData(player.getUniqueId()));
+            history.get(player.getUniqueId()).add(menuHistoryState);
+            return inventory;
+        } catch (Exception e) {
+            Civs.logger.log(Level.SEVERE, "Exception while opening the menu", e);
+            player.closeInventory();
         }
-        if (openMenus.containsKey(civilian.getUuid())) {
-            menus.get(openMenus.get(civilian.getUuid())).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
-            openMenus.remove(civilian.getUuid());
-        }
-        Inventory inventory = menus.get(menuName).createMenu(civilian, params);
-        player.openInventory(inventory);
-        if (menus.get(menuName).cycleItems.containsKey(civilian.getUuid())) {
-            cycleGuis.put(civilian.getUuid(), menus.get(menuName).cycleItems.get(civilian.getUuid()));
-            menus.get(menuName).cycleItems.remove(civilian.getUuid());
-        }
-        openMenus.put(player.getUniqueId(), menuName);
-        if (!history.containsKey(player.getUniqueId())) {
-            history.put(player.getUniqueId(), new ArrayList<>());
-        }
-        MenuHistoryState menuHistoryState = new MenuHistoryState(menuName, getAllData(player.getUniqueId()));
-        history.get(player.getUniqueId()).add(menuHistoryState);
-        return inventory;
+        return null;
     }
 
     public static Inventory openMenuFromString(Civilian civilian, String menuString) {
@@ -296,7 +311,11 @@ public class MenuManager implements Listener {
 
         menus.get(menuName).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
         openMenus.remove(civilian.getUuid());
-        player.openInventory(menus.get(menuName).createMenu(civilian));
+        Inventory menu = menus.get(menuName).createMenu(civilian);
+        if (menu != null) {
+            return;
+        }
+        player.openInventory(menu);
         openMenus.put(civilian.getUuid(), menuName);
     }
 
