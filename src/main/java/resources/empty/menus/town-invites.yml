@@ -9,6 +9,7 @@ items:
   decline:
     index: 0
     name: decline-all
+    icon: BARRIER
     actions:
       - decline-all-invites
       - back
