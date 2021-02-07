@@ -19,6 +19,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -171,7 +172,7 @@ public class MenuManager implements Listener {
                     config.getString("next.name", "next-button"),
                     config.getString("next.desc", ""));
         } catch (Exception e) {
-            Civs.logger.log(Level.SEVERE, Civs.getPrefix() + "Unable to load menu default.yml", e);
+            Civs.logger.log(Level.SEVERE, "Unable to load menu default.yml", e);
             return;
         }
 
@@ -186,6 +187,46 @@ public class MenuManager implements Listener {
                 Civs.logger.log(Level.SEVERE, "Error finding menus", e);
             }
         }
+        loadExtraMenus(menuFolder, menuClasses);
+    }
+
+    private void loadExtraMenus(File menuFolder, Set<Class<? extends CustomMenu>> menuClasses) {
+        for (File file : menuFolder.listFiles()) {
+            FileConfiguration config = FallbackConfigUtil.getConfig(file, "menus/" + file.getName());
+            String menuName = file.getName().replace(".yml", "");
+            if (menus.containsKey(menuName)) {
+                continue;
+            }
+            String parentName = config.getString("extends", "");
+            CustomMenu customMenu = null;
+            customMenu = findParentMenu(menuClasses, menuName, parentName, customMenu);
+            loadConfig(config, customMenu);
+            menus.put(menuName, customMenu);
+        }
+    }
+
+    @NotNull
+    private CustomMenu findParentMenu(Set<Class<? extends CustomMenu>> menuClasses, String menuName, String parentName, CustomMenu customMenu) {
+        if (parentName != null && !parentName.isEmpty()) {
+            for (Class<? extends CustomMenu> menuClass : menuClasses) {
+                try {
+                    if (parentName.equals(menuClass.getAnnotation(CivsMenu.class).name())) {
+                        customMenu = menuClass.getConstructor().newInstance();
+                        break;
+                    }
+                } catch (Exception e) {
+                    Civs.logger.log(Level.SEVERE, "Unable to load menu {0} with parent {1}", new Object[] {menuName, parentName});
+                    Civs.logger.log(Level.SEVERE, "Exception while loading menu", e);
+                    break;
+                }
+            }
+            if (customMenu == null) {
+                customMenu = new CustomMenu();
+            }
+        } else {
+            customMenu = new CustomMenu();
+        }
+        return customMenu;
     }
 
     private void loadConfig(CustomMenu customMenu) {
@@ -194,6 +235,10 @@ public class MenuManager implements Listener {
         File menuFile = new File(menuFolder, menuName + ".yml");
 
         FileConfiguration config = FallbackConfigUtil.getConfig(menuFile, "menus/" + menuName + ".yml");
+        loadConfig(config, customMenu);
+    }
+
+    private void loadConfig(FileConfiguration config, CustomMenu customMenu) {
         int newSize = config.getInt("size", 36);
         int size = MenuUtil.getInventorySize(newSize);
         String name = config.getString("name", "Unnamed");

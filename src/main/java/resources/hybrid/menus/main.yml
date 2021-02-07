@@ -13,7 +13,7 @@ items:
       - close
   shop:
     pre-reqs:
-      - tutorial=default:upkeep:shelter:0
+      - tutorial=default^menu_action^teleport^0
     index: 13
     icon: EMERALD
     name: shop
@@ -27,7 +27,7 @@ items:
       - menu:blueprints
   regions:
     pre-reqs:
-      - tutorial=default:build:coal_shop:0
+      - tutorial=default^build^coal_shop^0
     index: 17
     icon: BRICKS
     name: regions
@@ -35,7 +35,7 @@ items:
       - menu:region-list
   towns:
     pre-reqs:
-      - population=1|tutorial=default:build:coal_shop:0
+      - population=1|tutorial=default^build^coal_shop^0
     index: 10
     icon: RED_BED
     name: towns
@@ -43,7 +43,7 @@ items:
       - menu:select-town?prevMenu=town
   your-towns:
     pre-reqs:
-      - tutorial=default:build:coal_shop:0
+      - tutorial=default^build^coal_shop^0
       - population=1
     index: 9
     icon: BLUE_BED
@@ -52,7 +52,7 @@ items:
       - menu:select-town?prevMenu=town&uuid=$uuid$
   alliances:
     pre-reqs:
-      - tutorial=default:build:coal_shop:0
+      - tutorial=default^build^coal_shop^0
     index: 11
     icon: IRON_SWORD
     name: alliances
@@ -60,7 +60,7 @@ items:
       - menu:alliance-list
   players:
     pre-reqs:
-      - tutorial=default:build:coal_shop:0
+      - tutorial=default^build^coal_shop^0
     index: 18
     icon: OAK_SIGN
     name: players
@@ -68,7 +68,7 @@ items:
       - menu:people
   regions-for-sale:
     pre-reqs:
-      - tutorial=default:build:coal_shop:0
+      - tutorial=default^build^coal_shop^0
     index: 11
     icon: EMERALD_ORE
     name: regions-for-sale
@@ -76,7 +76,7 @@ items:
       - menu:region-list?sell=true
   ports:
     pre-reqs:
-      - tutorial=default:build:shelter:0
+      - tutorial=default&menu_action^menu:region-list^0
     index: 22
     icon: ENDER_PEARL
     name: ports
@@ -84,7 +84,7 @@ items:
       - menu:port
   gov-leaderboard:
     pre-reqs:
-      - tutorial=default:build:coal_shop:0
+      - tutorial=default^build^coal_shop^0
     index: 19
     icon: JUKEBOX
     name: leaderboard
@@ -92,7 +92,7 @@ items:
       - menu:gov-list?leaderboard=true
   town:
     pre-reqs:
-      - tutorial=default:build:coal_shop:0
+      - tutorial=default^build^coal_shop^0
     index: 0
     # name: town name
     # icon: town icon
@@ -100,7 +100,7 @@ items:
       - menu:town?town=$town$
   region:
     pre-reqs:
-      - tutorial=default:build:coal_shop:0
+      - tutorial=default^build^coal_shop^0
     index: 1
     # name: region type
     # icon: region icon
@@ -108,7 +108,7 @@ items:
       - menu:region?region=$region$
   class:
     pre-reqs:
-      - tutorial=default:build:coal_shop:0
+      - tutorial=default^build^coal_shop^0
     index: 7
     #icon: class icon
     #name: class icon
@@ -117,7 +117,7 @@ items:
       - menu:class?class=$class$
   player:
     pre-reqs:
-      - tutorial=default:build:coal_shop:0
+      - tutorial=default^build^coal_shop^0
     index: 8
     #icon: player's head
     #name: your name

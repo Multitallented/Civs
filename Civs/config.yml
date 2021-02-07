@@ -133,7 +133,10 @@ power-per-kill: 30
 power-per-npc-kill: 5
 
 folders:
-  farms: STONE_HOE
+  farms:
+    icon: STONE_HOE
+    pre-reqs:
+      - built=shelter
   towns: GLOWSTONE
   shops: EMERALD
   utilities: REDSTONE
