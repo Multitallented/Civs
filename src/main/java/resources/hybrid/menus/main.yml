@@ -7,68 +7,87 @@ size: 27
 name: Main
 items:
   guide:
-    index: 0
+    index: 6
     icon: ENCHANTED_BOOK
     name: guide
     actions:
       - print-tutorial
       - close
   shop:
-    index: 1
+    pre-reqs:
+      - tutorial=default:upkeep:shelter:0
+    index: 13
     icon: EMERALD
     name: shop
     actions:
       - menu:shop?sort=category
   blueprints:
-    index: 2
+    index: 16
     icon: MAP
     name: blueprints
     actions:
       - menu:blueprints
   regions:
-    index: 3
+    pre-reqs:
+      - tutorial=default:build:coal_shop:0
+    index: 17
     icon: BRICKS
     name: regions
     actions:
       - menu:region-list
   towns:
-    index: 9
+    pre-reqs:
+      - population=1|tutorial=default:build:coal_shop:0
+    index: 10
     icon: RED_BED
     name: towns
     actions:
       - menu:select-town?prevMenu=town
   your-towns:
-    index: 10
+    pre-reqs:
+      - tutorial=default:build:coal_shop:0
+      - population=1
+    index: 9
     icon: BLUE_BED
     name: your-towns
     actions:
       - menu:select-town?prevMenu=town&uuid=$uuid$
   alliances:
+    pre-reqs:
+      - tutorial=default:build:coal_shop:0
     index: 11
     icon: IRON_SWORD
     name: alliances
     actions:
       - menu:alliance-list
   players:
-    index: 12
+    pre-reqs:
+      - tutorial=default:build:coal_shop:0
+    index: 18
     icon: OAK_SIGN
     name: players
     actions:
       - menu:people
   regions-for-sale:
-    index: 13
-    icon: EMERALD
+    pre-reqs:
+      - tutorial=default:build:coal_shop:0
+    index: 11
+    icon: EMERALD_ORE
     name: regions-for-sale
     actions:
       - menu:region-list?sell=true
   ports:
-    index: 14
+    pre-reqs:
+      - tutorial=default:build:shelter:0
+    index: 22
     icon: ENDER_PEARL
     name: ports
     actions:
       - menu:port
   gov-leaderboard:
-    index: 15
+    pre-reqs:
+      - tutorial=default:build:coal_shop:0
+    index: 19
     icon: JUKEBOX
     name: leaderboard
     actions:
@@ -80,13 +99,17 @@ items:
     actions:
       - menu:nation-list
   town:
-    index: 18
+    pre-reqs:
+      - tutorial=default:build:coal_shop:0
+    index: 0
     # name: town name
     # icon: town icon
     actions:
       - menu:town?town=$town$
   region:
-    index: 19
+    pre-reqs:
+      - tutorial=default:build:coal_shop:0
+    index: 1
     # name: region type
     # icon: region icon
     actions:
@@ -106,29 +129,35 @@ items:
     actions:
       - menu:claim-map
   class:
-    index: 23
+    pre-reqs:
+      - tutorial=default:build:coal_shop:0
+    index: 7
     #icon: class icon
     #name: class icon
     #desc: your class
     actions:
       - menu:class?class=$class$
   player:
-    index: 24
+    pre-reqs:
+      - tutorial=default:build:coal_shop:0
+    index: 8
     #icon: player's head
     #name: your name
     #desc: your class
     actions:
       - menu:player?uuid=$uuid$
   chat:
+    pre-reqs:
+      - population=1
     index: 25
-    icon: MAP
+    icon: NAME_TAG
     name: chat-channels
     desc: click-change-chat
     actions:
       - menu:chat-channel-list
   language:
     index: 26
-    icon: GRASS_BLOCK
+    icon: BOOK
     name: language-menu
     actions:
       - menu:language

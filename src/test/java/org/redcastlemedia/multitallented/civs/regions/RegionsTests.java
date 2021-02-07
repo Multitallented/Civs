@@ -1,10 +1,8 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,14 +15,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -33,10 +30,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Matchers;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.ItemMetaImpl;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
@@ -67,6 +64,51 @@ public class RegionsTests extends TestUtil {
         RegionManager.getInstance().reload();
         TownManager.getInstance().reload();
         MenuManager.getInstance().clearOpenMenus();
+    }
+
+    @After
+    public void cleanup() {
+        setRegionStandby(true);
+        world.setChunkLoaded(false);
+    }
+
+    @Test
+    public void allRegionsShouldDoUpkeep() {
+        ArrayList<Region> regions = new ArrayList<>();
+        for (int i = 0; i < 11; i++) {
+            regions.add(createNewRegion("leather_shop"));
+        }
+        setRegionStandby(false);
+        for (int i = 0; i < 10; i++) {
+            RegionTickUtil.runUpkeeps();
+        }
+        for (Region region : regions) {
+            assertNotEquals(0, region.lastTick);
+        }
+    }
+
+    @Test
+    public void regionShouldCheckUpkeep() {
+        setRegionStandby(false);
+        world.setChunkLoaded(true);
+        Region region = createNewRegion("greenhouse");
+        for (int i = 0; i < 10; i++) {
+            RegionTickUtil.runUpkeeps();
+        }
+        region.lastTick = 0;
+        RegionManager.getInstance().removeCheckedRegion(region);
+        Chest chest = (Chest) blockUnique.getState();
+        chest.getInventory().setItem(0, new ItemStack(Material.SHEARS, 1));
+        for (int i = 0; i < 10; i++) {
+            RegionTickUtil.runUpkeeps();
+        }
+        ItemStack firstItem = chest.getInventory().getItem(0);
+        assertNotEquals(0, region.lastTick);
+        assertNotNull(firstItem);
+        assertEquals(Material.SHEARS, firstItem.getType());
+        ItemStack secondItem = chest.getInventory().getItem(1);
+        assertNotNull(secondItem);
+        assertNotEquals(Material.SHEARS, secondItem.getType());
     }
 
     @Test

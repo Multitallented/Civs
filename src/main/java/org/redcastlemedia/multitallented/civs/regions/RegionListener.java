@@ -80,7 +80,7 @@ public class RegionListener implements Listener {
      * Open region info menu if right clicking air with region
      * @param event
      */
-    @EventHandler
+    @EventHandler @SuppressWarnings("unused")
     public void onRegionInfo(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack heldItem = player.getInventory().getItemInMainHand();

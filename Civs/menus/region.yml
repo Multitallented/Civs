@@ -1,4 +1,4 @@
-#size: 18
+#size: 27
 #name: Region
 ## variables:
 ##  region: region id
@@ -9,46 +9,40 @@
 ##  buy-region: buys the region
 #items:
 #  icon:
-#    index: 0
+#    index: 4
 #    # icon: region shop-icon
 #    # name: region name
 #    # desc: region desc
-#    actions: []
-#  region-type:
-#    index: 1
-#    icon: WRITABLE_BOOK
-#    # name: region type name
-#    desc: click-info
 #    actions:
 #      - menu:region-type?regionType=$regionTypeName$
 #  upkeep-working:
-#    index: 2
+#    index: 13
 #    icon: GREEN_WOOL
 #    name: region-working
 #    desc: region-cooldown{$cooldown$
 #    actions: []
 #  upkeep-not-working:
-#    index: 2
+#    index: 13
 #    icon: RED_WOOL
 #    name: region-not-working
 #    desc: region-cooldown{$cooldown$
 #    actions:
 #      - menu:recipe?region=$region$&regionType=$regionTypeName$&recipe=failing:$failingUpkeeps$
 #  location:
-#    index: 3
-#    icon: OAK_DOOR
+#    index: 26
+#    icon: RED_BED
 #    #name: location coords
 #    desc: region-in-town
 #    actions:
 #      - menu:port
 #  income:
-#    index: 4
+#    index: 17
 #    icon: WRITABLE_BOOK
 #    name: income
 #    desc: income-desc
 #    actions: []
 #  destroy:
-#    index: 6
+#    index: 18
 #    icon: BARRIER
 #    name: destroy
 #    actions:
@@ -68,37 +62,37 @@
 #    actions:
 #      - menu:people?region=$region$&invite=true
 #  sale:
-#    index: 11
+#    index: 19
 #    icon: EMERALD_BLOCK
 #    name: sell-region
 #    desc: use-sell-command
 #    actions:
 #      - message:use-sell-command
 #  cancel-sale:
-#    index: 12
+#    index: 1
 #    icon: EMERALD_ORE
 #    name: cancel-sale
 #    actions:
 #      - cancel-sale
 #      - refresh
 #  buy-region:
-#    index: 12
+#    index: 1
 #    icon: EMERALD
 #    name: buy-region
 #    actions:
 #      - buy-region
 #      - refresh
 #  warehouse-enabled:
-#    index: 14
-#    icon: GREEN_WOOL
+#    index: 0
+#    icon: CHEST_MINECART
 #    name: warehouse-toggle-on
 #    desc: warehouse-toggle-desc
 #    actions:
 #      - toggle-warehouse
 #      - refresh
 #  warehouse-disabled:
-#    index: 14
-#    icon: RED_WOOL
+#    index: 0
+#    icon: MINECART
 #    name: warehouse-toggle-off
 #    desc: warehouse-toggle-desc
 #    actions:

@@ -6,11 +6,11 @@
 ##  $groupName$ the name of the group the item belongs to
 #items:
 #  prev:
-#    index: 4
+#    index: 3
 #  back:
-#    index: 5
+#    index: 8
 #  next:
-#    index: 6
+#    index: 5
 #  items:
 #    index: 9-53
 #    # icon: item

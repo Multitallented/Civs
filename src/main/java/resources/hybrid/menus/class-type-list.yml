@@ -6,9 +6,14 @@ name: NewClass
 #  switch-class: switches your class to a new class
 items:
   prev:
+    index: 3
+  classicon:
     index: 4
+    name: classes
+    icon: ENCHANTING_TABLE
+    actions: []
   back:
-    index: 5
+    index: 8
   next:
     index: 6
   classes:

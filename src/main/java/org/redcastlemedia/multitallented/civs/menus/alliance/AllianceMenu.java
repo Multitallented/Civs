@@ -11,6 +11,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
@@ -63,7 +64,9 @@ public class AllianceMenu extends CustomMenu {
                 lastRenameCVItem.setMat(Material.PLAYER_HEAD);
                 ItemStack is = lastRenameCVItem.createItemStack();
                 SkullMeta isMeta = (SkullMeta) is.getItemMeta();
-                isMeta.setDisplayName(offlinePlayer.getName());
+                if (ConfigManager.getInstance().isSkinsInMenu()) {
+                    isMeta.setDisplayName(offlinePlayer.getName());
+                }
                 isMeta.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                         "last-renamed-by").replace("$1", offlinePlayer.getName())));
                 isMeta.setOwningPlayer(offlinePlayer);

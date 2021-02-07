@@ -170,11 +170,14 @@ public class ConfigManager {
     @Getter
     boolean keepRegionChunksLoaded;
     @Getter boolean useSkills;
+    @Getter boolean huntCrossWorld;
     @Getter boolean silentExp;
     @Getter boolean connectTownsWithNationClaims;
     @Getter boolean deleteInvalidRegions;
     @Getter boolean regionStandby;
+    @Getter boolean skinsInMenu;
     @Getter boolean useBounties;
+    @Getter boolean warningLogger;
     @Getter Map<String, String> regionLockedNations;
 
     @Getter
@@ -353,6 +356,7 @@ public class ConfigManager {
             portSlowWarmup = config.getBoolean("port.slow-warmup", true);
             portReagents = config.getStringList("port.reagents");
             combatTagDuration = config.getInt("combat-tag-duration", 60);
+            huntCrossWorld = config.getBoolean("allow-hunt-cross-world", false);
             portDuringCombat = config.getBoolean("port.port-during-combat", false);
             getTownRingSettings(config);
             karmaDepreciatePeriod = config.getLong("karma-depreciate-period", 43200);
@@ -378,6 +382,7 @@ public class ConfigManager {
             civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs]");
             prefixAllText = Util.parseColors(config.getString("prefix-all-text", ""));
             civsItemPrefix = config.getString("civs-item-prefix", "Civs");
+            skinsInMenu = config.getBoolean("show-player-skins-in-menus", true);
             if ("".equals(civsItemPrefix)) {
                 civsItemPrefix = "Civs";
             }
@@ -420,6 +425,7 @@ public class ConfigManager {
             lineLengthMap = new HashMap<>();
             useBounties = config.getBoolean("use-bounties", true);
             useSkills = config.getBoolean("use-skills", true);
+            warningLogger = config.getBoolean("show-warning-logs", false);
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
                     lineLengthMap.put(key, config.getInt("line-break-length-per-language." + key, lineBreakLength));
@@ -504,11 +510,14 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        warningLogger = false;
+        huntCrossWorld = false;
+        skinsInMenu = true;
         useBounties = true;
         deleteInvalidRegions = false;
         connectTownsWithNationClaims = true;
         unclaimNationChunksWithTnt = true;
-        regionStandby = true;
+        regionStandby = false;
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         silentExp = false;
         useSkills = true;

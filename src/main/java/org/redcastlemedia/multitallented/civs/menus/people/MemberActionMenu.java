@@ -77,7 +77,8 @@ public class MemberActionMenu extends CustomMenu {
         boolean isAdmin = player != null && (player.isOp() || (Civs.perm != null &&
                 Civs.perm.has(player, Constants.ADMIN_PERMISSION)));
 
-        if (governmentType == GovernmentType.ANARCHY) {
+        if (town != null && town.getRawPeople().containsKey(civilian.getUuid()) &&
+                governmentType == GovernmentType.ANARCHY) {
             viewingSelf = false;
         }
         boolean personIsOwner = false;
@@ -137,7 +138,7 @@ public class MemberActionMenu extends CustomMenu {
             cvItem.getLore().add(localizedRanks);
             ItemStack itemStack = cvItem.createItemStack();
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-            if (skullMeta != null) {
+            if (skullMeta != null && ConfigManager.getInstance().isSkinsInMenu()) {
                 skullMeta.setOwningPlayer(offlinePlayer);
                 itemStack.setItemMeta(skullMeta);
             }

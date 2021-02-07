@@ -1,0 +1,26 @@
+icon: REDSTONE_BLOCK
+type: spell
+is-in-shop: false
+level: 1
+groups: []
+
+pre-reqs: []
+
+conditions:
+  cooldown: 30000
+
+components:
+  0:
+    yield:
+      damage-listener:
+        ticks: 120
+        section:
+          damage-mod: 3
+          components:
+            1:
+              yield:
+                particle:
+                  particle: LAVA
+                  count: 3
+                heal: 6
+                mana: 4

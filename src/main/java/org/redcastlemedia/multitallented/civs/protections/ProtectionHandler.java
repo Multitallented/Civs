@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Container;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Creeper;
@@ -40,6 +41,8 @@ import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
@@ -48,6 +51,7 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -96,9 +100,22 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 @CivsSingleton
 public class ProtectionHandler implements Listener {
 
-    public static void getInstance() {
-        ProtectionHandler protectionHandler = new ProtectionHandler();
-        Bukkit.getPluginManager().registerEvents(protectionHandler, Civs.getInstance());
+    private static ProtectionHandler instance;
+
+    protected static void setInstance(ProtectionHandler protectionHandler) {
+        instance = protectionHandler;
+    }
+
+    public ProtectionHandler() {
+        Bukkit.getPluginManager().registerEvents(this, Civs.getInstance());
+        setInstance(this);
+    }
+
+    public static ProtectionHandler getInstance() {
+        if (instance == null) {
+            new ProtectionHandler();
+        }
+        return instance;
     }
 
     @EventHandler
@@ -113,7 +130,9 @@ public class ProtectionHandler implements Listener {
             DebugLogger.chunkLoads++;
         }
 //        System.out.println("chunk loaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
-        UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk());
+        Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> {
+            UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk());
+        }, 1L);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -348,7 +367,7 @@ public class ProtectionHandler implements Listener {
         }
     }
 
-    private void removeBlockFromMissingBlocks(Region region, Material type) {
+    protected void removeBlockFromMissingBlocks(Region region, Material type) {
         int index1 = -1;
         int index2 = -1;
         for (int i = 0; i < region.getMissingBlocks().size(); i++) {
@@ -501,7 +520,6 @@ public class ProtectionHandler implements Listener {
             event.setCancelled(true);
         }
         if (event.isCancelled() && player != null) {
-            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
             player.sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
         }
@@ -513,6 +531,46 @@ public class ProtectionHandler implements Listener {
             return;
         }
         shouldBlockAction(event.getEntity().getLocation(), null, RegionEffectConstants.BLOCK_BREAK);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onItemFrame(PlayerInteractAtEntityEvent event) {
+        if (EntityType.ITEM_FRAME != event.getRightClicked().getType()) {
+            return;
+        }
+        Player player = event.getPlayer();
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getRightClicked().getLocation(),
+                player, "block_build");
+        if (setCancelled) {
+            event.setCancelled(true);
+            player.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
+
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onItemFrameDamage(EntityDamageEvent event) {
+        if (event.getEntityType() != EntityType.ITEM_FRAME) {
+            return;
+        }
+        Player player = null;
+        if (event instanceof EntityDamageByEntityEvent) {
+            EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) event;
+            if (entityDamageByEntityEvent.getDamager() instanceof Player) {
+                player = (Player) entityDamageByEntityEvent.getDamager();
+            }
+        }
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getEntity().getLocation(),
+                player, "chest_use");
+        if (setCancelled) {
+            event.setCancelled(true);
+            if (player != null) {
+                player.sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
+            }
+
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -715,15 +773,7 @@ public class ProtectionHandler implements Listener {
                 sendRegionProtectedMessage(player);
                 return true;
             }
-        } else if (mat == Material.CHEST ||
-                mat == Material.FURNACE ||
-                mat == Material.TRAPPED_CHEST ||
-                mat == Material.ENDER_CHEST ||
-                mat == Material.BOOKSHELF ||
-                mat == Material.SHULKER_BOX ||
-                mat == Material.COMPOSTER ||
-                mat == Material.BARREL ||
-                mat == Material.BLAST_FURNACE) {
+        } else if (clickedBlock.getState() instanceof Container) {
             boolean shouldCancel = shouldBlockAction(clickedBlock, player, RegionEffectConstants.CHEST_USE);
             if (shouldCancel) {
                 sendRegionProtectedMessage(player);
@@ -748,6 +798,8 @@ public class ProtectionHandler implements Listener {
                 mat == Material.JUNGLE_BUTTON ||
                 mat == Material.DARK_OAK_BUTTON ||
                 mat == Material.ACACIA_BUTTON ||
+                mat == Material.CRIMSON_BUTTON ||
+                mat == Material.WARPED_BUTTON ||
                 mat == Material.OAK_BUTTON) {
             boolean shouldCancel = shouldBlockAction(clickedBlock, player, RegionEffectConstants.BUTTON_USE, null);
             if (shouldCancel) {

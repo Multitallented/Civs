@@ -14,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
@@ -77,9 +78,13 @@ public abstract class CustomMenu {
                 } else {
                     duplicateCount.put(menuIcon.getKey(), 0);
                 }
-                ItemStack itemStack = createItemStack(civilian, menuIcon, duplicateCount.get(menuIcon.getKey()));
-                if (itemStack.getType() != Material.AIR) {
-                    inventory.setItem(i, itemStack);
+                if (menuIcon.getPreReqs().isEmpty() ||
+                        ItemManager.getInstance().getAllUnmetRequirements(menuIcon.getPreReqs(), civilian, true).isEmpty()) {
+
+                    ItemStack itemStack = createItemStack(civilian, menuIcon, duplicateCount.get(menuIcon.getKey()));
+                    if (itemStack.getType() != Material.AIR) {
+                        inventory.setItem(i, itemStack);
+                    }
                 }
             }
         }

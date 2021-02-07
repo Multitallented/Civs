@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -707,6 +708,9 @@ public class RegionManager {
         }
 
         Region region = new Region(regionType.getProcessedName(), people, location, radii, regionType.getEffects(), 0);
+        if (!ConfigManager.getInstance().isRegionStandby()) {
+            region.lastTick = new Date().getTime() - regionType.getPeriod() * 1000 + Math.min(120000, regionType.getPeriod() * 1000);
+        }
         addRegion(region);
         StructureUtil.removeBoundingBox(civilian.getUuid());
         forceLoadRegionChunk(region);
@@ -722,6 +726,7 @@ public class RegionManager {
             RegionPoints radii = Region.hasRequiredBlocks(regionType.getProcessedName(), location, false);
             if (!radii.isValid()) {
                 event.setCancelled(true);
+                StructureUtil.showGuideBoundingBox(player, event.getBlockPlaced().getLocation(), regionType, true);
                 player.sendMessage(Civs.getPrefix() +
                         localeManager.getTranslation(player, "no-required-blocks")
                                 .replace("$1", regionType.getDisplayName(player)));

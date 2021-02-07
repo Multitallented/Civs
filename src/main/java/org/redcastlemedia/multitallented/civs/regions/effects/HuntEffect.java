@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -99,10 +100,11 @@ public class HuntEffect implements Listener, CreateRegionListener {
             return null;
         }
 
-        if (!targetPlayer.getWorld().equals(player.getWorld())) {
+        if (!ConfigManager.getInstance().isAllowHuntNewPlayers() &&
+                !targetPlayer.getWorld().equals(player.getWorld())) {
             block.breakNaturally();
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                    "target-not-in-world"));
+                    "target-not-in-world").replace("$1", targetPlayer.getDisplayName()));
             return null;
         }
 
@@ -221,7 +223,8 @@ public class HuntEffect implements Listener, CreateRegionListener {
             }
             int z = location.getBlockZ() + zRadius;
             targetBlock = location.getWorld().getHighestBlockAt(x, z);
-        } while (times < 5 && (targetBlock.getType() == Material.LAVA));
+        } while (times < 5 && (targetBlock.getType() == Material.LAVA ||
+                !targetBlock.getWorld().getWorldBorder().isInside(targetBlock.getLocation())));
 
         if (times == 5) {
             return null;

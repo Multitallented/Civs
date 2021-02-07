@@ -7,6 +7,11 @@
 #    index: 8
 #  prev:
 #    index: 3
+#  townicon:
+#    index: 4
+#    name: towns
+#    icon: GLOWSTONE
+#    actions: []
 #  next:
 #    index: 5
 #  towns:

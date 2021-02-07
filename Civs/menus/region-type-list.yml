@@ -6,11 +6,16 @@
 ##  view-type: opens the region-type menu for that region type
 #items:
 #  prev:
+#    index: 3
+#  typeicon:
 #    index: 4
+#    icon: CHEST
+#    actions: []
+#    name: regions
 #  back:
-#    index: 5
+#    index: 8
 #  next:
-#    index: 6
+#    index: 5
 #  regionTypes:
 #    index: 9-53
 #    # icon region type shop icon

@@ -9,7 +9,7 @@ name: MemberAction
 #  vote
 items:
   icon:
-    index: 0
+    index: 4
     # icon: player head
     # name: player name
     # desc: rank
