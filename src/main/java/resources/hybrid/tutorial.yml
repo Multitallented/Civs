@@ -15,7 +15,11 @@ default:
   - type: upkeep
     region: shelter
     rewards:
-      money: 200
+      money: 100
+  - type: menu_action
+    region: teleport
+    rewards:
+      money: 100
   - type: buy
     region: coal_shop
     rewards:

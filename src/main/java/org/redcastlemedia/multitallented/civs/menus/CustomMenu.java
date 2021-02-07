@@ -214,6 +214,8 @@ public abstract class CustomMenu {
         }
         boolean shouldCancel = false;
         for (String actionString : actionStrings) {
+            TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.MENU_ACTION,
+                    actionString);
             shouldCancel = doActionAndCancel(civilian, actionString, clickedItem) || shouldCancel;
         }
         if (!event.isCancelled()) {
