@@ -201,7 +201,7 @@ public class TutorialManager {
         sendMessageForCurrentTutorialStep(civilian, true);
     }
 
-    private String getKey(String path, TutorialType type, TutorialStep step) {
+    public String getKey(String path, TutorialType type, TutorialStep step) {
         if (TutorialType.KILL.equals(type)) {
             return path + ":" + step.getType() + ":" + step.getKillType() + ":" + step.getTimes();
         } else {
@@ -242,13 +242,17 @@ public class TutorialManager {
     }
 
     public List<String> getNextTutorialStepMessage(Civilian civilian, boolean useHr) {
+        return getTutorialMessage(civilian, civilian.getTutorialPath(), civilian.getTutorialIndex(), useHr);
+    }
+
+    public List<String> getTutorialMessage(Civilian civilian, String path, int index, boolean useHr) {
         List<String> messages = new ArrayList<>();
         Player player = Bukkit.getPlayer(civilian.getUuid());
         if (player == null || !player.isOnline()) {
             return messages;
         }
         String rawMessage = LocaleManager.getInstance().getTranslation(player,
-                "tut-" + civilian.getTutorialPath() + "-" + civilian.getTutorialIndex());
+                "tut-" + path + "-" + index);
         if (rawMessage == null || rawMessage.isEmpty()) {
             return messages;
         }

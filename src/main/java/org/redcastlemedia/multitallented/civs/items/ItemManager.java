@@ -24,6 +24,8 @@ import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialStep;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -621,8 +623,34 @@ public class ItemManager {
                             LocaleManager.getInstance().getTranslation(player,
                             "or") + " " + ChatColor.RED);
                 }
-                //perm=civs.admin
-                if (req.startsWith("perm=")) {
+                if (req.startsWith("tutorial=")) {
+                    if (civilian.getCompletedTutorialSteps().contains(req)) {
+                        if (stopOnFirst) {
+                            unmetRequirements.add("tutorial");
+                        } else {
+                            String[] reqParts = req.replace("tutorial=", "").split(":");
+                            String path = reqParts[0];
+                            String type = reqParts[1];
+                            String key = reqParts[2];
+                            int times = Integer.parseInt(reqParts[3]);
+                            int index = -1;
+                            for (int i = 0; i < TutorialManager.getInstance().getPathByName(path).getSteps().size(); i++) {
+                                TutorialStep step = TutorialManager.getInstance().getPathByName(path).getSteps().get(i);
+                                if ((TutorialManager.TutorialType.KILL.name().equals(type) &&
+                                        times == step.getTimes() && key.equals(step.getKillType())) ||
+                                        (times == step.getTimes() && key.equals(step.getRegion()))) {
+                                    index = i;
+                                    break;
+                                }
+                            }
+                            if (index > -1) {
+                                unmetRequirements.addAll(TutorialManager.getInstance()
+                                        .getTutorialMessage(civilian, path, index, false));
+                            }
+                        }
+                    }
+                    //perm=civs.admin
+                } else if (req.startsWith("perm=")) {
                     if (checkPermissionRequirement(unmetRequirements, player, req, stopOnFirst)) {
                         continue outer;
                     }
