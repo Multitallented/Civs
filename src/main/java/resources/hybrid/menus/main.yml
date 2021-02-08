@@ -22,14 +22,14 @@ items:
     actions:
       - menu:shop?sort=category
   blueprints:
-    index: 16
+    index: 12
     icon: MAP
     name: blueprints
     actions:
       - menu:blueprints
   regions:
     pre-reqs:
-      - tutorial=default^build^coal_shop^0
+      - tutorial=default^upkeep^shelter^0
     index: 17
     icon: BRICKS
     name: regions

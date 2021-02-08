@@ -221,7 +221,7 @@ public class CivilianManager {
                 for (int i = 0; i < civilian.getTutorialIndex() && i < tutorialPath.getSteps().size(); i++) {
                     TutorialStep tutorialStep = tutorialPath.getSteps().get(i);
                     String key = TutorialManager.getInstance().getKey(tutorialPathName,
-                            TutorialManager.TutorialType.valueOf(tutorialStep.getType()), tutorialStep);
+                            TutorialManager.TutorialType.valueOf(tutorialStep.getType().toUpperCase()), tutorialStep);
                     civilian.getCompletedTutorialSteps().add(key);
                 }
             }
