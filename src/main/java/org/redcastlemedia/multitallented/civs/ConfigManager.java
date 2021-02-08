@@ -294,7 +294,7 @@ public class ConfigManager {
                 for (String key : section2.getKeys(false)) {
                     String iconString = "CHEST";
                     if (config.isSet("folders." + key + ".icon")) {
-                        config.getString("folders." + key + ".icon", "CHEST");
+                        iconString = config.getString("folders." + key + ".icon", "CHEST");
                     } else {
                         iconString = config.getString("folders." + key, "CHEST");
                     }

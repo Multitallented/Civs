@@ -624,7 +624,7 @@ public class ItemManager {
                             "or") + " " + ChatColor.RED);
                 }
                 if (req.startsWith("tutorial=")) {
-                    if (civilian.getCompletedTutorialSteps().contains(req)) {
+                    if (!civilian.getCompletedTutorialSteps().contains(req.replace("tutorial=", ""))) {
                         if (stopOnFirst) {
                             unmetRequirements.add("tutorial");
                         } else {
@@ -648,6 +648,9 @@ public class ItemManager {
                                         .getTutorialMessage(civilian, path, index, false));
                             }
                         }
+                        continue outer;
+                    } else {
+                        continue;
                     }
                     //perm=civs.admin
                 } else if (req.startsWith("perm=")) {
