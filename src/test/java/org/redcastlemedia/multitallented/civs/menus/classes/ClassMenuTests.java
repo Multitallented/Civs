@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
@@ -32,7 +33,7 @@ public class ClassMenuTests extends TestUtil {
         civClass = civilian.getCurrentClass();
         if (civClass == null) {
             String defaultClassName = ConfigManager.getInstance().getDefaultClass();
-            civClass = new CivClass(0, player.getUniqueId(), defaultClassName);
+            civClass = new CivClass(new UUID(1, 9), player.getUniqueId(), defaultClassName);
         }
         civClass.resetSpellSlotOrder();
     }
@@ -64,7 +65,7 @@ public class ClassMenuTests extends TestUtil {
         MenuManager.setNewData(player.getUniqueId(), data);
         ClassTypeListMenu classTypeListMenu = new ClassTypeListMenu();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        CivClass civClass = new CivClass(1, player.getUniqueId(), "elemental");
+        CivClass civClass = new CivClass(new UUID(1, 7), player.getUniqueId(), "elemental");
         civilian.setCurrentClass(civClass);
         assertEquals("elemental", civilian.getCurrentClass().getType());
         classTypeListMenu.switchToNewClass(civilian, classType.createItemStack());

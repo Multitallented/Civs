@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus.classes;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -31,11 +32,11 @@ public class ClassMenu extends CustomMenu {
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         Map<String, Object> data = new HashMap<>();
         CivClass civClass = null;
-        if (!params.containsKey(Constants.CLASS)) {
+        if (!params.containsKey(Constants.CLASS) || params.get(Constants.CLASS).equals("$class$")) {
             civClass = civilian.getCurrentClass();
         } else {
             for (CivClass cClass: civilian.getCivClasses()) {
-                if (cClass.getId() == Integer.parseInt(params.get(Constants.CLASS))) {
+                if (cClass.getId().equals(UUID.fromString(params.get(Constants.CLASS)))) {
                     civClass = cClass;
                 }
             }
