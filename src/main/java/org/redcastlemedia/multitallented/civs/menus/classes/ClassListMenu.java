@@ -83,7 +83,7 @@ public class ClassListMenu extends CustomMenu {
 
             CivClass civClass = ((HashMap<ItemStack, CivClass>) MenuManager.getData(civilian.getUuid(), "classMap"))
                     .get(itemStack);
-            if (!civClass.equals(civilian.getCurrentClass())) {
+            if (civClass.getId() != civilian.getCurrentClass().getId()) {
                 ClassManager.getInstance().switchClass(civilian, civClass);
                 MenuManager.getAllData(civilian.getUuid()).put(Constants.CLASS, civClass);
                 return true;
