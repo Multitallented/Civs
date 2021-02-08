@@ -32,7 +32,7 @@ import org.redcastlemedia.multitallented.civs.util.PermissionUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public abstract class CustomMenu {
+public class CustomMenu {
     protected HashSet<MenuIcon> itemIndexes;
     protected HashMap<String, Integer> itemsPerPage = new HashMap<>();
     protected HashMap<UUID, HashMap<String, List<String>>> actions = new HashMap<>();
@@ -41,7 +41,13 @@ public abstract class CustomMenu {
     private String name;
     private HashMap<UUID, HashMap<String, List<String>>> rightClickActions = new HashMap<>();
 
-    public abstract Map<String, Object> createData(Civilian civilian, Map<String, String> params);
+    public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
+        Map<String, Object> data = new HashMap<>();
+        for (Map.Entry<String, String> param : params.entrySet()) {
+            data.put(param.getKey(), param.getValue());
+        }
+        return data;
+    }
 
     public String beforeOpenMenu(Civilian civilian) {
         // optional override
@@ -222,6 +228,8 @@ public abstract class CustomMenu {
         }
         boolean shouldCancel = false;
         for (String actionString : actionStrings) {
+            TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.MENU_ACTION,
+                    actionString);
             shouldCancel = doActionAndCancel(civilian, actionString, clickedItem) || shouldCancel;
         }
         if (!event.isCancelled()) {

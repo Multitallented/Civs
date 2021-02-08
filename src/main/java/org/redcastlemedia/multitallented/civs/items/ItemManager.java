@@ -628,7 +628,7 @@ public class ItemManager {
                         if (stopOnFirst) {
                             unmetRequirements.add("tutorial");
                         } else {
-                            String[] reqParts = req.replace("tutorial=", "").split(":");
+                            String[] reqParts = req.replace("tutorial=", "").split("\\^");
                             String path = reqParts[0];
                             String type = reqParts[1];
                             String key = reqParts[2];

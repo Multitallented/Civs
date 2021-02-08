@@ -36,6 +36,7 @@ public class ConfigManager {
     String defaultClass;
     HashMap<String, Integer> groups;
     HashMap<String, CVItem> folderIcons;
+    @Getter Map<String, List<String>> folderReqs = new HashMap<>();
     HashMap<String, Integer> creatureHealth = new HashMap<>();
     boolean useStarterBook;
     long jailTime;
@@ -305,7 +306,17 @@ public class ConfigManager {
             ConfigurationSection section2 = config.getConfigurationSection("folders");
             if (section2 != null) {
                 for (String key : section2.getKeys(false)) {
-                    folderIcons.put(key, CVItem.createCVItemFromString(config.getString("folders." + key, "CHEST")));
+                    String iconString = "CHEST";
+                    if (config.isSet("folders." + key + ".icon")) {
+                        config.getString("folders." + key + ".icon", "CHEST");
+                    } else {
+                        iconString = config.getString("folders." + key, "CHEST");
+                    }
+                    if (config.isSet("folders." + key + ".pre-reqs")) {
+                        List<String> preReqs = config.getStringList("folders." + key + ".pre-reqs");
+                        folderReqs.put(key, preReqs);
+                    }
+                    folderIcons.put(key, CVItem.createCVItemFromString(iconString));
                 }
             }
             itemGroups = new HashMap<>();
