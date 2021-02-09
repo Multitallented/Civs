@@ -4,9 +4,14 @@
 ##  teleport: begins a teleport to the selected location
 #items:
 #  prev:
+#    index: 3
+#  porticon:
 #    index: 4
+#    name: ports
+#    icon: ENDER_PEARL
+#    actions: []
 #  next:
-#    index: 6
+#    index: 5
 #  back:
 #    index: 8
 #  ports:

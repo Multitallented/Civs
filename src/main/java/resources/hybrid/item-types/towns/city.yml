@@ -34,6 +34,7 @@ limits:
 - embassy:8
 - idolgroup:4
 - jammer_trap:0
+- catapult:0
 
 critical-build-reqs:
 - town_center

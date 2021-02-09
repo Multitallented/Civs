@@ -17,6 +17,9 @@ import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.skills.SkillManager;
 import org.redcastlemedia.multitallented.civs.skills.SkillType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialPath;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialStep;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
@@ -160,14 +163,14 @@ public class CivilianManager {
 
             int tutorialIndex = civConfig.getInt("tutorial-index", 0);
             int tutorialProgress = civConfig.getInt("tutorial-progress", 0);
-            String tutorialPath = civConfig.getString("tutorial-path", "default");
+            String tutorialPathName = civConfig.getString("tutorial-path", "default");
 
             Civilian civilian = new Civilian(uuid, civConfig.getString("locale"), items, exp,
                     civConfig.getInt("kills", 0), civConfig.getInt("kill-streak", 0),
                     civConfig.getInt("deaths", 0), civConfig.getInt("highest-kill-streak", 0),
                     civConfig.getDouble("points", 0), civConfig.getInt("karma", 0));
             civilian.setTutorialIndex(tutorialIndex);
-            civilian.setTutorialPath(tutorialPath);
+            civilian.setTutorialPath(tutorialPathName);
             civilian.setTutorialProgress(tutorialProgress);
             civilian.setUseAnnouncements(civConfig.getBoolean("use-announcements", true));
             civilian.setDaysSinceLastHardshipDepreciation(civConfig.getInt("days-since-hardship-depreciation", 0));
@@ -212,6 +215,16 @@ public class CivilianManager {
             civilian.setMana(civConfig.getInt("mana", 0), false);
 
             ItemManager.getInstance().addMinItems(civilian);
+
+            if (civilian.getCompletedTutorialSteps().isEmpty() && civilian.getTutorialIndex() > 0) {
+                TutorialPath tutorialPath = TutorialManager.getInstance().getPathByName(tutorialPathName);
+                for (int i = 0; i < civilian.getTutorialIndex() && i < tutorialPath.getSteps().size(); i++) {
+                    TutorialStep tutorialStep = tutorialPath.getSteps().get(i);
+                    String key = TutorialManager.getInstance().getKey(tutorialPathName,
+                            TutorialManager.TutorialType.valueOf(tutorialStep.getType().toUpperCase()), tutorialStep);
+                    civilian.getCompletedTutorialSteps().add(key);
+                }
+            }
 
             return civilian;
         } catch (Exception ex) {

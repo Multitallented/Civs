@@ -77,6 +77,9 @@ jail-time-seconds: 300
 ##cooldown before spawning a new villager in seconds
 villager-cooldown: 300
 
+##Allow people to hunt other players in other worlds
+allow-hunt-cross-world: false
+
 ##stops arrow turrets from shooting at monsters
 disable-arrow-turret-shooting-at-mobs: false
 
@@ -131,11 +134,20 @@ power-per-npc-kill: 5
 
 folders:
   farms: STONE_HOE
-  towns: GLOWSTONE
+  towns:
+    icon: GLOWSTONE
+    pre-reqs:
+      - population=1|built=command_tent|built=council_room|built=town_hall|built=city_hall|built=capitol
   shops: EMERALD
   utilities: REDSTONE
-  housing: RED_BED
-  defense: ARROW
+  housing:
+    icon: RED_BED
+    pre-reqs:
+      - member=settlement:hamlet:village:town:city:metropolis
+  defense:
+    icon: ARROW
+    pre-reqs:
+      - population=1
   quarries: STONE_SHOVEL
   factories: PISTON
   offense: TNT
@@ -144,7 +156,10 @@ folders:
   hyphaeworks: CRIMSON_STEM
   animals: SHEEP_SPAWN_EGG
   npchousing: VILLAGER_SPAWN_EGG
-  trading: EMERALD_ORE
+  trading:
+    icon: EMERALD_ORE
+    pre-reqs:
+      - member=hamlet:village:town:city:metropolis
 
 levels:
   - DIRT
