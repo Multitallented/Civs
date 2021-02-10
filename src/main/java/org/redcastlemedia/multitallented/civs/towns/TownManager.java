@@ -717,6 +717,11 @@ public class TownManager {
             evolveTown(player, civilian, townType, townTypeLocalName, childTownType, newTown, government);
 
         } else {
+            if (!canJoinAnotherTown(player)) {
+                player.sendMessage(Civs.getPrefix() +
+                        localeManager.getTranslation(player, "residence-limit-reached").replace("$1", name));
+                return;
+            }
             TownCreatedEvent townCreatedEvent = new TownCreatedEvent(newTown, townType);
             newTown.setLastVote(System.currentTimeMillis());
             Bukkit.getPluginManager().callEvent(townCreatedEvent);
@@ -935,7 +940,7 @@ public class TownManager {
         }
 
         Set<Town> townsForPlayer = getTownsForPlayer(player.getUniqueId());
-        if (townsForPlayer.size() <= cm.getResidenciesCount()) {
+        if (townsForPlayer.size() < cm.getResidenciesCount()) {
             return true;
         }
 
