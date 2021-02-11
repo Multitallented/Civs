@@ -118,7 +118,7 @@ money:
   killjoy: 10
   kill: 100
   karma: 0.2
-hardship-per-kill: 500
+hardship-per-kill: 0
 karma-per-kill: 50
 karma-per-kill-streak: 5
 ##How often should karma be cut by 50%? Adds 50% to negative karma. Subtracts 50% from positive karma.

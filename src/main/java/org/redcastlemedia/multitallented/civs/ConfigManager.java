@@ -402,7 +402,7 @@ public class ConfigManager {
             hardshipDepreciationPeriod = config.getInt("hardship-depreciation-period-in-days", 7);
             huntKarma = config.getDouble("hunt-karma", -250.0);
             allowHuntNewPlayers = config.getBoolean("hunt-new-players", true);
-            hardshipPerKill = config.getDouble("hardship-per-kill", 500);
+            hardshipPerKill = config.getDouble("hardship-per-kill", 0);
             useHardshipSystem = config.getBoolean("hardship-should-pay-damages", false);
             keepRegionChunksLoaded = config.getBoolean("keep-region-chunks-loaded", true);
             silentExp = config.getBoolean("no-exp-chat-messages", false);
@@ -488,7 +488,7 @@ public class ConfigManager {
         silentExp = false;
         useSkills = true;
         keepRegionChunksLoaded = true;
-        hardshipPerKill = 500;
+        hardshipPerKill = 0;
         allowHuntNewPlayers = false;
         hardshipDepreciationPeriod = 7;
         huntKarma = -250.0;
