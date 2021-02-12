@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGHER)
 public class ItemManager {
     private static ItemManager itemManager;
-    private HashMap<String, CivItem> itemTypes = new HashMap<>();
+    private final HashMap<String, CivItem> itemTypes = new HashMap<>();
 
     public static ItemManager getInstance() {
         if (itemManager == null) {

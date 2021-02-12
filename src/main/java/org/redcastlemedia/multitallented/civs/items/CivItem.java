@@ -31,7 +31,7 @@ public abstract class CivItem extends CVItem {
     private final double price;
     private final String permission;
     private final boolean isInShop;
-    private boolean isPlaceable = false;
+    private boolean isPlaceable;
     private final List<String> groups;
     private final CVItem shopIcon;
     @Getter

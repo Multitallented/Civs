@@ -1,8 +1,5 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import java.util.HashMap;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,10 +13,13 @@ import org.redcastlemedia.multitallented.civs.events.PlayerInTownEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 @CivsSingleton
 public class PotionAreaEffect implements Listener {
     public static String KEY = "potion";
-    private static HashMap<String, Long> cooldowns = new HashMap<>();
+    private static final HashMap<String, Long> cooldowns = new HashMap<>();
 
     public static void getInstance() {
         Bukkit.getPluginManager().registerEvents(new PotionAreaEffect(), Civs.getInstance());

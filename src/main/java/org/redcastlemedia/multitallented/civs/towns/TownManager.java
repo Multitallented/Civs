@@ -13,13 +13,13 @@ import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.events.*;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.*;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -37,10 +37,10 @@ import java.util.logging.Level;
 public class TownManager {
 
     private static TownManager townManager = null;
-    private HashMap<String, Town> towns = new HashMap<>();
-    private List<Town> sortedTowns = new ArrayList<>();
-    private HashMap<UUID, Town> invites = new HashMap<>();
-    private ArrayList<Town> needsSaving = new ArrayList<>();
+    private final HashMap<String, Town> towns = new HashMap<>();
+    private final List<Town> sortedTowns = new ArrayList<>();
+    private final HashMap<UUID, Town> invites = new HashMap<>();
+    private final ArrayList<Town> needsSaving = new ArrayList<>();
 
 
     public void reload() {

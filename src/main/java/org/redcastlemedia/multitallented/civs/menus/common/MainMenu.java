@@ -1,8 +1,5 @@
 package org.redcastlemedia.multitallented.civs.menus.common;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -26,13 +23,16 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
-import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @CivsMenu(name = "main") @SuppressWarnings("unused")
 public class MainMenu extends CustomMenu {
@@ -71,7 +71,7 @@ public class MainMenu extends CustomMenu {
             return new ItemStack(Material.AIR);
         }
         switch (menuIcon.getKey()) {
-            case Constants.REGION:
+            case Constants.REGION: {
                 Region region = (Region) MenuManager.getData(civilian.getUuid(), Constants.REGION);
                 if (region == null) {
                     return new ItemStack(Material.AIR);
@@ -82,7 +82,8 @@ public class MainMenu extends CustomMenu {
                     putActions(civilian, menuIcon, itemStack, count);
                     return itemStack;
                 }
-            case Constants.TOWN:
+            }
+            case Constants.TOWN: {
                 Town town = (Town) MenuManager.getData(civilian.getUuid(), Constants.TOWN);
                 if (town == null) {
                     return new ItemStack(Material.AIR);
@@ -94,7 +95,8 @@ public class MainMenu extends CustomMenu {
                     putActions(civilian, menuIcon, itemStack, count);
                     return itemStack;
                 }
-            case Constants.REGIONS:
+            }
+            case Constants.REGIONS: {
                 boolean showBuiltRegions = false;
                 for (Region region : RegionManager.getInstance().getAllRegions()) {
                     if (region.getRawPeople().containsKey(civilian.getUuid())) {
@@ -106,6 +108,7 @@ public class MainMenu extends CustomMenu {
                     return new ItemStack(Material.AIR);
                 }
                 break;
+            }
             case "guide": {
                 if (!ConfigManager.getInstance().isUseGuide()) {
                     return new ItemStack(Material.AIR);
@@ -145,7 +148,7 @@ public class MainMenu extends CustomMenu {
                 putActions(civilian, menuIcon, itemStack, count);
                 return itemStack;
             }
-            case "class":
+            case "class": {
                 if (ConfigManager.getInstance().getUseClassesAndSpells()) {
                     CivClass civClass = civilian.getCurrentClass();
                     ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civClass.getType());
@@ -156,7 +159,8 @@ public class MainMenu extends CustomMenu {
                 } else {
                     return new ItemStack(Material.AIR);
                 }
-            case "your-towns":
+            }
+            case "your-towns": {
                 boolean isInATown = false;
                 for (Town town : TownManager.getInstance().getTowns()) {
                     if (town.getRawPeople().containsKey(civilian.getUuid())) {
@@ -168,12 +172,14 @@ public class MainMenu extends CustomMenu {
                     return new ItemStack(Material.AIR);
                 }
                 break;
-            case "alliances":
+            }
+            case "alliances": {
                 if (AllianceManager.getInstance().getAllAlliances().isEmpty()) {
                     return new ItemStack(Material.AIR);
                 }
                 break;
-            case "regions-for-sale":
+            }
+            case "regions-for-sale": {
                 boolean hasRegionsForSale = false;
                 for (Region r : RegionManager.getInstance().getAllRegions()) {
                     if (r.getForSale() != -1 && (!r.getRawPeople().containsKey(civilian.getUuid()) ||
@@ -186,7 +192,8 @@ public class MainMenu extends CustomMenu {
                     return new ItemStack(Material.AIR);
                 }
                 break;
-            case "ports":
+            }
+            case "ports": {
                 boolean hasPort = false;
                 for (Region region : RegionManager.getInstance().getAllRegions()) {
                     if (PortCommand.canPort(region, player.getUniqueId(), null)) {
@@ -198,6 +205,7 @@ public class MainMenu extends CustomMenu {
                     return new ItemStack(Material.AIR);
                 }
                 break;
+            }
         }
         return super.createItemStack(civilian, menuIcon, count);
     }

@@ -43,7 +43,7 @@ public class SoundEffect extends Effect {
     }
     public void apply() {
         Object target = getTarget();
-        Location location = null;
+        Location location;
         if (target instanceof LivingEntity) {
             LivingEntity livingEntity = (LivingEntity) target;
             location = livingEntity.getLocation();

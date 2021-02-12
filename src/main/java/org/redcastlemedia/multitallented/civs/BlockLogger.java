@@ -4,8 +4,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.regions.Region;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class BlockLogger {
     private static BlockLogger blockLogger = null;
-    private HashMap<String, CVItem> blocks = new HashMap<>();
+    private final HashMap<String, CVItem> blocks = new HashMap<>();
 
 //    private long lastSave = 0;
 //    private int intervalId = -1;

@@ -1,23 +1,18 @@
 package org.redcastlemedia.multitallented.civs;
 
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.redcastlemedia.multitallented.civs.civilians.ChatChannel;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
-
-import lombok.Getter;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.CRITICAL)
 public class ConfigManager {
@@ -292,7 +287,7 @@ public class ConfigManager {
             ConfigurationSection section2 = config.getConfigurationSection("folders");
             if (section2 != null) {
                 for (String key : section2.getKeys(false)) {
-                    String iconString = "CHEST";
+                    String iconString;
                     if (config.isSet("folders." + key + ".icon")) {
                         iconString = config.getString("folders." + key + ".icon", "CHEST");
                     } else {

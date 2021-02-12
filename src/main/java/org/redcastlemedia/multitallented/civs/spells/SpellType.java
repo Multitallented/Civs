@@ -1,47 +1,27 @@
 package org.redcastlemedia.multitallented.civs.spells;
 
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.spells.effects.CancelEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.CivPotionEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.CivStateEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.CleanseEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.CooldownEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
-import org.redcastlemedia.multitallented.civs.spells.effects.EffectEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.ExemptionEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.FallEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.HealEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.IgniteEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.ItemEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.ManaEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.ParticleEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.SoundEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.SpellEffectConstants;
-import org.redcastlemedia.multitallented.civs.spells.effects.StaminaEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.TeleportEffect;
-import org.redcastlemedia.multitallented.civs.spells.effects.VelocityEffect;
-import org.redcastlemedia.multitallented.civs.spells.targets.NearbyTarget;
+import org.redcastlemedia.multitallented.civs.spells.effects.*;
 import org.redcastlemedia.multitallented.civs.spells.targets.BlockTarget;
+import org.redcastlemedia.multitallented.civs.spells.targets.NearbyTarget;
 import org.redcastlemedia.multitallented.civs.spells.targets.Target;
 import org.redcastlemedia.multitallented.civs.spells.targets.VectorTarget;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lombok.Getter;
-
 public class SpellType extends CivItem {
     @Getter
     private final Map<String, Integer> allowedActions = new HashMap<>();
     @Getter
-    private int expPerUse = 0;
+    private int expPerUse;
 
 
     public SpellType(List<String> reqs,

@@ -1,8 +1,5 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import java.util.HashMap;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,6 +27,9 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 @CivsSingleton
 public class HuntEffect implements Listener, CreateRegionListener {
@@ -83,7 +83,7 @@ public class HuntEffect implements Listener, CreateRegionListener {
 
         Sign sign = (Sign) state;
 
-        Player targetPlayer = null;
+        Player targetPlayer;
         try {
             targetPlayer = Bukkit.getPlayer(sign.getLine(0));
         } catch (Exception e) {

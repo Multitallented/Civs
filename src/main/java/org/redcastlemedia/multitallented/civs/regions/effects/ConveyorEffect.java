@@ -29,16 +29,19 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.logging.Level;
 
 @CivsSingleton
 public class ConveyorEffect implements Listener, RegionCreatedListener {
     private static ConveyorEffect instance = null;
-    private HashMap<Region, StorageMinecart> carts = new HashMap<>();
-    private HashMap<Region, StorageMinecart> orphanCarts = new HashMap<>();
-    private HashMap<Region, Location> cacheSpawnPoints = new HashMap<>();
-    private HashMap<Region, Region> cacheDestinationRegions = new HashMap<>();
+    private final HashMap<Region, StorageMinecart> carts = new HashMap<>();
+    private final HashMap<Region, StorageMinecart> orphanCarts = new HashMap<>();
+    private final HashMap<Region, Location> cacheSpawnPoints = new HashMap<>();
+    private final HashMap<Region, Region> cacheDestinationRegions = new HashMap<>();
     private boolean disabled = false;
     public static String KEY = "conveyor";
 

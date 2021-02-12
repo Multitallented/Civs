@@ -16,10 +16,10 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
@@ -137,7 +137,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
             return null;
         }
 
-        int villagerCount = 0;
+        int villagerCount;
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         int radius = townType.getBuildRadius();
         int radiusY = townType.getBuildRadiusY();

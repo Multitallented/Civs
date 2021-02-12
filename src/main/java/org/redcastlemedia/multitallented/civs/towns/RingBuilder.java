@@ -1,9 +1,5 @@
 package org.redcastlemedia.multitallented.civs.towns;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,12 +8,16 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class RingBuilder {
     private int x = 0;
     private int z = 0;
     private static final int Y_LEVEL = 80;
     private final Town town;
-    private Set<String> locations = new HashSet<>();
+    private final Set<String> locations = new HashSet<>();
 
     public RingBuilder(Town town) {
         this.town = town;

@@ -1,12 +1,7 @@
 package org.redcastlemedia.multitallented.civs.items;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import lombok.Getter;
+import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,14 +11,13 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import lombok.Getter;
-import lombok.NonNull;
+import java.util.*;
 
 public class CVInventory {
-    private List<Integer> indexes = new ArrayList<>();
-    private Map<Integer, ItemStack> contents = new HashMap<>();
+    private final List<Integer> indexes = new ArrayList<>();
+    private final Map<Integer, ItemStack> contents = new HashMap<>();
     @Getter
-    private Location location;
+    private final Location location;
     private Inventory inventory;
     @Getter
     private int size;

@@ -1,7 +1,5 @@
 package org.redcastlemedia.multitallented.civs;
 
-import java.util.List;
-
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,9 +14,11 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.Plugin;
 
+import java.util.List;
+
 public class ChestImpl implements Chest {
     private final Location location;
-    private InventoryImpl inventory = new InventoryImpl();
+    private final InventoryImpl inventory = new InventoryImpl();
 
     public ChestImpl(Location location) {
         this.location = location;

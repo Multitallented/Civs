@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class InventoryImpl implements Inventory {
-    private HashMap<Integer, ItemStack> contents = new HashMap<>();
+    private final HashMap<Integer, ItemStack> contents = new HashMap<>();
 
     @Override
     public int getSize() {

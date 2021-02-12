@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class TeleportEffect extends Effect {
 
     private String target = "self";
-    private boolean setPos = false;
+    private boolean setPos;
     private boolean other = false;
     private double x = 0,y = 0,z = 0;
 

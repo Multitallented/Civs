@@ -1,24 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
-import java.util.logging.Level;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -31,8 +13,6 @@ import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
@@ -40,36 +20,34 @@ import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleUtil;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
-import org.redcastlemedia.multitallented.civs.regions.effects.ActiveEffect;
-import org.redcastlemedia.multitallented.civs.regions.effects.CreateRegionListener;
-import org.redcastlemedia.multitallented.civs.regions.effects.DestroyRegionListener;
-import org.redcastlemedia.multitallented.civs.regions.effects.RegionCreatedListener;
-import org.redcastlemedia.multitallented.civs.regions.effects.WarehouseEffect;
-import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.regions.effects.*;
+import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.CommandUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.logging.Level;
+
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class RegionManager {
 
-    private HashMap<UUID, ArrayList<Region>> regions = new HashMap<>();
+    private final HashMap<UUID, ArrayList<Region>> regions = new HashMap<>();
     protected HashMap<String, Region> regionLocations = new HashMap<>();
     private static RegionManager regionManager;
-    private HashMap<String, CreateRegionListener> createRegionListeners = new HashMap<>();
-    private HashMap<String, RegionCreatedListener> regionCreatedListenerHashMap = new HashMap<>();
-    private HashMap<String, DestroyRegionListener> destroyRegionListener = new HashMap<>();
-    private HashSet<Region> checkedRegions = new HashSet<>();
-    private ArrayList<Region> needsSaving = new ArrayList<>();
+    private final HashMap<String, CreateRegionListener> createRegionListeners = new HashMap<>();
+    private final HashMap<String, RegionCreatedListener> regionCreatedListenerHashMap = new HashMap<>();
+    private final HashMap<String, DestroyRegionListener> destroyRegionListener = new HashMap<>();
+    private final HashSet<Region> checkedRegions = new HashSet<>();
+    private final ArrayList<Region> needsSaving = new ArrayList<>();
 
     public void reload() {
         regions.clear();
@@ -270,7 +248,7 @@ public class RegionManager {
     }
 
     public void saveNextRegion() {
-        Region r = null;
+        Region r;
         if (!needsSaving.isEmpty()) {
             r = needsSaving.iterator().next();
             saveRegionNow(r);

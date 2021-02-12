@@ -1,21 +1,20 @@
 package org.redcastlemedia.multitallented.civs.ai;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-
+import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 
-import lombok.Getter;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class AIManager {
-    private HashMap<String, AI> ais = new HashMap<>();
+    private final HashMap<String, AI> ais = new HashMap<>();
     @Getter
-    private HashMap<Player, AI> chatHandler = new HashMap<>();
+    private final HashMap<Player, AI> chatHandler = new HashMap<>();
 
     private static AIManager instance = null;
     public static AIManager getInstance() {

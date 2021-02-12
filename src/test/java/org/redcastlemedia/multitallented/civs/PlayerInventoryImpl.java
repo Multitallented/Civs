@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 public class PlayerInventoryImpl implements PlayerInventory {
 
-    private HashMap<Integer, ItemStack> contents = new HashMap<>();
+    private final HashMap<Integer, ItemStack> contents = new HashMap<>();
 
     @Override
     public ItemStack[] getArmorContents() {

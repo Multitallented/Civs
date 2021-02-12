@@ -2,18 +2,13 @@ package org.redcastlemedia.multitallented.civs.regions;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import org.bukkit.block.Biome;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
 import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class RegionType extends CivItem {
 
@@ -27,7 +22,7 @@ public class RegionType extends CivItem {
     private final List<String> rebuild;
     private final boolean dailyPeriod;
     private final HashSet<String> towns;
-    private List<RegionUpkeep> upkeeps;
+    private final List<RegionUpkeep> upkeeps;
     private final long period;
     private final Set<Biome> biomes;
     @Getter

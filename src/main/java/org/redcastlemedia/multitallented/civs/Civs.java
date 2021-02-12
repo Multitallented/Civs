@@ -1,11 +1,10 @@
 package org.redcastlemedia.multitallented.civs;
 
-import java.io.File;
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import github.scarsz.discordsrv.DiscordSRV;
+import me.clip.placeholderapi.PlaceholderAPIPlugin;
+import net.Indyuce.mmoitems.MMOItems;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,14 +12,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.dynmap.DynmapCommonAPI;
-import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsListener;
 import org.redcastlemedia.multitallented.civs.commands.CivCommand;
 import org.redcastlemedia.multitallented.civs.commands.CivsCommand;
 import org.redcastlemedia.multitallented.civs.commands.TabComplete;
 import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
+import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 import org.redcastlemedia.multitallented.civs.regions.effects.ConveyorEffect;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
@@ -28,23 +29,20 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
-import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
-import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
 
-import github.scarsz.discordsrv.DiscordSRV;
-import me.clip.placeholderapi.PlaceholderAPIPlugin;
-import net.Indyuce.mmoitems.MMOItems;
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
+import java.io.File;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Civs extends JavaPlugin {
 
     public static File dataLocation;
-    private HashMap<String, CivCommand> commandList = new HashMap<>();
+    private final HashMap<String, CivCommand> commandList = new HashMap<>();
     public static final String NAME = "Civs";
     public static Economy econ;
     public static Permission perm;

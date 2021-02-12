@@ -6,9 +6,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -31,7 +31,7 @@ public class SetMemberCommand extends CivCommand {
         }
         LocaleManager localeManager = LocaleManager.getInstance();
 
-        boolean isAdmin = false;
+        boolean isAdmin;
         Civilian civilian = null;
         if (player != null) {
             civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());

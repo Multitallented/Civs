@@ -1,14 +1,10 @@
 package org.redcastlemedia.multitallented.civs.spells;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.AbstractArrow;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -22,9 +18,10 @@ import org.redcastlemedia.multitallented.civs.spells.targets.Target;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import java.util.*;
-
-import lombok.Getter;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class Spell {
     private final Player caster;
@@ -493,7 +490,7 @@ public class Spell {
             Effect component;
             boolean isSection = varValueString.equals(SpellConstants.NOT_A_STRING) || varValueString.contains("MemorySection");
             String targetKey = SpellConstants.SELF;
-            ConfigurationSection configurationSection = null;
+            ConfigurationSection configurationSection;
             if (isSection) {
                 configurationSection = varSection.getConfigurationSection(key);
                 String tempTarget = configurationSection.getString(SpellConstants.TARGET, SpellConstants.NOT_A_STRING);

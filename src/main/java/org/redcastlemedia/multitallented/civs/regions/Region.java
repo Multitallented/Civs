@@ -1,21 +1,8 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.logging.Level;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
+import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -28,21 +15,12 @@ import org.redcastlemedia.multitallented.civs.items.CVInventory;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
-import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
-import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
-import org.redcastlemedia.multitallented.civs.util.CommandUtil;
-import org.redcastlemedia.multitallented.civs.util.Constants;
-import org.redcastlemedia.multitallented.civs.util.DebugLogger;
-import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
-import org.redcastlemedia.multitallented.civs.util.Util;
+import org.redcastlemedia.multitallented.civs.util.*;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.*;
+import java.util.logging.Level;
 
 public class Region {
 
@@ -59,7 +37,7 @@ public class Region {
     private final int radiusYP;
     private final int radiusYN;
     @Getter
-    private HashMap<Long, Integer> upkeepHistory = new HashMap<>();
+    private final HashMap<Long, Integer> upkeepHistory = new HashMap<>();
     private double exp;
     @Getter
     public Map<String, String> effects;
@@ -75,7 +53,7 @@ public class Region {
     @Getter @Setter
     private List<List<CVItem>> missingBlocks = new ArrayList<>();
     @Getter
-    private List<String> chests = new ArrayList<>();
+    private final List<String> chests = new ArrayList<>();
 
     public Region(String type,
                   HashMap<UUID, String> people,
