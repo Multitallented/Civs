@@ -68,8 +68,11 @@ public class SelectTownMenu extends CustomMenu {
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         if (menuIcon.getKey().equals("towns")) {
             Set<Town> towns = (Set<Town>) MenuManager.getData(civilian.getUuid(), "towns");
-            int page = (int) MenuManager.getData(civilian.getUuid(), "page");
-            int startIndex = page * menuIcon.getIndex().size();
+            Integer page = (Integer) MenuManager.getData(civilian.getUuid(), "page");
+            int startIndex = (page != null ? page : 0) * menuIcon.getIndex().size();
+            if (towns == null) {
+                return new ItemStack(Material.AIR);
+            }
             Town[] townArray = new Town[towns.size()];
             townArray = towns.toArray(townArray);
             if (townArray.length <= startIndex + count) {
@@ -82,10 +85,10 @@ public class SelectTownMenu extends CustomMenu {
             ItemStack itemStack = cvItem.createItemStack();
             boolean isAllianceSelect = MenuManager.getAllData(civilian.getUuid()).containsKey("ally");
             if (isAllianceSelect) {
-                boolean ally = (boolean) MenuManager.getData(civilian.getUuid(), "ally");
+                Boolean ally = (Boolean) MenuManager.getData(civilian.getUuid(), "ally");
                 List<String> currentActions = new ArrayList<>();
 
-                if (ally) {
+                if (ally != null && ally) {
                     currentActions.add("ally");
                 } else {
                     currentActions.add("unally");
