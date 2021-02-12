@@ -4,11 +4,9 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
@@ -224,31 +222,31 @@ public final class Util {
         }
         String prefix = getDefaultColor(input);
         ArrayList<String> lore = new ArrayList<>();
-        String sendMe = new String(input);
-        String addMe = prefix.equals("§r") ? prefix : "";
+        String sendMe = input;
+        StringBuilder addMe = new StringBuilder(prefix.equals("§r") ? prefix : "");
         for (String line : sendMe.split("\n")) {
             for (String s : line.split(" ")) {
                 do {
                     if (s.length() < lineLength) {
-                        if (!addMe.equals(prefix) && addMe.length() > 0 && s.length() + addMe.length() > lineLength) {
-                            lore.add("" + addMe.trim());
-                            addMe = prefix;
+                        if (!addMe.toString().equals(prefix) && addMe.length() > 0 && s.length() + addMe.length() > lineLength) {
+                            lore.add("" + addMe.toString().trim());
+                            addMe = new StringBuilder(prefix);
                         }
-                        addMe += s + " ";
+                        addMe.append(s).append(" ");
                         s = "";
                     } else {
-                        if (!addMe.equals(prefix) && addMe.length() > 0) {
-                            lore.add("" + addMe.trim());
-                            addMe = prefix;
+                        if (!addMe.toString().equals(prefix) && addMe.length() > 0) {
+                            lore.add("" + addMe.toString().trim());
+                            addMe = new StringBuilder(prefix);
                         }
-                        addMe += s.substring(0, lineLength - 1);
+                        addMe.append(s, 0, lineLength - 1);
                         s = s.substring(lineLength - 1);
                     }
                 } while (s.length() > 0);
             }
-            if (!addMe.equals(prefix) && addMe.length() > 0) {
-                lore.add("" + addMe.trim());
-                addMe = prefix;
+            if (!addMe.toString().equals(prefix) && addMe.length() > 0) {
+                lore.add("" + addMe.toString().trim());
+                addMe = new StringBuilder(prefix);
             }
         }
         return lore;
@@ -311,7 +309,7 @@ public final class Util {
         if (input == null) {
             return null;
         }
-        String returnInput = new String(input);
+        String returnInput = input;
         boolean continueLoop = true;
         int i = 0;
         while (continueLoop && i < 99) {
@@ -326,7 +324,7 @@ public final class Util {
             i++;
         }
         for (ChatColor color : ChatColor.values()) {
-            returnInput = returnInput.replaceAll("@\\{" + color.name() + "\\}", color + "");
+            returnInput = returnInput.replaceAll("@\\{" + color.name() + "}", color + "");
         }
         return returnInput;
     }
@@ -366,7 +364,7 @@ public final class Util {
     }
 
     private static String findColorIndexes(String input, HashMap<Integer, net.md_5.bungee.api.ChatColor> colorMap) {
-        String patternStr = "@\\{[A-z]*\\}";
+        String patternStr = "@\\{[A-z]*}";
         Pattern pattern = Pattern.compile(patternStr);
         Matcher matcher = pattern.matcher(input);
         while (matcher.find()) {
@@ -379,7 +377,7 @@ public final class Util {
                 continue;
             }
             colorMap.put(matcher.start(), color);
-            input = input.replaceFirst("@\\{[A-z]*\\}", "");
+            input = input.replaceFirst("@\\{[A-z]*}", "");
             matcher = pattern.matcher(input);
         }
         return input;

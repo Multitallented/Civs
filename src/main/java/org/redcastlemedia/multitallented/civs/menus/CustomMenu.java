@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
 import java.util.*;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -293,7 +292,7 @@ public class CustomMenu {
             TownType townType = (TownType) data;
             return townType.getProcessedName();
         } else if (key.equals("uuid") && data instanceof UUID) {
-            return ((UUID) data).toString();
+            return data.toString();
         } else if (data instanceof String) {
             return (String) data;
         } else if (data instanceof CivClass) {

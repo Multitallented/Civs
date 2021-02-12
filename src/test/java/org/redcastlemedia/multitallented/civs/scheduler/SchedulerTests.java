@@ -10,8 +10,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -23,7 +21,6 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class SchedulerTests extends TestUtil {
@@ -44,7 +41,7 @@ public class SchedulerTests extends TestUtil {
         );
         List<Event> capturedTickEvents = tickCaptor.getAllValues();
         for (Event event : capturedTickEvents) {
-            if (event == null || !(event instanceof RegionTickEvent)) {
+            if (!(event instanceof RegionTickEvent)) {
                 continue;
             }
             RegionTickEvent regionTickEvent = (RegionTickEvent) event;

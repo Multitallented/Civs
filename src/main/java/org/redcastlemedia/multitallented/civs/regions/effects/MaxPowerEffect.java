@@ -1,7 +1,5 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import org.bukkit.Bukkit;
-import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;

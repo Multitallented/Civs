@@ -200,7 +200,6 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
             } catch (Exception e) {
                 Civs.logger.log(Level.WARNING, "Exception from offline conveyor: ", e);
             }
-            return;
         } else {
             if (orphanCarts.containsKey(r)) {
                 StorageMinecart sm = orphanCarts.get(r);

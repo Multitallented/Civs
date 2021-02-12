@@ -15,7 +15,6 @@ import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
 import org.redcastlemedia.multitallented.civs.events.PlayerInTownEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
-import org.redcastlemedia.multitallented.civs.regions.Region;
 
 @CivsSingleton
 public class PotionAreaEffect implements Listener {
@@ -116,7 +115,7 @@ public class PotionAreaEffect implements Listener {
                 return;
             }
             if (cooldown > 0) {
-                cooldowns.put(key, System.currentTimeMillis() + (cooldown * 1000));
+                cooldowns.put(key, System.currentTimeMillis() + (cooldown * 1000L));
             }
 
             PotionEffect potionEffect = new PotionEffect(potionType, duration * 20, amplifier);

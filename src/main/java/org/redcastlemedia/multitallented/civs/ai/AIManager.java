@@ -44,7 +44,6 @@ public class AIManager {
             }
         } catch (NullPointerException npe) {
             Civs.logger.severe("Unable to create ai folder");
-            return;
         }
     }
 
@@ -84,7 +83,6 @@ public class AIManager {
             config.save(aiFile);
         } catch (Exception e) {
             Civs.logger.severe("Unable to save ai file " + ai.getTownName() + ".yml");
-            return;
         }
     }
 

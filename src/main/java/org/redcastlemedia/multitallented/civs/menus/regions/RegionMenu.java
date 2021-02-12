@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -230,19 +229,22 @@ public class RegionMenu extends CustomMenu {
 
     @Override
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack clickedItem) {
-        if (actionString.equals("cancel-sale")) {
-            Player player = Bukkit.getPlayer(civilian.getUuid());
-            player.performCommand("cv sell");
-            return true;
-        } else if (actionString.equals("toggle-warehouse")) {
-            Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
-            region.setWarehouseEnabled(!region.isWarehouseEnabled());
-            RegionManager.getInstance().saveRegion(region);
-            return true;
-        } else if (actionString.equals("buy-region")) {
-            Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
-            sellRegion(civilian, region);
-            return true;
+        switch (actionString) {
+            case "cancel-sale":
+                Player player = Bukkit.getPlayer(civilian.getUuid());
+                player.performCommand("cv sell");
+                return true;
+            case "toggle-warehouse": {
+                Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
+                region.setWarehouseEnabled(!region.isWarehouseEnabled());
+                RegionManager.getInstance().saveRegion(region);
+                return true;
+            }
+            case "buy-region": {
+                Region region = (Region) MenuManager.getData(civilian.getUuid(), "region");
+                sellRegion(civilian, region);
+                return true;
+            }
         }
         return super.doActionAndCancel(civilian, actionString, clickedItem);
     }

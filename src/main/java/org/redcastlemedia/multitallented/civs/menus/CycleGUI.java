@@ -59,7 +59,7 @@ class CycleGUI {
                 inventory.setItem(index, is);
                 CycleGUIItemSet.setPosition(pos);
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }

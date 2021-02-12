@@ -201,7 +201,7 @@ public class CVInventory {
         } else {
             contentsToModify = new HashMap<>();
             for (Map.Entry<Integer, ItemStack> entry : this.contents.entrySet()) {
-                contentsToModify.put(entry.getKey().intValue(), new ItemStack(entry.getValue()));
+                contentsToModify.put(entry.getKey(), new ItemStack(entry.getValue()));
             }
         }
 

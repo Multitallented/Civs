@@ -2,14 +2,11 @@ package org.redcastlemedia.multitallented.civs.spells.effects;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
-import org.redcastlemedia.multitallented.civs.spells.SpellListener;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 
 import java.util.ArrayList;

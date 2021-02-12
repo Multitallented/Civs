@@ -272,7 +272,7 @@ public class TownManager {
     }
 
     public Set<Town> getOwnedTowns(Civilian civilian) {
-        HashSet<Town> townSet = new HashSet();
+        HashSet<Town> townSet = new HashSet<>();
         for (Town town : towns.values()) {
             if (!town.getRawPeople().containsKey(civilian.getUuid()) ||
                     !town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
@@ -287,22 +287,18 @@ public class TownManager {
         towns.put(town.getName(), town);
         sortedTowns.add(town);
         if (sortedTowns.size() > 1) {
-            Collections.sort(sortedTowns, new Comparator<Town>() {
-
-                @Override
-                public int compare(Town o1, Town o2) {
-                    ItemManager itemManager = ItemManager.getInstance();
-                    TownType townType1 = (TownType) itemManager.getItemType(o1.getType());
-                    TownType townType2 = (TownType) itemManager.getItemType(o2.getType());
-                    if (o1.getLocation().getX() - townType1.getBuildRadius() >
-                            o2.getLocation().getX() - townType2.getBuildRadius()) {
-                        return 1;
-                    } else if (o1.getLocation().getX() - townType1.getBuildRadius() <
-                            o2.getLocation().getX() - townType2.getBuildRadius()) {
-                        return -1;
-                    }
-                    return 0;
+            sortedTowns.sort((o1, o2) -> {
+                ItemManager itemManager = ItemManager.getInstance();
+                TownType townType1 = (TownType) itemManager.getItemType(o1.getType());
+                TownType townType2 = (TownType) itemManager.getItemType(o2.getType());
+                if (o1.getLocation().getX() - townType1.getBuildRadius() >
+                        o2.getLocation().getX() - townType2.getBuildRadius()) {
+                    return 1;
+                } else if (o1.getLocation().getX() - townType1.getBuildRadius() <
+                        o2.getLocation().getX() - townType2.getBuildRadius()) {
+                    return -1;
                 }
+                return 0;
             });
         }
     }
@@ -329,11 +325,7 @@ public class TownManager {
     }
 
     public void setTownPower(Town town, int power) {
-        if (power > town.getMaxPower()) {
-            town.setPower(town.getMaxPower());
-        } else {
-            town.setPower(power);
-        }
+        town.setPower(Math.min(power, town.getMaxPower()));
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         if (town.getPower() < 1 && ConfigManager.getInstance().getDestroyTownsAtZero() &&
                 townType.getChild() == null) {

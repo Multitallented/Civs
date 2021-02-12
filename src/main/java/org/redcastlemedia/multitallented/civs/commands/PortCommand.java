@@ -150,53 +150,50 @@ public class PortCommand extends CivCommand {
         player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                 "port-warmup").replace("$1", (warmup / 20) + ""));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, (int) warmup, 2));
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                if (!p.isOnline() || p.isDead()) {
-                    return;
-                }
-                if (civilian.isInCombat()) {
-                    p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                            "in-combat"));
-                    return;
-                }
-
-                if (civilian.getMana() < ConfigManager.getInstance().getPortMana()) {
-                    int manaNeeded = ConfigManager.getInstance().getPortMana() + 1 - civilian.getMana();
-                    ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
-                    String manaTitle = LocaleManager.getInstance().getTranslation(p,
-                            classType.getManaTitle());
-                    p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                            "need-more-mana").replace("$1", manaNeeded + "")
-                            .replace("$2", manaTitle));
-                    return;
-                } else {
-                    civilian.setMana(civilian.getMana() - ConfigManager.getInstance().getPortMana());
-                }
-
-                double moneyNeeded = ConfigManager.getInstance().getPortMoney();
-                if (moneyNeeded > 0 && Civs.econ != null &&
-                        !Civs.econ.has(p, moneyNeeded)) {
-                    p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                            "not-enough-money").replace("$1", moneyNeeded + ""));
-                    return;
-                } else if (Civs.econ != null) {
-                    Civs.econ.withdrawPlayer(p, ConfigManager.getInstance().getPortMoney());
-                }
-
-                if (ConfigManager.getInstance().getPortDamage() > 0) {
-                    Bukkit.getPluginManager().callEvent(new EntityDamageEvent(p, EntityDamageEvent.DamageCause.CUSTOM,
-                            ConfigManager.getInstance().getPortDamage()));
-                }
-                if (ConfigManager.getInstance().getPortStamina() > 0) {
-                    p.setFoodLevel(Math.max(p.getFoodLevel() - ConfigManager.getInstance().getPortStamina(), 0));
-                }
-                cooldowns.put(p.getUniqueId(), System.currentTimeMillis() + ConfigManager.getInstance().getPortCooldown() * 1000);
-                p.teleport(new Location(l.getWorld(), l.getX(), l.getY() + 1, l.getZ()));
-                p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                        "teleported"));
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> {
+            if (!p.isOnline() || p.isDead()) {
+                return;
             }
+            if (civilian.isInCombat()) {
+                p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        "in-combat"));
+                return;
+            }
+
+            if (civilian.getMana() < ConfigManager.getInstance().getPortMana()) {
+                int manaNeeded = ConfigManager.getInstance().getPortMana() + 1 - civilian.getMana();
+                ClassType classType = (ClassType) ItemManager.getInstance().getItemType(civilian.getCurrentClass().getType());
+                String manaTitle = LocaleManager.getInstance().getTranslation(p,
+                        classType.getManaTitle());
+                p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        "need-more-mana").replace("$1", manaNeeded + "")
+                        .replace("$2", manaTitle));
+                return;
+            } else {
+                civilian.setMana(civilian.getMana() - ConfigManager.getInstance().getPortMana());
+            }
+
+            double moneyNeeded1 = ConfigManager.getInstance().getPortMoney();
+            if (moneyNeeded1 > 0 && Civs.econ != null &&
+                    !Civs.econ.has(p, moneyNeeded1)) {
+                p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        "not-enough-money").replace("$1", moneyNeeded1 + ""));
+                return;
+            } else if (Civs.econ != null) {
+                Civs.econ.withdrawPlayer(p, ConfigManager.getInstance().getPortMoney());
+            }
+
+            if (ConfigManager.getInstance().getPortDamage() > 0) {
+                Bukkit.getPluginManager().callEvent(new EntityDamageEvent(p, EntityDamageEvent.DamageCause.CUSTOM,
+                        ConfigManager.getInstance().getPortDamage()));
+            }
+            if (ConfigManager.getInstance().getPortStamina() > 0) {
+                p.setFoodLevel(Math.max(p.getFoodLevel() - ConfigManager.getInstance().getPortStamina(), 0));
+            }
+            cooldowns.put(p.getUniqueId(), System.currentTimeMillis() + ConfigManager.getInstance().getPortCooldown() * 1000L);
+            p.teleport(new Location(l.getWorld(), l.getX(), l.getY() + 1, l.getZ()));
+            p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                    "teleported"));
         }, delay);
         return true;
     }

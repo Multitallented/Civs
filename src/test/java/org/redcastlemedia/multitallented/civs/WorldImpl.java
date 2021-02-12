@@ -285,8 +285,9 @@ public class WorldImpl implements World {
         return null;
     }
 
+    @SafeVarargs
     @Override
-    public <T extends Entity> Collection<T> getEntitiesByClass(Class<T>... classes) {
+    public final <T extends Entity> Collection<T> getEntitiesByClass(Class<T>... classes) {
         return null;
     }
 

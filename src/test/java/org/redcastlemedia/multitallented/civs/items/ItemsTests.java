@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
@@ -76,6 +75,7 @@ public class ItemsTests extends TestUtil {
         for (String currentName : civilian.getStashItems().keySet()) {
             if (currentName.equalsIgnoreCase("shelter")) {
                 hasShelter = true;
+                break;
             }
         }
         assertTrue(hasShelter);
@@ -94,6 +94,7 @@ public class ItemsTests extends TestUtil {
         for (String currentName : civilian.getStashItems().keySet()) {
             if (currentName.equalsIgnoreCase("cityhall")) {
                 hasCityHall = true;
+                break;
             }
         }
         assertFalse(hasCityHall);

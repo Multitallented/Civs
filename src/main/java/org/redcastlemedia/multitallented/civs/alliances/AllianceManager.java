@@ -66,12 +66,8 @@ public class AllianceManager implements Listener {
             config.load(allianceFile);
             Alliance alliance = new Alliance();
             alliance.setName(allianceFile.getName().replace(".yml", ""));
-            alliance.setMembers(new HashSet<String>(config.getStringList("members")));
-            for (String townName : new ArrayList<>(alliance.getMembers())) {
-                if (TownManager.getInstance().getTown(townName) == null) {
-                    alliance.getMembers().remove(townName);
-                }
-            }
+            alliance.setMembers(new HashSet<>(config.getStringList("members")));
+            alliance.getMembers().removeIf(townName -> TownManager.getInstance().getTown(townName) == null);
             String uuidString = config.getString("last-rename", null);
             if (uuidString != null) {
                 alliance.setLastRenamedBy(UUID.fromString(uuidString));
@@ -126,7 +122,7 @@ public class AllianceManager implements Listener {
                 allianceFile.createNewFile();
             }
             FileConfiguration config = new YamlConfiguration();
-            config.set("members", new ArrayList<String>(alliance.getMembers()));
+            config.set("members", new ArrayList<>(alliance.getMembers()));
             if (alliance.getLastRenamedBy() != null) {
                 config.set("last-rename", alliance.getLastRenamedBy().toString());
             }
@@ -325,13 +321,10 @@ public class AllianceManager implements Listener {
 
     public ArrayList<Alliance> getAllSortedAlliances() {
         ArrayList<Alliance> returnList = getAllAlliances();
-        Comparator<Alliance> comparator = new Comparator<Alliance>() {
-            @Override
-            public int compare(Alliance o1, Alliance o2) {
-                int o1Size = o1.getMembers().size();
-                int o2Size = o2.getMembers().size();
-                return Integer.compare(o1Size, o2Size);
-            }
+        Comparator<Alliance> comparator = (o1, o2) -> {
+            int o1Size = o1.getMembers().size();
+            int o2Size = o2.getMembers().size();
+            return Integer.compare(o1Size, o2Size);
         };
         returnList.sort(comparator);
         return returnList;

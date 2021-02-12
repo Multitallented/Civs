@@ -2,12 +2,7 @@ package org.redcastlemedia.multitallented.civs;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -151,13 +146,9 @@ public class Civs extends JavaPlugin {
         CommonScheduler commonScheduler = new CommonScheduler();
         getServer().getScheduler().scheduleSyncRepeatingTask(this, commonScheduler, 4L, 4L);
 
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-
-            @Override
-            public void run() {
-                RegionManager.getInstance().saveNextRegion();
-                TownManager.getInstance().saveNextTown();
-            }
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
+            RegionManager.getInstance().saveNextRegion();
+            TownManager.getInstance().saveNextTown();
         }, 20L, 20L);
     }
 
@@ -229,19 +220,11 @@ public class Civs extends JavaPlugin {
         Reflections reflections = new Reflections(configurationBuilder);
         Set<Class<?>> classes = reflections.getTypesAnnotatedWith(CivsSingleton.class);
         List<Class<?>> classList = new ArrayList<>(classes);
-        classList.sort(new Comparator<Class<?>>() {
-            @Override
-            public int compare(Class<?> o1, Class<?> o2) {
-                return o1.getAnnotation(CivsSingleton.class).priority().compareTo(o2.getAnnotation(CivsSingleton.class).priority());
-            }
-        });
+        classList.sort(Comparator.comparing(o -> o.getAnnotation(CivsSingleton.class).priority()));
         for (Class<?> currentSingleton : classList) {
             try {
-                Method method = currentSingleton.getMethod("getInstance");
-                if (method != null) {
-                    method.invoke(currentSingleton);
-                }
-            } catch (Exception e) {
+                currentSingleton.getMethod("getInstance").invoke(currentSingleton);
+            } catch (Exception ignored) {
 
             }
         }

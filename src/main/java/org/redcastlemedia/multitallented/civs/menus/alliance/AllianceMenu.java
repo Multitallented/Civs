@@ -38,77 +38,83 @@ public class AllianceMenu extends CustomMenu {
         if (player == null) {
             return new ItemStack(Material.AIR);
         }
-        if (menuIcon.getKey().equals("members")) {
-            int page = (int) MenuManager.getData(civilian.getUuid(), "page");
-            int startIndex = page * menuIcon.getIndex().size();
-            String[] memberNames = new String[alliance.getMembers().size()];
-            memberNames = alliance.getMembers().toArray(memberNames);
-            if (memberNames.length <= startIndex + count) {
-                return new ItemStack(Material.AIR);
-            }
-            String townName = memberNames[startIndex + count];
-            Town town = TownManager.getInstance().getTown(townName);
-            CVItem cvItem = ItemManager.getInstance().getItemType(town.getType()).clone();
-            cvItem.setDisplayName(town.getName());
-            cvItem.getLore().clear();
-            ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack, count);
-            return itemStack;
-        } else if (menuIcon.getKey().equals("last-rename")) {
-            if (alliance == null || alliance.getLastRenamedBy() == null) {
-                return new ItemStack(Material.AIR);
-            }
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(alliance.getLastRenamedBy());
-            if (offlinePlayer.getName() != null) {
-                CVItem lastRenameCVItem = menuIcon.createCVItem(player, count);
-                lastRenameCVItem.setMat(Material.PLAYER_HEAD);
-                ItemStack is = lastRenameCVItem.createItemStack();
-                SkullMeta isMeta = (SkullMeta) is.getItemMeta();
-                if (ConfigManager.getInstance().isSkinsInMenu()) {
-                    isMeta.setDisplayName(offlinePlayer.getName());
+        switch (menuIcon.getKey()) {
+            case "members": {
+                int page = (int) MenuManager.getData(civilian.getUuid(), "page");
+                int startIndex = page * menuIcon.getIndex().size();
+                String[] memberNames = new String[alliance.getMembers().size()];
+                memberNames = alliance.getMembers().toArray(memberNames);
+                if (memberNames.length <= startIndex + count) {
+                    return new ItemStack(Material.AIR);
                 }
-                isMeta.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
-                        "last-renamed-by").replace("$1", offlinePlayer.getName())));
-                isMeta.setOwningPlayer(offlinePlayer);
-                is.setItemMeta(isMeta);
-                putActions(civilian, menuIcon, is, count);
-                return is;
+                String townName = memberNames[startIndex + count];
+                Town town = TownManager.getInstance().getTown(townName);
+                CVItem cvItem = ItemManager.getInstance().getItemType(town.getType()).clone();
+                cvItem.setDisplayName(town.getName());
+                cvItem.getLore().clear();
+                ItemStack itemStack = cvItem.createItemStack();
+                putActions(civilian, menuIcon, itemStack, count);
+                return itemStack;
             }
-        } else if (menuIcon.getKey().equals("icon")) {
-            CVItem icon = menuIcon.createCVItem(player, count);
-            icon.setDisplayName(alliance.getName());
-            ItemStack itemStack = icon.createItemStack();
-            putActions(civilian, menuIcon, itemStack, count);
-            return itemStack;
-        } else if (menuIcon.getKey().equals("rename") ||
-                menuIcon.getKey().equals("leave-alliance")) {
-            Town selectedTown = (Town) MenuManager.getData(civilian.getUuid(), "selectedTown");
-            if (selectedTown == null) {
-                return new ItemStack(Material.AIR);
+            case "last-rename":
+                if (alliance == null || alliance.getLastRenamedBy() == null) {
+                    return new ItemStack(Material.AIR);
+                }
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(alliance.getLastRenamedBy());
+                if (offlinePlayer.getName() != null) {
+                    CVItem lastRenameCVItem = menuIcon.createCVItem(player, count);
+                    lastRenameCVItem.setMat(Material.PLAYER_HEAD);
+                    ItemStack is = lastRenameCVItem.createItemStack();
+                    SkullMeta isMeta = (SkullMeta) is.getItemMeta();
+                    if (ConfigManager.getInstance().isSkinsInMenu()) {
+                        isMeta.setDisplayName(offlinePlayer.getName());
+                    }
+                    isMeta.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
+                            "last-renamed-by").replace("$1", offlinePlayer.getName())));
+                    isMeta.setOwningPlayer(offlinePlayer);
+                    is.setItemMeta(isMeta);
+                    putActions(civilian, menuIcon, is, count);
+                    return is;
+                }
+                break;
+            case "icon": {
+                CVItem icon = menuIcon.createCVItem(player, count);
+                icon.setDisplayName(alliance.getName());
+                ItemStack itemStack = icon.createItemStack();
+                putActions(civilian, menuIcon, itemStack, count);
+                return itemStack;
             }
-            CVItem cvItem = menuIcon.createCVItem(player, count);
-            if (menuIcon.getDesc() != null && !menuIcon.getDesc().isEmpty()) {
-                cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
-                        menuIcon.getDesc()).replace("$1", alliance.getName())));
+            case "rename":
+            case "leave-alliance": {
+                Town selectedTown = (Town) MenuManager.getData(civilian.getUuid(), "selectedTown");
+                if (selectedTown == null) {
+                    return new ItemStack(Material.AIR);
+                }
+                CVItem cvItem = menuIcon.createCVItem(player, count);
+                if (menuIcon.getDesc() != null && !menuIcon.getDesc().isEmpty()) {
+                    cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
+                            menuIcon.getDesc()).replace("$1", alliance.getName())));
+                }
+                ItemStack itemStack = cvItem.createItemStack();
+                putActions(civilian, menuIcon, itemStack, count);
+                return itemStack;
             }
-            ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack, count);
-            return itemStack;
-        } else if ("select-town".equals(menuIcon.getKey())) {
-            Town selectedTown = (Town) MenuManager.getData(civilian.getUuid(), "selectedTown");
-            if (selectedTown == null) {
-                return new ItemStack(Material.AIR);
+            case "select-town": {
+                Town selectedTown = (Town) MenuManager.getData(civilian.getUuid(), "selectedTown");
+                if (selectedTown == null) {
+                    return new ItemStack(Material.AIR);
+                }
+                TownType selectedTownType = (TownType) ItemManager.getInstance().getItemType(selectedTown.getType());
+                CVItem cvItem = selectedTownType.getShopIcon(civilian.getLocale()).clone();
+                cvItem.setDisplayName(selectedTown.getName());
+                if (menuIcon.getDesc() != null && !menuIcon.getDesc().isEmpty()) {
+                    cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
+                            menuIcon.getDesc())));
+                }
+                ItemStack itemStack = cvItem.createItemStack();
+                putActions(civilian, menuIcon, itemStack, count);
+                return itemStack;
             }
-            TownType selectedTownType = (TownType) ItemManager.getInstance().getItemType(selectedTown.getType());
-            CVItem cvItem = selectedTownType.getShopIcon(civilian.getLocale()).clone();
-            cvItem.setDisplayName(selectedTown.getName());
-            if (menuIcon.getDesc() != null && !menuIcon.getDesc().isEmpty()) {
-                cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
-                        menuIcon.getDesc())));
-            }
-            ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack, count);
-            return itemStack;
         }
         return super.createItemStack(civilian, menuIcon, count);
     }

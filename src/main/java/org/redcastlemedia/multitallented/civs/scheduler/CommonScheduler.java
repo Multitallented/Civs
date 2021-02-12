@@ -252,8 +252,7 @@ public class CommonScheduler implements Runnable {
 
     private void playerInRegion(Player player) {
         RegionManager regionManager = RegionManager.getInstance();
-        ArrayList<Region> containedRegions = new ArrayList<>();
-        containedRegions.addAll(regionManager.getRegionEffectsAt(player.getLocation(), 0));
+        ArrayList<Region> containedRegions = new ArrayList<>(regionManager.getRegionEffectsAt(player.getLocation(), 0));
 
         for (Region region : containedRegions) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());

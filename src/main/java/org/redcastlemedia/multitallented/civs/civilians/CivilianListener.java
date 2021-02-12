@@ -303,7 +303,6 @@ public class CivilianListener implements Listener {
         CivItem civItem = CivItem.getFromItemStack(is);
         if (!civItem.isPlaceable()) {
             event.setCancelled(true);
-            return;
         }
     }
 
@@ -588,7 +587,6 @@ public class CivilianListener implements Listener {
         if ("DiscordSRV".equals(event.getPlugin().getName()) &&
                 Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
             Civs.discordSRV = DiscordSRV.getPlugin();
-            return;
         }
     }
 
@@ -609,7 +607,6 @@ public class CivilianListener implements Listener {
         }
         if (Constants.PLACEHOLDER_API.equals(event.getPlugin().getName())) {
             Civs.placeholderAPI = null;
-            return;
         }
     }
 

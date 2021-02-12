@@ -75,16 +75,11 @@ public class IgniteEffect extends Effect {
             state.remove(champion1);
             champion1.getStates().remove(spell.getType() + "." + key);
         }
-        HashMap<String, Object> variables = new HashMap<String, Object>();
+        HashMap<String, Object> variables = new HashMap<>();
 
         final Civilian champion = champion1;
         final String stateName = spell.getType() + "." + key;
-        int durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                champion.getStates().remove(stateName);
-            }
-        }, this.ticks);
+        int durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> champion.getStates().remove(stateName), this.ticks);
 
         if (config != null) {
             state = new CivState(spell, key, durationId, -1, config, variables);

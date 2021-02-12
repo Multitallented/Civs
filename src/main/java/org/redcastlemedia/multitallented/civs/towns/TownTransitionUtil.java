@@ -17,14 +17,11 @@ public final class TownTransitionUtil {
         int i=0;
         for (final Town town : TownManager.getInstance().getTowns()) {
             i++;
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-               @Override
-               public void run() {
-                   if (checkTown(town)) {
-                       saveThese.add(town);
-                   }
-               }
-            },i*20);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> {
+                if (checkTown(town)) {
+                    saveThese.add(town);
+                }
+            },i* 20L);
         }
         for (Town town : saveThese) {
             TownManager.getInstance().saveTown(town);

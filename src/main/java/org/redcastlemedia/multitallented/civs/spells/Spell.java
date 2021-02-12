@@ -5,7 +5,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -16,7 +15,6 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
@@ -328,23 +326,14 @@ public class Spell {
                 continue;
             }
             if (ticks > 0) {
-                durationId = Bukkit.getScheduler().runTaskLater(Civs.getInstance(), new Runnable() {
-                    @Override
-                    public void run() {
-                        SpellListener.getInstance().removeDamageListener((LivingEntity) target);
-                        finalChampion.getStates().remove(finalName + "." + finalKey);
-                    }
+                durationId = Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> {
+                    SpellListener.getInstance().removeDamageListener((LivingEntity) target);
+                    finalChampion.getStates().remove(finalName + "." + finalKey);
                 }, delay + ticks).getTaskId();
             }
             if (delayId < -1) {
-                Bukkit.getScheduler().runTaskLater(Civs.getInstance(), new Runnable() {
-                    @Override
-                    public void run() {
-                        SpellListener.getInstance().addDamageListener((LivingEntity) target, finalLevel,
-                                damageListenerSection.getConfigurationSection("section"), spell, finalCaster, key, mappedTargets);
-
-                    }
-                }, delay);
+                Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> SpellListener.getInstance().addDamageListener((LivingEntity) target, finalLevel,
+                        damageListenerSection.getConfigurationSection("section"), spell, finalCaster, key, mappedTargets), delay);
             } else {
                 SpellListener.getInstance().addDamageListener((LivingEntity) target, level,
                         damageListenerSection.getConfigurationSection("section"), spell, caster, key, mappedTargets);
@@ -386,37 +375,24 @@ public class Spell {
             }
         }
         if (period > 0) {
-            periodId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    useAbility(finalMappedTargets, true, durationSectionEffects);
-                }
-            }, delay, period);
+            periodId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(), () -> useAbility(finalMappedTargets, true, durationSectionEffects), delay, period);
         }
         if (delay > 0 && period < 1) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    useAbility(finalMappedTargets, true, durationSectionEffects);
-                }
-            }, delay + ticks);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> useAbility(finalMappedTargets, true, durationSectionEffects), delay + ticks);
         } else {
             useAbility(mappedTargets, true, durationSectionEffects);
         }
 
         final int finalPeriodId = periodId;
         if (ticks > 0) {
-            durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    removeAbility(finalMappedTargets, durationAbilities);
-                    Bukkit.getScheduler().cancelTask(finalPeriodId);
-                    Civilian champion = CivilianManager.getInstance().getCivilian(finalCaster.getUniqueId());
-                    CivState state = champion.getStates().get(finalName + "." + finalKey);
-                    if (state != null) {
-                        state.remove(finalCaster);
-                        champion.getStates().remove(finalName + "." + finalKey);
-                    }
+            durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> {
+                removeAbility(finalMappedTargets, durationAbilities);
+                Bukkit.getScheduler().cancelTask(finalPeriodId);
+                Civilian champion = CivilianManager.getInstance().getCivilian(finalCaster.getUniqueId());
+                CivState state = champion.getStates().get(finalName + "." + finalKey);
+                if (state != null) {
+                    state.remove(finalCaster);
+                    champion.getStates().remove(finalName + "." + finalKey);
                 }
             }, delay + ticks);
         }
@@ -633,6 +609,7 @@ public class Spell {
         if (spell != null && target != null) {
             input = "";
             Map<String, Map<Object, Map<String, Double>>> abilityVariables = spell.getAbilityVariables();
+            StringBuilder inputBuilder = new StringBuilder(input);
             for (int i = 0; i < inputParts.length; i++) {
                 if (inputParts[i].contains("#")) {
                     Map<String, Map<Object, Map<String, Double>>> variables = new HashMap<>(abilityVariables);
@@ -657,8 +634,9 @@ public class Spell {
                         inputParts[i] = "0";
                     }
                 }
-                input += inputParts[i];
+                inputBuilder.append(inputParts[i]);
             }
+            input = inputBuilder.toString();
         }
         return input;
     }

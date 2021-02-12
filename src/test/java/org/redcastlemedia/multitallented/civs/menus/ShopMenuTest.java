@@ -110,6 +110,7 @@ public class ShopMenuTest extends TestUtil {
         for (CivItem civItem : shopItems) {
             if ("housing".equals(civItem.getProcessedName())) {
                 containsHousing = true;
+                break;
             }
         }
         assertTrue(containsHousing);

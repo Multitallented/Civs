@@ -97,14 +97,11 @@ public class CivilianManager {
             return;
         }
         listNeedsToBeSorted = false;
-        sortedCivilians.sort(new Comparator<Civilian>() {
-            @Override
-            public int compare(Civilian o1, Civilian o2) {
-                if (o1.getPoints() == o2.getPoints()) {
-                    return 0;
-                }
-                return o1.getPoints() < o2.getPoints() ? 1 : -1;
+        sortedCivilians.sort((o1, o2) -> {
+            if (o1.getPoints() == o2.getPoints()) {
+                return 0;
             }
+            return o1.getPoints() < o2.getPoints() ? 1 : -1;
         });
     }
     void unloadCivilian(Player player) {
@@ -355,7 +352,6 @@ public class CivilianManager {
         } catch (Exception ex) {
             Civs.logger.severe("Unable to write " + civilian.getUuid() + ".yml");
             ex.printStackTrace();
-            return;
         }
     }
 

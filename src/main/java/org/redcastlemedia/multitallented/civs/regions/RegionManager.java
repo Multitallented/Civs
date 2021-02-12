@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -168,16 +167,13 @@ public class RegionManager {
     }
 
     private void sortRegions(UUID worldName) {
-        regions.get(worldName).sort(new Comparator<Region>() {
-            @Override
-            public int compare(Region r1, Region r2) {
-                if (r1.getLocation().getX() - r1.getRadiusXN() > r2.getLocation().getX() - r2.getRadiusXN()) {
-                    return 1;
-                } else if (r1.getLocation().getX() - r1.getRadiusXN() < r2.getLocation().getX() - r2.getRadiusXN()) {
-                    return -1;
-                }
-                return 0;
+        regions.get(worldName).sort((r1, r2) -> {
+            if (r1.getLocation().getX() - r1.getRadiusXN() > r2.getLocation().getX() - r2.getRadiusXN()) {
+                return 1;
+            } else if (r1.getLocation().getX() - r1.getRadiusXN() < r2.getLocation().getX() - r2.getRadiusXN()) {
+                return -1;
             }
+            return 0;
         });
     }
 

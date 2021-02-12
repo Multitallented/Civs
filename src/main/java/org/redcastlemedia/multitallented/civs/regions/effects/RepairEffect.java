@@ -131,7 +131,7 @@ public class RepairEffect implements Listener {
             case IRON_SHOVEL:
             case DIAMOND_SHOVEL:
             case NETHERITE_SHOVEL:
-                amt = (int) Math.ceil(damage / mat.getMaxDurability() * 1.0D);
+                amt = (int) Math.ceil(damage / mat.getMaxDurability());
                 return Math.max(amt, 1);
             case WOODEN_HOE:
             case WOODEN_SWORD:

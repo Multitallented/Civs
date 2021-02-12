@@ -1,8 +1,6 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -34,7 +32,6 @@ import org.redcastlemedia.multitallented.civs.spells.effects.ManaEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.ActionBarUtil;
-import org.redcastlemedia.multitallented.civs.util.PermissionUtil;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -393,14 +390,11 @@ public class Civilian {
         if (bounties.size() < 2) {
             return;
         }
-        Collections.sort(bounties, new Comparator<Bounty>() {
-            @Override
-            public int compare(Bounty o1, Bounty o2) {
-                if (o1.getAmount() == o2.getAmount()) {
-                    return 0;
-                }
-                return o1.getAmount() > o2.getAmount() ? 1 : -1;
+        bounties.sort((o1, o2) -> {
+            if (o1.getAmount() == o2.getAmount()) {
+                return 0;
             }
+            return o1.getAmount() > o2.getAmount() ? 1 : -1;
         });
     }
 

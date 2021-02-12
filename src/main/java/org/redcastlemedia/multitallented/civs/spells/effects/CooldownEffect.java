@@ -10,7 +10,6 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.spells.Spell;
 import org.redcastlemedia.multitallented.civs.spells.SpellConstants;
@@ -150,7 +149,7 @@ public class CooldownEffect extends Effect {
             return returnMap;
         }
         Object rawDuration = state.getSpell().getAbilityVariables().get(SpellEffectConstants.COOLDOWN);
-        if (rawDuration == null || !(rawDuration instanceof Long)) {
+        if (!(rawDuration instanceof Long)) {
             if (!this.silent) {
                 player.sendMessage(ChatColor.RED + Civs.getPrefix() + " " + getSpell().getType() +
                         " has an indefinite cooldown");

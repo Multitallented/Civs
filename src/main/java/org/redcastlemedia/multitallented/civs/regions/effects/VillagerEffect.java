@@ -16,9 +16,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -29,13 +27,9 @@ import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.function.Predicate;
 
 @CivsSingleton
 public class VillagerEffect implements CreateRegionListener, DestroyRegionListener, Listener, RegionCreatedListener {
@@ -74,7 +68,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         if (villagerCountString != null && !villagerCountString.isEmpty()) {
             try {
                 villagerCount = Integer.parseInt(villagerCountString);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
         }
@@ -117,7 +111,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         if (villagerCountString != null && !villagerCountString.isEmpty()) {
             try {
                 villagerCount = Integer.parseInt(villagerCountString);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
         }
@@ -134,7 +128,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
             return null;
         }
         // Don't spawn a villager if there aren't players in the town
-        if (!CommonScheduler.getLastTown().values().contains(town)) {
+        if (!CommonScheduler.getLastTown().containsValue(town)) {
             return null;
         }
         long cooldownTime = ConfigManager.getInstance().getVillagerCooldown() * 1000;
@@ -155,7 +149,7 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
         if (villagerCountString != null && !villagerCountString.isEmpty()) {
             try {
                 regionVillagerCount = Integer.parseInt(villagerCountString);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
         }
@@ -163,21 +157,11 @@ public class VillagerEffect implements CreateRegionListener, DestroyRegionListen
                 Math.max(region.getRadiusXN(), region.getRadiusXP()),
                 Math.max(region.getRadiusYN(), region.getRadiusYP()),
                 Math.max(region.getRadiusZN(), region.getRadiusZP()),
-                new Predicate<Entity>() {
-                    @Override
-                    public boolean test(Entity entity) {
-                        return entity instanceof Villager;
-                    }
-                }).size() >= regionVillagerCount) {
+                entity -> entity instanceof Villager).size() >= regionVillagerCount) {
             return null;
         }
         villagerCount = town.getLocation().getWorld().getNearbyEntities(town.getLocation(), radius, radiusY, radius,
-                new Predicate<Entity>() {
-                    @Override
-                    public boolean test(Entity entity) {
-                        return entity instanceof Villager;
-                    }
-                }).size();
+                entity -> entity instanceof Villager).size();
 
         townCooldowns.put(town.getName(), System.currentTimeMillis());
         if (town.getVillagers() <= villagerCount) {

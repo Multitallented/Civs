@@ -77,7 +77,7 @@ public class InviteTownCommand extends CivCommand {
             Util.sendMessageToPlayerOrConsole(commandSender, "player-not-online{" + playerName, playerName + " isn't online");
             return true;
         }
-        if (town.getRawPeople().keySet().contains(invitee.getUniqueId()) &&
+        if (town.getRawPeople().containsKey(invitee.getUniqueId()) &&
                 !town.getRawPeople().get(invitee.getUniqueId()).contains("ally")) {
             Util.sendMessageToPlayerOrConsole(commandSender, "already-member{" + invitee.getDisplayName() + ",," + townName,
                     invitee.getDisplayName() + " is already a member of " + townName);

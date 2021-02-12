@@ -1,6 +1,5 @@
 package org.redcastlemedia.multitallented.civs.spells.civstate;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;

@@ -193,14 +193,19 @@ public class ItemManager {
                     String type = typeConfig.getString("type","region");
                     CivItem civItem = null;
                     String itemName = file.getName().replace(".yml", "").toLowerCase();
-                    if (type.equals("region")) {
-                        civItem = loadRegionType(typeConfig, itemName);
-                    } else if (type.equals("spell")) {
-                        civItem = loadSpellType(typeConfig, itemName);
-                    } else if (type.equals("class")) {
-                        civItem = loadClassType(typeConfig, itemName);
-                    } else if (type.equals("town")) {
-                        civItem = loadTownType(typeConfig, itemName);
+                    switch (type) {
+                        case "region":
+                            civItem = loadRegionType(typeConfig, itemName);
+                            break;
+                        case "spell":
+                            civItem = loadSpellType(typeConfig, itemName);
+                            break;
+                        case "class":
+                            civItem = loadClassType(typeConfig, itemName);
+                            break;
+                        case "town":
+                            civItem = loadTownType(typeConfig, itemName);
+                            break;
                     }
                     if (civItem != null && parentList != null) {
                         parentList.add(civItem);
@@ -212,7 +217,6 @@ public class ItemManager {
             }
         } catch (NullPointerException npe) {
             Civs.logger.warning("No region types found in " + file.getName());
-            return;
         }
     }
     public CivItem loadClassType(FileConfiguration config, String name) {
@@ -687,45 +691,50 @@ public class ItemManager {
                 }
                 String[] reqParams = splitReq[1].split("=");
                 //shack:built=1
-                if (reqParams[0].equals("built")) {
-                    if (checkBuildRequirement(civilian, unmetRequirements, player, splitReq, reqParams, stopOnFirst)) {
-                        continue outer;
-                    }
-                    //bash:level=4
-                } else if (reqParams[0].equals("level")) {
-                    CivItem reqItem = itemManager.getItemType(splitReq[0]);
-                    if (reqItem == null) {
-                        continue;
-                    }
-                    if (checkItemLevelRequirement(civilian, unmetRequirements, player, reqParams, reqItem, stopOnFirst)) {
-                        continue outer;
-                    }
-                    //house:has=2
-                } else if (reqParams[0].equals("has")) {
-                    if (civilian.getCountStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1]) ||
-                            civilian.getCountNonStashItems(splitReq[0]) > Integer.parseInt(reqParams[1])) {
-                        continue outer;
-                    } else {
-                        if (stopOnFirst) {
-                            unmetRequirements.add("has");
-                        } else {
-                            CivItem civItem1 = getItemType(splitReq[0]);
-                            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
-                                    "req-item").replace("$1", civItem1.getDisplayName(player)));
+                switch (reqParams[0]) {
+                    case "built":
+                        if (checkBuildRequirement(civilian, unmetRequirements, player, splitReq, reqParams, stopOnFirst)) {
+                            continue outer;
                         }
-                    }
-                    //hamlet:population=15
-                } else if (reqParams[0].equals("population")) {
-                    if (checkSpecificTownPopulationRequirement(civilian, unmetRequirements, player, splitReq[0], reqParams[1], stopOnFirst)) {
-                        continue outer;
-                    }
+                        //bash:level=4
+                        break;
+                    case "level":
+                        CivItem reqItem = itemManager.getItemType(splitReq[0]);
+                        if (reqItem == null) {
+                            continue;
+                        }
+                        if (checkItemLevelRequirement(civilian, unmetRequirements, player, reqParams, reqItem, stopOnFirst)) {
+                            continue outer;
+                        }
+                        //house:has=2
+                        break;
+                    case "has":
+                        if (civilian.getCountStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1]) ||
+                                civilian.getCountNonStashItems(splitReq[0]) > Integer.parseInt(reqParams[1])) {
+                            continue outer;
+                        } else {
+                            if (stopOnFirst) {
+                                unmetRequirements.add("has");
+                            } else {
+                                CivItem civItem1 = getItemType(splitReq[0]);
+                                unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
+                                        "req-item").replace("$1", civItem1.getDisplayName(player)));
+                            }
+                        }
+                        //hamlet:population=15
+                        break;
+                    case "population":
+                        if (checkSpecificTownPopulationRequirement(civilian, unmetRequirements, player, splitReq[0], reqParams[1], stopOnFirst)) {
+                            continue outer;
+                        }
+                        break;
                 }
             }
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(ChatColor.RED);
             stringBuilder.append("- ");
-            for (int i = 0; i < unmetRequirements.size(); i++) {
-                stringBuilder.append(unmetRequirements.get(i));
+            for (String unmetRequirement : unmetRequirements) {
+                stringBuilder.append(unmetRequirement);
             }
             allUnmetRequirements.add(stringBuilder.toString());
         }

@@ -116,7 +116,7 @@ public class AntiCampEffect implements Listener {
 
         //if the person hasn't died yet then add to lastDeath
         if (!lastDeath.containsKey(player.getUniqueId())) {
-            lastDeath.put(player.getUniqueId(), new ArrayList<Long>());
+            lastDeath.put(player.getUniqueId(), new ArrayList<>());
             lastDeath.get(player.getUniqueId()).add(System.currentTimeMillis());
         } else {
             lastDeath.get(player.getUniqueId()).add(System.currentTimeMillis());

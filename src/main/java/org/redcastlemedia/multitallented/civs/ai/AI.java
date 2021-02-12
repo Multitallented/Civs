@@ -113,34 +113,21 @@ public class AI {
 
         String[] args = new String[1];
         args[0] = player.getDisplayName();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                broadcastToAllPlayers("ai-invite", args, getDisplayName());
-            }
-        }, 100);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                Civilian inviteCiv = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> broadcastToAllPlayers("ai-invite", args, getDisplayName()), 100);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> {
+            Civilian inviteCiv = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
-                if (TownManager.getInstance().addInvite(player.getUniqueId(), town)) {
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                            "invite-player").replace("$1", getDisplayName() + ChatColor.GREEN)
-                            .replace("$2", town.getType())
-                            .replace("$3", townName));
-                }
+            if (TownManager.getInstance().addInvite(player.getUniqueId(), town)) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        "invite-player").replace("$1", getDisplayName() + ChatColor.GREEN)
+                        .replace("$2", town.getType())
+                        .replace("$3", townName));
             }
         }, 120);
 
         String[] args2 = new String[1];
         args2[0] = Bukkit.getPlayer(uuid).getDisplayName();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                broadcastToAllPlayers("ai-help", args2, getDisplayName());
-            }
-        }, 130);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> broadcastToAllPlayers("ai-help", args2, getDisplayName()), 130);
 
         return true;
     }

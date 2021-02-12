@@ -1,6 +1,5 @@
 package org.redcastlemedia.multitallented.civs;
 
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -38,7 +37,7 @@ public class ItemStackImpl extends ItemStack {
 
     /** @deprecated */
     public ItemStackImpl(Material type, int amount, short damage) {
-        this(type, amount, damage, (Byte)null);
+        this(type, amount, damage, null);
     }
 
     /** @deprecated */
@@ -186,7 +185,7 @@ public class ItemStackImpl extends ItemStack {
     }
 
     public boolean containsEnchantment(Enchantment ench) {
-        return this.meta == null ? false : this.meta.hasEnchant(ench);
+        return this.meta != null && this.meta.hasEnchant(ench);
     }
 
     public int getEnchantmentLevel(Enchantment ench) {
@@ -194,16 +193,14 @@ public class ItemStackImpl extends ItemStack {
     }
 
     public Map<Enchantment, Integer> getEnchantments() {
-        return (Map)(this.meta == null ? ImmutableMap.of() : this.meta.getEnchants());
+        return this.meta == null ? ImmutableMap.of() : this.meta.getEnchants();
     }
 
     public void addEnchantments(Map<Enchantment, Integer> enchantments) {
         Validate.notNull(enchantments, "Enchantments cannot be null");
-        Iterator var3 = enchantments.entrySet().iterator();
 
-        while(var3.hasNext()) {
-            Entry<Enchantment, Integer> entry = (Entry)var3.next();
-            this.addEnchantment((Enchantment)entry.getKey(), (Integer)entry.getValue());
+        for (Entry<Enchantment, Integer> enchantmentIntegerEntry : enchantments.entrySet()) {
+            this.addEnchantment(enchantmentIntegerEntry.getKey(), enchantmentIntegerEntry.getValue());
         }
 
     }
@@ -222,11 +219,9 @@ public class ItemStackImpl extends ItemStack {
     }
 
     public void addUnsafeEnchantments(Map<Enchantment, Integer> enchantments) {
-        Iterator var3 = enchantments.entrySet().iterator();
 
-        while(var3.hasNext()) {
-            Entry<Enchantment, Integer> entry = (Entry)var3.next();
-            this.addUnsafeEnchantment((Enchantment)entry.getKey(), (Integer)entry.getValue());
+        for (Entry<Enchantment, Integer> enchantmentIntegerEntry : enchantments.entrySet()) {
+            this.addUnsafeEnchantment(enchantmentIntegerEntry.getKey(), enchantmentIntegerEntry.getValue());
         }
 
     }
@@ -239,14 +234,12 @@ public class ItemStackImpl extends ItemStack {
         int level = this.getEnchantmentLevel(ench);
         if (level != 0 && this.meta != null) {
             this.meta.removeEnchant(ench);
-            return level;
-        } else {
-            return level;
         }
+        return level;
     }
 
     public Map<String, Object> serialize() {
-        Map<String, Object> result = new LinkedHashMap();
+        Map<String, Object> result = new LinkedHashMap<>();
         result.put("v", Bukkit.getUnsafe().getDataVersion());
         result.put("type", this.getType().name());
         if (this.getAmount() != 1) {
@@ -254,7 +247,7 @@ public class ItemStackImpl extends ItemStack {
         }
 
         ItemMeta meta = this.getItemMeta();
-        if (!Bukkit.getItemFactory().equals(meta, (ItemMeta)null)) {
+        if (!Bukkit.getItemFactory().equals(meta, null)) {
             result.put("meta", meta);
         }
 
@@ -271,7 +264,7 @@ public class ItemStackImpl extends ItemStack {
 
         Material type;
         if (version < 0) {
-            type = Material.getMaterial("LEGACY_" + (String)args.get("type"));
+            type = Material.getMaterial("LEGACY_" + args.get("type"));
             byte dataVal = type.getMaxDurability() == 0 ? (byte)damage : 0;
             type = Bukkit.getUnsafe().fromLegacy(new MaterialData(type, dataVal), true);
             if (dataVal != 0) {
@@ -290,14 +283,12 @@ public class ItemStackImpl extends ItemStack {
         if (args.containsKey("enchantments")) {
             raw = args.get("enchantments");
             if (raw instanceof Map) {
-                Map<?, ?> map = (Map)raw;
-                Iterator var9 = map.entrySet().iterator();
+                Map<?, ?> map = (Map<?, ?>) raw;
 
-                while(var9.hasNext()) {
-                    Entry<?, ?> entry = (Entry)var9.next();
-                    Enchantment enchantment = Enchantment.getByName(entry.getKey().toString());
-                    if (enchantment != null && entry.getValue() instanceof Integer) {
-                        result.addUnsafeEnchantment(enchantment, (Integer)entry.getValue());
+                for (Entry<?, ?> value : map.entrySet()) {
+                    Enchantment enchantment = Enchantment.getByName(value.getKey().toString());
+                    if (enchantment != null && value.getValue() instanceof Integer) {
+                        result.addUnsafeEnchantment(enchantment, (Integer) value.getValue());
                     }
                 }
             }

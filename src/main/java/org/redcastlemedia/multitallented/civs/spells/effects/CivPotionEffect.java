@@ -93,13 +93,10 @@ public class CivPotionEffect extends Effect {
 
         final Civilian champion = champion1;
         final String stateName = getSpell().getType() + "." + super.getKey();
-        int durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                CivState cState = champion.getStates().get(stateName);
-                if (cState != null) {
-                    cState.remove(livingEntity);
-                }
+        int durationId = Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> {
+            CivState cState = champion.getStates().get(stateName);
+            if (cState != null) {
+                cState.remove(livingEntity);
             }
         }, this.ticks);
 

@@ -1,6 +1,5 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -25,7 +24,6 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -33,7 +31,6 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
 @CivsSingleton
@@ -155,27 +152,18 @@ public class SiegeEffect implements Listener, CreateRegionListener {
         l.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc, 2);
         l.getWorld().playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
 
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                loc1.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc1, 2);
-                loc1.getWorld().playSound(loc1, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
-            }
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> {
+            loc1.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc1, 2);
+            loc1.getWorld().playSound(loc1, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
         }, 5L);
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                loc2.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc2, 2);
-                loc2.getWorld().playSound(loc2, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
-            }
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> {
+            loc2.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc2, 2);
+            loc2.getWorld().playSound(loc2, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
         }, 10L);
 
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                loc3.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc3, 2);
-                loc3.getWorld().playSound(loc3, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
-            }
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> {
+            loc3.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc3, 2);
+            loc3.getWorld().playSound(loc3, Sound.ENTITY_GENERIC_EXPLODE, 2, 1);
         }, 15L);
 
         reducePowerAndExchangeKarma(region, damage, town);

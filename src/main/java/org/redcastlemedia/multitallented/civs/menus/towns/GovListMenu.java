@@ -51,13 +51,10 @@ public class GovListMenu extends CustomMenu {
                     govList.remove(currentGovName);
                 }
             }
-            govList.sort(new Comparator<String>() {
-                @Override
-                public int compare(String o1, String o2) {
-                    int power1 = govPower.getOrDefault(o1.toLowerCase(), 0);
-                    int power2 = govPower.getOrDefault(o2.toLowerCase(), 0);
-                    return Integer.compare(power2, power1);
-                }
+            govList.sort((o1, o2) -> {
+                int power1 = govPower.getOrDefault(o1.toLowerCase(), 0);
+                int power2 = govPower.getOrDefault(o2.toLowerCase(), 0);
+                return Integer.compare(power2, power1);
             });
             data.put("townsByGov", townsByGov);
             data.put("govPower", govPower);
@@ -102,12 +99,12 @@ public class GovListMenu extends CustomMenu {
             }
             ItemStack itemStack = cvItem.createItemStack();
             if (isLeaderboard) {
-                String townList = "";
+                StringBuilder townList = new StringBuilder();
                 HashMap<String, Set<Town>> townsByGov = (HashMap<String, Set<Town>>) MenuManager.getData(civilian.getUuid(), "townsByGov");
                 for (Town currentTown : townsByGov.get(govName.toLowerCase())) {
-                    townList += currentTown.getName() + ",";
+                    townList.append(currentTown.getName()).append(",");
                 }
-                townList = townList.substring(0, townList.length() - 1);
+                townList = new StringBuilder(townList.substring(0, townList.length() - 1));
                 ArrayList<String> theseActions = new ArrayList<>();
                 theseActions.add("menu:select-town?townList=" + townList);
                 putActionList(civilian, itemStack, theseActions);

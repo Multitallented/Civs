@@ -291,8 +291,8 @@ public class Region {
         int zMax = (int) location.getZ() + radiusZP;
         int zMin = (int) location.getZ() - radiusZN;
 
-        yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
-        yMin = yMin < 0 ? 0 : yMin;
+        yMax = Math.min(yMax, currentWorld.getMaxHeight());
+        yMin = Math.max(yMin, 0);
 
         HashMap<Material, Integer> maxCheck = new HashMap<>();
         for (HashMap<Material, Integer> tempMap : itemCheck) {
@@ -300,7 +300,7 @@ public class Region {
                 if (maxCheck.containsKey(mat)) {
                     maxCheck.put(mat, maxCheck.get(mat) + tempMap.get(mat));
                 } else {
-                    maxCheck.put(mat, tempMap.get(mat).intValue());
+                    maxCheck.put(mat, tempMap.get(mat));
                 }
             }
         }
@@ -358,7 +358,7 @@ public class Region {
                 if (maxCheck.containsKey(mat)) {
                     maxCheck.put(mat, maxCheck.get(mat) + tempMap.get(mat));
                 } else {
-                    maxCheck.put(mat, tempMap.get(mat).intValue());
+                    maxCheck.put(mat, tempMap.get(mat));
                 }
             }
         }

@@ -19,7 +19,6 @@ effects:
 - door_use
 - block_liquid
 period: 30
-group: shop
 upkeep:
   0:
     input: g:log*4,COAL.0*1,COAL.1*2

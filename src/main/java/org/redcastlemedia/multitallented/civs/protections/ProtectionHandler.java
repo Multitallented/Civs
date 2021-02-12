@@ -123,9 +123,7 @@ public class ProtectionHandler implements Listener {
             DebugLogger.chunkLoads++;
         }
 //        System.out.println("chunk loaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
-        Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> {
-            UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk());
-        }, 1L);
+        Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk()), 1L);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -178,7 +176,6 @@ public class ProtectionHandler implements Listener {
                 event.setCancelled(true);
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         "cant-nether-portal"));
-                return;
             }
         }
     }
@@ -659,12 +656,7 @@ public class ProtectionHandler implements Listener {
         }
 
         final Location location = event.getLocation();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                checkRegionBlocks(location);
-            }
-        }, 1L);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> checkRegionBlocks(location), 1L);
     }
 
     protected void checkRegionBlocks(Location location) {

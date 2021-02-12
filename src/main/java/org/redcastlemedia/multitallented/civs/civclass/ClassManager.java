@@ -23,12 +23,10 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.spells.SpellManager;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.spells.SpellUtil;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
-import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsSingleton
 public class ClassManager {
@@ -36,7 +34,7 @@ public class ClassManager {
     private static Map<UUID, Set<CivClass>> classes = new HashMap<>();
 
     public ClassManager() {
-        this.classManager = this;
+        classManager = this;
         loadClasses();
     }
 
@@ -88,7 +86,6 @@ public class ClassManager {
                 } catch (Exception ex) {
                     Civs.logger.severe("Unable to load " + file.getName());
                     ex.printStackTrace();
-                    continue;
                 }
             }
         } catch (Exception e) {
@@ -145,7 +142,6 @@ public class ClassManager {
             config.save(classFile);
         } catch (Exception e) {
             Civs.logger.severe("Unable to save class file " + civClass.getId() + ".yml");
-            return;
         }
     }
     public int getNextId() {

@@ -256,9 +256,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         }
 
         if (!isValidTeleportTarget(targetLoc, false)) {
-            if (raidLocations.containsKey(r)) {
-                raidLocations.remove(r);
-            }
+            raidLocations.remove(r);
             l.getBlock().getRelative(BlockFace.UP).breakNaturally();
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "raid-target-blocked"));
@@ -304,8 +302,8 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         int yMin = (int) location.getY() - region.getRadiusYN();
         int zMax = (int) location.getZ() + 1 + region.getRadiusZP();
         int zMin = (int) location.getZ() - region.getRadiusZN();
-        yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
-        yMin = yMin < 0 ? 0 : yMin;
+        yMax = Math.min(yMax, currentWorld.getMaxHeight());
+        yMin = Math.max(yMin, 0);
 
         //Top
         top: {

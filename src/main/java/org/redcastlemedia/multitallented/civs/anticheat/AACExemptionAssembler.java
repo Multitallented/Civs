@@ -13,13 +13,11 @@ public final class AACExemptionAssembler {
         Set<HackType> hackTypes = new HashSet<>();
         switch (exemptionType) {
             case FLY:
+            case JESUS:
                 hackTypes.add(HackType.MOVE);
                 break;
             case FALL:
                 hackTypes.add(HackType.NOFALL);
-                break;
-            case JESUS:
-                hackTypes.add(HackType.MOVE);
                 break;
             case KILL_AURA:
                 hackTypes.add(HackType.CRITICALS);

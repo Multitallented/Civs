@@ -425,7 +425,7 @@ public class TownTests extends TestUtil {
         args[1] = "test";
         try {
             townCommand.runCommand(TestUtil.player, null, "town", args);
-        } catch (Exception exception) {
+        } catch (Exception ignored) {
 
         }
         assertEquals(550, TownManager.getInstance().getTown("test").getMaxPower());
