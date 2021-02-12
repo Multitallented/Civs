@@ -46,8 +46,8 @@ public class AllianceListMenu extends CustomMenu {
     protected ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         if (menuIcon.getKey().equals("alliances")) {
             ArrayList<Alliance> alliances = AllianceManager.getInstance().getAllSortedAlliances();
-            int page = (int) MenuManager.getData(civilian.getUuid(), "page");
-            int startIndex = page * menuIcon.getIndex().size();
+            Integer page = (Integer) MenuManager.getData(civilian.getUuid(), "page");
+            int startIndex = (page != null ? page : 0) * menuIcon.getIndex().size();
             Alliance[] allianceArray = new Alliance[alliances.size()];
             allianceArray = alliances.toArray(allianceArray);
             if (allianceArray.length <= startIndex + count) {
