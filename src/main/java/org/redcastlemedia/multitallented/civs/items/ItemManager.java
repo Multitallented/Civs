@@ -624,11 +624,11 @@ public class ItemManager {
                             "or") + " " + ChatColor.RED);
                 }
                 if (req.startsWith("tutorial=")) {
-                    if (civilian.getCompletedTutorialSteps().contains(req)) {
+                    if (!civilian.getCompletedTutorialSteps().contains(req.replace("tutorial=", ""))) {
                         if (stopOnFirst) {
                             unmetRequirements.add("tutorial");
                         } else {
-                            String[] reqParts = req.replace("tutorial=", "").split(":");
+                            String[] reqParts = req.replace("tutorial=", "").split("\\^");
                             String path = reqParts[0];
                             String type = reqParts[1];
                             String key = reqParts[2];
@@ -648,6 +648,9 @@ public class ItemManager {
                                         .getTutorialMessage(civilian, path, index, false));
                             }
                         }
+                        continue outer;
+                    } else {
+                        continue;
                     }
                     //perm=civs.admin
                 } else if (req.startsWith("perm=")) {

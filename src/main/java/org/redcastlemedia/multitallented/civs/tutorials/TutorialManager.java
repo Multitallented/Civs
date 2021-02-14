@@ -136,7 +136,7 @@ public class TutorialManager {
         }
 
         if ((type.equals(TutorialType.BUILD) || type.equals(TutorialType.UPKEEP) ||
-                type.equals(TutorialType.BUY)) &&
+                type.equals(TutorialType.BUY) || type.equals(TutorialType.MENU_ACTION)) &&
                 !param.equalsIgnoreCase(step.getRegion())) {
             return;
         }
@@ -189,10 +189,10 @@ public class TutorialManager {
             key = null;
             if (path.getSteps().size() > nextIndex) {
                 TutorialStep nextStep = path.getSteps().get(nextIndex);
-                TutorialType tutorialType = TutorialType.valueOf(nextStep.getType());
+                TutorialType tutorialType = TutorialType.valueOf(nextStep.getType().toUpperCase());
                 key = getKey(civilian.getTutorialPath(), tutorialType, nextStep);
             }
-        } while (key != null && !civilian.getCompletedTutorialSteps().contains(key));
+        } while (key != null && civilian.getCompletedTutorialSteps().contains(key));
         civilian.setTutorialIndex(nextIndex);
         CivilianManager.getInstance().saveCivilian(civilian);
 
@@ -372,6 +372,7 @@ public class TutorialManager {
         BUILD,
         UPKEEP,
         KILL,
-        BUY
+        BUY,
+        MENU_ACTION
     }
 }

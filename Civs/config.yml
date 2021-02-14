@@ -122,7 +122,7 @@ money:
   killjoy: 10
   kill: 100
   karma: 0.2
-hardship-per-kill: 500
+hardship-per-kill: 0
 karma-per-kill: 50
 karma-per-kill-streak: 5
 ##How often should karma be cut by 50%? Adds 50% to negative karma. Subtracts 50% from positive karma.
@@ -138,11 +138,20 @@ power-per-npc-kill: 5
 
 folders:
   farms: STONE_HOE
-  towns: GLOWSTONE
+  towns:
+    icon: GLOWSTONE
+    pre-reqs:
+      - population=1|built=command_tent|built=council_room|built=town_hall|built=city_hall|built=capitol
   shops: EMERALD
   utilities: REDSTONE
-  housing: RED_BED
-  defense: ARROW
+  housing:
+    icon: RED_BED
+    pre-reqs:
+      - member=settlement:hamlet:village:town:city:metropolis
+  defense:
+    icon: ARROW
+    pre-reqs:
+      - population=1
   quarries: STONE_SHOVEL
   factories: PISTON
   offense: TNT
@@ -151,7 +160,10 @@ folders:
   hyphaeworks: CRIMSON_STEM
   animals: SHEEP_SPAWN_EGG
   npchousing: VILLAGER_SPAWN_EGG
-  trading: EMERALD_ORE
+  trading:
+    icon: EMERALD_ORE
+    pre-reqs:
+      - member=hamlet:village:town:city:metropolis
 
 levels:
   - DIRT
