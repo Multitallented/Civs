@@ -293,7 +293,7 @@ public class CivilianManager {
                 }
                 civConfig.set("items." + civItem.getProcessedName(), civItem.getQty());
             }
-            List<Integer> classes = new ArrayList<>();
+            List<UUID> classes = new ArrayList<>();
             for (CivClass civClass : civilian.getCivClasses()) {
                 if (civClass == null) {
                     continue;

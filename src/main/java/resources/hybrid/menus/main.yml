@@ -93,6 +93,8 @@ items:
     actions:
       - menu:gov-list?leaderboard=true
   nation-list:
+    pre-reqs:
+      - tutorial=default^build^coal_shop^0
     index: 16
     icon: GREEN_BANNER
     name: nations
@@ -115,6 +117,8 @@ items:
     actions:
       - menu:region?region=$region$
   nation:
+    pre-reqs:
+      - tutorial=default^build^coal_shop^0
     index: 20
     # name: nation name
     # icon: nation icon
@@ -122,6 +126,8 @@ items:
     actions:
       - menu:nation?nation=$nation$
   claim-map:
+    pre-reqs:
+      - tutorial=default^build^coal_shop^0
     index: 21
     name: claims
     icon: COMPASS

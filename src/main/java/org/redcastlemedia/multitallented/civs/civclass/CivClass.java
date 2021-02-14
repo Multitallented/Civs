@@ -23,7 +23,7 @@ public class CivClass {
     @Getter
     private final UUID uuid;
     @Getter
-    private final int id;
+    private final UUID id;
     @Setter
     private int manaPerSecond;
     @Setter
@@ -37,7 +37,7 @@ public class CivClass {
     @Getter
     private Map<Integer, Integer> spellSlotOrder = new HashMap<>();
 
-    public CivClass(int id, UUID uuid, String type) {
+    public CivClass(UUID id, UUID uuid, String type) {
         this.id = id;
         this.uuid = uuid;
         this.type = type;

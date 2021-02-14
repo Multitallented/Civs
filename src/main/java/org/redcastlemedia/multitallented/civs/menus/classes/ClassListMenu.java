@@ -83,11 +83,12 @@ public class ClassListMenu extends CustomMenu {
 
             CivClass civClass = ((HashMap<ItemStack, CivClass>) MenuManager.getData(civilian.getUuid(), "classMap"))
                     .get(itemStack);
-            if (civClass.getId() != civilian.getCurrentClass().getId()) {
-                ClassManager.getInstance().switchClass(civilian, civClass);
-                MenuManager.getAllData(civilian.getUuid()).put(Constants.CLASS, civClass);
-                return true;
+            if (civClass == null) {
+                civClass = civilian.getCurrentClass();
             }
+            ClassManager.getInstance().switchClass(civilian, civClass);
+            MenuManager.getAllData(civilian.getUuid()).put(Constants.CLASS, civClass);
+            return true;
         }
         return super.doActionAndCancel(civilian, actionString, itemStack);
     }
