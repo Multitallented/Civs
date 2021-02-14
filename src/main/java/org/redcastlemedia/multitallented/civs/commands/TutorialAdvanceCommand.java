@@ -55,7 +55,7 @@ public class TutorialAdvanceCommand extends CivCommand {
 
         String param = null;
         if (step.getType().equals("build") || step.getType().equals("upkeep") ||
-                step.getType().equals("buy")) {
+                step.getType().equals("buy") || step.getType().equals("menu_action")) {
             param = step.getRegion();
         } else if (step.getType().equals("kill")) {
             param = step.getKillType();

@@ -30,9 +30,9 @@ components:
           components:
             2:
               variables:
-                arrowcount: "$arrowcount^1#var$ + 1"
+                arrowcount^1: "$arrowcount^1#var$ + 1"
               yield:
                 sound: ENTITY_ARROW_SHOOT
                 projectile:
-                  speed: "$arrowcount^1#var$ * 0.05 + 0.5"
-                  spread: "$arrowcount^1#var$ * 2 + 16"
+                  speed: "$arrowcount^1#var$ * 0.75 + 2"
+                  spread: "$arrowcount^1#var$ * 5 + 20"

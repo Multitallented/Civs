@@ -60,15 +60,15 @@ public class ClaimMenu extends CustomMenu {
                 cvItem.getLore().addAll(Util.textWrap(civilian,
                         LocaleManager.getInstance().getTranslation(player,
                                 menuIcon.getDesc())));
+                ItemStack itemStack = cvItem.createItemStack();
+                putActions(civilian, menuIcon, itemStack, count);
+                return itemStack;
             } else {
                 cvItem = menuIcon.createCVItem(player, count);
                 cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,
                         "claim-no-nation"));
+                return cvItem.createItemStack();
             }
-
-            ItemStack itemStack = cvItem.createItemStack();
-            putActions(civilian, menuIcon, itemStack, count);
-            return itemStack;
         } else if ("timer-ok".equals(menuIcon.getKey())) {
             if (claim.getLastEnter() > -1) {
                 return new ItemStack(Material.AIR);

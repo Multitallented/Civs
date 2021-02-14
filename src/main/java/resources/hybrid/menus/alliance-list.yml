@@ -3,6 +3,11 @@ size: 36
 items:
   prev:
     index: 3
+  alliancelisticon:
+    index: 4
+    name: alliances
+    icon: GOLDEN_SWORD
+    actions: []
   next:
     index: 5
   back:

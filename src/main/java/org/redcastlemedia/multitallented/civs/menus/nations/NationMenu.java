@@ -51,6 +51,9 @@ public class NationMenu extends CustomMenu {
             data.put("page", 0);
         }
         Nation nation = NationManager.getInstance().getNation(params.get(Constants.NATION));
+        if (nation == null) {
+            return data;
+        }
         data.put(Constants.NATION, nation);
         if (nation.getLastRenamedBy() != null) {
             data.put("lastRenamed", nation.getLastRenamedBy().toString());
@@ -87,7 +90,7 @@ public class NationMenu extends CustomMenu {
         boolean isOwnerOfCapitol = false;
         if (nation.getCapitol() != null) {
             Town town = TownManager.getInstance().getTown(nation.getCapitol());
-            isOwnerOfCapitol = town.getRawPeople().containsKey(civilian.getUuid()) &&
+            isOwnerOfCapitol = town != null && town.getRawPeople().containsKey(civilian.getUuid()) &&
                     town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         }
         if (menuIcon.getActions().contains("set-capitol")) {
@@ -255,6 +258,13 @@ public class NationMenu extends CustomMenu {
     }
 
     public static void leaveNation(Player player, Nation nation, Town town) {
+        Nation lockedNation = TownManager.getInstance().checkForRegionLockedNation(town);
+        if (lockedNation != null && ! player.hasPermission(Constants.REGION_LOCKED_NATIONS_TOWN_LEAVE_BYPASS_PERMISSION)) {
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                    "left-nation-failed-region-lock").replace("$1", town.getName()).replace("$2", nation.getName()));
+            return;
+        }
+
         NationManager.getInstance().removeMemberFromNation(nation, town);
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                 "left-nation").replace("$1", town.getName())

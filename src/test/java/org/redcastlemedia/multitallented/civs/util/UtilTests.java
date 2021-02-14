@@ -99,16 +99,6 @@ public class UtilTests extends TestUtil {
     @Test
     public void addItemsShouldAddProperItems() {
         TestUtil.world.setChunkLoaded(false);
-        List<ItemStack> inventoryContents = new ArrayList<>();
-        inventoryContents.add(new ItemStack(Material.COBBLESTONE, 6));
-        inventoryContents.add(new ItemStack(Material.WOODEN_AXE));
-        inventoryContents.add(new ItemStack(Material.STONE_SWORD));
-        inventoryContents.add(null);
-        inventoryContents.add(null);
-        inventoryContents.add(null);
-        inventoryContents.add(null);
-        inventoryContents.add(null);
-        inventoryContents.add(null);
         List<CVItem> tempList = new ArrayList<>();
         tempList.add(CVItem.createCVItemFromString("GRASS"));
         List<List<CVItem>> returnList = new ArrayList<>();

@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Container;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Creeper;
@@ -117,10 +118,9 @@ public class ProtectionHandler implements Listener {
         return instance;
     }
 
-    @EventHandler
+//    @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
 //        System.out.println("chunk unloaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
-        UnloadedInventoryHandler.getInstance().updateInventoriesInChunk(event.getChunk());
     }
 
     @EventHandler
@@ -129,9 +129,6 @@ public class ProtectionHandler implements Listener {
             DebugLogger.chunkLoads++;
         }
 //        System.out.println("chunk loaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
-        Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> {
-            UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk());
-        }, 1L);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -213,9 +210,6 @@ public class ProtectionHandler implements Listener {
                     LocaleManager.getInstance().getTranslation(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         } else {
             checkMiningSkill(civilian, event.getBlock().getType());
-            if (event.getBlock().getType() == Material.CHEST) {
-                UnloadedInventoryHandler.getInstance().deleteUnloadedChestInventory(event.getBlock().getLocation());
-            }
             Region region = regionManager.getRegionAt(location);
             if (region == null) {
                 return;
@@ -772,15 +766,7 @@ public class ProtectionHandler implements Listener {
                 sendRegionProtectedMessage(player);
                 return true;
             }
-        } else if (mat == Material.CHEST ||
-                mat == Material.FURNACE ||
-                mat == Material.TRAPPED_CHEST ||
-                mat == Material.ENDER_CHEST ||
-                mat == Material.BOOKSHELF ||
-                mat == Material.SHULKER_BOX ||
-                mat == Material.COMPOSTER ||
-                mat == Material.BARREL ||
-                mat == Material.BLAST_FURNACE) {
+        } else if (clickedBlock.getState() instanceof Container) {
             boolean shouldCancel = shouldBlockAction(clickedBlock, player, RegionEffectConstants.CHEST_USE);
             if (shouldCancel) {
                 sendRegionProtectedMessage(player);
@@ -805,6 +791,8 @@ public class ProtectionHandler implements Listener {
                 mat == Material.JUNGLE_BUTTON ||
                 mat == Material.DARK_OAK_BUTTON ||
                 mat == Material.ACACIA_BUTTON ||
+                mat == Material.CRIMSON_BUTTON ||
+                mat == Material.WARPED_BUTTON ||
                 mat == Material.OAK_BUTTON) {
             boolean shouldCancel = shouldBlockAction(clickedBlock, player, RegionEffectConstants.BUTTON_USE, null);
             if (shouldCancel) {

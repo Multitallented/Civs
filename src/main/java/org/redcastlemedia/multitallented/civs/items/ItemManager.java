@@ -24,6 +24,8 @@ import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialStep;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -590,14 +592,18 @@ public class ItemManager {
         CivilianManager.getInstance().saveCivilian(civilian);
     }
 
-    public List<String> getAllUnmetRequirements(CivItem civItem, Civilian civilian, boolean fast) {
+    public List<String> getAllUnmetRequirements(CivItem civItem, Civilian civilian, boolean stopOnFirst) {
+        return getAllUnmetRequirements(civItem.getCivReqs(), civilian, stopOnFirst);
+    }
+
+    public List<String> getAllUnmetRequirements(List<String> civReqs, Civilian civilian, boolean stopOnFirst) {
         List<String> allUnmetRequirements = new ArrayList<>();
-        if (civItem.getCivReqs().isEmpty()) {
+        if (civReqs.isEmpty()) {
             return allUnmetRequirements;
         }
         Player player = Bukkit.getPlayer(civilian.getUuid());
         if (player == null) {
-            if (fast) {
+            if (stopOnFirst) {
                 allUnmetRequirements.add("invalid");
             } else {
                 allUnmetRequirements.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
@@ -606,38 +612,67 @@ public class ItemManager {
             return allUnmetRequirements;
         }
 
-        outer: for (String reqString : civItem.getCivReqs()) {
+        outer: for (String reqString : civReqs) {
             List<String> unmetRequirements = new ArrayList<>();
             for (String req : reqString.split("\\|")) {
-                if (fast && !unmetRequirements.isEmpty()) {
+                if (stopOnFirst && !unmetRequirements.isEmpty()) {
                     break outer;
                 }
-                if (!fast && unmetRequirements.size() % 2 > 0) {
+                if (!stopOnFirst && unmetRequirements.size() % 2 > 0) {
                     unmetRequirements.add(ChatColor.GOLD + " " +
                             LocaleManager.getInstance().getTranslation(player,
                             "or") + " " + ChatColor.RED);
                 }
-                //perm=civs.admin
-                if (req.startsWith("perm=")) {
-                    if (checkPermissionRequirement(unmetRequirements, player, req, fast)) {
+                if (req.startsWith("tutorial=")) {
+                    if (!civilian.getCompletedTutorialSteps().contains(req.replace("tutorial=", ""))) {
+                        if (stopOnFirst) {
+                            unmetRequirements.add("tutorial");
+                        } else {
+                            String[] reqParts = req.replace("tutorial=", "").split("\\^");
+                            String path = reqParts[0];
+                            String type = reqParts[1];
+                            String key = reqParts[2];
+                            int times = Integer.parseInt(reqParts[3]);
+                            int index = -1;
+                            for (int i = 0; i < TutorialManager.getInstance().getPathByName(path).getSteps().size(); i++) {
+                                TutorialStep step = TutorialManager.getInstance().getPathByName(path).getSteps().get(i);
+                                if ((TutorialManager.TutorialType.KILL.name().equals(type) &&
+                                        times == step.getTimes() && key.equals(step.getKillType())) ||
+                                        (times == step.getTimes() && key.equals(step.getRegion()))) {
+                                    index = i;
+                                    break;
+                                }
+                            }
+                            if (index > -1) {
+                                unmetRequirements.addAll(TutorialManager.getInstance()
+                                        .getTutorialMessage(civilian, path, index, false));
+                            }
+                        }
+                        continue outer;
+                    } else {
+                        continue;
+                    }
+                    //perm=civs.admin
+                } else if (req.startsWith("perm=")) {
+                    if (checkPermissionRequirement(unmetRequirements, player, req, stopOnFirst)) {
                         continue outer;
                     }
                     continue;
                     //member=settlement:town:...
                 } else if (req.startsWith("member=")) {
-                    if (checkMemberOfTownRequirement(civilian, unmetRequirements, player, req, fast)) {
+                    if (checkMemberOfTownRequirement(civilian, unmetRequirements, player, req, stopOnFirst)) {
                         continue outer;
                     }
                     continue;
                     //skill:crafting=20
                 } else if (req.startsWith("skill:")) {
-                    if (checkSkillRequirement(player, civilian, req, unmetRequirements, fast)) {
+                    if (checkSkillRequirement(player, civilian, req, unmetRequirements, stopOnFirst)) {
                         continue outer;
                     }
                     continue;
                     //population=15
                 } else if (req.startsWith("population=")) {
-                    if (checkPopulationRequirement(civilian, unmetRequirements, player, req, fast)) {
+                    if (checkPopulationRequirement(civilian, unmetRequirements, player, req, stopOnFirst)) {
                         continue outer;
                     }
                     continue;
@@ -645,7 +680,7 @@ public class ItemManager {
                 String[] splitReq = req.split(":");
                 //house:???
                 if (splitReq.length < 2) {
-                    if (checkOwnershipRequirement(civilian, unmetRequirements, player, splitReq, fast)) {
+                    if (checkOwnershipRequirement(civilian, unmetRequirements, player, splitReq, stopOnFirst)) {
                         continue outer;
                     }
                     continue;
@@ -653,7 +688,7 @@ public class ItemManager {
                 String[] reqParams = splitReq[1].split("=");
                 //shack:built=1
                 if (reqParams[0].equals("built")) {
-                    if (checkBuildRequirement(civilian, unmetRequirements, player, splitReq, reqParams, fast)) {
+                    if (checkBuildRequirement(civilian, unmetRequirements, player, splitReq, reqParams, stopOnFirst)) {
                         continue outer;
                     }
                     //bash:level=4
@@ -662,7 +697,7 @@ public class ItemManager {
                     if (reqItem == null) {
                         continue;
                     }
-                    if (checkItemLevelRequirement(civilian, unmetRequirements, player, reqParams, reqItem, fast)) {
+                    if (checkItemLevelRequirement(civilian, unmetRequirements, player, reqParams, reqItem, stopOnFirst)) {
                         continue outer;
                     }
                     //house:has=2
@@ -671,7 +706,7 @@ public class ItemManager {
                             civilian.getCountNonStashItems(splitReq[0]) > Integer.parseInt(reqParams[1])) {
                         continue outer;
                     } else {
-                        if (fast) {
+                        if (stopOnFirst) {
                             unmetRequirements.add("has");
                         } else {
                             CivItem civItem1 = getItemType(splitReq[0]);
@@ -681,7 +716,7 @@ public class ItemManager {
                     }
                     //hamlet:population=15
                 } else if (reqParams[0].equals("population")) {
-                    if (checkSpecificTownPopulationRequirement(civilian, unmetRequirements, player, splitReq[0], reqParams[1], fast)) {
+                    if (checkSpecificTownPopulationRequirement(civilian, unmetRequirements, player, splitReq[0], reqParams[1], stopOnFirst)) {
                         continue outer;
                     }
                 }

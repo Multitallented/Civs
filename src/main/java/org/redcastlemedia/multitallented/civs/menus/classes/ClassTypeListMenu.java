@@ -89,15 +89,21 @@ public class ClassTypeListMenu extends CustomMenu {
     @Override
     public boolean doActionAndCancel(Civilian civilian, String actionString, ItemStack itemStack) {
         if ("switch-class".equals(actionString)) {
-            ClassType classType = ((HashMap<ItemStack, ClassType>) MenuManager.getData(civilian.getUuid(), "classMap"))
-                    .get(itemStack);
-            if (!ItemManager.getInstance().hasItemUnlocked(civilian, classType)) {
-                return true;
-            }
-            ClassManager.getInstance().createNewClass(civilian, classType);
-            MenuManager.getAllData(civilian.getUuid()).put(Constants.CLASS, civilian.getCurrentClass());
+            switchToNewClass(civilian, itemStack);
             return true;
         }
         return super.doActionAndCancel(civilian, actionString, itemStack);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected void switchToNewClass(Civilian civilian, ItemStack itemStack) {
+        ClassType classType = ((HashMap<ItemStack, ClassType>) MenuManager.getData(civilian.getUuid(), "classMap"))
+                .get(itemStack);
+        if (!ItemManager.getInstance().hasItemUnlocked(civilian, classType)) {
+            MenuManager.getAllData(civilian.getUuid()).put(Constants.CLASS, civilian.getCurrentClass());
+            return;
+        }
+        ClassManager.getInstance().createNewClass(civilian, classType);
+        MenuManager.getAllData(civilian.getUuid()).put(Constants.CLASS, civilian.getCurrentClass());
     }
 }

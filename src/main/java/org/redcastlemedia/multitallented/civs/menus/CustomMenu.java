@@ -14,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.alliances.ChunkClaim;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
@@ -31,7 +32,7 @@ import org.redcastlemedia.multitallented.civs.util.PermissionUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public abstract class CustomMenu {
+public class CustomMenu {
     protected HashSet<MenuIcon> itemIndexes;
     protected HashMap<String, Integer> itemsPerPage = new HashMap<>();
     protected HashMap<UUID, HashMap<String, List<String>>> actions = new HashMap<>();
@@ -40,7 +41,13 @@ public abstract class CustomMenu {
     private String name;
     private HashMap<UUID, HashMap<String, List<String>>> rightClickActions = new HashMap<>();
 
-    public abstract Map<String, Object> createData(Civilian civilian, Map<String, String> params);
+    public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
+        Map<String, Object> data = new HashMap<>();
+        for (Map.Entry<String, String> param : params.entrySet()) {
+            data.put(param.getKey(), param.getValue());
+        }
+        return data;
+    }
 
     public String beforeOpenMenu(Civilian civilian) {
         // optional override
@@ -77,9 +84,13 @@ public abstract class CustomMenu {
                 } else {
                     duplicateCount.put(menuIcon.getKey(), 0);
                 }
-                ItemStack itemStack = createItemStack(civilian, menuIcon, duplicateCount.get(menuIcon.getKey()));
-                if (itemStack.getType() != Material.AIR) {
-                    inventory.setItem(i, itemStack);
+                if (menuIcon.getPreReqs().isEmpty() ||
+                        ItemManager.getInstance().getAllUnmetRequirements(menuIcon.getPreReqs(), civilian, true).isEmpty()) {
+
+                    ItemStack itemStack = createItemStack(civilian, menuIcon, duplicateCount.get(menuIcon.getKey()));
+                    if (itemStack.getType() != Material.AIR) {
+                        inventory.setItem(i, itemStack);
+                    }
                 }
             }
         }
@@ -117,17 +128,19 @@ public abstract class CustomMenu {
     }
     protected void putActions(Civilian civilian, MenuIcon menuIcon, ItemStack itemStack, int count) {
         List<String> currentActions = new ArrayList<>();
+        String displayName = itemStack.getItemMeta() != null ?
+                itemStack.getItemMeta().getDisplayName() : "";
         if (menuIcon.getActions().isEmpty()) {
             currentActions.add(menuIcon.getKey());
         } else {
             for (String action : menuIcon.getActions()) {
                 String newAction = action.replace("$count$", "" + count);
                 newAction = newAction.replace("$itemName$",
-                        ChatColor.stripColor(itemStack.getItemMeta().getDisplayName()));
+                        ChatColor.stripColor(displayName));
                 currentActions.add(newAction);
             }
         }
-        actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName(), currentActions);
+        actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + displayName, currentActions);
         List<String> currentRightClickActions = new ArrayList<>();
         if (menuIcon.getRightClickActions().isEmpty()) {
             currentRightClickActions.add(menuIcon.getKey());
@@ -143,12 +156,16 @@ public abstract class CustomMenu {
     }
 
     protected void putActionList(Civilian civilian, ItemStack itemStack, List<String> actionList) {
-        actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName(), actionList);
+        String displayName = itemStack.getItemMeta() != null ?
+                itemStack.getItemMeta().getDisplayName() : "";
+        actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + displayName, actionList);
     }
 
     protected List<String> getActions(Civilian civilian, ItemStack itemStack) {
+        String displayName = itemStack.getItemMeta() != null ?
+                itemStack.getItemMeta().getDisplayName() : "";
         if (actions.containsKey(civilian.getUuid())) {
-            actions.get(civilian.getUuid()).get(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName());
+            actions.get(civilian.getUuid()).get(itemStack.getType().name() + ":" + displayName);
         }
         return new ArrayList<>();
     }
@@ -211,6 +228,8 @@ public abstract class CustomMenu {
         }
         boolean shouldCancel = false;
         for (String actionString : actionStrings) {
+            TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.MENU_ACTION,
+                    actionString);
             shouldCancel = doActionAndCancel(civilian, actionString, clickedItem) || shouldCancel;
         }
         if (!event.isCancelled()) {
@@ -297,9 +316,10 @@ public abstract class CustomMenu {
     }
 
     public static String replaceVariables(Civilian civilian, ItemStack clickedItem, String actionString) {
+        String displayName = clickedItem.getItemMeta() != null ?
+                clickedItem.getItemMeta().getDisplayName() : "";
         if (clickedItem.getItemMeta() != null) {
-            actionString = actionString.replaceAll("\\$itemName\\$",
-                    clickedItem.getItemMeta().getDisplayName());
+            actionString = actionString.replaceAll("\\$itemName\\$", displayName);
         }
         return replaceVariables(civilian, actionString);
     }

@@ -19,6 +19,7 @@ softdepend:
 - WitherAC
 - MMOLib
 - Reflex
+- WorldGuard
 commands:
   cv:
     aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'towny', 'fa', 'f', 'faction']

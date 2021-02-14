@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.sk89q.worldguard.WorldGuard;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -56,6 +57,7 @@ public class Civs extends JavaPlugin {
     public static Permission perm;
     public static MMOItems mmoItems;
     public static DiscordSRV discordSRV;
+    public static WorldGuard worldGuard;
     public static PlaceholderAPIPlugin placeholderAPI;
     protected static Civs civs;
     public static Logger logger;
@@ -227,6 +229,9 @@ public class Civs extends JavaPlugin {
         if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
             discordSRV = DiscordSRV.getPlugin();
         }
+        if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
+            worldGuard = WorldGuard.getInstance();
+        }
         Bukkit.getPluginManager().registerEvents(new DynmapHook(), this);
         if (Bukkit.getPluginManager().isPluginEnabled("dynmap")) {
             DynmapHook.dynmapCommonAPI = (DynmapCommonAPI) Bukkit.getPluginManager().getPlugin("dynmap");
@@ -268,6 +273,9 @@ public class Civs extends JavaPlugin {
     }
     public static Permission getPerm() {
         return perm;
+    }
+    public static WorldGuard getWorldGuard() {
+        return worldGuard;
     }
     public static String getPrefix() {
         return ConfigManager.getInstance().getCivsChatPrefix() + " ";

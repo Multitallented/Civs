@@ -36,6 +36,7 @@ public class ConfigManager {
     String defaultClass;
     HashMap<String, Integer> groups;
     HashMap<String, CVItem> folderIcons;
+    @Getter Map<String, List<String>> folderReqs = new HashMap<>();
     HashMap<String, Integer> creatureHealth = new HashMap<>();
     boolean useStarterBook;
     long jailTime;
@@ -170,6 +171,7 @@ public class ConfigManager {
     @Getter
     boolean keepRegionChunksLoaded;
     @Getter boolean useSkills;
+    @Getter boolean huntCrossWorld;
     @Getter boolean silentExp;
     @Getter boolean connectTownsWithNationClaims;
     @Getter boolean deleteInvalidRegions;
@@ -177,6 +179,7 @@ public class ConfigManager {
     @Getter boolean skinsInMenu;
     @Getter boolean useBounties;
     @Getter boolean warningLogger;
+    @Getter Map<String, String> regionLockedNations;
 
     @Getter
     String chatChannelFormat;
@@ -303,7 +306,17 @@ public class ConfigManager {
             ConfigurationSection section2 = config.getConfigurationSection("folders");
             if (section2 != null) {
                 for (String key : section2.getKeys(false)) {
-                    folderIcons.put(key, CVItem.createCVItemFromString(config.getString("folders." + key, "CHEST")));
+                    String iconString = "CHEST";
+                    if (config.isSet("folders." + key + ".icon")) {
+                        iconString = config.getString("folders." + key + ".icon", "CHEST");
+                    } else {
+                        iconString = config.getString("folders." + key, "CHEST");
+                    }
+                    if (config.isSet("folders." + key + ".pre-reqs")) {
+                        List<String> preReqs = config.getStringList("folders." + key + ".pre-reqs");
+                        folderReqs.put(key, preReqs);
+                    }
+                    folderIcons.put(key, CVItem.createCVItemFromString(iconString));
                 }
             }
             itemGroups = new HashMap<>();
@@ -354,6 +367,7 @@ public class ConfigManager {
             portSlowWarmup = config.getBoolean("port.slow-warmup", true);
             portReagents = config.getStringList("port.reagents");
             combatTagDuration = config.getInt("combat-tag-duration", 60);
+            huntCrossWorld = config.getBoolean("allow-hunt-cross-world", false);
             portDuringCombat = config.getBoolean("port.port-during-combat", false);
             getTownRingSettings(config);
             karmaDepreciatePeriod = config.getLong("karma-depreciate-period", 43200);
@@ -412,7 +426,7 @@ public class ConfigManager {
             hardshipDepreciationPeriod = config.getInt("hardship-depreciation-period-in-days", 7);
             huntKarma = config.getDouble("hunt-karma", -250.0);
             allowHuntNewPlayers = config.getBoolean("hunt-new-players", true);
-            hardshipPerKill = config.getDouble("hardship-per-kill", 500);
+            hardshipPerKill = config.getDouble("hardship-per-kill", 0);
             useHardshipSystem = config.getBoolean("hardship-should-pay-damages", false);
             keepRegionChunksLoaded = config.getBoolean("keep-region-chunks-loaded", true);
             silentExp = config.getBoolean("no-exp-chat-messages", false);
@@ -445,6 +459,17 @@ public class ConfigManager {
                 chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, Material.GRASS.name());
             }
             chatChannelFormat = config.getString("chat-channel-format", "[$channel$]$player$: $message$");
+
+            if (config.isSet("region-locked-nations")) {
+                for (String region : config.getConfigurationSection("region-locked-nations").getKeys(false)) {
+                    try {
+                        String nation = config.getString("region-locked-nations." + region);
+                        regionLockedNations.put(region, nation);
+                    } catch (Exception e) {
+                        Civs.logger.log(Level.WARNING, "No nation specified for region {0}", region);
+                    }
+                }
+            }
 
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read from config.yml", e);
@@ -497,17 +522,18 @@ public class ConfigManager {
 
     private void loadDefaults() {
         warningLogger = false;
+        huntCrossWorld = false;
         skinsInMenu = true;
         useBounties = true;
         deleteInvalidRegions = false;
-        regionStandby = false;
         connectTownsWithNationClaims = true;
         unclaimNationChunksWithTnt = true;
+        regionStandby = false;
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         silentExp = false;
         useSkills = true;
         keepRegionChunksLoaded = true;
-        hardshipPerKill = 500;
+        hardshipPerKill = 0;
         allowHuntNewPlayers = false;
         hardshipDepreciationPeriod = 7;
         huntKarma = -250.0;
@@ -598,6 +624,7 @@ public class ConfigManager {
         levelList = new ArrayList<>();
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         allowChangingOfGovType = false;
+        regionLockedNations = new HashMap<>();
     }
 
     public static ConfigManager getInstance() {

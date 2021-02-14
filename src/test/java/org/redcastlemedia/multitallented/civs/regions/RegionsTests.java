@@ -1,10 +1,7 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,8 +20,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -37,9 +34,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Matchers;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.ItemMetaImpl;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
 import org.redcastlemedia.multitallented.civs.SuccessException;
@@ -933,7 +928,7 @@ public class RegionsTests extends TestUtil {
         cancelled[0] = false;
         when(event1.isCancelled()).thenAnswer(invocation -> cancelled[0]);
         doAnswer(invocation -> { cancelled[0] = (boolean) invocation.getArguments()[0]; return null; })
-                .when(event1).setCancelled(Matchers.anyBoolean());
+                .when(event1).setCancelled(anyBoolean());
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
         ItemStack itemStack = mock(ItemStack.class);

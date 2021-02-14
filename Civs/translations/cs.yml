@@ -1210,3 +1210,5 @@
 #  @{GREEN}Dnešní příjem: $5"
 #town-summary: "@{GREEN}Typ: $1 @{BLUE}Vlastníci: $2 @{YELLOW}Moc: $3/$4 @{GREEN}Populace:
 #  $5/$6"
+#left-nation-failed-region-lock: "$2 neumožňuje jednotlivým městům opustit svůj národ."
+#nation-not-found: "Národ $1 nenalezen"

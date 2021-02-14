@@ -136,7 +136,7 @@ public class TutorialManager {
         }
 
         if ((type.equals(TutorialType.BUILD) || type.equals(TutorialType.UPKEEP) ||
-                type.equals(TutorialType.BUY)) &&
+                type.equals(TutorialType.BUY) || type.equals(TutorialType.MENU_ACTION)) &&
                 !param.equalsIgnoreCase(step.getRegion())) {
             return;
         }
@@ -180,13 +180,33 @@ public class TutorialManager {
             }
         }
 
+        String key = getKey(civilian.getTutorialPath(), type, step);
         civilian.setTutorialProgress(0);
-        civilian.setTutorialIndex(civilian.getTutorialIndex() + 1);
+        civilian.getCompletedTutorialSteps().add(key);
+        int nextIndex;
+        do {
+            nextIndex = civilian.getTutorialIndex() + 1;
+            key = null;
+            if (path.getSteps().size() > nextIndex) {
+                TutorialStep nextStep = path.getSteps().get(nextIndex);
+                TutorialType tutorialType = TutorialType.valueOf(nextStep.getType().toUpperCase());
+                key = getKey(civilian.getTutorialPath(), tutorialType, nextStep);
+            }
+        } while (key != null && civilian.getCompletedTutorialSteps().contains(key));
+        civilian.setTutorialIndex(nextIndex);
         CivilianManager.getInstance().saveCivilian(civilian);
 
         Util.spawnRandomFirework(player);
 
         sendMessageForCurrentTutorialStep(civilian, true);
+    }
+
+    public String getKey(String path, TutorialType type, TutorialStep step) {
+        if (TutorialType.KILL.equals(type)) {
+            return path + ":" + step.getType() + ":" + step.getKillType() + ":" + step.getTimes();
+        } else {
+            return path + ":" + step.getType() + ":" + step.getRegion() + ":" + step.getTimes();
+        }
     }
 
     public void sendMessageForCurrentTutorialStep(Civilian civilian, boolean useHr) {
@@ -222,13 +242,17 @@ public class TutorialManager {
     }
 
     public List<String> getNextTutorialStepMessage(Civilian civilian, boolean useHr) {
+        return getTutorialMessage(civilian, civilian.getTutorialPath(), civilian.getTutorialIndex(), useHr);
+    }
+
+    public List<String> getTutorialMessage(Civilian civilian, String path, int index, boolean useHr) {
         List<String> messages = new ArrayList<>();
         Player player = Bukkit.getPlayer(civilian.getUuid());
         if (player == null || !player.isOnline()) {
             return messages;
         }
         String rawMessage = LocaleManager.getInstance().getTranslation(player,
-                "tut-" + civilian.getTutorialPath() + "-" + civilian.getTutorialIndex());
+                "tut-" + path + "-" + index);
         if (rawMessage == null || rawMessage.isEmpty()) {
             return messages;
         }
@@ -348,6 +372,7 @@ public class TutorialManager {
         BUILD,
         UPKEEP,
         KILL,
-        BUY
+        BUY,
+        MENU_ACTION
     }
 }

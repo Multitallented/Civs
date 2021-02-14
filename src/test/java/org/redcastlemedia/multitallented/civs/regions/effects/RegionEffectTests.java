@@ -130,7 +130,7 @@ public class RegionEffectTests extends TestUtil {
         TestUtil.world.setChunkLoaded(false);
         RegionsTests.loadRegionTypeCobble3();
         RegionType warehouseType = (RegionType) ItemManager.getInstance().getItemType("warehouse");
-        Location location = new Location(Bukkit.getWorld("world"), 2,60,0);
+        Location location = new Location(Bukkit.getWorld("world"), 2,50,0);
         Region cobbleRegion = RegionsTests.createNewRegion("cobble", location);
         cobbleRegion.getFailingUpkeeps().add(0);
         Location location2 = new Location(Bukkit.getWorld("world"), 3,90,0);
@@ -144,13 +144,12 @@ public class RegionEffectTests extends TestUtil {
         chestMap.put(Region.locationToString(TestUtil.blockUnique3.getLocation()), warehouseCVInventory);
         warehouseEffect.availableItems.put(warehouse, chestMap);
 
-        TownTests.loadTownTypeHamlet2();
         Location townLocation = new Location(Bukkit.getWorld("world"), 2, 75, 0);
-        TownTests.loadTown("test", "hamlet2", townLocation);
+        TownTests.loadTown("test", "metropolis", townLocation);
+        CVInventory regionInventory = UnloadedInventoryHandler.getInstance().getChestInventory(cobbleRegion.getLocation());
 
         RegionTickEvent regionTickEvent = new RegionTickEvent(warehouse, warehouseType, false, false);
         warehouseEffect.onCustomEvent(regionTickEvent);
-        CVInventory regionInventory = UnloadedInventoryHandler.getInstance().getChestInventory(cobbleRegion.getLocation());
         assertEquals(Material.IRON_PICKAXE, regionInventory.getItem(0).getType());
     }
 

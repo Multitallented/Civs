@@ -83,7 +83,6 @@ public class CommonScheduler implements Runnable {
                 notTwoSecond = !notTwoSecond;
                 if (!notTwoSecond) {
                     Bukkit.getPluginManager().callEvent(new TwoSecondEvent());
-                    UnloadedInventoryHandler.getInstance().loadChunks();
                 }
             } else {
                 i++;

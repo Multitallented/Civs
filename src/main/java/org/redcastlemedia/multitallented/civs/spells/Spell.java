@@ -3,6 +3,9 @@ package org.redcastlemedia.multitallented.civs.spells;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.AbstractArrow;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -121,18 +124,14 @@ public class Spell {
         return false;
     }
 
-    public boolean useAbilityFromListener(LivingEntity origin, ConfigurationSection useSection, Object newTarget, String key) {
-        HashMap<String, Set<?>> mappedTargets = new HashMap<>();
-        HashSet<LivingEntity> tempSet = new HashSet<>();
-        tempSet.add(origin);
-        mappedTargets.put(SpellConstants.SELF, tempSet);
+    public boolean useAbilityFromListener(ConfigurationSection useSection, Object newTarget, String key, Map<String, Set<?>> mappedTargets) {
         HashSet<Object> tempTarget = new HashSet<>();
         tempTarget.add(newTarget);
         mappedTargets.put(key, tempTarget);
 
-        useAbility(mappedTargets, true, useSection);
+        boolean ableToUseAbility = useAbility(mappedTargets, true, useSection);
 
-        return useSection.getBoolean("cancel", false);
+        return !ableToUseAbility || useSection.getBoolean("cancel", false);
     }
 
     public boolean useAbility(Map<String, Set<?>> incomingTargets,
@@ -258,14 +257,15 @@ public class Spell {
         }
         final ConfigurationSection projectileSection = yieldSection.getConfigurationSection(key);
         EntityType entityType = EntityType.valueOf(projectileSection.getString("projectile", "ARROW"));
-        double speed = getLevelAdjustedValue("" + projectileSection.getString("speed", "0.5"), level, null, this);
-        double spread = getLevelAdjustedValue("" + projectileSection.getString("spread", "20"), level, null, this);
-        int amount = (int) Math.round(getLevelAdjustedValue("" + projectileSection.getString("amount", "1"), level, null, this));
+        double speed = getLevelAdjustedValue("" + projectileSection.getString("speed", "0.5"), level, caster, this);
+        double spread = getLevelAdjustedValue("" + projectileSection.getString("spread", "20"), level, caster, this);
+        int amount = (int) Math.round(getLevelAdjustedValue("" + projectileSection.getString("amount", "1"), level, caster, this));
 
         String targetKey = projectileSection.getString(SpellConstants.TARGET, SpellConstants.SELF);
         for (Object target : mappedTargets.get(targetKey)) {
             if (target instanceof LivingEntity) {
-                launchProjectiles((LivingEntity) target, (Class<Projectile>) entityType.getEntityClass(), speed, amount, spread, projectileSection, key);
+                launchProjectiles((LivingEntity) target, (Class<Projectile>) entityType.getEntityClass(),
+                        speed, amount, spread, projectileSection, key, mappedTargets);
             }
         }
 
@@ -273,7 +273,7 @@ public class Spell {
     }
 
     private void launchProjectiles(LivingEntity livingEntity, Class<Projectile> projectileType, double speed, int amount, double spread,
-                                   ConfigurationSection projectileSection, String key) {
+                                   ConfigurationSection projectileSection, String key, Map<String, Set<?>> mappedTargets) {
         final double PHI = -livingEntity.getLocation().getPitch();
         final double THETA = -livingEntity.getLocation().getYaw();
         for (int i = 0; i < amount; i++) {
@@ -286,6 +286,10 @@ public class Spell {
                     new Vector(Math.cos(phi) * Math.sin(theta),
                             Math.sin(phi), Math.cos(phi)
                             * Math.cos(theta)));
+            if (pr instanceof Arrow) {
+                Arrow arrow = (Arrow) pr;
+                arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
+            }
             pr.setVelocity(livingEntity.getLocation().getDirection()
                     .multiply(5));
             Vector direction = livingEntity.getLocation().getDirection()
@@ -293,7 +297,7 @@ public class Spell {
             pr.setVelocity(direction.multiply(speed));
             pr.setShooter(livingEntity);
             if (projectileSection.isSet("section")) {
-                SpellListener.getInstance().addProjectileListener(pr, level, projectileSection.getConfigurationSection("section"), this, key, caster);
+                SpellListener.getInstance().addProjectileListener(pr, level, projectileSection.getConfigurationSection("section"), this, key, caster, mappedTargets);
             }
         }
     }
@@ -304,8 +308,8 @@ public class Spell {
         }
         final ConfigurationSection damageListenerSection = yieldSection.getConfigurationSection(key);
 
-        long delay = Math.round(getLevelAdjustedValue("" + damageListenerSection.getLong("delay", 0), level, null, this));
-        long ticks = Math.round(getLevelAdjustedValue("" + damageListenerSection.getLong("ticks", 0), level, null, this));
+        long delay = Math.round(getLevelAdjustedValue("" + damageListenerSection.getLong("delay", 0), level, caster, this));
+        long ticks = Math.round(getLevelAdjustedValue("" + damageListenerSection.getLong("ticks", 0), level, caster, this));
         final Player finalCaster = caster;
         final int finalLevel = level;
         int delayId = -1;
@@ -336,13 +340,13 @@ public class Spell {
                     @Override
                     public void run() {
                         SpellListener.getInstance().addDamageListener((LivingEntity) target, finalLevel,
-                                damageListenerSection.getConfigurationSection("section"), spell, finalCaster, key);
+                                damageListenerSection.getConfigurationSection("section"), spell, finalCaster, key, mappedTargets);
 
                     }
                 }, delay);
             } else {
                 SpellListener.getInstance().addDamageListener((LivingEntity) target, level,
-                        damageListenerSection.getConfigurationSection("section"), spell, caster, key);
+                        damageListenerSection.getConfigurationSection("section"), spell, caster, key, mappedTargets);
                 HashMap<String, Object> listenerVars = new HashMap<>();
 
                 CivState state = new CivState(this, finalYieldName, durationId, -1,
@@ -362,9 +366,9 @@ public class Spell {
             return true;
         }
         final ConfigurationSection durationSection = yieldSection.getConfigurationSection(key);
-        long delay = Math.round(getLevelAdjustedValue("" + durationSection.getLong("delay", 0), level, null, this));
-        long ticks = Math.round(getLevelAdjustedValue("" + durationSection.getLong("ticks", 0), level, null, this));
-        long period = Math.round(getLevelAdjustedValue("" + durationSection.getLong("period", 0), level, null, this));
+        long delay = Math.round(getLevelAdjustedValue("" + durationSection.getLong("delay", 0), level, caster, this));
+        long ticks = Math.round(getLevelAdjustedValue("" + durationSection.getLong("ticks", 0), level, caster, this));
+        long period = Math.round(getLevelAdjustedValue("" + durationSection.getLong("period", 0), level, caster, this));
         int durationId = -1;
         int periodId = -1;
         final Player finalCaster = caster;
