@@ -192,7 +192,7 @@ public class TutorialManager {
                 TutorialType tutorialType = TutorialType.valueOf(nextStep.getType().toUpperCase());
                 key = getKey(civilian.getTutorialPath(), tutorialType, nextStep);
             }
-        } while (key != null && !civilian.getCompletedTutorialSteps().contains(key));
+        } while (key != null && civilian.getCompletedTutorialSteps().contains(key));
         civilian.setTutorialIndex(nextIndex);
         CivilianManager.getInstance().saveCivilian(civilian);
 

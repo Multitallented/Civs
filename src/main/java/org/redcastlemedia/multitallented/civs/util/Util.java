@@ -630,7 +630,7 @@ public final class Util {
                     int amount = item.getQty();
                     int max = is.getMaxStackSize();
                     for (ItemStack iss : inv.getContents()) {
-                        if (iss == null) {
+                        if (iss == null || iss.getType() == Material.AIR) {
                             ItemStack isa;
                             if (amount > max) {
                                 isa = item.createItemStack();

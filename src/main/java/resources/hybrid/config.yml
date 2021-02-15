@@ -260,3 +260,11 @@ announcement-period: 240
 
 ## do not turn this on unless you want to spam your console with potentially useless info
 debug-log: false
+
+#Max count of towns player can be resident of
+player-residencies-count: -1
+
+#List of permission that can be used to override maximal residence limit
+player-residencies-count-override:
+  2: "civs.residencyoverride.vip"
+  3: "civs.residencyoverride.vip+"

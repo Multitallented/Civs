@@ -111,10 +111,9 @@ public class ProtectionHandler implements Listener {
         return instance;
     }
 
-    @EventHandler
+//    @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
 //        System.out.println("chunk unloaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
-        UnloadedInventoryHandler.getInstance().updateInventoriesInChunk(event.getChunk());
     }
 
     @EventHandler
@@ -123,9 +122,6 @@ public class ProtectionHandler implements Listener {
             DebugLogger.chunkLoads++;
         }
 //        System.out.println("chunk loaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
-        Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> {
-            UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk());
-        }, 1L);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -207,9 +203,6 @@ public class ProtectionHandler implements Listener {
                     LocaleManager.getInstance().getTranslation(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         } else {
             checkMiningSkill(civilian, event.getBlock().getType());
-            if (event.getBlock().getType() == Material.CHEST) {
-                UnloadedInventoryHandler.getInstance().deleteUnloadedChestInventory(event.getBlock().getLocation());
-            }
             Region region = regionManager.getRegionAt(location);
             if (region == null) {
                 return;

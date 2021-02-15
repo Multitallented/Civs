@@ -4,7 +4,7 @@ starter-book: Menu pro Civs
 next-button: Další
 prev-button: Předchozí
 language-menu: Vybrat jazyk
-language-set: Jazyk byl nastaven na $1
+language-set: Jazyk byl nastaven na češtinu
 back-button: Zpět
 north: Sever
 east: Východ
@@ -12,7 +12,7 @@ south: Jih
 west: Západ
 orientation-name: "Směřuje na: $1"
 orientation-desc: Kliknutím otočíš mapu o 90 stupňů.
-constitution: Konstituce
+constitution: Ústava
 claim-map: Zobrazit nedaleká území.
 capture-claim: Zabrat území
 pay-capture-claim: "Zaber si toto území za 8 ruditu pomocí: /cv captureclaim."
@@ -524,7 +524,7 @@ admin_graveyard-desc: Místo kde se budou oživovat všichni hráči. Také se v
 shelter-name: Útočiště
 shelter-desc: Bezbečné místo na ukládání věcí. Vydělává peníze za chleba, hovězí, mrkve,
   nebo brambory každých 30 minut.
-arrow_trap-name: Věžička
+arrow_trap-name: Vížka
 arrow_trap-desc: Úroveň 1 | Dostřel 17 | Poškození 30 | Rychlost 38 | Rozptyl 3 | Střílí šípy
   na ne-členy města a příšery.
 arrow_trap_fast-name: Věžička 2
@@ -897,10 +897,10 @@ town-desc: Čtvrtá úroveň města. Vyžaduje 20 obyvatel.
 village-name: Vesnice
 village-desc: Třetí úroveň města. Vyžaduje 10 obyvatel.
 bank-name: Banka
-bank-desc: Produkuje 192 moci denně. Mění 64 emeraldů za $640 nebo naopak.
+bank-desc: Produkuje 192 moci denně. Mění 64 smaragdů za $640 nebo naopak.
 bath_house-name: Lázně
 bath_house-desc: Produkuje 192 moci denně.
-capitol-name: Kapitol
+capitol-name: Hlavní město
 capitol-desc: Centrální stavba města. Produkuje 768 moci denně. Taky funguje jako teleport.
 city_hall-name: Městská radnice
 city_hall-desc: Centrální stavba města. Produkuje 576 moci denně. Taky funguje jako teleport.
@@ -983,7 +983,7 @@ vault-desc: Zvýší maximální moc města o 500. Každý den vyprodukuje 96 mo
 housing-group: Domy
 defense-group: Obrana
 trap-group: Pasti
-arrowtrapgroup-group: Turety
+arrowtrapgroup-group: Vížky
 publichousing-group: Veřejné ubytování
 idolgroup-group: Modly
 factory-group: Továrny
@@ -1157,7 +1157,7 @@ empathy-desc: "empathy-desc: Mana: 35 Prodleva: 15s Dosah: 20 Způsobí poškoze
   ze tvých chybějících životů."
 chug-name: Vypít na ex
 chug-desc: Hráč instantně vypije jakýkoli nápoj, lektvar, nebo kbelík mléka.
-burning-presence-name: Pálivá přítomnots
+burning-presence-name: Spalující přítomnost
 burning-presence-desc: "Rádius: 7 Přepnutelné, Pasivní, Způsobuje 1 pravé poškození každé 4s."
 quicken-name: Zrychlení
 quicken-desc: "Mana: 20 Prodleva: 10s Zpomalí tě na 5s potom ti dá rychlost 2 na 5 minut."
@@ -1186,28 +1186,29 @@ nation-destroyed: "@{RED}Země $1 byla zničena!"
 set-nation-icon-name: Nastavit ikonu země.
 set-nation-icon-desc: "Dej si do ruky věc, kterou chceš nastavit jako ikonu země a napiš: /cv
   nation-icon."
-hold-nation-icon: Dej si do ruky věc, kterou chceš nastavit jako ikonu země.
-nation-icon-set: Ikona země $1 nastavena.
-hold-lore: Dej si do ruky popsanou knihu, kterou chceš nastavit jako legendu země.
-lore-set: Legenda země $1 byla nastavena.
-constitution-name: Legenda země $1
-constitution-desc: Kliknutím dostaneš Legendu této země sepsanou v knize. Legendu země
-  můžešnastavit pomocí příkazu /cv nation-lore <jméno země>.
+hold-nation-icon: Dej si do ruky věc, kterou chceš nastavit jako ikonu národa.
+nation-icon-set: Ikona národa $1 nastavena.
+hold-lore: Dej si do ruky popsanou knihu, kterou chceš nastavit jako legendu národa.
+lore-set: Legenda národa $1 byla nastavena.
+constitution-name: Legenda národa $1
+constitution-desc: Kliknutím dostaneš Legendu tohoto národa sepsanou v knize. Legendu národa
+  můžeš nastavit pomocí příkazu /cv nation-lore <jméno země>.
 set-nation-info-name: Nastavit informace o zemi
 set-nation-info-desc: 'Nastav informace o zemi pomocí příkazu "/cv natin-lore" a popsané knihy v
   ruce. '
 nation-lore-command: /cv nation-lore
-nations: Země
-rename-nation: Přejmenovat zemi
-rename-nation-desc: Zemi můžeš přejmenovat pomocí "/cv rename-nation <staré jméno> <nové jméno>".
+nations: Národy
+rename-nation: Přejmenovat národ
+rename-nation-desc: Národ můžeš přejmenovat pomocí "/cv rename-nation <staré jméno> <nové jméno>".
 rename-nation-command: /cv rename-nation $1 <nové jméno>
-join-nation: Připojit se k zemi
-join-nation-desc: Kliknutím požádáš o vstup tvého města do této země.
-leave-nation: Odejít ze země
-leave-nation-desc: Kliknutím tvoje město opustí tuto zemi.
-set-capitol: Nastavit Kapitol
-set-capitol-desc: Kliknutím změníš hlavní město země na město s nejvyžší populací.
+join-nation: Přidat se k národu
+join-nation-desc: Kliknutím požádáš o vstup tvého města do tohoto národa.
+leave-nation: Opustit národ
+leave-nation-desc: Kliknutím tvoje město opustí tento národ.
+set-capitol: Nastavit hlavní město
+set-capitol-desc: Kliknutím změníš hlavní město národu na město s nejvyžší populací.
 region-summary: "@{GREEN}Typ: $1 @{BLUE}Vlastníci: $2 @{YELLOW}Umístění: $3 @{BLUE}Pracuje: $4
   @{GREEN}Dnešní příjem: $5"
 town-summary: "@{GREEN}Typ: $1 @{BLUE}Vlastníci: $2 @{YELLOW}Moc: $3/$4 @{GREEN}Populace:
   $5/$6"
+residence-limit-reached: Není možné se připojit k městu $1, krajní mez počtu měst, jenž jsi členem, byla dosažena.
