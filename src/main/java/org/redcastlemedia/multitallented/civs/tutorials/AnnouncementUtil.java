@@ -138,7 +138,7 @@ public final class AnnouncementUtil {
                 keys.add("ann-town-protection");
                 messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-town-protection"));
             }
-            if (!alreadySentMessages.get(civilian.getUuid()).contains("ann-town-join")) {
+            if (!alreadySentMessages.get(civilian.getUuid()).contains("ann-town-join") && ConfigManager.getInstance().getResidenciesCount() > -1) {
                 keys.add("ann-town-join");
                 messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-town-join"));
             }

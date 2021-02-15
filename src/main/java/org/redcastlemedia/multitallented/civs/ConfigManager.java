@@ -10,11 +10,7 @@ import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 import lombok.Getter;
@@ -185,6 +181,10 @@ public class ConfigManager {
     String chatChannelFormat;
     @Getter
     boolean unclaimNationChunksWithTnt;
+    @Getter
+    private int residenciesCount;
+    @Getter
+    private NavigableMap<Integer, String> residenciesCountOverride;
 
     public ConfigManager() {
         loadDefaults();
@@ -471,6 +471,17 @@ public class ConfigManager {
                 }
             }
 
+            if (config.isSet("player-residencies-count")) {
+                residenciesCount = config.getInt("player-residencies-count");
+            }
+
+            if (config.isSet("player-residencies-count-override")) {
+                for (String count : config.getConfigurationSection("player-residencies-count-override").getKeys(false)) {
+                    String perm = config.getString("player-residencies-count-override." + count);
+                    residenciesCountOverride.put(Integer.parseInt(count), perm);
+                }
+            }
+
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read from config.yml", e);
         }
@@ -625,6 +636,8 @@ public class ConfigManager {
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         allowChangingOfGovType = false;
         regionLockedNations = new HashMap<>();
+        residenciesCount = -1;
+        residenciesCountOverride = new TreeMap<>();
     }
 
     public static ConfigManager getInstance() {
