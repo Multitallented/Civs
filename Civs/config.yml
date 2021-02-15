@@ -304,3 +304,11 @@ nation-claim-effects:
   - "block_build"
   - "block_fire"
   - "block_explosion"
+
+#Max count of towns player can be resident of
+player-residencies-count: -1
+
+#List of permission that can be used to override maximal residence limit
+player-residencies-count-override:
+  2: "civs.residencyoverride.vip"
+  3: "civs.residencyoverride.vip+"
