@@ -331,8 +331,4 @@ public abstract class TestUtil {
         itemStack.getItemMeta().setLore(lore);
         return itemStack;
     }
-
-    public void setRegionStandby(boolean standby) {
-        ConfigManager.getInstance().regionStandby = standby;
-    }
 }
