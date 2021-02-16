@@ -164,6 +164,7 @@ public class ConfigManager {
     @Getter boolean skinsInMenu;
     @Getter boolean useBounties;
     @Getter boolean warningLogger;
+    @Getter double percentPowerForUpgrade;
 
     @Getter
     String chatChannelFormat;
@@ -412,6 +413,7 @@ public class ConfigManager {
             useBounties = config.getBoolean("use-bounties", true);
             useSkills = config.getBoolean("use-skills", true);
             warningLogger = config.getBoolean("show-warning-logs", false);
+            percentPowerForUpgrade = config.getDouble("percent-power-for-town-upgrade", 0.1);
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
                     lineLengthMap.put(key, config.getInt("line-break-length-per-language." + key, lineBreakLength));
@@ -490,6 +492,7 @@ public class ConfigManager {
 
     private void loadDefaults() {
         warningLogger = false;
+        percentPowerForUpgrade = 0.1;
         huntCrossWorld = false;
         skinsInMenu = true;
         useBounties = true;

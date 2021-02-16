@@ -1070,6 +1070,10 @@ public class RegionManager {
             if (region.getEffects().containsKey(WarehouseEffect.KEY)) {
                 WarehouseEffect.getInstance().refreshChest(region, location);
             }
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            if (region.getFailingUpkeeps().size() >= regionType.getUpkeeps().size()) {
+                region.lastTick = -1;
+            }
         }
     }
     public void removeCheckedRegion(Region region) {
