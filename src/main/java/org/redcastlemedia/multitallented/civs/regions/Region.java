@@ -782,7 +782,7 @@ public class Region {
                 chestInventory = UnloadedInventoryHandler.getInstance().getChestInventory(getLocation());
                 RegionManager.getInstance().addCheckedRegion(this);
             }
-            if (needsItems && !chestInventory.isValid()) {
+            if (needsItems && (chestInventory == null || !chestInventory.isValid())) {
                 if (ConfigManager.getInstance().isWarningLogger()) {
                     Civs.logger.log(Level.WARNING, "{0} has an invalid chestInventory {1}x {2}y {3}z",
                             new Object[] {type, x, y, z});
