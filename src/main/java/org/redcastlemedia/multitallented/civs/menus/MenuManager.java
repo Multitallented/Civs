@@ -191,6 +191,9 @@ public class MenuManager implements Listener {
     }
 
     private void loadExtraMenus(File menuFolder, Set<Class<? extends CustomMenu>> menuClasses) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         for (File file : menuFolder.listFiles()) {
             FileConfiguration config = FallbackConfigUtil.getConfig(file, "menus/" + file.getName());
             String menuName = file.getName().replace(".yml", "");

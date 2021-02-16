@@ -615,7 +615,6 @@ public class CivilianListener implements Listener {
 
     @EventHandler @SuppressWarnings("unused")
     public void onRegionDestroyedEvent(RegionDestroyedEvent event) {
-        UnloadedInventoryHandler.getInstance().deleteUnloadedChestInventory(event.getRegion().getLocation());
         if (ConfigManager.getInstance().isKeepRegionChunksLoaded()) {
             event.getRegion().getLocation().getChunk().setForceLoaded(false);
         }
@@ -634,32 +633,8 @@ public class CivilianListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
-    public void onItemMoveEvent(InventoryMoveItemEvent event) {
-        RegionManager.getInstance().removeCheckedRegion(event.getDestination().getLocation());
-        if (event.getDestination().getHolder() instanceof Chest) {
-            Location inventoryLocation = ((Chest) event.getDestination().getHolder()).getLocation();
-            UnloadedInventoryHandler.getInstance().updateInventoryAtLocation(inventoryLocation);
-        }
-        if (event.getSource().getHolder() instanceof Chest) {
-            Location inventoryLocation = ((Chest) event.getSource().getHolder()).getLocation();
-            UnloadedInventoryHandler.getInstance().updateInventoryAtLocation(inventoryLocation);
-        }
-//        if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
-//            return;
-//        }
-//        if (!CVItem.isCivsItem(event.getItem())) {
-//            return;
-//        }
-//        event.setCancelled(true);
-    }
-
     @EventHandler(ignoreCancelled = true)
     public void onCivilianDragItem(InventoryDragEvent event) {
-        if (event.getView().getTopInventory().getHolder() instanceof Chest) {
-            Location inventoryLocation = ((Chest) event.getView().getTopInventory().getHolder()).getLocation();
-            UnloadedInventoryHandler.getInstance().updateInventoryAtLocation(inventoryLocation);
-        }
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
             return;
         }
@@ -745,10 +720,6 @@ public class CivilianListener implements Listener {
 
     @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onCivilianClickItem(InventoryClickEvent event) {
-        if (event.getClickedInventory() != null) {
-            Location inventoryLocation = event.getClickedInventory().getLocation();
-            UnloadedInventoryHandler.getInstance().updateInventoryAtLocation(inventoryLocation);
-        }
         handleCustomItem(event.getCurrentItem(), event.getWhoClicked().getUniqueId());
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
             return;

@@ -11,10 +11,6 @@ line-break-length-per-language:
   en: 40
   zh: 25
 
-##should region upkeeps be on standby when empty
-##turning on this setting may cause lag
-region-standby: false
-
 ##Do not enable this unless you have tested it
 ##It basically allows people to bypass limits and dupe civ items with min amounts (like shelter)
 allow-civ-item-sharing: false
@@ -56,6 +52,8 @@ unloaded-chest-refresh-rate: 10
 max-town-tax: 100.0
 ## the max amount that can be in a town bank (excluding taxes)
 max-bank-deposit: -1
+## percent of max power you must have before you can upgrade a town
+percent-power-for-town-upgrade: 0.1
 
 min-distance-between-towns: 10
 
@@ -118,7 +116,7 @@ money:
   killjoy: 10
   kill: 100
   karma: 0.2
-hardship-per-kill: 500
+hardship-per-kill: 0
 karma-per-kill: 50
 karma-per-kill-streak: 5
 ##How often should karma be cut by 50%? Adds 50% to negative karma. Subtracts 50% from positive karma.
@@ -280,3 +278,11 @@ announcement-period: 240
 
 ## do not turn this on unless you want to spam your console with potentially useless info
 debug-log: false
+
+#Max count of towns player can be resident of
+player-residencies-count: -1
+
+#List of permission that can be used to override maximal residence limit
+player-residencies-count-override:
+  2: "civs.residencyoverride.vip"
+  3: "civs.residencyoverride.vip+"

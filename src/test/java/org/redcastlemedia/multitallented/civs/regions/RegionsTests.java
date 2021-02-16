@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -15,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
@@ -68,7 +68,6 @@ public class RegionsTests extends TestUtil {
 
     @After
     public void cleanup() {
-        setRegionStandby(true);
         world.setChunkLoaded(false);
     }
 
@@ -78,7 +77,6 @@ public class RegionsTests extends TestUtil {
         for (int i = 0; i < 11; i++) {
             regions.add(createNewRegion("leather_shop"));
         }
-        setRegionStandby(false);
         for (int i = 0; i < 10; i++) {
             RegionTickUtil.runUpkeeps();
         }
@@ -89,7 +87,6 @@ public class RegionsTests extends TestUtil {
 
     @Test
     public void regionShouldCheckUpkeep() {
-        setRegionStandby(false);
         world.setChunkLoaded(true);
         Region region = createNewRegion("greenhouse");
         for (int i = 0; i < 10; i++) {
@@ -928,7 +925,7 @@ public class RegionsTests extends TestUtil {
         cancelled[0] = false;
         when(event1.isCancelled()).thenAnswer(invocation -> cancelled[0]);
         doAnswer(invocation -> { cancelled[0] = (boolean) invocation.getArguments()[0]; return null; })
-                .when(event1).setCancelled(Matchers.anyBoolean());
+                .when(event1).setCancelled(anyBoolean());
         when(event1.getPlayer()).thenReturn(TestUtil.player);
         when(event1.getBlockPlaced()).thenReturn(TestUtil.blockUnique);
         ItemStack itemStack = mock(ItemStack.class);
