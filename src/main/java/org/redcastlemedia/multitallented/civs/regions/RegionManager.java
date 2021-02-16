@@ -708,9 +708,7 @@ public class RegionManager {
         }
 
         Region region = new Region(regionType.getProcessedName(), people, location, radii, regionType.getEffects(), 0);
-        if (!ConfigManager.getInstance().isRegionStandby()) {
-            region.lastTick = new Date().getTime() - regionType.getPeriod() * 1000 + Math.min(120000, regionType.getPeriod() * 1000);
-        }
+        region.lastTick = new Date().getTime() - regionType.getPeriod() * 1000 + Math.min(120000, regionType.getPeriod() * 1000);
         addRegion(region);
         StructureUtil.removeBoundingBox(civilian.getUuid());
         forceLoadRegionChunk(region);
@@ -1089,6 +1087,10 @@ public class RegionManager {
             removeCheckedRegion(region);
             if (region.getEffects().containsKey(WarehouseEffect.KEY)) {
                 WarehouseEffect.getInstance().refreshChest(region, location);
+            }
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            if (region.getFailingUpkeeps().size() >= regionType.getUpkeeps().size()) {
+                region.lastTick = -1;
             }
         }
     }

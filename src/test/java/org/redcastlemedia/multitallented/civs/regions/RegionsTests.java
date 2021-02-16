@@ -68,7 +68,6 @@ public class RegionsTests extends TestUtil {
 
     @After
     public void cleanup() {
-        setRegionStandby(true);
         world.setChunkLoaded(false);
     }
 
@@ -78,7 +77,6 @@ public class RegionsTests extends TestUtil {
         for (int i = 0; i < 11; i++) {
             regions.add(createNewRegion("leather_shop"));
         }
-        setRegionStandby(false);
         for (int i = 0; i < 10; i++) {
             RegionTickUtil.runUpkeeps();
         }
@@ -89,7 +87,6 @@ public class RegionsTests extends TestUtil {
 
     @Test
     public void regionShouldCheckUpkeep() {
-        setRegionStandby(false);
         world.setChunkLoaded(true);
         Region region = createNewRegion("greenhouse");
         for (int i = 0; i < 10; i++) {

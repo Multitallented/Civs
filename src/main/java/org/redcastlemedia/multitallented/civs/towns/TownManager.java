@@ -720,6 +720,14 @@ public class TownManager {
                         .replace("$2", "" + townType.getChildPopulation()));
                 return;
             }
+
+            int powerRequired = (int) Math.round((double) town.getMaxPower() * ConfigManager.getInstance().getPercentPowerForUpgrade());
+            if (town.getPower() < powerRequired) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player, "not-enough-power")
+                        .replace("$1", town.getName()).replace("$2", "" + powerRequired));
+                return;
+            }
+
             people = intersectTown.getPeople();
             newTownLocation = intersectTown.getLocation();
             childLocations.add(newTownLocation);
