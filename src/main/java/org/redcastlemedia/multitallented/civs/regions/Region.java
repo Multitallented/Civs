@@ -753,7 +753,7 @@ public class Region {
         if (checkTick && !shouldTick()) {
             return false;
         }
-        if (checkTick && !ConfigManager.getInstance().isRegionStandby()) {
+        if (checkTick) {
             tick();
         }
         if (ConfigManager.getInstance().isDisableRegionsInUnloadedChunks() && !Util.isChunkLoadedAt(getLocation())) {
