@@ -56,6 +56,8 @@ unloaded-chest-refresh-rate: 10
 max-town-tax: 100.0
 ## the max amount that can be in a town bank (excluding taxes)
 max-bank-deposit: -1
+## percent of max power you must have before you can upgrade a town
+percent-power-for-town-upgrade: 0.1
 
 min-distance-between-towns: 10
 
