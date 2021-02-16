@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -375,8 +376,13 @@ public class RegionManager {
             radii[4] = regionConfig.getInt("yp-radius");
             radii[5] = regionConfig.getInt("yn-radius");
             Location location = Region.idToLocation(Objects.requireNonNull(regionConfig.getString("location")));
-            if (location == null) {
-                throw new NullPointerException();
+            if (location == null || location.getWorld() == null) {
+                Civs.logger.log(Level.SEVERE, "Attempted to load invalid region {0}", regionFile.getName());
+                if (ConfigManager.getInstance().isDeleteInvalidRegions()) {
+                    Civs.logger.log(Level.SEVERE, "Deleting invalid region {0}", regionFile.getName());
+                    regionFile.delete();
+                }
+                return null;
             }
 
             double exp = regionConfig.getDouble("exp");
@@ -682,6 +688,7 @@ public class RegionManager {
         }
 
         Region region = new Region(regionType.getProcessedName(), people, location, radii, regionType.getEffects(), 0);
+        region.lastTick = new Date().getTime() - regionType.getPeriod() * 1000 + Math.min(120000, regionType.getPeriod() * 1000);
         addRegion(region);
         StructureUtil.removeBoundingBox(civilian.getUuid());
         forceLoadRegionChunk(region);
@@ -697,6 +704,7 @@ public class RegionManager {
             RegionPoints radii = Region.hasRequiredBlocks(regionType.getProcessedName(), location, false);
             if (!radii.isValid()) {
                 event.setCancelled(true);
+                StructureUtil.showGuideBoundingBox(player, event.getBlockPlaced().getLocation(), regionType, true);
                 player.sendMessage(Civs.getPrefix() +
                         localeManager.getTranslation(player, "no-required-blocks")
                                 .replace("$1", regionType.getDisplayName(player)));
@@ -1034,6 +1042,21 @@ public class RegionManager {
         return regionManager;
     }
 
+    public void cleanupUnloadedRegions() {
+        if (!ConfigManager.getInstance().isDeleteInvalidRegions()) {
+            return;
+        }
+        Set<Region> removeThese = new HashSet<>();
+        for (Map.Entry<UUID, ArrayList<Region>> entry : new HashSet<>(regions.entrySet())) {
+            if (Bukkit.getWorld(entry.getKey()) == null) {
+                removeThese.addAll(entry.getValue());
+            }
+        }
+        for (Region region : removeThese) {
+            removeRegion(region);
+        }
+    }
+
     public boolean hasRegionChestChanged(Region region) {
         return !checkedRegions.contains(region);
     }
@@ -1044,6 +1067,10 @@ public class RegionManager {
             removeCheckedRegion(region);
             if (region.getEffects().containsKey(WarehouseEffect.KEY)) {
                 WarehouseEffect.getInstance().refreshChest(region, location);
+            }
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            if (region.getFailingUpkeeps().size() >= regionType.getUpkeeps().size()) {
+                region.lastTick = -1;
             }
         }
     }

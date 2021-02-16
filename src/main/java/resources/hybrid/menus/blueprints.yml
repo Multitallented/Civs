@@ -3,6 +3,11 @@ name: Blueprints
 items:
   prev:
     index: 3
+  blueprinticon:
+    index: 4
+    icon: MAP
+    name: blueprints
+    actions: []
   next:
     index: 5
   back:

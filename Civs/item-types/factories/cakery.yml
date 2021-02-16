@@ -1,0 +1,47 @@
+#enabled: true
+#type: region
+#name: Cakery
+#icon: CHEST
+#shop-icon: CAKE
+#dynmap-marker: cake
+#price: 3000
+#max: 1
+#groups:
+#  - factory
+#level: 7
+#
+#pre-reqs:
+#  - member=metropolis
+#
+#build-reqs:
+#  - CHEST*2
+#  - g:window*4
+#  - g:door*1
+#  - g:roof*30
+#  - g:primary*45
+#  - g:secondary*10
+#
+#build-radius: 4 #9x9x9
+#
+#towns:
+#  - metropolis
+#
+#effects:
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - conveyor:CAKE
+#
+#period: 1800 # 30 minutes
+#upkeep:
+#  0:
+#    reagents:
+#      - MILK_BUCKET*3
+#      - EGG
+#    input:
+#      - WHEAT*2
+#      - SUGAR_CANE*2
+#    output:
+#      - CAKE
+#

@@ -1,0 +1,57 @@
+#enabled: true
+#type: region
+#name: Melting_Pot
+#icon: CHEST
+#shop-icon: BEETROOT_SOUP
+#dynmap-marker: factory
+#price: 600
+#max: 1
+#groups:
+#  - factory
+#level: 7
+#
+#pre-reqs:
+#  - member=metropolis
+#
+#build-reqs:
+#  - CHEST*2
+#  - g:window*4
+#  - g:door*1
+#  - g:roof*30
+#  - g:primary*45
+#  - g:secondary*10
+#  - BROWN_MUSHROOM
+#  - BEETROOTS
+#  - CARROTS
+#
+#build-radius: 4 #9x9x9
+#
+#towns:
+#  - metropolis
+#
+#effects:
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - conveyor:BEETROOT_SOUP
+#
+#period: 600 # 10 minutes
+#upkeep:
+#  0:
+#    input:
+#      - BEETROOT
+#      - g:log
+#    output:
+#      - BEETROOT_SOUP
+#  1:
+#    reagents:
+#      - BROWN_MUSHROOM
+#    input:
+#      - POTATO
+#      - RABBIT
+#      - CARROT
+#      - g:log
+#    output:
+#      - RABBIT_STEW
+#

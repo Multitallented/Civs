@@ -47,7 +47,7 @@
 #    input:
 #      - STONE_PICKAXE
 #    output:
-#      - LAPIS_LAZULI*6
+#      - LAPIS_LAZULI*8
 #  1:
 #    reagents:
 #      - DIAMOND_PICKAXE
@@ -55,7 +55,7 @@
 #    input:
 #      - STONE_PICKAXE
 #    output:
-#      - LAPIS_LAZULI*10
+#      - LAPIS_LAZULI*12
 #  2:
 #    reagents:
 #      - NETHERITE_PICKAXE
@@ -63,4 +63,4 @@
 #    input:
 #      - STONE_PICKAXE
 #    output:
-#      - LAPIS_LAZULI*12
+#      - LAPIS_LAZULI*16

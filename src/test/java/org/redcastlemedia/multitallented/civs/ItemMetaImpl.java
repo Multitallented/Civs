@@ -10,8 +10,8 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.Nullable;
+import org.bukkit.persistence.PersistentDataContainer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -257,11 +257,6 @@ public class ItemMetaImpl implements ItemMeta, Damageable, SkullMeta {
     @Override
     public ItemMetaImpl clone() {
         return new ItemMetaImpl(displayName, lore);
-    }
-
-    @Override
-    public Spigot spigot() {
-        return null;
     }
 
     @Override

@@ -1,0 +1,47 @@
+type: region
+icon: CHEST
+shop-icon: BEETROOT
+dynmap-marker: cutlery
+name: Beetroot_Farm
+max: 1
+price: 3500
+groups:
+  - farm
+level: 7
+
+pre-reqs:
+  - member=metropolis
+
+build-reqs:
+  - g:fencegate*1
+  - g:fence*16
+  - WATER*1
+  - BEETROOTS*10
+
+towns:
+  - metropolis
+
+build-radius: 5
+effects:
+  - block_break
+  - block_build
+  - block_liquid
+  - block_fire
+  - conveyor:BEETROOT
+period: 600
+upkeep:
+  0:
+    reagents:
+      - STONE_HOE
+    output:
+      - BEETROOT*4
+  1:
+    reagents:
+      - IRON_HOE
+    output:
+      - BEETROOT*8
+  2:
+    reagents:
+      - DIAMOND_HOE
+    output:
+      - BEETROOT*16

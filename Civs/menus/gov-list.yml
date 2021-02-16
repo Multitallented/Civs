@@ -7,11 +7,16 @@
 ##  select-gov: selects the gov type for your town
 #items:
 #  prev:
+#    index: 3
+#  govicon:
 #    index: 4
+#    name: community
+#    icon: JUKEBOX
+#    actions: []
 #  back:
-#    index: 5
+#    index: 8
 #  next:
-#    index: 6
+#    index: 4
 #  governments:
 #    index: 9-53
 #    # icon gov icon
@@ -19,5 +24,4 @@
 #    # desc gov desc
 #    actions:
 #      - select-gov
-#      - clear-history
 #      - menu:town?town=$town$

@@ -4,9 +4,11 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
@@ -35,6 +37,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.*;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public final class Util {
@@ -277,6 +280,9 @@ public final class Util {
     public static boolean isChunkLoadedAt(Location location) {
         int x = (int) Math.floor(location.getX() / 16);
         int z = (int) Math.floor(location.getZ() / 16);
+        if (location.getWorld() == null) {
+            return false;
+        }
         return location.getWorld().isChunkLoaded(x, z);
     }
 
@@ -306,6 +312,19 @@ public final class Util {
             return null;
         }
         String returnInput = new String(input);
+        boolean continueLoop = true;
+        int i = 0;
+        while (continueLoop && i < 99) {
+            Pattern pattern = Pattern.compile("@\\{#[0-9A-Fa-f]{6}}");
+            Matcher matcher = pattern.matcher(returnInput);
+            continueLoop = matcher.find();
+            if (continueLoop) {
+                String group = matcher.group();
+                returnInput = returnInput.replace(matcher.group(),
+                        ChatColor.of(group.substring(2, group.length() - 1)) + "");
+            }
+            i++;
+        }
         for (ChatColor color : ChatColor.values()) {
             returnInput = returnInput.replaceAll("@\\{" + color.name() + "\\}", color + "");
         }
@@ -611,7 +630,7 @@ public final class Util {
                     int amount = item.getQty();
                     int max = is.getMaxStackSize();
                     for (ItemStack iss : inv.getContents()) {
-                        if (iss == null) {
+                        if (iss == null || iss.getType() == Material.AIR) {
                             ItemStack isa;
                             if (amount > max) {
                                 isa = item.createItemStack();

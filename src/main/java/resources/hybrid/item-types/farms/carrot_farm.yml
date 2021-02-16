@@ -4,7 +4,7 @@ shop-icon: CARROT
 dynmap-marker: cutlery
 name: Carrot_Farm
 max: 1
-price: 250
+price: 800
 groups:
 - farm
 level: 4

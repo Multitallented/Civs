@@ -8,11 +8,11 @@ name: Alliance
 #  leave-alliance unallies all towns in the alliance
 items:
   icon:
-    index: 0
+    index: 4
     icon: GOLDEN_SWORD
     # name: alliance name
   rename:
-    index: 1
+    index: 10
     icon: PAPER
     name: rename-alliance
     desc: rename-alliance-desc
@@ -20,18 +20,18 @@ items:
       - typing:click-me:really-command{$alliance$
       - close
   last-rename:
-    index: 2
+    index: 17
     # icon: player's head
     # name: player's name
     desc: last-renamed-by
     actions:
       - menu:player?uuid=$lastRename$
   prev:
-    index: 4
+    index: 3
   next:
     index: 5
   leave-alliance:
-    index: 6
+    index: 9
     icon: BARRIER
     name: leave-alliance
     actions:
@@ -40,7 +40,7 @@ items:
   back:
     index: 8
   members:
-    index: 9-53
+    index: 18-53
     # name: town name
     actions:
       - menu:town?town=$itemName$

@@ -13,15 +13,11 @@ import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.events.*;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
-import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
-import org.redcastlemedia.multitallented.civs.events.TownDevolveEvent;
-import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
@@ -68,7 +64,7 @@ public class TownManager {
                 try {
                     config.load(file);
 
-                    loadTown(config);
+                    loadTown(config, file);
                 } catch (Exception e) {
                     Civs.logger.warning("Unable to read from towns/" + file.getName());
                     e.printStackTrace();
@@ -178,8 +174,17 @@ public class TownManager {
         return townArrayList;
     }
 
-    private void loadTown(FileConfiguration config) {
+    private void loadTown(FileConfiguration config, File file) {
 
+        Location location = Region.idToLocation(config.getString("location"));
+        if (location == null || location.getWorld() == null) {
+            Civs.logger.log(Level.SEVERE, "Invalid town attempted to load {0}", file.getName());
+            if (ConfigManager.getInstance().isDeleteInvalidRegions()) {
+                Civs.logger.log(Level.SEVERE, "Deleteing invalid town file {0}", file.getName());
+                file.delete();
+            }
+            return;
+        }
         HashMap<UUID, String> people = new HashMap<>();
         ConfigurationSection peopleSection = config.getConfigurationSection("people");
         if (config.isSet("people") && peopleSection != null && !peopleSection.getKeys(false).isEmpty()) {
@@ -195,7 +200,7 @@ public class TownManager {
         String governmentType = config.getString("gov-type", GovernmentType.DICTATORSHIP.name());
         Town town = new Town(config.getString("name", "NameNotFound"),
                 config.getString("type"),
-                Region.idToLocation(config.getString("location")),
+                location,
                 people,
                 power,
                 maxPower,
@@ -363,7 +368,7 @@ public class TownManager {
             player.sendMessage(ChatColor.RED + ChatColor.stripColor(Civs.getPrefix()) +
                     LocaleManager.getInstance().getTranslation(player, "devolve-town")
                     .replace("$1", town.getName())
-                    .replace("$2", childTownType.getProcessedName()));
+                    .replace("$2", childTownType.getDisplayName(player)));
         }
     }
 
@@ -408,8 +413,15 @@ public class TownManager {
         return Math.max(0, town.getLastDisable() - System.currentTimeMillis());
     }
 
-    public void addInvite(UUID uuid, Town town) {
+    public boolean addInvite(UUID uuid, Town town) {
+        TownInvitesPlayerEvent event = new TownInvitesPlayerEvent(uuid, town);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            return false;
+        }
+
         invites.put(uuid, town);
+        return true;
     }
     public void clearInvite(UUID uuid) {
         invites.remove(uuid);
@@ -421,7 +433,15 @@ public class TownManager {
         if (!invites.containsKey(uuid)) {
             return false;
         }
+
         Town town = invites.get(uuid);
+
+        PlayerAcceptsTownInviteEvent event = new PlayerAcceptsTownInviteEvent(uuid, town);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            return false;
+        }
+
         town.setPeople(uuid, Constants.MEMBER);
         saveTown(town);
         invites.remove(uuid);
@@ -670,6 +690,14 @@ public class TownManager {
                         .replace("$2", "" + townType.getChildPopulation()));
                 return;
             }
+
+            int powerRequired = (int) Math.round((double) town.getMaxPower() * ConfigManager.getInstance().getPercentPowerForUpgrade());
+            if (town.getPower() < powerRequired) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player, "not-enough-power")
+                        .replace("$1", town.getName()).replace("$2", "" + powerRequired));
+                return;
+            }
+
             people = intersectTown.getPeople();
             newTownLocation = intersectTown.getLocation();
             childLocations.add(newTownLocation);
@@ -692,20 +720,27 @@ public class TownManager {
         newTown.setChildLocations(childLocations);
         newTown.setBankAccount(bank);
         Government government = setGovTypeAndMaxPower(governmentType, newTown);
-        saveTown(newTown);
-        addTown(newTown);
-        player.getInventory().remove(player.getInventory().getItemInMainHand());
-
-
 
         if (childTownType != null) {
             evolveTown(player, civilian, townType, townTypeLocalName, childTownType, newTown, government);
 
         } else {
+            if (!canJoinAnotherTown(player)) {
+                player.sendMessage(Civs.getPrefix() +
+                        localeManager.getTranslation(player, "residence-limit-reached").replace("$1", name));
+                return;
+            }
             TownCreatedEvent townCreatedEvent = new TownCreatedEvent(newTown, townType);
             newTown.setLastVote(System.currentTimeMillis());
             Bukkit.getPluginManager().callEvent(townCreatedEvent);
+            if (townCreatedEvent.isCancelled()) {
+                return;
+            }
         }
+
+        saveTown(newTown);
+        addTown(newTown);
+        player.getInventory().remove(player.getInventory().getItemInMainHand());
 
         player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                 "town-created").replace("$1", newTown.getName()));
@@ -904,5 +939,28 @@ public class TownManager {
     private Set<Region> getRegionsInTown(Location location, int radius, int radiusY) {
         //TODO fix this to account for vertical radius being different
         return RegionManager.getInstance().getContainingRegions(location, radius);
+    }
+
+    public boolean canJoinAnotherTown(Player player) {
+        ConfigManager cm = ConfigManager.getInstance();
+        if (cm.getResidenciesCount() == -1) {
+            return true;
+        }
+
+        Set<Town> townsForPlayer = getTownsForPlayer(player.getUniqueId());
+        if (townsForPlayer.size() < cm.getResidenciesCount()) {
+            return true;
+        }
+
+        Map<Integer, String> residenciesCountOverride = cm.getResidenciesCountOverride();
+        for (Map.Entry<Integer, String> entry : residenciesCountOverride.entrySet()) {
+            int key = entry.getKey();
+            if (townsForPlayer.size() <= key) {
+                if (Civs.perm.has(player, entry.getValue())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

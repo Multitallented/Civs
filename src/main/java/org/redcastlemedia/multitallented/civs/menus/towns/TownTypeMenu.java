@@ -55,6 +55,7 @@ public class TownTypeMenu extends CustomMenu {
         }
         if ("icon".equals(menuIcon.getKey())) {
             CVItem cvItem = townType.clone();
+            cvItem.setDisplayName(townType.getDisplayName(player));
             List<String> lore = new ArrayList<>();
             lore.add(localeManager.getTranslation(player, "size") +
                     ": " + (townType.getBuildRadius() * 2 + 1) + "x" + (townType.getBuildRadius() * 2 + 1) + "x" + (townType.getBuildRadiusY() * 2 + 1));

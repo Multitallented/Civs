@@ -12,6 +12,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -89,7 +90,9 @@ public class SkillsMenu extends CustomMenu {
             ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-            skullMeta.setOwningPlayer(offlinePlayer);
+            if (ConfigManager.getInstance().isSkinsInMenu()) {
+                skullMeta.setOwningPlayer(offlinePlayer);
+            }
             skullMeta.setDisplayName(offlinePlayer.getName());
             itemStack.setItemMeta(skullMeta);
             putActions(civilian, menuIcon, itemStack, count);

@@ -4,7 +4,7 @@ starter-book: Menu pro Civs
 next-button: Další
 prev-button: Předchozí
 language-menu: Vybrat jazyk
-language-set: Jazyk byl nastaven na $1
+language-set: Jazyk byl nastaven na češtinu
 back-button: Zpět
 north: Sever
 east: Východ
@@ -12,7 +12,7 @@ south: Jih
 west: Západ
 orientation-name: "Směřuje na: $1"
 orientation-desc: Kliknutím otočíš mapu o 90 stupňů.
-constitution: Konstituce
+constitution: Ústava
 claim-map: Zobrazit nedaleká území.
 capture-claim: Zabrat území
 pay-capture-claim: "Zaber si toto území za 8 ruditu pomocí: /cv captureclaim."
@@ -524,7 +524,7 @@ admin_graveyard-desc: Místo kde se budou oživovat všichni hráči. Také se v
 shelter-name: Útočiště
 shelter-desc: Bezbečné místo na ukládání věcí. Vydělává peníze za chleba, hovězí, mrkve,
   nebo brambory každých 30 minut.
-arrow_trap-name: Věžička
+arrow_trap-name: Vížka
 arrow_trap-desc: Úroveň 1 | Dostřel 17 | Poškození 30 | Rychlost 38 | Rozptyl 3 | Střílí šípy
   na ne-členy města a příšery.
 arrow_trap_fast-name: Věžička 2
@@ -678,80 +678,81 @@ wheat_farm-desc: Produkuje obylí a dead bushes každých 5 minut. Dejte náklad
   Postavte koleje z Obylného políčka do cílové stavby. Na začátek postavte
   svažitou napájenou kolej.
 shack-name: Přístřešek
-shack-desc: Nejjednodušší obytná stavba. Vydělává $122 denně prodáváním brambor.
+shack-desc: Nejjednodušší obytná stavba. Vydělává $96 denně prodáváním brambor.
 hovel-name: Bouda
-hovel-desc: 2. úroveň obytné stavby. Vydělává $144 denně prodáváním brambor. Dostupná
-  pouze jako vylepšený Přístřešek.
+hovel-desc: 2. úroveň obytné stavby. Vydělává $182,88 denně prodáváním brambor.
 hovel1-name: Bouda1
-hovel1-desc: 2. úroveň obytné stavby. Vydělává $310 denně prodáváním brambor a jablek.
+hovel1-desc: 2. úroveň obytné stavby. Vydělává $204,24 denně prodáváním brambor a jablek.
 dwelling-name: Chatrč
-dwelling-desc: 3. úroveň obytné stavby. Vydělává $309 denně prodáváním brambor a jablek.
+dwelling-desc: 3. úroveň obytné stavby. Vydělává $213,6 denně prodáváním brambor a jablek.
 dwelling1-name: Chatrč1
-dwelling1-desc: 3. úroveň obytné stavby. Vydělává $326 denně prodáváním brambor a jablek.
+dwelling1-desc: 3. úroveň obytné stavby. Vydělává $271,2 denně prodáváním brambor a jablek.
 dwelling2-name: Chatrč2
-dwelling2-desc: 3. úroveň obytné stavby. Vydělává $598 denně prodáváním brambor, jablek a ryb.
+dwelling2-desc: 3. úroveň obytné stavby. Vydělává $333,4 denně prodáváním brambor, jablek a ryb.
 house-name: Domeček
-house-desc: 4. úroveň obytné stavby. Vydělává $491 denně prodáváním chleba a jablek.
-  Dostupný pouze jako vylepšení Chatrče.
+house-desc: 4. úroveň obytné stavby. Vydělává $213,6 denně prodáváním chleba a jablek.
 house1-name: Domeček1
-house1-desc: 4. úroveň obytné stavby. Vydělává $635 denně prodáváním chleba, jablek a ryb.
+house1-desc: 4. úroveň obytné stavby. Vydělává $301,68 denně prodáváním chleba, jablek a ryb.
 house2-name: Domeček2
-house2-desc: 4. úroveň obytné stavby. Vydělává $832 denně prodáváním chleba a ryb, jablek a
+house2-desc: 4. úroveň obytné stavby. Vydělává $412,8 denně prodáváním chleba a ryb, jablek a
   plátků melounu.
 chalet-name: Chata
-chalet-desc: 5. úroveň obytné stavby. Vydělává $548 denně prodáváním chleba a mrkve.
+chalet-desc: 5. úroveň obytné stavby. Vydělává $325,92 denně prodáváním chleba a mrkve.
 chalet1-name: Chata1
-chalet1-desc: 5. úroveň obytné stavby. Vydělává $692 denně prodáváním chleba, mrkve a ryb.
+chalet1-desc: 5. úroveň obytné stavby. Vydělává $419,76 denně prodáváním chleba, mrkve a ryb.
 chalet2-name: Chata2
-chalet2-desc: 5. úroveň obytné stavby. Vydělává $890 denně prodáváním chleba a ryb, mrkve a
+chalet2-desc: 5. úroveň obytné stavby. Vydělává $537,6 denně prodáváním chleba a ryb, mrkve a
   plátků melounu.
 chalet3-name: Chata3
-chalet3-desc: 5. úroveň obytné stavby. Vydělává $1022 denně prodáváním chleba a ryb, mrkve a
+chalet3-desc: 5. úroveň obytné stavby. Vydělává $633,6 denně prodáváním chleba a ryb, mrkve a
   sušenek a plátků melounu.
 mansion-name: Dům
-mansion-desc: 6. úroveň obytné stavby. Vydělává $648 denně prodáváním chleba, mrkve a
-  hovězího. Dostupný pouze jako vylepšení Chaty.
+mansion-desc: 6. úroveň obytné stavby. Vydělává $425,76 denně prodáváním chleba, mrkve a
+  hovězího.
 mansion1-name: Dům1
-mansion1-desc: 6. úroveň obytné stavby. Vydělává $894 denně prodáváním chleba, mrkve,
+mansion1-desc: 6. úroveň obytné stavby. Vydělává $521,76 denně prodáváním chleba, mrkve,
   hovězího a sušenek.
 mansion2-name: Dům2
-mansion2-desc: 6. úroveň obytné stavby. Vydělává $1167 denně prodáváním chleba, mrkve,
+mansion2-desc: 6. úroveň obytné stavby. Vydělává $596,16 denně prodáváním chleba, mrkve,
   hovězího a sušenek.
 mansion3-name: Dům3
-mansion3-desc: 6. úroveň obytné stavby. Vydělává $1407 denně prodáváním chleba, mrkve,
+mansion3-desc: 6. úroveň obytné stavby. Vydělává $687,96 denně prodáváním chleba, mrkve,
   hovězího a sušenek a mléka.
 manor-name: Rezidence
-manor-desc: 7. úroveň obytné stavby. Vydělává $1032 denně prodáváním zlatých mrkví,
-  sušenek a hovězího. Dostupný pouze jako vylepšení Rezidence.
+manor-desc: 7. úroveň obytné stavby. Vydělává $382,08 denně prodáváním zlatých mrkví,
+  sušenek a hovězího.
 manor1-name: Rezidence1
-manor1-desc: 7. úroveň obytné stavby. Vydělává $1276 denně prodáváním zlatých mrkví,
+manor1-desc: 7. úroveň obytné stavby. Vydělává $485,24 denně prodáváním zlatých mrkví,
   sušenek, hovězího a mléka.
 manor2-name: Rezidence2
-manor2-desc: 7. úroveň obytné stavby. Vydělává $1679 denně prodáváním zlatých mrkví,
+manor2-desc: 7. úroveň obytné stavby. Vydělává $729,08 denně prodáváním zlatých mrkví,
   dýňových koláčů, hovězího a sušenek a mléka.
 manor3-name: Rezidence3
-manor3-desc: 7. úroveň obytné stavby. Vydělává $1751 denně prodáváním zlatých mrkví,
+manor3-desc: 7. úroveň obytné stavby. Vydělává $826,44 denně prodáváním zlatých mrkví,
   dýňových koláčů, hovězího a sušenek a mléka.
 villa-name: Vila
-villa-desc: 8. úroveň obytné stavby. Vydělává $1100 denně prodáváním zlatých mrkví,
+villa-desc: 8. úroveň obytné stavby. Vydělává $585,6 denně prodáváním zlatých mrkví,
   dýňových koláčů a hovězího.
 villa1-name: Vila1
-villa1-desc: 8. úroveň obytné stavby. Vydělává $1397 denně prodáváním zlatých mrkví,
+villa1-desc: 8. úroveň obytné stavby. Vydělává $663,8 denně prodáváním zlatých mrkví,
   dýňových koláčů, hovězího a mléka.
 villa2-name: Vila2
-villa2-desc: 8. úroveň obytné stavby. Vydělává $1877 denně prodáváním zlatých mrkví a
+villa2-desc: 8. úroveň obytné stavby. Vydělává $855,8 denně prodáváním zlatých mrkví a
+  dýňových koláčů, mléka, hovězího a zlatých jablek.
+villa3-name: Vila3
+villa3-desc: 8. úroveň obytné stavby. Vydělává $964,8 denně prodáváním zlatých mrkví a
   dýňových koláčů, mléka, hovězího a zlatých jablek.
 estate-name: Sídlo
-estate-desc: 9. úroveň obytné stavby. Vydělává $1480 denně prodáváním zlatých mrkví,
-  dýňových koláčů a zlatých jablek. Dostupný pouze jako vylepšení Vily.
+estate-desc: 9. úroveň obytné stavby. Vydělává $763,2 denně prodáváním zlatých mrkví,
+  dýňových koláčů a zlatých jablek.
 estate1-name: Sídlo1
-estate1-desc: 9. úroveň obytné stavby. Vydělává $1917 denně prodáváním zlatých mrkví,
+estate1-desc: 9. úroveň obytné stavby. Vydělává $982,08 denně prodáváním zlatých mrkví,
   dýňových koláčů, zlatých jablek a dortů.
 estate2-name: Sídlo2
-estate2-desc: 9. úroveň obytné stavby. Vydělává $2397 denně prodáváním zlatých mrkví a
+estate2-desc: 9. úroveň obytné stavby. Vydělává $1255,44 denně prodáváním zlatých mrkví a
   zlatých jakblek, dýňových koláčů, rabbit stew a dortů.
 estate3-name: Sídlo3
-estate3-desc: 9. úroveň obytné stavby. Vydělává $2621 denně prodáváním zlatých mrkví a
+estate3-desc: 9. úroveň obytné stavby. Vydělává $1410,4 denně prodáváním zlatých mrkví a
   zlatých jakblek, dýňových koláčů, rabbit stew a dortů.
 inn-name: Hostinec
 inn-desc: Přidává 12 ubytování. Užitečný pro přidávání lidí do města aniž by se muselo
@@ -896,10 +897,10 @@ town-desc: Čtvrtá úroveň města. Vyžaduje 20 obyvatel.
 village-name: Vesnice
 village-desc: Třetí úroveň města. Vyžaduje 10 obyvatel.
 bank-name: Banka
-bank-desc: Produkuje 192 moci denně. Mění 64 emeraldů za $640 nebo naopak.
+bank-desc: Produkuje 192 moci denně. Mění 64 smaragdů za $640 nebo naopak.
 bath_house-name: Lázně
 bath_house-desc: Produkuje 192 moci denně.
-capitol-name: Kapitol
+capitol-name: Hlavní město
 capitol-desc: Centrální stavba města. Produkuje 768 moci denně. Taky funguje jako teleport.
 city_hall-name: Městská radnice
 city_hall-desc: Centrální stavba města. Produkuje 576 moci denně. Taky funguje jako teleport.
@@ -982,7 +983,7 @@ vault-desc: Zvýší maximální moc města o 500. Každý den vyprodukuje 96 mo
 housing-group: Domy
 defense-group: Obrana
 trap-group: Pasti
-arrowtrapgroup-group: Turety
+arrowtrapgroup-group: Vížky
 publichousing-group: Veřejné ubytování
 idolgroup-group: Modly
 factory-group: Továrny
@@ -1156,7 +1157,7 @@ empathy-desc: "empathy-desc: Mana: 35 Prodleva: 15s Dosah: 20 Způsobí poškoze
   ze tvých chybějících životů."
 chug-name: Vypít na ex
 chug-desc: Hráč instantně vypije jakýkoli nápoj, lektvar, nebo kbelík mléka.
-burning-presence-name: Pálivá přítomnots
+burning-presence-name: Spalující přítomnost
 burning-presence-desc: "Rádius: 7 Přepnutelné, Pasivní, Způsobuje 1 pravé poškození každé 4s."
 quicken-name: Zrychlení
 quicken-desc: "Mana: 20 Prodleva: 10s Zpomalí tě na 5s potom ti dá rychlost 2 na 5 minut."
@@ -1185,28 +1186,29 @@ nation-destroyed: "@{RED}Země $1 byla zničena!"
 set-nation-icon-name: Nastavit ikonu země.
 set-nation-icon-desc: "Dej si do ruky věc, kterou chceš nastavit jako ikonu země a napiš: /cv
   nation-icon."
-hold-nation-icon: Dej si do ruky věc, kterou chceš nastavit jako ikonu země.
-nation-icon-set: Ikona země $1 nastavena.
-hold-lore: Dej si do ruky popsanou knihu, kterou chceš nastavit jako legendu země.
-lore-set: Legenda země $1 byla nastavena.
-constitution-name: Legenda země $1
-constitution-desc: Kliknutím dostaneš Legendu této země sepsanou v knize. Legendu země
-  můžešnastavit pomocí příkazu /cv nation-lore <jméno země>.
+hold-nation-icon: Dej si do ruky věc, kterou chceš nastavit jako ikonu národa.
+nation-icon-set: Ikona národa $1 nastavena.
+hold-lore: Dej si do ruky popsanou knihu, kterou chceš nastavit jako legendu národa.
+lore-set: Legenda národa $1 byla nastavena.
+constitution-name: Legenda národa $1
+constitution-desc: Kliknutím dostaneš Legendu tohoto národa sepsanou v knize. Legendu národa
+  můžeš nastavit pomocí příkazu /cv nation-lore <jméno země>.
 set-nation-info-name: Nastavit informace o zemi
 set-nation-info-desc: 'Nastav informace o zemi pomocí příkazu "/cv natin-lore" a popsané knihy v
   ruce. '
 nation-lore-command: /cv nation-lore
-nations: Země
-rename-nation: Přejmenovat zemi
-rename-nation-desc: Zemi můžeš přejmenovat pomocí "/cv rename-nation <staré jméno> <nové jméno>".
+nations: Národy
+rename-nation: Přejmenovat národ
+rename-nation-desc: Národ můžeš přejmenovat pomocí "/cv rename-nation <staré jméno> <nové jméno>".
 rename-nation-command: /cv rename-nation $1 <nové jméno>
-join-nation: Připojit se k zemi
-join-nation-desc: Kliknutím požádáš o vstup tvého města do této země.
-leave-nation: Odejít ze země
-leave-nation-desc: Kliknutím tvoje město opustí tuto zemi.
-set-capitol: Nastavit Kapitol
-set-capitol-desc: Kliknutím změníš hlavní město země na město s nejvyžší populací.
+join-nation: Přidat se k národu
+join-nation-desc: Kliknutím požádáš o vstup tvého města do tohoto národa.
+leave-nation: Opustit národ
+leave-nation-desc: Kliknutím tvoje město opustí tento národ.
+set-capitol: Nastavit hlavní město
+set-capitol-desc: Kliknutím změníš hlavní město národu na město s nejvyžší populací.
 region-summary: "@{GREEN}Typ: $1 @{BLUE}Vlastníci: $2 @{YELLOW}Umístění: $3 @{BLUE}Pracuje: $4
   @{GREEN}Dnešní příjem: $5"
 town-summary: "@{GREEN}Typ: $1 @{BLUE}Vlastníci: $2 @{YELLOW}Moc: $3/$4 @{GREEN}Populace:
   $5/$6"
+residence-limit-reached: Není možné se připojit k městu $1, krajní mez počtu měst, jenž jsi členem, byla dosažena.

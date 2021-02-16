@@ -651,80 +651,81 @@ wheat_farm-desc: Produce trigo y arbustos muertos cada 5 minutos. Coloca una vag
   en el cofre. Construye railes desde la Granja de trigo hasta una región de
   destino. Coloca un rail propulsado inclinado al principio.
 shack-name: Choza
-shack-desc: La casa mas básica. Gana $122 por día vendiendo patatas.
+shack-desc: La casa mas básica. Gana $96 por día vendiendo patatas.
 hovel-name: Cabaña
-hovel-desc: 2º nivel de casa. Gana $144 por día vendiendo patatas. Solo disponible como
-  mejora de la Choza.
+hovel-desc: 2º nivel de casa. Gana $182.88 por día vendiendo patatas.
 hovel1-name: Cabaña
-hovel1-desc: 2º nivel de casa. Gana $310 por día vendiendo patatas y manzanas.
+hovel1-desc: 2º nivel de casa. Gana $204.24 por día vendiendo patatas y manzanas.
 dwelling-name: Vivienda
-dwelling-desc: 3º nivel de casa. Gana $309 por día vendiendo patatas y manzanas.
+dwelling-desc: 3º nivel de casa. Gana $213.6 por día vendiendo patatas y manzanas.
 dwelling1-name: Vivienda1
-dwelling1-desc: 3º nivel de casa. Gana $326 por día vendiendo patatas y manzanas.
+dwelling1-desc: 3º nivel de casa. Gana $271.2 por día vendiendo patatas y manzanas.
 dwelling2-name: Vivienda2
-dwelling2-desc: 3º nivel de casa. Gana $598 por día vendiendo patatas, manzanas y pescado.
+dwelling2-desc: 3º nivel de casa. Gana $333.4 por día vendiendo patatas, manzanas y pescado.
 house-name: Casa
-house-desc: 4º nivel de casa. Gana $491 por día vendiendo pan y manzanas.  Solo disponible
+house-desc: 4º nivel de casa. Gana $213.6 por día vendiendo pan y manzanas.  Solo disponible
   como mejora de la Vivienda.
 house1-name: Casa1
-house1-desc: 4º nivel de casa. Gana $635 por día vendiendo pan, manzanas y pescado.
+house1-desc: 4º nivel de casa. Gana $301.68 por día vendiendo pan, manzanas y pescado.
 house2-name: casa2
-house2-desc: 4º nivel de casa. Gana $832 por día vendiendo pan, manzanas, pescado y rodajas
+house2-desc: 4º nivel de casa. Gana $412.8 por día vendiendo pan, manzanas, pescado y rodajas
   de melón.
 chalet-name: Chalet
-chalet-desc: 5º nivel de casa. Gana $548 por día vendiendo pan y zanahorias.
+chalet-desc: 5º nivel de casa. Gana $325.92 por día vendiendo pan y zanahorias.
 chalet1-name: Chalet1
-chalet1-desc: 5º nivel de casa. Gana $692 por día vendiendo pan, zanahorias y pescado.
+chalet1-desc: 5º nivel de casa. Gana $419.76 por día vendiendo pan, zanahorias y pescado.
 chalet2-name: Chalet2
-chalet2-desc: 5º nivel de casa. Gana $890 por día vendiendo pan, manzanas, pescado y rodajas
+chalet2-desc: 5º nivel de casa. Gana $537.6 por día vendiendo pan, manzanas, pescado y rodajas
   de melón.
 chalet3-name: Chalet3
-chalet3-desc: 5º nivel de casa. Gana $1022 por día vendiendo pan, manzanas, pescado,
+chalet3-desc: 5º nivel de casa. Gana $633.6 por día vendiendo pan, manzanas, pescado,
   zanahorias, galletas y rodajas de melón.
 mansion-name: Mansión
-mansion-desc: 6º nivel de casa. Gana $648 por día vendiendo pan, zanahorias y carne. Solo
-  disponible como mejora del Chalet.
+mansion-desc: 6º nivel de casa. Gana $425.76 por día vendiendo pan, zanahorias y carne.
 mansion1-name: Mansión1
-mansion1-desc: 6º nivel de casa. Gana $894 por día vendiendo pan, zanahorias, carne y
+mansion1-desc: 6º nivel de casa. Gana $521.76 por día vendiendo pan, zanahorias, carne y
   galletas.
 mansion2-name: Mansión2
-mansion2-desc: 6º nivel de casa. Gana $1167 por día vendiendo pan, zanahorias, carne y
+mansion2-desc: 6º nivel de casa. Gana $596.16 por día vendiendo pan, zanahorias, carne y
   galletas.
 mansion3-name: Mansión3
-mansion3-desc: 6º nivel de casa. Gana $1407 por día vendiendo pan, zanahorias, carne,
+mansion3-desc: 6º nivel de casa. Gana $687.96 por día vendiendo pan, zanahorias, carne,
   galletas y leche.
 manor-name: Señorío
-manor-desc: 7º nivel de casa. Gana $1032 por día vendiendo zanahorias doradas, galletas, y
-  carne. Solo disponible como mejora de la Mansion.
+manor-desc: 7º nivel de casa. Gana $382.08 por día vendiendo zanahorias doradas, galletas, y
+  carne.
 manor1-name: Señorío1
-manor1-desc: 7º nivel de casa. Gana $1276 por día vendiendo zanahorias doradas, galletas,
+manor1-desc: 7º nivel de casa. Gana $485.24 por día vendiendo zanahorias doradas, galletas,
   carne y leche.
 manor2-name: Señorío2
-manor2-desc: 7º nivel de casa. Gana $1679 por día vendiendo zanahorias doradas, galletas,
+manor2-desc: 7º nivel de casa. Gana $729.08 por día vendiendo zanahorias doradas, galletas,
   carne, leche y pastel de calabaza..
 manor3-name: Señorío3
-manor3-desc: 7º nivel de casa. Gana $1751 por día vendiendo zanahorias doradas, galletas,
+manor3-desc: 7º nivel de casa. Gana $826.44 por día vendiendo zanahorias doradas, galletas,
   carne, leche y pastel de calabaza..
 villa-name: Villa
-villa-desc: 8º nivel de casa. Gana $1100 por día vendiendo zanahorias doradas, pastel de
+villa-desc: 8º nivel de casa. Gana $585.6 por día vendiendo zanahorias doradas, pastel de
   calabaza y carne.
 villa1-name: Villa1
-villa1-desc: 8º nivel de casa. Gana $1397 por día vendiendo zanahorias doradas, pastel de
+villa1-desc: 8º nivel de casa. Gana $663.8 por día vendiendo zanahorias doradas, pastel de
   calabaza, carne y leche.
 villa2-name: Villa2
-villa2-desc: 8º nivel de casa. Gana $1877 por día vendiendo zanahorias doradas, pastel de
+villa2-desc: 8º nivel de casa. Gana $855.8 por día vendiendo zanahorias doradas, pastel de
+  calabaza, carne, leche y manzanas doradas.
+villa3-name: Villa3
+villa3-desc: 8º nivel de casa. Gana $964.8 por día vendiendo zanahorias doradas, pastel de
   calabaza, carne, leche y manzanas doradas.
 estate-name: Finca
-estate-desc: 9º nivel de casa. Gana $1480 por día vendiendo zanahorias doradas y manzanas
+estate-desc: 9º nivel de casa. Gana $763.2 por día vendiendo zanahorias doradas y manzanas
   doradas, pastel de calabaza, estofado de conejo y tarta.
 estate1-name: Finca1
-estate1-desc: 9º nivel de casa. Gana $1917 por día vendiendo zanahorias doradas y manzanas
+estate1-desc: 9º nivel de casa. Gana $982.08 por día vendiendo zanahorias doradas y manzanas
   doradas, pastel de calabaza, estofado de conejo y tarta.
 estate2-name: Finca2
-estate2-desc: 9º nivel de casa. Gana $2397 por día vendiendo zanahorias doradas y manzanas
+estate2-desc: 9º nivel de casa. Gana $1255.44 por día vendiendo zanahorias doradas y manzanas
   doradas, pastel de calabaza, estofado de conejo y tarta.
 estate3-name: Finca3
-estate3-desc: 9º nivel de casa. Gana $2621 por día vendiendo zanahorias doradas y manzanas
+estate3-desc: 9º nivel de casa. Gana $1410.4 por día vendiendo zanahorias doradas y manzanas
   doradas, pastel de calabaza, estofado de conejo y tarta.
 inn-name: Posada
 inn-desc: Proporciona 12 alojamientos y un puerto. Útil para agregar personas a la

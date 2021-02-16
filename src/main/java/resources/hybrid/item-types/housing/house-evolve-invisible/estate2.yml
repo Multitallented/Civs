@@ -4,7 +4,7 @@ shop-icon: BLUE_BED
 dynmap-marker: bighouse
 name: Estate2
 max: 2
-price: 16000
+price: 18000
 is-in-shop: false
 groups:
 - housing
@@ -50,22 +50,25 @@ towns:
 period: 3600 #1 hour
 upkeep:
   0:
-    power-input: 5
+    power-input: 4
   1:
     input: #2.11
-    - GOLDEN_CARROT*5  # 120 or 1.87 stacks / day
-    - GOLDEN_APPLE*1 # 24 / day
-    payout: 40.8 # $980 / day
+      - GOLDEN_CARROT*1  # 24 / day
+    payout: 10.4 # $249.6 / day
   2:
     input:
-    - PUMPKIN_PIE*1 # 24 stacks / day
-    payout: 20.8 # $500 / day
+      - PUMPKIN_PIE # 24 stacks / day
+    payout: 11.4 # $273.6 / day
   3:
     input:
-    - RABBIT_STEW # 24 stacks / day
-    payout: 20 # $480 / day
-    exp: 1
+      - GOLDEN_APPLE*1 # 24 / day
+    payout: 10 # $240 / day
   4:
     input:
-    - CAKE # 24 / day
-    payout: 18.2 # 437 / day
+      - CAKE # 24 / day
+    payout: 10.26 # 246.24 / day
+  5:
+    input:
+    - RABBIT_STEW # 24 stacks / day
+    payout: 10.25 # $246 / day
+    exp: 1

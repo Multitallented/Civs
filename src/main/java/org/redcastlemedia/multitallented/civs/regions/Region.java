@@ -744,18 +744,21 @@ public class Region {
     }
 
     public boolean runUpkeep(boolean checkTick) {
-        if (!missingBlocks.isEmpty()) {
+        ItemManager itemManager = ItemManager.getInstance();
+        RegionType regionType = (RegionType) itemManager.getItemType(getType());
+
+        if (regionType.getUpkeeps().isEmpty() || !missingBlocks.isEmpty()) {
             return false;
         }
         if (checkTick && !shouldTick()) {
             return false;
         }
+        if (checkTick) {
+            tick();
+        }
         if (ConfigManager.getInstance().isDisableRegionsInUnloadedChunks() && !Util.isChunkLoadedAt(getLocation())) {
             return false;
         }
-
-        ItemManager itemManager = ItemManager.getInstance();
-        RegionType regionType = (RegionType) itemManager.getItemType(getType());
 
         Location location = getLocation();
         boolean hadUpkeep = false;
@@ -780,6 +783,10 @@ public class Region {
                 RegionManager.getInstance().addCheckedRegion(this);
             }
             if (needsItems && (chestInventory == null || !chestInventory.isValid())) {
+                if (ConfigManager.getInstance().isWarningLogger()) {
+                    Civs.logger.log(Level.WARNING, "{0} has an invalid chestInventory {1}x {2}y {3}z",
+                            new Object[] {type, x, y, z});
+                }
                 continue;
             }
             boolean containsReagents = !needsItems || Util.containsItems(regionUpkeep.getReagents(), chestInventory);
