@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,7 +18,6 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
@@ -44,7 +44,7 @@ public class SpellListMenu extends CustomMenu {
         CivClass selectedClass = null;
         if (params.containsKey(Constants.CLASS)) {
             for (CivClass civClass : civilian.getCivClasses()) {
-                if (civClass.getId() == Integer.parseInt(params.get(Constants.CLASS))) {
+                if (civClass.getId().equals(UUID.fromString(params.get(Constants.CLASS)))) {
                     selectedClass = civClass;
                     CivItem civItem = ItemManager.getInstance().getItemType(selectedClass.getType());
                     data.put("classTypeName", civItem.getDisplayName(player));

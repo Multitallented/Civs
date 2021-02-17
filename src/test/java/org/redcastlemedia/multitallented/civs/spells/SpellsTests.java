@@ -52,7 +52,7 @@ public class SpellsTests extends TestUtil {
 
     @Test
     public void defaultClassShouldHaveSpellsAvailableInSlot2() {
-        CivClass civClass = new CivClass(0, TestUtil.player.getUniqueId(), "default");
+        CivClass civClass = new CivClass(UUID.randomUUID(), TestUtil.player.getUniqueId(), "default");
         civClass.resetSpellSlotOrder();
         ClassType classType = (ClassType) ItemManager.getInstance().getItemType("default");
         assertFalse(classType.getSpellSlots().isEmpty());
@@ -110,7 +110,7 @@ public class SpellsTests extends TestUtil {
 
     @Test
     public void alchemistClassShouldHaveSpellsAvailableInSlot2() {
-        CivClass civClass = new CivClass(0, TestUtil.player.getUniqueId(), "alchemist");
+        CivClass civClass = new CivClass(UUID.randomUUID(), TestUtil.player.getUniqueId(), "alchemist");
         civClass.resetSpellSlotOrder();
         ClassType classType = (ClassType) ItemManager.getInstance().getItemType("alchemist");
         assertFalse(classType.getSpellSlots().isEmpty());
