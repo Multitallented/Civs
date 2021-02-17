@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
@@ -22,8 +23,9 @@ public class CivClass {
     private final String type;
     @Getter
     private final UUID uuid;
-    @Getter
-    private final UUID id;
+    @Deprecated
+    private int id;
+    private UUID classId = UUID.randomUUID();
     @Setter
     private int manaPerSecond;
     @Setter
@@ -38,7 +40,7 @@ public class CivClass {
     private Map<Integer, Integer> spellSlotOrder = new HashMap<>();
 
     public CivClass(UUID id, UUID uuid, String type) {
-        this.id = id;
+        this.classId = id;
         this.uuid = uuid;
         this.type = type;
         this.manaPerSecond = -1;
@@ -51,6 +53,14 @@ public class CivClass {
             return classType.getMaxMana();
         }
         return maxMana;
+    }
+
+    @NotNull
+    public UUID getId() {
+        if (this.classId == null) {
+            this.classId = UUID.randomUUID();
+        }
+        return this.classId;
     }
 
     public int getManaPerSecond() {

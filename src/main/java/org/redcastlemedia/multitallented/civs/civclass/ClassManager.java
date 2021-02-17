@@ -54,18 +54,18 @@ public class ClassManager {
                 try {
                     FileConfiguration classConfig = new YamlConfiguration();
                     classConfig.load(file);
-                    UUID id = null;
-                    try {
-                        id = UUID.fromString(classConfig.getString("id"));
-                    } catch (Exception e) {
-                        id = UUID.randomUUID();
+                    UUID classId;
+                    if (classConfig.isSet("classId")) {
+                        classId = UUID.fromString(classConfig.getString("classId"));
+                    } else {
+                        classId = UUID.randomUUID();
                     }
                     UUID uuid = UUID.fromString(classConfig.getString("uuid"));
                     String className = classConfig.getString("type");
                     int manaPerSecond = classConfig.getInt("mana-per-second", 1);
                     int maxMana = classConfig.getInt("max-mana", 100);
 
-                    CivClass civClass = new CivClass(id, uuid, className);
+                    CivClass civClass = new CivClass(classId, uuid, className);
                     civClass.setManaPerSecond(manaPerSecond);
                     civClass.setMaxMana(maxMana);
                     if (classConfig.getBoolean("selected", false)) {
@@ -119,18 +119,18 @@ public class ClassManager {
         if (!classFolder.exists()) {
             classFolder.mkdir();
         }
-        File classFile = new File(classFolder, civClass.getId() + ".yml");
+        File classFile = new File(classFolder, civClass.getId().toString() + ".yml");
         if (!classFile.exists()) {
             try {
                 classFile.createNewFile();
             } catch (IOException io) {
-                Civs.logger.severe("Unable to create class file " + civClass.getId() + ".yml");
+                Civs.logger.severe("Unable to create class file " + civClass.getId().toString() + ".yml");
                 return;
             }
         }
         FileConfiguration config = new YamlConfiguration();
         try {
-            config.set("id", civClass.getId());
+            config.set("id", civClass.getId().toString());
             config.set("type", civClass.getType());
             config.set("uuid", civClass.getUuid().toString());
             config.set("mana-per-second", civClass.getManaPerSecond());
@@ -149,7 +149,7 @@ public class ClassManager {
 
             config.save(classFile);
         } catch (Exception e) {
-            Civs.logger.severe("Unable to save class file " + civClass.getId() + ".yml");
+            Civs.logger.severe("Unable to save class file " + civClass.getId().toString() + ".yml");
             return;
         }
     }
@@ -226,7 +226,7 @@ public class ClassManager {
         if (!classFolder.exists()) {
             classFolder.mkdir();
         }
-        File classFile = new File(classFolder, civClass.getId() + ".yml");
+        File classFile = new File(classFolder, civClass.getId().toString() + ".yml");
         if (classFile.exists()) {
             if (!classFile.delete()) {
                 Civs.logger.log(Level.SEVERE, "Unable to delete class {0}", classFile.getName());

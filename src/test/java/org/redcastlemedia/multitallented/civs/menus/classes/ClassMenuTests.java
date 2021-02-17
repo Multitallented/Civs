@@ -33,7 +33,7 @@ public class ClassMenuTests extends TestUtil {
         civClass = civilian.getCurrentClass();
         if (civClass == null) {
             String defaultClassName = ConfigManager.getInstance().getDefaultClass();
-            civClass = new CivClass(new UUID(1, 9), player.getUniqueId(), defaultClassName);
+            civClass = new CivClass(UUID.randomUUID(), player.getUniqueId(), defaultClassName);
         }
         civClass.resetSpellSlotOrder();
     }
