@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs.menus.classes;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -25,7 +26,7 @@ public class ClassMenuTests extends TestUtil {
         civClass = civilian.getCurrentClass();
         if (civClass == null) {
             String defaultClassName = ConfigManager.getInstance().getDefaultClass();
-            civClass = new CivClass(0, player.getUniqueId(), defaultClassName);
+            civClass = new CivClass(UUID.randomUUID(), player.getUniqueId(), defaultClassName);
         }
         civClass.resetSpellSlotOrder();
     }

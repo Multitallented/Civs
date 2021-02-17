@@ -54,13 +54,18 @@ public class ClassManager {
                 try {
                     FileConfiguration classConfig = new YamlConfiguration();
                     classConfig.load(file);
-                    int id = classConfig.getInt("id");
+                    UUID classId;
+                    if (classConfig.isSet("classId")) {
+                        classId = UUID.fromString(classConfig.getString("classId"));
+                    } else {
+                        classId = UUID.randomUUID();
+                    }
                     UUID uuid = UUID.fromString(classConfig.getString("uuid"));
                     String className = classConfig.getString("type");
                     int manaPerSecond = classConfig.getInt("mana-per-second", 1);
                     int maxMana = classConfig.getInt("max-mana", 100);
 
-                    CivClass civClass = new CivClass(id, uuid, className);
+                    CivClass civClass = new CivClass(classId, uuid, className);
                     civClass.setManaPerSecond(manaPerSecond);
                     civClass.setMaxMana(maxMana);
                     if (classConfig.getBoolean("selected", false)) {
@@ -244,7 +249,7 @@ public class ClassManager {
 
     public CivClass createDefaultClass(UUID uuid) {
         String className = ConfigManager.getInstance().getDefaultClass();
-        CivClass civClass = new CivClass(getNextId(), uuid, className);
+        CivClass civClass = new CivClass(UUID.randomUUID(), uuid, className);
         civClass.resetSpellSlotOrder();
         return civClass;
     }
@@ -257,7 +262,7 @@ public class ClassManager {
         if (!civilian.getCombatBar().isEmpty()) {
             SpellUtil.removeCombatBar(player, civilian);
         }
-        CivClass civClass = new CivClass(getNextId(), civilian.getUuid(), classType.getProcessedName());
+        CivClass civClass = new CivClass(UUID.randomUUID(), civilian.getUuid(), classType.getProcessedName());
         civClass.resetSpellSlotOrder();
         civClass.setMaxMana(classType.getMaxMana());
         civClass.setManaPerSecond(classType.getManaPerSecond());
