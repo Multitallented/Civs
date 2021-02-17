@@ -13,6 +13,7 @@ import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
@@ -102,7 +103,7 @@ public class ClassMenu extends CustomMenu {
             int length = menuIcon.getKey().length();
             CivClass civClass = (CivClass) MenuManager.getData(civilian.getUuid(), Constants.CLASS);
             int index = Integer.parseInt(menuIcon.getKey().substring(length - 1, length));
-            if ((index - 1) * 4 > civClass.getLevel()) {
+            if ((index - 1) * 6 > civClass.getLevel()) {
                 return new ItemStack(Material.AIR);
             }
             int mappedIndex = civClass.getSpellSlotOrder().getOrDefault(index, index);

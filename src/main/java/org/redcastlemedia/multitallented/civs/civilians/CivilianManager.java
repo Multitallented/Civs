@@ -293,12 +293,12 @@ public class CivilianManager {
                 }
                 civConfig.set("items." + civItem.getProcessedName(), civItem.getQty());
             }
-            List<UUID> classes = new ArrayList<>();
+            List<String> classes = new ArrayList<>();
             for (CivClass civClass : civilian.getCivClasses()) {
                 if (civClass == null) {
                     continue;
                 }
-                classes.add(civClass.getId());
+                classes.add(civClass.getId().toString());
             }
             for (Skill skill : civilian.getSkills().values()) {
                 for (Map.Entry<String, Integer> accomplishment : skill.getAccomplishments().entrySet()) {
