@@ -54,13 +54,18 @@ public class ClassManager {
                 try {
                     FileConfiguration classConfig = new YamlConfiguration();
                     classConfig.load(file);
-                    int id = classConfig.getInt("id");
+                    UUID classId;
+                    if (classConfig.isSet("classId")) {
+                        classId = UUID.fromString(classConfig.getString("classId"));
+                    } else {
+                        classId = UUID.randomUUID();
+                    }
                     UUID uuid = UUID.fromString(classConfig.getString("uuid"));
                     String className = classConfig.getString("type");
                     int manaPerSecond = classConfig.getInt("mana-per-second", 1);
                     int maxMana = classConfig.getInt("max-mana", 100);
 
-                    CivClass civClass = new CivClass(id, uuid, className);
+                    CivClass civClass = new CivClass(classId, uuid, className);
                     civClass.setManaPerSecond(manaPerSecond);
                     civClass.setMaxMana(maxMana);
                     if (classConfig.getBoolean("selected", false)) {
@@ -99,7 +104,7 @@ public class ClassManager {
             for (Civilian civilian : CivilianManager.getInstance().getCivilians()) {
                 if (civilian.getCurrentClass() == null) {
                     if (civilian.getCivClasses().isEmpty()) {
-                        civilian.setCurrentClass(createDefaultClass(civilian.getUuid()));
+                        createDefaultClass(civilian.getUuid());
                     } else {
                         civilian.setCurrentClass(civilian.getCivClasses().iterator().next());
                     }
@@ -110,22 +115,25 @@ public class ClassManager {
         }
     }
     public void saveClass(CivClass civClass) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells()) {
+            return;
+        }
         File classFolder = new File(Civs.dataLocation, "class-data");
         if (!classFolder.exists()) {
             classFolder.mkdir();
         }
-        File classFile = new File(classFolder, civClass.getId() + ".yml");
+        File classFile = new File(classFolder, civClass.getId().toString() + ".yml");
         if (!classFile.exists()) {
             try {
                 classFile.createNewFile();
             } catch (IOException io) {
-                Civs.logger.severe("Unable to create class file " + civClass.getId() + ".yml");
+                Civs.logger.severe("Unable to create class file " + civClass.getId().toString() + ".yml");
                 return;
             }
         }
         FileConfiguration config = new YamlConfiguration();
         try {
-            config.set("id", civClass.getId());
+            config.set("id", civClass.getId().toString());
             config.set("type", civClass.getType());
             config.set("uuid", civClass.getUuid().toString());
             config.set("mana-per-second", civClass.getManaPerSecond());
@@ -144,22 +152,9 @@ public class ClassManager {
 
             config.save(classFile);
         } catch (Exception e) {
-            Civs.logger.severe("Unable to save class file " + civClass.getId() + ".yml");
+            Civs.logger.severe("Unable to save class file " + civClass.getId().toString() + ".yml");
             return;
         }
-    }
-    public int getNextId() {
-        int i=0;
-        File classFolder = new File(Civs.dataLocation, "class-data");
-        if (!classFolder.exists()) {
-            return 0;
-        }
-        File classFile = new File(classFolder, i + ".yml");
-        while(classFile.exists()) {
-            i++;
-            classFile = new File(classFolder, i + ".yml");
-        }
-        return i;
     }
 
     public static ClassManager getInstance() {
@@ -193,10 +188,7 @@ public class ClassManager {
                 ClassManager.getInstance().switchClass(civilian, civilian.getCivClasses().iterator().next());
             }
         } else {
-            CivClass civClass1 = createDefaultClass(civilian.getUuid());
-            civClass1.setSelectedClass(true);
-            civilian.getCivClasses().add(civClass1);
-            civilian.setCurrentClass(civClass1);
+            createDefaultClass(civilian.getUuid());
         }
         CivClass civClass = civilian.getCurrentClass();
         for (String spellName : civClass.getSelectedSpells().values()) {
@@ -234,7 +226,7 @@ public class ClassManager {
         if (!classFolder.exists()) {
             classFolder.mkdir();
         }
-        File classFile = new File(classFolder, civClass.getId() + ".yml");
+        File classFile = new File(classFolder, civClass.getId().toString() + ".yml");
         if (classFile.exists()) {
             if (!classFile.delete()) {
                 Civs.logger.log(Level.SEVERE, "Unable to delete class {0}", classFile.getName());
@@ -244,9 +236,10 @@ public class ClassManager {
 
     public CivClass createDefaultClass(UUID uuid) {
         String className = ConfigManager.getInstance().getDefaultClass();
-        CivClass civClass = new CivClass(getNextId(), uuid, className);
-        civClass.resetSpellSlotOrder();
-        return civClass;
+        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        ClassType classType = (ClassType) ItemManager.getInstance().getItemType(className);
+        createNewClass(civilian, classType);
+        return civilian.getCurrentClass();
     }
 
     public void createNewClass(Civilian civilian, ClassType classType) {
@@ -257,12 +250,14 @@ public class ClassManager {
         if (!civilian.getCombatBar().isEmpty()) {
             SpellUtil.removeCombatBar(player, civilian);
         }
-        CivClass civClass = new CivClass(getNextId(), civilian.getUuid(), classType.getProcessedName());
+        CivClass civClass = new CivClass(UUID.randomUUID(), civilian.getUuid(), classType.getProcessedName());
         civClass.resetSpellSlotOrder();
         civClass.setMaxMana(classType.getMaxMana());
         civClass.setManaPerSecond(classType.getManaPerSecond());
-        civilian.getCurrentClass().setSelectedClass(false);
-        saveClass(civilian.getCurrentClass());
+        if (civilian.getCurrentClass() != null) {
+            civilian.getCurrentClass().setSelectedClass(false);
+            saveClass(civilian.getCurrentClass());
+        }
         civClass.setSelectedClass(true);
         civilian.setCurrentClass(civClass);
         civilian.getCivClasses().add(civClass);

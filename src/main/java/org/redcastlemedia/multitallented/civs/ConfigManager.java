@@ -10,11 +10,7 @@ import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 import lombok.Getter;
@@ -164,14 +160,18 @@ public class ConfigManager {
     @Getter boolean huntCrossWorld;
     @Getter boolean silentExp;
     @Getter boolean deleteInvalidRegions;
-    @Getter boolean regionStandby;
     @Getter boolean skinsInMenu;
     @Getter boolean useBounties;
     @Getter boolean warningLogger;
+    @Getter double percentPowerForUpgrade;
     @Getter boolean showKillStreakMessages;
 
     @Getter
     String chatChannelFormat;
+    @Getter
+    private int residenciesCount;
+    @Getter
+    private NavigableMap<Integer, String> residenciesCountOverride;
 
     public ConfigManager() {
         loadDefaults();
@@ -409,11 +409,11 @@ public class ConfigManager {
             keepRegionChunksLoaded = config.getBoolean("keep-region-chunks-loaded", true);
             silentExp = config.getBoolean("no-exp-chat-messages", false);
             deleteInvalidRegions = config.getBoolean("delete-invalid-regions", false);
-            regionStandby = config.getBoolean("region-standby", false);
             lineLengthMap = new HashMap<>();
             useBounties = config.getBoolean("use-bounties", true);
             useSkills = config.getBoolean("use-skills", true);
             warningLogger = config.getBoolean("show-warning-logs", false);
+            percentPowerForUpgrade = config.getDouble("percent-power-for-town-upgrade", 0.1);
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
                     lineLengthMap.put(key, config.getInt("line-break-length-per-language." + key, lineBreakLength));
@@ -436,6 +436,17 @@ public class ConfigManager {
                 chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, Material.GRASS.name());
             }
             chatChannelFormat = config.getString("chat-channel-format", "[$channel$]$player$: $message$");
+
+            if (config.isSet("player-residencies-count")) {
+                residenciesCount = config.getInt("player-residencies-count");
+            }
+
+            if (config.isSet("player-residencies-count-override")) {
+                for (String count : config.getConfigurationSection("player-residencies-count-override").getKeys(false)) {
+                    String perm = config.getString("player-residencies-count-override." + count);
+                    residenciesCountOverride.put(Integer.parseInt(count), perm);
+                }
+            }
 
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read from config.yml", e);
@@ -481,11 +492,11 @@ public class ConfigManager {
 
     private void loadDefaults() {
         warningLogger = false;
+        percentPowerForUpgrade = 0.1;
         huntCrossWorld = false;
         skinsInMenu = true;
         useBounties = true;
         deleteInvalidRegions = false;
-        regionStandby = false;
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         silentExp = false;
         useSkills = true;
@@ -578,6 +589,8 @@ public class ConfigManager {
         levelList = new ArrayList<>();
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         allowChangingOfGovType = false;
+        residenciesCount = -1;
+        residenciesCountOverride = new TreeMap<>();
     }
 
     public static ConfigManager getInstance() {

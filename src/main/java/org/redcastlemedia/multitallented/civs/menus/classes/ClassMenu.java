@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus.classes;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,6 +13,7 @@ import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
@@ -31,11 +33,11 @@ public class ClassMenu extends CustomMenu {
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
         Map<String, Object> data = new HashMap<>();
         CivClass civClass = null;
-        if (!params.containsKey(Constants.CLASS)) {
+        if (!params.containsKey(Constants.CLASS) || params.get(Constants.CLASS).equals("$class$")) {
             civClass = civilian.getCurrentClass();
         } else {
             for (CivClass cClass: civilian.getCivClasses()) {
-                if (cClass.getId() == Integer.parseInt(params.get(Constants.CLASS))) {
+                if (cClass.getId().equals(UUID.fromString(params.get(Constants.CLASS)))) {
                     civClass = cClass;
                 }
             }
@@ -101,7 +103,7 @@ public class ClassMenu extends CustomMenu {
             int length = menuIcon.getKey().length();
             CivClass civClass = (CivClass) MenuManager.getData(civilian.getUuid(), Constants.CLASS);
             int index = Integer.parseInt(menuIcon.getKey().substring(length - 1, length));
-            if ((index - 1) * 4 > civClass.getLevel()) {
+            if ((index - 1) * 6 > civClass.getLevel()) {
                 return new ItemStack(Material.AIR);
             }
             int mappedIndex = civClass.getSpellSlotOrder().getOrDefault(index, index);

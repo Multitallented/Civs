@@ -32,15 +32,25 @@ public class AcceptInviteCommand extends CivCommand {
         //0 accept
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getInviteTown(player.getUniqueId());
-        if (town != null && townManager.acceptInvite(player.getUniqueId())) {
-            for (UUID uuid : town.getPeople().keySet()) {
-                Player player1 = Bukkit.getPlayer(uuid);
-                if (player1 != null && player1.isOnline()) {
-                    player1.sendMessage(Civs.getPrefix() + localeManager.getTranslation(
-                            player1,
-                            "new-town-member"
-                    ).replace("$1", player.getDisplayName()).replace("$2", town.getName()));
+        if (town != null) {
+            if (townManager.canJoinAnotherTown(player)) {
+                if (townManager.acceptInvite(player.getUniqueId())) {
+                    for (UUID uuid : town.getPeople().keySet()) {
+                        Player player1 = Bukkit.getPlayer(uuid);
+                        if (player1 != null && player1.isOnline()) {
+                            player1.sendMessage(Civs.getPrefix() + localeManager.getTranslation(
+                                    player1,
+                                    "new-town-member"
+                            ).replace("$1", player.getDisplayName()).replace("$2", town.getName()));
+                        }
+                    }
+                } else {
+                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
+                            "no-invite"));
                 }
+            } else {
+                player.sendMessage(Civs.getPrefix() +
+                        localeManager.getTranslation(player, "residence-limit-reached").replace("$1", town.getName()));
             }
         } else {
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
