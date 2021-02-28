@@ -168,6 +168,7 @@ public class ConfigManager {
     @Getter boolean skinsInMenu;
     @Getter boolean useBounties;
     @Getter boolean warningLogger;
+    @Getter boolean showKillStreakMessages;
 
     @Getter
     String chatChannelFormat;
@@ -288,6 +289,7 @@ public class ConfigManager {
             expModifier = config.getDouble("exp-modifier", 0.2);
             expBase = config.getInt("exp-base", 100);
             defaultClass = config.getString("default-class", "default");
+            showKillStreakMessages = config.getBoolean("show-killstreak-messages", true);
             folderIcons = new HashMap<>();
             ConfigurationSection section2 = config.getConfigurationSection("folders");
             if (section2 != null) {
@@ -560,6 +562,7 @@ public class ConfigManager {
         portSlowWarmup = true;
         combatTagDuration = 60;
         portDuringCombat = false;
+        showKillStreakMessages = false;
         townRings = true;
         karmaDepreciatePeriod = 43200;
         combatLogPenalty = 80;

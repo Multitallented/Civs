@@ -530,7 +530,7 @@ public class DeathListener implements Listener {
         double killStreakBonus = ConfigManager.getInstance().getPointsPerKillStreak() * damagerCiv.getKillStreak();
 
         econBonus += damagerCiv.getKillStreak() * ConfigManager.getInstance().getMoneyPerKillStreak();
-        if (damagerCiv.getKillStreak() >= 3) {
+        if (damagerCiv.getKillStreak() >= 3 && ConfigManager.getInstance().isShowKillStreakMessages()) {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.sendMessage(Civs.getPrefix() + localeManager.getTranslation(p, "kill-streak")
                         .replace("$1", damager.getDisplayName())
@@ -541,7 +541,7 @@ public class DeathListener implements Listener {
 
         double killJoyBonus = ConfigManager.getInstance().getPointsPerKillJoy() * dyingCiv.getKillStreak();
         econBonus += ConfigManager.getInstance().getMoneyPerKillJoy() * dyingCiv.getKillStreak();
-        if (dyingCiv.getKillStreak() > 2) {
+        if (dyingCiv.getKillStreak() > 2 && ConfigManager.getInstance().isShowKillStreakMessages()) {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.sendMessage(Civs.getPrefix() + localeManager.getTranslation(p, "kill-joy")
                         .replace("$1", player.getDisplayName())
