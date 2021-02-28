@@ -103,7 +103,7 @@ allow-teleporting-out-of-hostile-towns: true
 
 ##Should the town enter and exit messages be titles (or chat)
 enter-exit-messages-use-titles: true
-
+show-killstreak-messages: true
 points:
   killstreak: 0.1
   killjoy: 0.2
