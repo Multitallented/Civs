@@ -253,6 +253,9 @@ public class CivilianManager {
         return civilian;
     }
     public void saveCivilian(Civilian civilian) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         File civilianFolder = new File(Civs.dataLocation, "players");
         if (!civilianFolder.exists()) {
             if (!civilianFolder.mkdir()) {
