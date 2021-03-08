@@ -241,7 +241,7 @@ tutorial:
   use-guide: true
 top-guide-spacer: "-----------------Civs-----------------"
 bottom-guide-spacer: "--------------------------------------"
-civs-chat-prefix: "@{GREEN}[Civs]"
+civs-chat-prefix: "@{GREEN}[Civs] "
 prefix-all-text: ""
 civs-item-prefix: "Civs"
 
