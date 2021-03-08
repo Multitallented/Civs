@@ -373,6 +373,7 @@ public class TutorialManager {
         UPKEEP,
         KILL,
         BUY,
-        MENU_ACTION
+        MENU_ACTION,
+        CHOOSE
     }
 }
