@@ -107,7 +107,7 @@ use-classes-and-spells: false
 
 ##Should the town enter and exit messages be titles (or chat)
 enter-exit-messages-use-titles: true
-
+show-killstreak-messages: true
 points:
   killstreak: 0.1
   killjoy: 0.2
@@ -245,7 +245,7 @@ tutorial:
   use-guide: true
 top-guide-spacer: "-----------------Civs-----------------"
 bottom-guide-spacer: "--------------------------------------"
-civs-chat-prefix: "@{GREEN}[Civs]"
+civs-chat-prefix: "@{GREEN}[Civs] "
 prefix-all-text: ""
 civs-item-prefix: "Civs"
 

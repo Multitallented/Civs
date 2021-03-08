@@ -104,7 +104,7 @@ public class ClassManager {
             for (Civilian civilian : CivilianManager.getInstance().getCivilians()) {
                 if (civilian.getCurrentClass() == null) {
                     if (civilian.getCivClasses().isEmpty()) {
-                        civilian.setCurrentClass(createDefaultClass(civilian.getUuid()));
+                        createDefaultClass(civilian.getUuid());
                     } else {
                         civilian.setCurrentClass(civilian.getCivClasses().iterator().next());
                     }
@@ -115,6 +115,9 @@ public class ClassManager {
         }
     }
     public void saveClass(CivClass civClass) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells()) {
+            return;
+        }
         File classFolder = new File(Civs.dataLocation, "class-data");
         if (!classFolder.exists()) {
             classFolder.mkdir();
@@ -185,10 +188,7 @@ public class ClassManager {
                 ClassManager.getInstance().switchClass(civilian, civilian.getCivClasses().iterator().next());
             }
         } else {
-            CivClass civClass1 = createDefaultClass(civilian.getUuid());
-            civClass1.setSelectedClass(true);
-            civilian.getCivClasses().add(civClass1);
-            civilian.setCurrentClass(civClass1);
+            createDefaultClass(civilian.getUuid());
         }
         CivClass civClass = civilian.getCurrentClass();
         for (String spellName : civClass.getSelectedSpells().values()) {
@@ -236,9 +236,10 @@ public class ClassManager {
 
     public CivClass createDefaultClass(UUID uuid) {
         String className = ConfigManager.getInstance().getDefaultClass();
-        CivClass civClass = new CivClass(UUID.randomUUID(), uuid, className);
-        civClass.resetSpellSlotOrder();
-        return civClass;
+        Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
+        ClassType classType = (ClassType) ItemManager.getInstance().getItemType(className);
+        createNewClass(civilian, classType);
+        return civilian.getCurrentClass();
     }
 
     public void createNewClass(Civilian civilian, ClassType classType) {
@@ -253,8 +254,10 @@ public class ClassManager {
         civClass.resetSpellSlotOrder();
         civClass.setMaxMana(classType.getMaxMana());
         civClass.setManaPerSecond(classType.getManaPerSecond());
-        civilian.getCurrentClass().setSelectedClass(false);
-        saveClass(civilian.getCurrentClass());
+        if (civilian.getCurrentClass() != null) {
+            civilian.getCurrentClass().setSelectedClass(false);
+            saveClass(civilian.getCurrentClass());
+        }
         civClass.setSelectedClass(true);
         civilian.setCurrentClass(civClass);
         civilian.getCivClasses().add(civClass);
