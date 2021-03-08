@@ -176,6 +176,7 @@ public class ConfigManager {
     @Getter boolean warningLogger;
     @Getter Map<String, String> regionLockedNations;
     @Getter double percentPowerForUpgrade;
+    @Getter boolean showKillStreakMessages;
 
     @Getter
     String chatChannelFormat;
@@ -302,6 +303,7 @@ public class ConfigManager {
             expModifier = config.getDouble("exp-modifier", 0.2);
             expBase = config.getInt("exp-base", 100);
             defaultClass = config.getString("default-class", "default");
+            showKillStreakMessages = config.getBoolean("show-killstreak-messages", true);
             folderIcons = new HashMap<>();
             ConfigurationSection section2 = config.getConfigurationSection("folders");
             if (section2 != null) {
@@ -390,7 +392,7 @@ public class ConfigManager {
             allianceClaimCaptureTime = config.getLong("alliance-claim-capture-seconds", 180);
             topGuideSpacer = config.getString("top-guide-spacer", "-----------------Civs-----------------");
             bottomGuideSpacer = config.getString("bottom-guide-spacer", "--------------------------------------");
-            civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs]");
+            civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs] ");
             prefixAllText = Util.parseColors(config.getString("prefix-all-text", ""));
             civsItemPrefix = config.getString("civs-item-prefix", "Civs");
             skinsInMenu = config.getBoolean("show-player-skins-in-menus", true);
@@ -573,7 +575,7 @@ public class ConfigManager {
         prefixAllText = "";
         powerPerNationClaim = 1;
         claimMaterial = "REDSTONE*64";
-        civsChatPrefix = "@{GREEN}[Civs]";
+        civsChatPrefix = "@{GREEN}[Civs] ";
         civsItemPrefix = "Civs";
         capitalismVotingCost = 200;
         allianceClaimCaptureTime = 180;
@@ -620,6 +622,7 @@ public class ConfigManager {
         portSlowWarmup = true;
         combatTagDuration = 60;
         portDuringCombat = false;
+        showKillStreakMessages = false;
         townRings = true;
         karmaDepreciatePeriod = 43200;
         combatLogPenalty = 80;

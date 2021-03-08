@@ -278,9 +278,9 @@ public class Civs extends JavaPlugin {
         return worldGuard;
     }
     public static String getPrefix() {
-        return ConfigManager.getInstance().getCivsChatPrefix() + " ";
+        return ConfigManager.getInstance().getCivsChatPrefix();
     }
-    public static String getRawPrefix() { return ConfigManager.getInstance().civsChatPrefix + " ";}
+    public static String getRawPrefix() { return ConfigManager.getInstance().civsChatPrefix;}
     public static synchronized Civs getInstance() {
         return civs;
     }
