@@ -376,7 +376,7 @@ public class ConfigManager {
             capitalismVotingCost = config.getDouble("capitalism-voting-cost", 200);
             topGuideSpacer = config.getString("top-guide-spacer", "-----------------Civs-----------------");
             bottomGuideSpacer = config.getString("bottom-guide-spacer", "--------------------------------------");
-            civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs]");
+            civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs] ");
             prefixAllText = Util.parseColors(config.getString("prefix-all-text", ""));
             civsItemPrefix = config.getString("civs-item-prefix", "Civs");
             skinsInMenu = config.getBoolean("show-player-skins-in-menus", true);
@@ -527,7 +527,7 @@ public class ConfigManager {
         announcementPeriod = 240;
         useAnnouncements = true;
         prefixAllText = "";
-        civsChatPrefix = "@{GREEN}[Civs]";
+        civsChatPrefix = "@{GREEN}[Civs] ";
         civsItemPrefix = "Civs";
         capitalismVotingCost = 200;
         daysBetweenVotes = 7;
