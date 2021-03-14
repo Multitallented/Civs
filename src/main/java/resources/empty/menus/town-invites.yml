@@ -7,11 +7,17 @@ name: TownInvites
 #  decline-all-invites
 items:
   decline:
-    index: 4
+    index: 0
     name: decline-all
+    icon: BARRIER
     actions:
       - decline-all-invites
       - back
+  inviteicon:
+    index: 4
+    name: alliances
+    actions: []
+    icon: GOLDEN_SWORD
   back:
     index: 8
   invites:

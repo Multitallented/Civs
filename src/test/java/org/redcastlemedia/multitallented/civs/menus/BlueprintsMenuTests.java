@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
@@ -40,13 +41,12 @@ public class BlueprintsMenuTests extends TestUtil {
         MenuManager.clearData(TestUtil.player.getUniqueId());
         blueprintsMenu = MenuManager.menus.get("blueprints");
         this.inventory = new InventoryImpl();
-
         this.civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
         civilian.getStashItems().clear();
         civilian.getStashItems().put("shelter", 1);
     }
 
-    @Test @Ignore
+    @Test @Ignore // TODO fix this
     public void stashRegionItemsShouldBeEmpty() {
         civilian.getStashItems().put("coal_mine", 1);
         blueprintsMenu.createMenu(this.civilian, new HashMap<>());
@@ -97,7 +97,7 @@ public class BlueprintsMenuTests extends TestUtil {
         itemStack.getItemMeta().setDisplayName("Civs Shelter");
         ArrayList<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
-        lore.add("Civs Shelter");
+        lore.add(ChatColor.BLACK + "Shelter");
         itemStack.getItemMeta().setLore(lore);
         ItemStackImpl itemStack2 = new ItemStackImpl(Material.CHEST, 2);
         itemStack2.getItemMeta().setDisplayName("Civs Shelter");
@@ -114,7 +114,7 @@ public class BlueprintsMenuTests extends TestUtil {
         ItemStackImpl itemStack = new ItemStackImpl(Material.CHEST, 1);
         ArrayList<String> lore = new ArrayList<>();
         lore.add("something");
-        lore.add("Civs Cobble");
+        lore.add(ChatColor.BLACK +  "cobble");
         ItemMetaImpl itemMeta = new ItemMetaImpl("Civs Cobble", lore);
         itemStack.setItemMeta(itemMeta);
         assertTrue(CivItem.isCivsItem(itemStack));

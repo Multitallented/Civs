@@ -1,6 +1,6 @@
 type: region
 icon: CHEST
-shop-icon: DIAMOND_CHESTPLATE
+shop-icon: NETHERITE_CHESTPLATE
 name: Altar
 price: 100
 max: 1
@@ -9,7 +9,8 @@ groups:
 level: 1
 
 build-reqs:
-- IRON_BLOCK*2
+- DIAMOND_BLOCK
+- IRON_BLOCK
 - REDSTONE_BLOCK
 
 build-radius: 1
@@ -27,11 +28,12 @@ upkeep:
     input:
       - WOODEN_SWORD
     output:
+      - NETHERITE_SWORD
       - DIAMOND_SWORD
       - GOLDEN_SWORD
       - IRON_SWORD
       - EXPERIENCE_BOTTLE*16
-    payout: -100
+    payout: -200
   1:
     input:
       - STICK
@@ -45,11 +47,12 @@ upkeep:
     input:
       - WOODEN_AXE
     output:
+      - NETHERITE_AXE
       - DIAMOND_AXE
       - GOLDEN_AXE
       - IRON_AXE
       - EXPERIENCE_BOTTLE*8
-    payout: -100
+    payout: -200
   3:
     input:
       - KELP
@@ -61,6 +64,10 @@ upkeep:
     input:
       - LEATHER
     output:
+      - NETHERITE_HELMET
+      - NETHERITE_CHESTPLATE
+      - NETHERITE_LEGGINGS
+      - NETHERITE_BOOTS
       - DIAMOND_HELMET
       - DIAMOND_CHESTPLATE
       - DIAMOND_LEGGINGS
@@ -77,5 +84,5 @@ upkeep:
       - LEATHER_CHESTPLATE
       - LEATHER_LEGGINGS
       - LEATHER_BOOTS
-    payout: -200
+    payout: -400
 

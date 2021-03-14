@@ -80,6 +80,8 @@ public class Civilian {
     @Getter @Setter
     private int tutorialIndex;
     @Getter @Setter
+    private Set<String> completedTutorialSteps = new HashSet<>();
+    @Getter @Setter
     private String tutorialPath;
     @Getter @Setter
     private int tutorialProgress;
@@ -271,7 +273,7 @@ public class Civilian {
             rebuildBonus = 1;
         }
         boolean atMax = civItem.getCivMax() != -1 &&
-                civItem.getCivMax() + rebuildBonus <= getCountStashItems(processedName) + getCountNonStashItems(processedName);
+                civItem.getCivMax() <= getCountStashItems(processedName) + getCountNonStashItems(processedName);
         if (atMax) {
             return civItem.getProcessedName();
         }

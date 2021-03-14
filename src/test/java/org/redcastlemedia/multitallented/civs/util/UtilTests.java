@@ -48,6 +48,14 @@ public class UtilTests extends TestUtil {
     }
 
     @Test
+    public void hexColorShouldTranslateProperly() {
+        String parsedColors = Util.parseColors("@{#FF0000}Whatever");
+        assertEquals(ChatColor.of("#FF0000") + "Whatever", parsedColors);
+        String parsedColors2 = Util.parseColors("@{#FF0000}test@{#00FF00}test2");
+        assertEquals(ChatColor.of("#FF0000") + "test" + ChatColor.of("#00FF00") + "test2", parsedColors2);
+    }
+
+    @Test
     public void cvItemFromStringShouldSetValuesProperly() {
         CVItem cvItem = CVItem.createCVItemFromString("COBBLESTONE*2%50");
         assertTrue(cvItem.getMat() == Material.COBBLESTONE && cvItem.getChance() == .5 && cvItem.getQty() == 2);
@@ -86,16 +94,6 @@ public class UtilTests extends TestUtil {
     @Test
     public void addItemsShouldAddProperItems() {
         TestUtil.world.setChunkLoaded(false);
-        List<ItemStack> inventoryContents = new ArrayList<>();
-        inventoryContents.add(new ItemStack(Material.COBBLESTONE, 6));
-        inventoryContents.add(new ItemStack(Material.WOODEN_AXE));
-        inventoryContents.add(new ItemStack(Material.STONE_SWORD));
-        inventoryContents.add(null);
-        inventoryContents.add(null);
-        inventoryContents.add(null);
-        inventoryContents.add(null);
-        inventoryContents.add(null);
-        inventoryContents.add(null);
         List<CVItem> tempList = new ArrayList<>();
         tempList.add(CVItem.createCVItemFromString("GRASS"));
         List<List<CVItem>> returnList = new ArrayList<>();

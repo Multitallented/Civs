@@ -4,7 +4,7 @@
 
     <groupId>org.redcastlemedia.multitallented</groupId>
     <artifactId>civs</artifactId>
-    <version>1.7.5</version>
+    <version>1.8.0</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -44,10 +44,6 @@
             <url>https://repo.janmm14.de/repository/public/</url>
         </repository>
         <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-        <repository>
             <id>reflex.public</id>
             <name>Public Reflex Repository</name>
             <url>https://archiva.reflex.rip/repository/public/</url>
@@ -72,7 +68,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.13.2-R0.1-SNAPSHOT</version>
+            <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!--<dependency>-->

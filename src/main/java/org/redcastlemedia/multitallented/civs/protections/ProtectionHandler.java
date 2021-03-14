@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Container;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Creeper;
@@ -24,7 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Wither;
 import org.bukkit.entity.WitherSkull;
-import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -40,6 +41,8 @@ import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
@@ -48,6 +51,7 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -89,15 +93,27 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 @CivsSingleton
 public class ProtectionHandler implements Listener {
 
-    public static void getInstance() {
-        ProtectionHandler protectionHandler = new ProtectionHandler();
-        Bukkit.getPluginManager().registerEvents(protectionHandler, Civs.getInstance());
+    private static ProtectionHandler instance;
+
+    protected static void setInstance(ProtectionHandler protectionHandler) {
+        instance = protectionHandler;
     }
 
-    @EventHandler
+    public ProtectionHandler() {
+        Bukkit.getPluginManager().registerEvents(this, Civs.getInstance());
+        setInstance(this);
+    }
+
+    public static ProtectionHandler getInstance() {
+        if (instance == null) {
+            new ProtectionHandler();
+        }
+        return instance;
+    }
+
+//    @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
 //        System.out.println("chunk unloaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
-        UnloadedInventoryHandler.getInstance().updateInventoriesInChunk(event.getChunk());
     }
 
     @EventHandler
@@ -106,19 +122,23 @@ public class ProtectionHandler implements Listener {
             DebugLogger.chunkLoads++;
         }
 //        System.out.println("chunk loaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
-        UnloadedInventoryHandler.getInstance().syncAllInventoriesInChunk(event.getChunk());
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPortalCreate(PortalCreateEvent event) {
-        if (event.getReason() != PortalCreateEvent.CreateReason.OBC_DESTINATION) {
+        if (event.getReason() != PortalCreateEvent.CreateReason.NETHER_PAIR) {
             return;
         }
-        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(), null,
+        boolean setCancelled;
+        if (event.getEntity() instanceof Player) {
+            setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(),
+                    (Player) event.getEntity(), RegionEffectConstants.BLOCK_BUILD);
+        } else {
+            setCancelled = event.isCancelled() || shouldBlockAction(event.getBlocks().get(0).getLocation(), null,
                     RegionEffectConstants.BLOCK_BUILD);
+        }
         if (setCancelled) {
-            for (Block block : event.getBlocks()) {
-                BlockState state = block.getState();
+            for (BlockState state : event.getBlocks()) {
                 revertThese.put(state.getLocation(), state.getWorld().getBlockAt(state.getLocation()).getBlockData());
             }
             event.getBlocks().clear();
@@ -183,9 +203,6 @@ public class ProtectionHandler implements Listener {
                     LocaleManager.getInstance().getTranslation(event.getPlayer(), LocaleConstants.REGION_PROTECTED));
         } else {
             checkMiningSkill(civilian, event.getBlock().getType());
-            if (event.getBlock().getType() == Material.CHEST) {
-                UnloadedInventoryHandler.getInstance().deleteUnloadedChestInventory(event.getBlock().getLocation());
-            }
             Region region = regionManager.getRegionAt(location);
             if (region == null) {
                 return;
@@ -336,7 +353,7 @@ public class ProtectionHandler implements Listener {
         }
     }
 
-    private void removeBlockFromMissingBlocks(Region region, Material type) {
+    protected void removeBlockFromMissingBlocks(Region region, Material type) {
         int index1 = -1;
         int index2 = -1;
         for (int i = 0; i < region.getMissingBlocks().size(); i++) {
@@ -489,7 +506,6 @@ public class ProtectionHandler implements Listener {
             event.setCancelled(true);
         }
         if (event.isCancelled() && player != null) {
-            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
             player.sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
         }
@@ -501,6 +517,46 @@ public class ProtectionHandler implements Listener {
             return;
         }
         shouldBlockAction(event.getEntity().getLocation(), null, RegionEffectConstants.BLOCK_BREAK);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onItemFrame(PlayerInteractAtEntityEvent event) {
+        if (EntityType.ITEM_FRAME != event.getRightClicked().getType()) {
+            return;
+        }
+        Player player = event.getPlayer();
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getRightClicked().getLocation(),
+                player, "block_build");
+        if (setCancelled) {
+            event.setCancelled(true);
+            player.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
+
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onItemFrameDamage(EntityDamageEvent event) {
+        if (event.getEntityType() != EntityType.ITEM_FRAME) {
+            return;
+        }
+        Player player = null;
+        if (event instanceof EntityDamageByEntityEvent) {
+            EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) event;
+            if (entityDamageByEntityEvent.getDamager() instanceof Player) {
+                player = (Player) entityDamageByEntityEvent.getDamager();
+            }
+        }
+        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getEntity().getLocation(),
+                player, "chest_use");
+        if (setCancelled) {
+            event.setCancelled(true);
+            if (player != null) {
+                player.sendMessage(Civs.getPrefix() +
+                        LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
+            }
+
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -638,18 +694,20 @@ public class ProtectionHandler implements Listener {
         if (event.getEntity() instanceof Player || event.getEntityType() == EntityType.VILLAGER) {
             return;
         }
-        handleInteract(event.getBlock(), null, event);
+        boolean shouldDeny = handleInteract(event.getBlock(), null);
+        if (shouldDeny) {
+            event.setCancelled(true);
+        }
     }
 
-    private void handleInteract(Block clickedBlock, Player player, Cancellable event) {
+    private boolean handleInteract(Block clickedBlock, Player player) {
         if (clickedBlock == null || clickedBlock.getType() == Material.CRAFTING_TABLE) {
-            return;
+            return false;
         }
         if (player != null && CVItem.isCivsItem(player.getInventory().getItemInMainHand())) {
             CivItem civItem = CivItem.getFromItemStack(player.getInventory().getItemInMainHand());
             if (civItem.getItemType() == CivItem.ItemType.SPELL) {
-                event.setCancelled(true);
-                return;
+                return true;
             }
         }
         Material mat = clickedBlock.getType();
@@ -673,28 +731,33 @@ public class ProtectionHandler implements Listener {
                 mat == Material.ACACIA_FENCE_GATE ||
                 mat == Material.JUNGLE_FENCE_GATE ||
                 mat == Material.BIRCH_FENCE_GATE) {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.DOOR_USE, null));
-            if (event.isCancelled() && player != null) {
-                player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
+            boolean shouldBlock = shouldBlockAction(clickedBlock, player, RegionEffectConstants.DOOR_USE, null);
+            if (shouldBlock) {
+                sendRegionProtectedMessage(player);
+                return true;
             }
-        } else if (mat == Material.SIGN ||
-                mat == Material.WALL_SIGN) {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.SIGN_USE, null));
-            if (event.isCancelled() && player != null) {
-                player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
+        } else if (mat == Material.OAK_SIGN ||
+                mat == Material.OAK_WALL_SIGN ||
+                mat == Material.JUNGLE_SIGN ||
+                mat == Material.JUNGLE_WALL_SIGN ||
+                mat == Material.DARK_OAK_SIGN ||
+                mat == Material.DARK_OAK_WALL_SIGN ||
+                mat == Material.SPRUCE_SIGN ||
+                mat == Material.SPRUCE_WALL_SIGN ||
+                mat == Material.ACACIA_SIGN ||
+                mat == Material.ACACIA_WALL_SIGN ||
+                mat == Material.BIRCH_SIGN ||
+                mat == Material.BIRCH_WALL_SIGN) {
+            boolean shouldBlock = shouldBlockAction(clickedBlock, player, RegionEffectConstants.SIGN_USE, null);
+            if (shouldBlock) {
+                sendRegionProtectedMessage(player);
+                return true;
             }
-        } else if (mat == Material.CHEST ||
-                mat == Material.FURNACE ||
-                mat == Material.TRAPPED_CHEST ||
-                mat == Material.ENDER_CHEST ||
-                mat == Material.BOOKSHELF ||
-                mat == Material.SHULKER_BOX) {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.CHEST_USE));
-            if (event.isCancelled() && player != null) {
-                player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
+        } else if (clickedBlock.getState() instanceof Container) {
+            boolean shouldCancel = shouldBlockAction(clickedBlock, player, RegionEffectConstants.CHEST_USE);
+            if (shouldCancel) {
+                sendRegionProtectedMessage(player);
+                return true;
             } else {
                 RegionManager.getInstance().removeCheckedRegion(clickedBlock.getLocation());
                 checkRelative(clickedBlock, BlockFace.NORTH);
@@ -703,10 +766,10 @@ public class ProtectionHandler implements Listener {
                 checkRelative(clickedBlock, BlockFace.WEST);
             }
         } else if (mat == Material.FARMLAND) {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.BLOCK_BREAK, null));
-            if (event.isCancelled() && player != null) {
-                player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
+            boolean shouldCancel = shouldBlockAction(clickedBlock, player, RegionEffectConstants.BLOCK_BREAK, null);
+            if (shouldCancel) {
+                sendRegionProtectedMessage(player);
+                return true;
             }
         } else if (mat == Material.LEVER ||
                 mat == Material.STONE_BUTTON ||
@@ -715,19 +778,22 @@ public class ProtectionHandler implements Listener {
                 mat == Material.JUNGLE_BUTTON ||
                 mat == Material.DARK_OAK_BUTTON ||
                 mat == Material.ACACIA_BUTTON ||
+                mat == Material.CRIMSON_BUTTON ||
+                mat == Material.WARPED_BUTTON ||
                 mat == Material.OAK_BUTTON) {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.BUTTON_USE, null));
-            if (event.isCancelled() && player != null) {
-                player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
+            boolean shouldCancel = shouldBlockAction(clickedBlock, player, RegionEffectConstants.BUTTON_USE, null);
+            if (shouldCancel) {
+                sendRegionProtectedMessage(player);
+                return true;
             }
         } else {
-            event.setCancelled(event.isCancelled() || shouldBlockAction(clickedBlock, player, RegionEffectConstants.BLOCK_USE, null));
-            if (event.isCancelled() && player != null) {
-                player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
+            boolean shouldCancel = shouldBlockAction(clickedBlock, player, RegionEffectConstants.BLOCK_USE, null);
+            if (shouldCancel) {
+                sendRegionProtectedMessage(player);
+                return true;
             }
         }
+        return false;
     }
 
     private void checkRelative(Block block, BlockFace blockFace) {
@@ -737,9 +803,20 @@ public class ProtectionHandler implements Listener {
         }
     }
 
+    private void sendRegionProtectedMessage(Player player) {
+        if (player != null) {
+            player.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
+        }
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onBlockInteract(PlayerInteractEvent event) {
-        handleInteract(event.getClickedBlock(), event.getPlayer(), event);
+        boolean shouldCancel = handleInteract(event.getClickedBlock(), event.getPlayer());
+        if (shouldCancel) {
+            event.setUseInteractedBlock(Event.Result.DENY);
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)

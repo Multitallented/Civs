@@ -5,14 +5,14 @@
 #  command:command goes here
 #  permission:perm.something
 back:
-  icon: REDSTONE_BLOCK
+  icon: ARROW
   name: back-button
   # desc: []
 prev:
-  icon: REDSTONE
+  icon: CYAN_GLAZED_TERRACOTTA
   name: prev-button
   # desc: []
 next:
-  icon: EMERALD
+  icon: MAGENTA_GLAZED_TERRACOTTA
   name: next-button
   # desc: []

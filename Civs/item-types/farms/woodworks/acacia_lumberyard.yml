@@ -45,4 +45,8 @@
 #      - DIAMOND_AXE
 #    output:
 #      - ACACIA_LOG*8
-#
+#  3:
+#    reagents:
+#      - NETHERITE_AXE
+#    output:
+#      - ACACIA_LOG*14

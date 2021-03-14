@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -101,19 +102,10 @@ public class PeopleMenu extends CustomMenu {
             }
         } else {
             alreadyOnlineFiltered = true;
-            if (params.containsKey("online")) {
-                addOnlinePlayers(civilians, new HashSet<>());
-            } else {
-                civilians.addAll(CivilianManager.getInstance().getCivilians());
-            }
+            addOnlinePlayers(civilians, new HashSet<>());
         }
         if (!alreadyOnlineFiltered && params.containsKey("online") && "true".equals(params.get("online"))) {
-            civilians.removeIf(new Predicate<Civilian>() {
-                @Override
-                public boolean test(Civilian civilian) {
-                    return Bukkit.getPlayer(civilian.getUuid()) != null;
-                }
-            });
+            civilians.removeIf(civilian1 -> Bukkit.getPlayer(civilian1.getUuid()) != null);
         }
         if (params.containsKey("sort")) {
             data.put("sort", params.get("sort"));
@@ -156,9 +148,9 @@ public class PeopleMenu extends CustomMenu {
     private int rankWeight(String rank) {
         if (rank.contains(Constants.OWNER)) {
             return 100;
-        } else if (rank.contains("member")) {
+        } else if (rank.contains(Constants.MEMBER)) {
             return 50;
-        } else if (rank.contains("ally")) {
+        } else if (rank.contains(Constants.ALLY)) {
             return 25;
         } else {
             return 0;
@@ -255,7 +247,9 @@ public class PeopleMenu extends CustomMenu {
             ItemStack itemStack = cvItem.createItemStack();
             if (player != null && Bukkit.getOnlineMode()) {
                 SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-                skullMeta.setOwningPlayer(player);
+                if (ConfigManager.getInstance().isSkinsInMenu()) {
+                    skullMeta.setOwningPlayer(player);
+                }
                 itemStack.setItemMeta(skullMeta);
             }
             ((HashMap<ItemStack, UUID>) MenuManager.getData(civilian.getUuid(), "civMap")).put(itemStack, offlinePlayer.getUniqueId());
@@ -272,14 +266,14 @@ public class PeopleMenu extends CustomMenu {
         if (ranks.contains(Constants.OWNER)) {
             cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, Constants.OWNER));
         }
-        if (ranks.contains("member")) {
-            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, "member"));
+        if (ranks.contains(Constants.MEMBER)) {
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, Constants.MEMBER));
         }
-        if (ranks.contains("recruiter")) {
-            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, "recruiter"));
+        if (ranks.contains(Constants.RECRUITER)) {
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, Constants.RECRUITER));
         }
-        if (ranks.contains("ally")) {
-            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, "guest"));
+        if (ranks.contains(Constants.ALLY)) {
+            cvItem.getLore().add(LocaleManager.getInstance().getTranslation(locale, Constants.GUEST));
         }
     }
 

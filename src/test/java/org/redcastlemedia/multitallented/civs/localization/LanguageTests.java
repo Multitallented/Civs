@@ -43,7 +43,7 @@ public class LanguageTests extends TestUtil {
         when(itemMeta.getDisplayName()).thenReturn("Cobble");
         ArrayList<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
-        lore.add("Civs Cobble");
+        lore.add("Cobble");
         when(itemStack.hasItemMeta()).thenReturn(true);
         when(itemMeta.getLore()).thenReturn(lore);
         when(itemStack.getItemMeta()).thenReturn(itemMeta);

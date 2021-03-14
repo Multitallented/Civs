@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -687,6 +688,7 @@ public class RegionManager {
         }
 
         Region region = new Region(regionType.getProcessedName(), people, location, radii, regionType.getEffects(), 0);
+        region.lastTick = new Date().getTime() - regionType.getPeriod() * 1000 + Math.min(120000, regionType.getPeriod() * 1000);
         addRegion(region);
         StructureUtil.removeBoundingBox(civilian.getUuid());
         forceLoadRegionChunk(region);
@@ -702,6 +704,7 @@ public class RegionManager {
             RegionPoints radii = Region.hasRequiredBlocks(regionType.getProcessedName(), location, false);
             if (!radii.isValid()) {
                 event.setCancelled(true);
+                StructureUtil.showGuideBoundingBox(player, event.getBlockPlaced().getLocation(), regionType, true);
                 player.sendMessage(Civs.getPrefix() +
                         localeManager.getTranslation(player, "no-required-blocks")
                                 .replace("$1", regionType.getDisplayName(player)));
@@ -720,6 +723,7 @@ public class RegionManager {
                     data.put("page", 0);
                     data.put("maxPage", 1);
                     data.put("regionType", regionType.getProcessedName());
+                    MenuManager.clearHistory(player.getUniqueId());
                     MenuManager.getInstance().openMenuFromHistory(player, "recipe", data);
                 }
                 return null;
@@ -1064,6 +1068,10 @@ public class RegionManager {
             removeCheckedRegion(region);
             if (region.getEffects().containsKey(WarehouseEffect.KEY)) {
                 WarehouseEffect.getInstance().refreshChest(region, location);
+            }
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            if (region.getFailingUpkeeps().size() >= regionType.getUpkeeps().size()) {
+                region.lastTick = -1;
             }
         }
     }

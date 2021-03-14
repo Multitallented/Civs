@@ -37,12 +37,15 @@ public class RepairEffect implements Listener {
             case WOODEN_PICKAXE:
             case WOODEN_SHOVEL:
             case WOODEN_SWORD:
+            case SHIELD:
                 returnSet.add(Material.OAK_PLANKS);
                 returnSet.add(Material.SPRUCE_PLANKS);
                 returnSet.add(Material.BIRCH_PLANKS);
                 returnSet.add(Material.JUNGLE_PLANKS);
                 returnSet.add(Material.DARK_OAK_PLANKS);
                 returnSet.add(Material.ACACIA_PLANKS);
+                returnSet.add(Material.CRIMSON_PLANKS);
+                returnSet.add(Material.WARPED_PLANKS);
                 return returnSet;
             case LEATHER_CHESTPLATE:
             case LEATHER_HELMET:
@@ -56,6 +59,7 @@ public class RepairEffect implements Listener {
             case STONE_SHOVEL:
             case STONE_SWORD:
                 returnSet.add(Material.COBBLESTONE);
+                returnSet.add(Material.BLACKSTONE);
                 return returnSet;
             case IRON_PICKAXE:
             case IRON_SHOVEL:
@@ -91,7 +95,22 @@ public class RepairEffect implements Listener {
             case DIAMOND_BOOTS:
                 returnSet.add(Material.DIAMOND);
                 return returnSet;
+            case NETHERITE_PICKAXE:
+            case NETHERITE_SHOVEL:
+            case NETHERITE_SWORD:
+            case NETHERITE_AXE:
+            case NETHERITE_HOE:
+            case NETHERITE_CHESTPLATE:
+            case NETHERITE_HELMET:
+            case NETHERITE_LEGGINGS:
+            case NETHERITE_BOOTS:
+                returnSet.add(Material.NETHERITE_INGOT);
+                return returnSet;
+            case TURTLE_HELMET:
+                returnSet.add(Material.SCUTE);
+                return returnSet;
             case BOW:
+            case CROSSBOW:
             case FISHING_ROD:
                 returnSet.add(Material.STRING);
                 return returnSet;
@@ -111,6 +130,7 @@ public class RepairEffect implements Listener {
             case GOLDEN_SHOVEL:
             case IRON_SHOVEL:
             case DIAMOND_SHOVEL:
+            case NETHERITE_SHOVEL:
                 amt = (int) Math.ceil(damage / mat.getMaxDurability() * 1.0D);
                 return Math.max(amt, 1);
             case WOODEN_HOE:
@@ -125,6 +145,8 @@ public class RepairEffect implements Listener {
             case DIAMOND_SWORD:
             case DIAMOND_HOE:
             case IRON_SWORD:
+            case NETHERITE_SWORD:
+            case NETHERITE_HOE:
                 amt = (int) Math.ceil(damage / mat.getMaxDurability() * 2.0D);
                 return Math.max(amt, 1);
             case BOW:
@@ -137,30 +159,38 @@ public class RepairEffect implements Listener {
             case IRON_AXE:
             case IRON_PICKAXE:
             case DIAMOND_PICKAXE:
+            case NETHERITE_PICKAXE:
+            case NETHERITE_AXE:
+            case CROSSBOW:
                 amt = (int) Math.ceil(damage / mat.getMaxDurability() * 3.0D);
                 return Math.max(amt, 1);
             case GOLDEN_BOOTS:
             case IRON_BOOTS:
             case LEATHER_BOOTS:
             case DIAMOND_BOOTS:
+            case NETHERITE_BOOTS:
                 amt = (int) Math.ceil(damage / mat.getMaxDurability() * 4.0D);
                 return Math.max(amt, 1);
             case DIAMOND_HELMET:
             case LEATHER_HELMET:
             case IRON_HELMET:
             case GOLDEN_HELMET:
+            case NETHERITE_HELMET:
+            case TURTLE_HELMET:
                 amt = (int) Math.ceil(damage / mat.getMaxDurability() * 5.0D);
                 return Math.max(amt, 1);
             case DIAMOND_LEGGINGS:
             case LEATHER_LEGGINGS:
             case IRON_LEGGINGS:
             case GOLDEN_LEGGINGS:
+            case NETHERITE_LEGGINGS:
                 amt = (int) Math.ceil(damage / mat.getMaxDurability() * 7.0D);
                 return Math.max(amt, 1);
             case LEATHER_CHESTPLATE:
             case DIAMOND_CHESTPLATE:
             case IRON_CHESTPLATE:
             case GOLDEN_CHESTPLATE:
+            case NETHERITE_CHESTPLATE:
                 amt = (int) Math.ceil(damage / mat.getMaxDurability() * 8.0D);
                 return Math.max(amt, 1);
             default:
@@ -190,6 +220,11 @@ public class RepairEffect implements Listener {
             case IRON_CHESTPLATE:
             case GOLDEN_CHESTPLATE:
             case CHAINMAIL_CHESTPLATE:
+            case NETHERITE_HELMET:
+            case NETHERITE_CHESTPLATE:
+            case NETHERITE_LEGGINGS:
+            case NETHERITE_BOOTS:
+            case TURTLE_HELMET:
                 return true;
             default:
                 return false;
@@ -202,6 +237,8 @@ public class RepairEffect implements Listener {
             case IRON_HELMET:
             case GOLDEN_HELMET:
             case CHAINMAIL_HELMET:
+            case NETHERITE_HELMET:
+            case TURTLE_HELMET:
                 return true;
             default:
                 return false;
@@ -240,6 +277,7 @@ public class RepairEffect implements Listener {
             case IRON_CHESTPLATE:
             case GOLDEN_CHESTPLATE:
             case CHAINMAIL_CHESTPLATE:
+            case NETHERITE_CHESTPLATE:
                 return true;
             default:
                 return false;
@@ -252,6 +290,7 @@ public class RepairEffect implements Listener {
             case IRON_LEGGINGS:
             case GOLDEN_LEGGINGS:
             case CHAINMAIL_LEGGINGS:
+            case NETHERITE_LEGGINGS:
                 return true;
             default:
                 return false;
@@ -264,6 +303,7 @@ public class RepairEffect implements Listener {
             case LEATHER_BOOTS:
             case DIAMOND_BOOTS:
             case CHAINMAIL_BOOTS:
+            case NETHERITE_BOOTS:
                 return true;
             default:
                 return false;
@@ -282,6 +322,8 @@ public class RepairEffect implements Listener {
             case STONE_AXE:
             case TRIDENT:
             case BOW:
+            case NETHERITE_SWORD:
+            case CROSSBOW:
                 return true;
             default:
                 return false;
@@ -294,6 +336,7 @@ public class RepairEffect implements Listener {
             case IRON_AXE:
             case GOLDEN_AXE:
             case STONE_AXE:
+            case NETHERITE_AXE:
                 return true;
             default:
                 return false;
@@ -306,6 +349,7 @@ public class RepairEffect implements Listener {
             case IRON_SWORD:
             case GOLDEN_SWORD:
             case STONE_SWORD:
+            case NETHERITE_SWORD:
                 return true;
             default:
                 return false;

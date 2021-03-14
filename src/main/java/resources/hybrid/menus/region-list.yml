@@ -7,6 +7,11 @@ name: RegionList
 items:
   prev:
     index: 3
+  regionicon:
+    index: 4
+    icon: BRICKS
+    name: regions
+    actions: []
   next:
     index: 5
   back:

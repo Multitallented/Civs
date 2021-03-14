@@ -5,39 +5,38 @@
 #name: Main
 #items:
 #  guide:
-#    index: 0
+#    index: 6
 #    icon: ENCHANTED_BOOK
 #    name: guide
-#    #desc: the next tutorial step
 #    actions:
 #      - print-tutorial
 #      - close
 #  shop:
-#    index: 1
+#    index: 13
 #    icon: EMERALD
 #    name: shop
 #    actions:
 #      - menu:shop?sort=category
 #  blueprints:
-#    index: 2
+#    index: 16
 #    icon: MAP
 #    name: blueprints
 #    actions:
 #      - menu:blueprints
 #  regions:
-#    index: 3
+#    index: 17
 #    icon: BRICKS
 #    name: regions
 #    actions:
 #      - menu:region-list
 #  towns:
-#    index: 9
+#    index: 10
 #    icon: RED_BED
 #    name: towns
 #    actions:
 #      - menu:select-town?prevMenu=town
 #  your-towns:
-#    index: 10
+#    index: 9
 #    icon: BLUE_BED
 #    name: your-towns
 #    actions:
@@ -49,43 +48,43 @@
 #    actions:
 #      - menu:alliance-list
 #  players:
-#    index: 12
-#    icon: SIGN
+#    index: 18
+#    icon: OAK_SIGN
 #    name: players
 #    actions:
 #      - menu:people
 #  regions-for-sale:
-#    index: 13
-#    icon: EMERALD
+#    index: 11
+#    icon: EMERALD_ORE
 #    name: regions-for-sale
 #    actions:
 #      - menu:region-list?sell=true
 #  ports:
-#    index: 14
+#    index: 22
 #    icon: ENDER_PEARL
 #    name: ports
 #    actions:
 #      - menu:port
 #  gov-leaderboard:
-#    index: 15
+#    index: 19
 #    icon: JUKEBOX
 #    name: leaderboard
 #    actions:
 #      - menu:gov-list?leaderboard=true
 #  town:
-#    index: 18
+#    index: 0
 #    # name: town name
 #    # icon: town icon
 #    actions:
 #      - menu:town?town=$town$
 #  region:
-#    index: 19
+#    index: 1
 #    # name: region type
 #    # icon: region icon
 #    actions:
 #      - menu:region?region=$region$
 #  player:
-#    index: 24
+#    index: 8
 #    #icon: player's head
 #    #name: your name
 #    #desc: your class
@@ -93,14 +92,14 @@
 #      - menu:player?uuid=$uuid$
 #  chat:
 #    index: 25
-#    icon: MAP
+#    icon: NAME_TAG
 #    name: chat-channels
 #    desc: click-change-chat
 #    actions:
 #      - menu:chat-channel-list
 #  language:
 #    index: 26
-#    icon: GRASS_BLOCK
+#    icon: BOOK
 #    name: language-menu
 #    actions:
 #      - menu:language

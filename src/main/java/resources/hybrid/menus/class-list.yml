@@ -13,11 +13,16 @@ items:
     actions:
       - menu:class-type-list
   prev:
+    index: 3
+  classicon:
     index: 4
+    icon: ENCHANTING_TABLE
+    name: classes
+    actions: []
   back:
-    index: 5
+    index: 8
   next:
-    index: 6
+    index: 5
   classes:
     index: 9-53
     # icon: item icon

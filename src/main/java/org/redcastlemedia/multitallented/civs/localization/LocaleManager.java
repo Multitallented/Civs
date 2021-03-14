@@ -40,6 +40,9 @@ public class LocaleManager {
     }
 
     public String getTranslation(String language, String key) {
+        if (key.isEmpty()) {
+            return "";
+        }
         String textPrefix = ConfigManager.getInstance().getPrefixAllText();
         String[] variables = getVariables(key);
         key = key.split("\\{")[0];

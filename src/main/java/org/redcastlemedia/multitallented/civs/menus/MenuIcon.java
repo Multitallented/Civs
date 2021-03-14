@@ -29,6 +29,8 @@ public class MenuIcon {
     private String desc;
     @Getter @Setter
     private String key;
+    @Getter
+    private List<String> preReqs = new ArrayList<>();
     @Getter @Setter
     private String perm = "";
 
@@ -57,6 +59,9 @@ public class MenuIcon {
                 this.desc = section.getString("desc", "");
                 this.actions = section.getStringList("actions");
                 List<String> actionsRightClick = section.getStringList("actions-right-click");
+                if (section.isSet("pre-reqs")) {
+                    preReqs = section.getStringList("pre-reqs");
+                }
                 if (actionsRightClick.isEmpty()) {
                     this.rightClickActions = this.actions;
                 } else {

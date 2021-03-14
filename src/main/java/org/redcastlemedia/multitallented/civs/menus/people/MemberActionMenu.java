@@ -76,7 +76,8 @@ public class MemberActionMenu extends CustomMenu {
         boolean isAdmin = player != null && (player.isOp() || (Civs.perm != null &&
                 Civs.perm.has(player, Constants.ADMIN_PERMISSION)));
 
-        if (governmentType == GovernmentType.ANARCHY) {
+        if (town != null && town.getRawPeople().containsKey(civilian.getUuid()) &&
+                governmentType == GovernmentType.ANARCHY) {
             viewingSelf = false;
         }
         boolean personIsOwner = false;
@@ -136,7 +137,7 @@ public class MemberActionMenu extends CustomMenu {
             cvItem.getLore().add(localizedRanks);
             ItemStack itemStack = cvItem.createItemStack();
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-            if (skullMeta != null) {
+            if (skullMeta != null && ConfigManager.getInstance().isSkinsInMenu()) {
                 skullMeta.setOwningPlayer(offlinePlayer);
                 itemStack.setItemMeta(skullMeta);
             }
@@ -147,7 +148,7 @@ public class MemberActionMenu extends CustomMenu {
                 return new ItemStack(Material.AIR);
             }
             if (isAdmin || ((!viewingSelf || governmentType == GovernmentType.OLIGARCHY || isOwner) &&
-                    !isVoteOnly && !role.contains(Constants.OWNER) && !cantAddOwners)) {
+                    !isVoteOnly && !cantAddOwners)) {
                 CVItem cvItem = menuIcon.createCVItem(player, count);
                 if (governmentType == GovernmentType.OLIGARCHY && !isOwner) {
                     String priceString = Util.getNumberFormat(price, civilian.getLocale());
@@ -164,7 +165,7 @@ public class MemberActionMenu extends CustomMenu {
             if (personRole.contains(Constants.MEMBER)) {
                 return new ItemStack(Material.AIR);
             }
-            if (!(isAdmin || (!viewingSelf && isOwner && !role.contains(Constants.MEMBER)))) {
+            if (!isAdmin && (viewingSelf || !isOwner)) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("set-guest".equals(menuIcon.getKey())) {
@@ -181,10 +182,10 @@ public class MemberActionMenu extends CustomMenu {
             if (region != null) {
                 return new ItemStack(Material.AIR);
             }
-            if (personRole.contains(Constants.RECRUITER)) {
+            if (personRole.contains(Constants.RECRUITER) || personIsOwner) {
                 return new ItemStack(Material.AIR);
             }
-            if (!(isAdmin || (isOwner && !viewingSelf && !role.contains(Constants.RECRUITER) && !cantAddOwners))) {
+            if (!isAdmin && (!isOwner || viewingSelf || cantAddOwners)) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("remove-member".equals(menuIcon.getKey())) {

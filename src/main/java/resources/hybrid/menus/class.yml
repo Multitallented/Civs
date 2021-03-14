@@ -1,4 +1,4 @@
-size: 18
+size: 27
 name: Class
 # variables:
 #  class: class id
@@ -15,13 +15,13 @@ name: Class
 #  spend-exp: transfer player exp to class exp
 items:
   icon:
-    index: 0
+    index: 4
     # icon: class shop-icon
     # name: class name
     # desc: class desc
     actions: []
   level:
-    index: 1
+    index: 0
     icon: EXPERIENCE_BOTTLE
     name: level{$level$
     desc: level-up
@@ -29,32 +29,32 @@ items:
       - spend-exp
       - refresh
   allowed-items:
-    index: 2
+    index: 26
     icon: CHEST
     name: allowed-items
     desc: allowed-items-desc{$classTypeName$
     actions:
       - menu:item-list?items=$allowedItems$
   mana:
-    index: 3
+    index: 17
     icon: POTION
     name: "{$classManaName$"
     desc: mana-desc{$maxMana$,,$manaRegen$
     actions: []
   health:
-    index: 4
+    index: 16
     icon: COOKED_BEEF
     name: health
     desc: health-desc{$maxHealth$
     actions: []
   destroy:
-    index: 6
+    index: 10
     icon: BARRIER
     name: destroy
     actions:
       - menu:confirmation?class=$class$&type=destroy
   change-class:
-    index: 7
+    index: 1
     icon: ENCHANTING_TABLE
     name: change-class
     desc: change-class-desc
@@ -63,7 +63,7 @@ items:
   back:
     index: 8
   spell^1:
-    index: 9
+    index: 18
     icon: ENDER_CHEST
     name: empty-spell-slot
     desc: empty-spell-slot-desc
@@ -72,7 +72,7 @@ items:
     actions-right-click:
       - change-order1
   spell^2:
-    index: 10
+    index: 19
     icon: ENDER_CHEST
     name: empty-spell-slot
     desc: empty-spell-slot-desc
@@ -81,7 +81,7 @@ items:
     actions-right-click:
       - change-order2
   spell^3:
-    index: 11
+    index: 20
     icon: ENDER_CHEST
     name: empty-spell-slot
     desc: empty-spell-slot-desc
@@ -90,7 +90,7 @@ items:
     actions-right-click:
       - change-order3
   spell^4:
-    index: 12
+    index: 21
     icon: ENDER_CHEST
     name: empty-spell-slot
     desc: empty-spell-slot-desc
@@ -99,7 +99,7 @@ items:
     actions-right-click:
       - change-order4
   spell^5:
-    index: 13
+    index: 22
     icon: ENDER_CHEST
     name: empty-spell-slot
     desc: empty-spell-slot-desc
@@ -108,7 +108,7 @@ items:
     actions-right-click:
       - change-order5
   spell^6:
-    index: 14
+    index: 23
     icon: ENDER_CHEST
     name: empty-spell-slot
     desc: empty-spell-slot-desc
@@ -117,7 +117,7 @@ items:
     actions-right-click:
       - change-order6
   spell-bar:
-    index: 17
+    index: 9
     icon: REDSTONE_TORCH
     name: spells
     desc: spell-command

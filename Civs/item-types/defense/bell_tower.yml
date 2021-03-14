@@ -2,7 +2,7 @@
 #type: region
 #name: Bell_Tower
 #dynmap-marker: lighthouse
-#icon: GLOWSTONE
+#icon: BELL
 #price: 1000
 #max: 1
 #groups:
@@ -21,6 +21,7 @@
 #  - g:roof*30
 #  - g:glass*4
 #  - g:window*4
+#  - BELL*1
 #
 #build-radius: 4 #9x15x9
 #build-radius-y: 7

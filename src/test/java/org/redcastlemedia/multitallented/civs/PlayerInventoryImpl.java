@@ -5,8 +5,11 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -61,11 +64,6 @@ public class PlayerInventoryImpl implements PlayerInventory {
     }
 
     @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
     public ItemStack getItem(int i) {
         return contents.get(i);
     }
@@ -77,6 +75,16 @@ public class PlayerInventoryImpl implements PlayerInventory {
         } else {
             contents.put(i, itemStack);
         }
+    }
+
+    @Override
+    public void setItem(@NotNull EquipmentSlot equipmentSlot, @Nullable ItemStack itemStack) {
+
+    }
+
+    @Override
+    public @NotNull ItemStack getItem(@NotNull EquipmentSlot equipmentSlot) {
+        return null;
     }
 
     public int firstPartial(Material material) {
@@ -340,11 +348,6 @@ public class PlayerInventoryImpl implements PlayerInventory {
     }
 
     @Override
-    public String getTitle() {
-        return null;
-    }
-
-    @Override
     public InventoryType getType() {
         return null;
     }
@@ -386,7 +389,7 @@ public class PlayerInventoryImpl implements PlayerInventory {
         itemMeta.setDisplayName("Civs Tribe");
         ArrayList<String> lore = new ArrayList<>();
         lore.add(TestUtil.player.getUniqueId().toString());
-        lore.add("Civs Tribe");
+        lore.add("Tribe");
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return itemStack;

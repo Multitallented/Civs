@@ -15,7 +15,11 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.skills.SkillManager;
+import org.redcastlemedia.multitallented.civs.skills.SkillType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialPath;
+import org.redcastlemedia.multitallented.civs.tutorials.TutorialStep;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
@@ -157,16 +161,16 @@ public class CivilianManager {
                 }
             }
 
-            int tutorialIndex = civConfig.getInt("tutorial-index", -1);
+            int tutorialIndex = civConfig.getInt("tutorial-index", 0);
             int tutorialProgress = civConfig.getInt("tutorial-progress", 0);
-            String tutorialPath = civConfig.getString("tutorial-path", "default");
+            String tutorialPathName = civConfig.getString("tutorial-path", "default");
 
             Civilian civilian = new Civilian(uuid, civConfig.getString("locale"), items, exp,
                     civConfig.getInt("kills", 0), civConfig.getInt("kill-streak", 0),
                     civConfig.getInt("deaths", 0), civConfig.getInt("highest-kill-streak", 0),
                     civConfig.getDouble("points", 0), civConfig.getInt("karma", 0));
             civilian.setTutorialIndex(tutorialIndex);
-            civilian.setTutorialPath(tutorialPath);
+            civilian.setTutorialPath(tutorialPathName);
             civilian.setTutorialProgress(tutorialProgress);
             civilian.setUseAnnouncements(civConfig.getBoolean("use-announcements", true));
             civilian.setDaysSinceLastHardshipDepreciation(civConfig.getInt("days-since-hardship-depreciation", 0));
@@ -174,6 +178,10 @@ public class CivilianManager {
             String stringRespawn = civConfig.getString("respawn");
             if (civConfig.isSet("skills")) {
                 for (String skillName : civConfig.getConfigurationSection("skills").getKeys(false)) {
+                    SkillType skillType = SkillManager.getInstance().getSkillType(skillName);
+                    if (skillType == null) {
+                        continue;
+                    }
                     Skill skill = new Skill(skillName);
                     for (String accomplishment : civConfig.getConfigurationSection("skills." + skillName).getKeys(false)) {
                         int level = civConfig.getInt("skills." + skillName + "." + accomplishment);
@@ -208,6 +216,16 @@ public class CivilianManager {
 
             ItemManager.getInstance().addMinItems(civilian);
 
+            if (civilian.getCompletedTutorialSteps().isEmpty() && civilian.getTutorialIndex() > 0) {
+                TutorialPath tutorialPath = TutorialManager.getInstance().getPathByName(tutorialPathName);
+                for (int i = 0; i < civilian.getTutorialIndex() && i < tutorialPath.getSteps().size(); i++) {
+                    TutorialStep tutorialStep = tutorialPath.getSteps().get(i);
+                    String key = TutorialManager.getInstance().getKey(tutorialPathName,
+                            TutorialManager.TutorialType.valueOf(tutorialStep.getType().toUpperCase()), tutorialStep);
+                    civilian.getCompletedTutorialSteps().add(key);
+                }
+            }
+
             return civilian;
         } catch (Exception ex) {
             Civs.logger.log(Level.SEVERE, "Unable to read " + uuid + ".yml", ex);
@@ -225,7 +243,7 @@ public class CivilianManager {
                 new HashMap<>(), 0, 0, 0, 0, 0, 0);
         civilian.getStashItems().putAll(ItemManager.getInstance().getNewItems(civilian));
         civilian.setTutorialPath("default");
-        civilian.setTutorialIndex(-1);
+        civilian.setTutorialIndex(0);
         civilian.setUseAnnouncements(true);
         civilian.setTutorialProgress(0);
 
@@ -235,6 +253,9 @@ public class CivilianManager {
         return civilian;
     }
     public void saveCivilian(Civilian civilian) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         File civilianFolder = new File(Civs.dataLocation, "players");
         if (!civilianFolder.exists()) {
             if (!civilianFolder.mkdir()) {
@@ -275,12 +296,12 @@ public class CivilianManager {
                 }
                 civConfig.set("items." + civItem.getProcessedName(), civItem.getQty());
             }
-            List<Integer> classes = new ArrayList<>();
+            List<String> classes = new ArrayList<>();
             for (CivClass civClass : civilian.getCivClasses()) {
                 if (civClass == null) {
                     continue;
                 }
-                classes.add(civClass.getId());
+                classes.add(civClass.getId().toString());
             }
             for (Skill skill : civilian.getSkills().values()) {
                 for (Map.Entry<String, Integer> accomplishment : skill.getAccomplishments().entrySet()) {

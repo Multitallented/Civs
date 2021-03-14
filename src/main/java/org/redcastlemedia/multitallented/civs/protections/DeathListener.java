@@ -365,7 +365,7 @@ public class DeathListener implements Listener {
         event.setCancelled(true);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onEntityDeath(EntityDeathEvent event) {
         if (event.getEntity().getKiller() == null) {
             return;
@@ -377,6 +377,7 @@ public class DeathListener implements Listener {
         boolean isTrident = mainHand.getType() == Material.TRIDENT;
         boolean isBow = mainHand.getType() == Material.BOW;
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.KILL, event.getEntity().getType().name().toLowerCase());
         for (Skill skill : civilian.getSkills().values()) {
             double exp = 0;
             boolean swordSkill = isSword && skill.getType().equalsIgnoreCase(CivSkills.SWORD.name());
@@ -390,7 +391,7 @@ public class DeathListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler @SuppressWarnings("unused")
     public void onPlayerDeath(PlayerDeathEvent event) {
         CivilianManager.getInstance().setListNeedsToBeSorted(true);
         final Player player = event.getEntity();
@@ -488,7 +489,7 @@ public class DeathListener implements Listener {
             CivilianManager.getInstance().saveCivilian(dyingCiv);
         }
 
-        if (damager == null) {
+        if (damager == null || damager == player) {
             return;
         }
 
@@ -529,7 +530,7 @@ public class DeathListener implements Listener {
         double killStreakBonus = ConfigManager.getInstance().getPointsPerKillStreak() * damagerCiv.getKillStreak();
 
         econBonus += damagerCiv.getKillStreak() * ConfigManager.getInstance().getMoneyPerKillStreak();
-        if (damagerCiv.getKillStreak() >= 3) {
+        if (damagerCiv.getKillStreak() >= 3 && ConfigManager.getInstance().isShowKillStreakMessages()) {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.sendMessage(Civs.getPrefix() + localeManager.getTranslation(p, "kill-streak")
                         .replace("$1", damager.getDisplayName())
@@ -540,7 +541,7 @@ public class DeathListener implements Listener {
 
         double killJoyBonus = ConfigManager.getInstance().getPointsPerKillJoy() * dyingCiv.getKillStreak();
         econBonus += ConfigManager.getInstance().getMoneyPerKillJoy() * dyingCiv.getKillStreak();
-        if (dyingCiv.getKillStreak() > 2) {
+        if (dyingCiv.getKillStreak() > 2 && ConfigManager.getInstance().isShowKillStreakMessages()) {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.sendMessage(Civs.getPrefix() + localeManager.getTranslation(p, "kill-joy")
                         .replace("$1", player.getDisplayName())

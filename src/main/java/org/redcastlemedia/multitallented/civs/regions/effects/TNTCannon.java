@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,6 +15,7 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
@@ -68,9 +70,24 @@ public class TNTCannon implements Listener, RegionCreatedListener {
         im.setLore(lore);
         controllerWand.setItemMeta(im);
 
-        region.getLocation().getWorld().dropItemNaturally(new Location(region.getLocation().getWorld(),
-                region.getLocation().getX(), region.getLocation().getY() + 2,
-                region.getLocation().getZ()), controllerWand);
+
+        try {
+            Block block = region.getLocation().getBlock();
+            if (block.getType() == Material.CHEST) {
+                Chest chest = (Chest) block.getState();
+                chest.getInventory().addItem(controllerWand);
+            } else {
+                region.getLocation().getWorld().dropItemNaturally(new Location(region.getLocation().getWorld(),
+                        region.getLocation().getX(), region.getLocation().getY() + 2,
+                        region.getLocation().getZ()), controllerWand);
+            }
+        } catch (Exception e) {
+            Civs.logger.log(Level.WARNING, "Unable to put cannon controller in chest", e);
+            region.getLocation().getWorld().dropItemNaturally(new Location(region.getLocation().getWorld(),
+                    region.getLocation().getX(), region.getLocation().getY() + 2,
+                    region.getLocation().getZ()), controllerWand);
+        }
+
         if (player != null) {
             CivItem civItem = ItemManager.getInstance().getItemType(region.getType());
             String localRegionName = civItem.getDisplayName(player);

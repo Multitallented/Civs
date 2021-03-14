@@ -141,6 +141,13 @@ public class ShopMenu extends CustomMenu {
                     if (!folderType.getVisible()) {
                         return new ItemStack(Material.AIR);
                     }
+                    List<String> preReqs = ConfigManager.getInstance().getFolderReqs().get(folderType.getKey());
+                    if (preReqs != null && !preReqs.isEmpty()) {
+                        List<String> unmetReqs = ItemManager.getInstance().getAllUnmetRequirements(preReqs, civilian, true);
+                        if (!unmetReqs.isEmpty()) {
+                            return new ItemStack(Material.AIR);
+                        }
+                    }
                 }
                 ItemStack itemStack = civItem.createShopItemStack(player);
                 if (itemStack.getType() == Material.AIR) {
