@@ -21,8 +21,8 @@ public class ToggleTownChatCommand extends ToggleChatChannelCommand<Town> {
 
     @Override
     public Town getRelevantTarget(Civilian c, String[] a) {
-        if (a.length == 1) {
-            return TownManager.getInstance().getTown(a[0]);
+        if (a.length == 2) {
+            return TownManager.getInstance().getTown(a[1]);
         } else {
             String biggestTown = TownManager.getInstance().getBiggestTown(c);
             if (biggestTown != null) {

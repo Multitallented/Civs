@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -166,6 +167,9 @@ public class Civs extends JavaPlugin {
         Set<Class<? extends CivCommand>> commands = reflections.getSubTypesOf(CivCommand.class);
         for (Class<? extends CivCommand> currentCommandClass : commands) {
             try {
+                if (Modifier.isAbstract(currentCommandClass.getModifiers())) {
+                    continue;
+                }
                 CivCommand currentCommand = currentCommandClass.newInstance();
                 for (String key : currentCommandClass.getAnnotation(CivsCommand.class).keys()) {
                     commandList.put(key, currentCommand);

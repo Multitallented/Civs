@@ -707,8 +707,11 @@ public class CivilianListener implements Listener {
                 }
             }
         }
-        if (event.getRecipients().isEmpty() || (event.getRecipients().size() == 1 &&
-                player.equals(event.getRecipients().iterator().next()))) {
+        ConfigManager configManager = ConfigManager.getInstance();
+
+        boolean warn = configManager.isWarnOnEmptyChatChannel();
+        if (warn && (event.getRecipients().isEmpty() || (event.getRecipients().size() == 1 &&
+                player.equals(event.getRecipients().iterator().next())))) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "no-recipients").replace("$1", chatChannel.getName(player)));
         } else {

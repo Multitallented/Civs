@@ -173,6 +173,8 @@ public class ConfigManager {
     @Getter
     private NavigableMap<Integer, String> residenciesCountOverride;
 
+    @Getter boolean warnOnEmptyChatChannel;
+
     public ConfigManager() {
         loadDefaults();
     }
@@ -448,6 +450,7 @@ public class ConfigManager {
                 }
             }
 
+            warnOnEmptyChatChannel = config.getBoolean("warn-on-empty-chat-channel", true);
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read from config.yml", e);
         }
@@ -591,6 +594,7 @@ public class ConfigManager {
         allowChangingOfGovType = false;
         residenciesCount = -1;
         residenciesCountOverride = new TreeMap<>();
+        warnOnEmptyChatChannel = true;
     }
 
     public static ConfigManager getInstance() {

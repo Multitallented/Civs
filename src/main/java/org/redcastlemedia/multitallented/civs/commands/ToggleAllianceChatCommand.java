@@ -22,7 +22,7 @@ public class ToggleAllianceChatCommand extends ToggleChatChannelCommand<Alliance
 
     @Override
     public Alliance getRelevantTarget(Civilian c, String[] a) {
-        if (a.length == 1) {
+        if (a.length == 2) {
             return AllianceManager.getInstance().getAlliance(a[0]);
         }
         return null;
