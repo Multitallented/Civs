@@ -39,6 +39,7 @@ public class MenuCommand extends CivCommand {
                 }
             }
         }
+        MenuManager.clearHistory(player.getUniqueId());
         MenuManager.getInstance().openMenu(player, menuName, params);
         return true;
     }
