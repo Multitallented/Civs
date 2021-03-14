@@ -10,11 +10,7 @@ import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 import lombok.Getter;
@@ -36,6 +32,7 @@ public class ConfigManager {
     String defaultClass;
     HashMap<String, Integer> groups;
     HashMap<String, CVItem> folderIcons;
+    @Getter Map<String, List<String>> folderReqs = new HashMap<>();
     HashMap<String, Integer> creatureHealth = new HashMap<>();
     boolean useStarterBook;
     long jailTime;
@@ -160,11 +157,21 @@ public class ConfigManager {
     @Getter
     boolean keepRegionChunksLoaded;
     @Getter boolean useSkills;
+    @Getter boolean huntCrossWorld;
     @Getter boolean silentExp;
     @Getter boolean deleteInvalidRegions;
+    @Getter boolean skinsInMenu;
+    @Getter boolean useBounties;
+    @Getter boolean warningLogger;
+    @Getter double percentPowerForUpgrade;
+    @Getter boolean showKillStreakMessages;
 
     @Getter
     String chatChannelFormat;
+    @Getter
+    private int residenciesCount;
+    @Getter
+    private NavigableMap<Integer, String> residenciesCountOverride;
 
     public ConfigManager() {
         loadDefaults();
@@ -282,11 +289,22 @@ public class ConfigManager {
             expModifier = config.getDouble("exp-modifier", 0.2);
             expBase = config.getInt("exp-base", 100);
             defaultClass = config.getString("default-class", "default");
+            showKillStreakMessages = config.getBoolean("show-killstreak-messages", true);
             folderIcons = new HashMap<>();
             ConfigurationSection section2 = config.getConfigurationSection("folders");
             if (section2 != null) {
                 for (String key : section2.getKeys(false)) {
-                    folderIcons.put(key, CVItem.createCVItemFromString(config.getString("folders." + key, "CHEST")));
+                    String iconString = "CHEST";
+                    if (config.isSet("folders." + key + ".icon")) {
+                        iconString = config.getString("folders." + key + ".icon", "CHEST");
+                    } else {
+                        iconString = config.getString("folders." + key, "CHEST");
+                    }
+                    if (config.isSet("folders." + key + ".pre-reqs")) {
+                        List<String> preReqs = config.getStringList("folders." + key + ".pre-reqs");
+                        folderReqs.put(key, preReqs);
+                    }
+                    folderIcons.put(key, CVItem.createCVItemFromString(iconString));
                 }
             }
             itemGroups = new HashMap<>();
@@ -337,6 +355,7 @@ public class ConfigManager {
             portSlowWarmup = config.getBoolean("port.slow-warmup", true);
             portReagents = config.getStringList("port.reagents");
             combatTagDuration = config.getInt("combat-tag-duration", 60);
+            huntCrossWorld = config.getBoolean("allow-hunt-cross-world", false);
             portDuringCombat = config.getBoolean("port.port-during-combat", false);
             getTownRingSettings(config);
             karmaDepreciatePeriod = config.getLong("karma-depreciate-period", 43200);
@@ -357,9 +376,10 @@ public class ConfigManager {
             capitalismVotingCost = config.getDouble("capitalism-voting-cost", 200);
             topGuideSpacer = config.getString("top-guide-spacer", "-----------------Civs-----------------");
             bottomGuideSpacer = config.getString("bottom-guide-spacer", "--------------------------------------");
-            civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs]");
+            civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs] ");
             prefixAllText = Util.parseColors(config.getString("prefix-all-text", ""));
             civsItemPrefix = config.getString("civs-item-prefix", "Civs");
+            skinsInMenu = config.getBoolean("show-player-skins-in-menus", true);
             if ("".equals(civsItemPrefix)) {
                 civsItemPrefix = "Civs";
             }
@@ -384,13 +404,16 @@ public class ConfigManager {
             hardshipDepreciationPeriod = config.getInt("hardship-depreciation-period-in-days", 7);
             huntKarma = config.getDouble("hunt-karma", -250.0);
             allowHuntNewPlayers = config.getBoolean("hunt-new-players", true);
-            hardshipPerKill = config.getDouble("hardship-per-kill", 500);
+            hardshipPerKill = config.getDouble("hardship-per-kill", 0);
             useHardshipSystem = config.getBoolean("hardship-should-pay-damages", false);
             keepRegionChunksLoaded = config.getBoolean("keep-region-chunks-loaded", true);
             silentExp = config.getBoolean("no-exp-chat-messages", false);
             deleteInvalidRegions = config.getBoolean("delete-invalid-regions", false);
             lineLengthMap = new HashMap<>();
+            useBounties = config.getBoolean("use-bounties", true);
             useSkills = config.getBoolean("use-skills", true);
+            warningLogger = config.getBoolean("show-warning-logs", false);
+            percentPowerForUpgrade = config.getDouble("percent-power-for-town-upgrade", 0.1);
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
                     lineLengthMap.put(key, config.getInt("line-break-length-per-language." + key, lineBreakLength));
@@ -413,6 +436,17 @@ public class ConfigManager {
                 chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, Material.GRASS.name());
             }
             chatChannelFormat = config.getString("chat-channel-format", "[$channel$]$player$: $message$");
+
+            if (config.isSet("player-residencies-count")) {
+                residenciesCount = config.getInt("player-residencies-count");
+            }
+
+            if (config.isSet("player-residencies-count-override")) {
+                for (String count : config.getConfigurationSection("player-residencies-count-override").getKeys(false)) {
+                    String perm = config.getString("player-residencies-count-override." + count);
+                    residenciesCountOverride.put(Integer.parseInt(count), perm);
+                }
+            }
 
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read from config.yml", e);
@@ -457,12 +491,17 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        warningLogger = false;
+        percentPowerForUpgrade = 0.1;
+        huntCrossWorld = false;
+        skinsInMenu = true;
+        useBounties = true;
         deleteInvalidRegions = false;
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         silentExp = false;
         useSkills = true;
         keepRegionChunksLoaded = true;
-        hardshipPerKill = 500;
+        hardshipPerKill = 0;
         allowHuntNewPlayers = false;
         hardshipDepreciationPeriod = 7;
         huntKarma = -250.0;
@@ -488,7 +527,7 @@ public class ConfigManager {
         announcementPeriod = 240;
         useAnnouncements = true;
         prefixAllText = "";
-        civsChatPrefix = "@{GREEN}[Civs]";
+        civsChatPrefix = "@{GREEN}[Civs] ";
         civsItemPrefix = "Civs";
         capitalismVotingCost = 200;
         daysBetweenVotes = 7;
@@ -534,6 +573,7 @@ public class ConfigManager {
         portSlowWarmup = true;
         combatTagDuration = 60;
         portDuringCombat = false;
+        showKillStreakMessages = false;
         townRings = true;
         karmaDepreciatePeriod = 43200;
         combatLogPenalty = 80;
@@ -549,6 +589,8 @@ public class ConfigManager {
         levelList = new ArrayList<>();
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         allowChangingOfGovType = false;
+        residenciesCount = -1;
+        residenciesCountOverride = new TreeMap<>();
     }
 
     public static ConfigManager getInstance() {

@@ -1,4 +1,4 @@
-size: 18
+size: 27
 name: Player
 # variables
 #  uuid: the uuid of the player
@@ -15,30 +15,30 @@ name: Player
 #  remove-friend
 items:
   icon:
-    index: 0
+    index: 4
     # icon player head
     # name player name
     actions: []
   friends:
-    index: 1
+    index: 10
     icon: PLAYER_HEAD
     name: friends
     actions:
       - menu:people?uuid=$uuid$
   money:
-    index: 2
+    index: 9
     icon: EMERALD
     name: money{$money$
     actions: []
   towns:
-    index: 3
-    icon: OAK_DOOR
+    index: 11
+    icon: RED_BED
     name: towns
     # desc list of towns
     actions:
       - menu:select-town?uuid=$uuid$&prevMenu=town
   bounty:
-    index: 4
+    index: 14
     icon: SKELETON_SKULL
     name: bounty
     # desc list of bounties
@@ -46,15 +46,15 @@ items:
       - typing:click-me:bounty-command{$name$
       - close
   add-friend:
-    index: 6
-    icon: EMERALD_BLOCK
+    index: 13
+    icon: CAKE
     name: add-friend
     actions:
       - add-friend
       - refresh
   remove-friend:
-    index: 6
-    icon: BARRIER
+    index: 13
+    icon: POISONOUS_POTATO
     name: remove-friend
     actions:
       - remove-friend
@@ -62,44 +62,44 @@ items:
   back:
     index: 8
   points:
-    index: 9
+    index: 18
     icon: DIAMOND
     name: points{$points$
     actions: []
   karma:
-    index: 10
+    index: 21
     icon: CREEPER_HEAD
     name: karma{$karma$
     desc: karma-desc
     actions: []
   hardship:
-    index: 11
+    index: 22
     icon: WITHER_SKELETON_SKULL
     name: hardship{$hardship$
     desc: hardship-desc
     actions: []
   kills:
-    index: 12
+    index: 19
     icon: PLAYER_HEAD
     name: kills{$kills$
     actions: []
   deaths:
-    index: 13
+    index: 20
     icon: SKELETON_SKULL
     name: deaths{$deaths$
     actions: []
   killstreak:
-    index: 14
+    index: 23
     icon: IRON_SWORD
     name: killstreak{$killstreak$
     actions: []
   highest-killstreak:
-    index: 15
+    index: 24
     icon: DIAMOND_SWORD
     name: highest-killstreak{$highest-killstreak$
     actions: []
   skills:
-    index: 17
+    index: 26
     icon: BOOK
     name: skills
     actions:

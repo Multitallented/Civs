@@ -6,15 +6,20 @@ name: Shop
 # custom actions:
 #  view-item: opens the category/level/item for viewing
 items:
+  shopicon:
+    index: 4
+    icon: BRICK
+    name: shop
+    actions: []
   parent:
-    index: 0
+    index: 4
     # icon: parent icon
     # name: parent name
     # desc: parent desc
   prev:
     index: 3
   sort-level:
-    index: 4
+    index: 0
     icon: BOOKSHELF
     name: sort-by-level
     actions:

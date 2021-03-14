@@ -42,12 +42,6 @@ upkeep:
     power-output: 6
   1:
     reagents:
-    - PAPER*1
-    input:
-    - EMERALD*16
-    payout: 160
-  2:
-    reagents:
       - CHEST*1
     output:
       - EMERALD*16

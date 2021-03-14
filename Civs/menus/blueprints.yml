@@ -3,9 +3,16 @@
 #items:
 #  prev:
 #    index: 3
+#  blueprinticon:
+#    index: 4
+#    icon: MAP
+#    name: blueprints
+#    actions: []
 #  next:
 #    index: 5
 #  back:
 #    index: 8
 #  blueprints:
 #    index: 9-35
+#    actions:
+#      - delete

@@ -15,6 +15,12 @@ line-break-length-per-language:
 ##It basically allows people to bypass limits and dupe civ items with min amounts (like shelter)
 allow-civ-item-sharing: false
 
+##Show player skins in menu icons
+show-player-skins-in-menus: true
+
+##Allows players to set bounties on each other and on towns
+use-bounties: true
+
 #allows players to earn exp in skills
 allow-skills: true
 #turns off exp chat notifications for skills
@@ -46,6 +52,8 @@ unloaded-chest-refresh-rate: 10
 max-town-tax: 100.0
 ## the max amount that can be in a town bank (excluding taxes)
 max-bank-deposit: -1
+## percent of max power you must have before you can upgrade a town
+percent-power-for-town-upgrade: 0.1
 
 min-distance-between-towns: 10
 
@@ -66,6 +74,9 @@ jail-time-seconds: 300
 
 ##cooldown before spawning a new villager in seconds
 villager-cooldown: 300
+
+##Allow people to hunt other players in other worlds
+allow-hunt-cross-world: false
 
 ##stops arrow turrets from shooting at monsters
 disable-arrow-turret-shooting-at-mobs: false
@@ -92,7 +103,7 @@ allow-teleporting-out-of-hostile-towns: true
 
 ##Should the town enter and exit messages be titles (or chat)
 enter-exit-messages-use-titles: true
-
+show-killstreak-messages: true
 points:
   killstreak: 0.1
   killjoy: 0.2
@@ -105,7 +116,7 @@ money:
   killjoy: 10
   kill: 100
   karma: 0.2
-hardship-per-kill: 500
+hardship-per-kill: 0
 karma-per-kill: 50
 karma-per-kill-streak: 5
 ##How often should karma be cut by 50%? Adds 50% to negative karma. Subtracts 50% from positive karma.
@@ -121,11 +132,20 @@ power-per-npc-kill: 5
 
 folders:
   farms: STONE_HOE
-  towns: GLOWSTONE
+  towns:
+    icon: GLOWSTONE
+    pre-reqs:
+      - population=1|built=command_tent|built=council_room|built=town_hall|built=city_hall|built=capitol
   shops: EMERALD
   utilities: REDSTONE
-  housing: RED_BED
-  defense: ARROW
+  housing:
+    icon: RED_BED
+    pre-reqs:
+      - member=settlement:hamlet:village:town:city:metropolis
+  defense:
+    icon: ARROW
+    pre-reqs:
+      - population=1
   quarries: STONE_SHOVEL
   factories: PISTON
   offense: TNT
@@ -134,7 +154,10 @@ folders:
   hyphaeworks: CRIMSON_STEM
   animals: SHEEP_SPAWN_EGG
   npchousing: VILLAGER_SPAWN_EGG
-  trading: EMERALD_ORE
+  trading:
+    icon: EMERALD_ORE
+    pre-reqs:
+      - member=hamlet:village:town:city:metropolis
 
 levels:
   - DIRT
@@ -218,7 +241,7 @@ tutorial:
   use-guide: true
 top-guide-spacer: "-----------------Civs-----------------"
 bottom-guide-spacer: "--------------------------------------"
-civs-chat-prefix: "@{GREEN}[Civs]"
+civs-chat-prefix: "@{GREEN}[Civs] "
 prefix-all-text: ""
 civs-item-prefix: "Civs"
 
@@ -255,3 +278,11 @@ announcement-period: 240
 
 ## do not turn this on unless you want to spam your console with potentially useless info
 debug-log: false
+
+#Max count of towns player can be resident of
+player-residencies-count: -1
+
+#List of permission that can be used to override maximal residence limit
+player-residencies-count-override:
+  2: "civs.residencyoverride.vip"
+  3: "civs.residencyoverride.vip+"

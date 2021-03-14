@@ -23,6 +23,7 @@ limits:
 - purifier:1
 - embassy:1
 - jammer_trap:0
+- catapult:0
 - barracks:1
 - inn:1
 

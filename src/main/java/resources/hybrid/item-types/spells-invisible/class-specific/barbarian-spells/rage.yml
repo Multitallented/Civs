@@ -1,0 +1,33 @@
+icon: REDSTONE
+type: spell
+is-in-shop: false
+level: 1
+groups: []
+pre-reqs: []
+
+passives:
+  components:
+    1:
+      yield:
+        damage-listener^1:
+          section:
+            damage-mod: 2
+            conditions:
+              damage^not:
+                silent: true
+                damage: 32
+            components:
+              2:
+                yield:
+                  particle: LAVA
+        damage-listener:
+          section:
+            damage-mod: 2
+            conditions:
+              damage^not:
+                silent: true
+                damage: 64
+            components:
+              3:
+                yield:
+                  particle: LAVA

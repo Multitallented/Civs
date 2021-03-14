@@ -21,7 +21,7 @@ effects:
 - block_build
 - block_break
 - drain_power:2
-- evolve:siege_machine1.20
+- evolve:siege_machine1.10
 
 towns:
 - outpost
