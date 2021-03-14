@@ -781,6 +781,7 @@ public class TownManager {
         if (childTownType == null && GovernmentManager.getInstance().getGovermentTypes().size() > 1) {
             HashMap<String, String> params = new HashMap<>();
             params.put("town", newTown.getName());
+            MenuManager.clearHistory(player.getUniqueId());
             MenuManager.getInstance().openMenu(player, "gov-list", params);
         }
 
@@ -864,6 +865,7 @@ public class TownManager {
                 }
                 regionString.substring(0, regionString.length() - 1);
                 params.put("regionList", regionString.toString());
+                MenuManager.clearHistory(player.getUniqueId());
                 MenuManager.getInstance().openMenu(player, "region-type-list", params);
                 return true;
             }

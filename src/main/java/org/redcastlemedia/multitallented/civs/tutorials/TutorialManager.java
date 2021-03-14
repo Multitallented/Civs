@@ -237,6 +237,7 @@ public class TutorialManager {
         String type = step.getType();
         if ("choose".equals(type)) {
             player.closeInventory();
+            MenuManager.clearHistory(player.getUniqueId());
             MenuManager.getInstance().openMenu(player, "tutorial-choose-path", new HashMap<>());
         }
     }

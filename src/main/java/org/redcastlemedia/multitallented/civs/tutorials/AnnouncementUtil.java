@@ -252,6 +252,7 @@ public final class AnnouncementUtil {
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        MenuManager.clearHistory(player.getUniqueId());
         if ("ann-make-allies".equals(key)) {
             MenuManager.openMenuFromString(civilian, "select-town");
         } else if (key.startsWith("ann-vote-")) {

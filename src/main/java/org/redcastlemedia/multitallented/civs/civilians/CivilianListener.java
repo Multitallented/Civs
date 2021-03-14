@@ -291,6 +291,7 @@ public class CivilianListener implements Listener {
             civilian.getStashItems().put(itemName, 1);
         }
         CivilianManager.getInstance().saveCivilian(civilian);
+        MenuManager.clearHistory(player.getUniqueId());
         MenuManager.openMenuFromString(civilian, "blueprints");
         return true;
     }
@@ -441,6 +442,7 @@ public class CivilianListener implements Listener {
                 MenuManager.clearHistory(player.getUniqueId());
                 HashMap<String, String> params = new HashMap<>();
                 params.put(Constants.REGION, region.getId());
+                MenuManager.clearHistory(player.getUniqueId());
                 MenuManager.getInstance().openMenu(player, Constants.REGION, params);
             } else {
                 player.performCommand("cv");
@@ -449,6 +451,7 @@ public class CivilianListener implements Listener {
             MenuManager.clearHistory(player.getUniqueId());
             HashMap<String, String> params = new HashMap<>();
             params.put(Constants.REGION, region.getId());
+            MenuManager.clearHistory(player.getUniqueId());
             MenuManager.getInstance().openMenu(player, Constants.REGION, params);
         }
         if (region != null) {
