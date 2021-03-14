@@ -94,6 +94,7 @@ public class RegionListener implements Listener {
             MenuManager.clearHistory(civilian.getUuid());
             HashMap<String, String> params = new HashMap<>();
             params.put(Constants.TOWN_TYPE, townType.getProcessedName());
+            MenuManager.clearHistory(player.getUniqueId());
             MenuManager.getInstance().openMenu(player, "town-type", params);
             return;
         }
@@ -105,6 +106,7 @@ public class RegionListener implements Listener {
             HashMap<String, String> params = new HashMap<>();
             params.put(Constants.REGION_TYPE, regionType.getProcessedName());
             params.put(Constants.INFINITE_BOUNDING_BOX, "true");
+            MenuManager.clearHistory(player.getUniqueId());
             MenuManager.getInstance().openMenu(player, "region-type", params);
         }
     }

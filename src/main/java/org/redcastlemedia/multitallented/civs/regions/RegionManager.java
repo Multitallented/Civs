@@ -723,6 +723,7 @@ public class RegionManager {
                     data.put("page", 0);
                     data.put("maxPage", 1);
                     data.put("regionType", regionType.getProcessedName());
+                    MenuManager.clearHistory(player.getUniqueId());
                     MenuManager.getInstance().openMenuFromHistory(player, "recipe", data);
                 }
                 return null;
