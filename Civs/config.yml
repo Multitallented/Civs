@@ -247,31 +247,39 @@ civs-item-prefix: "Civs"
 
 # Deprecated
 chat-channel-format: "[$channel$] $player$: $message$"
+#In order to reference a placeholder use format <%PLACEHOLDER%>
+#For more formatting options such as using onClick events, custom fonts, or color gradients check out https://docs.adventure.kyori.net/minimessage.html#format
 chat-channels:
   global:
     enabled: true
     icon: ENDER_CHEST
-    override: false
-    format: "[$alliance_or_town$] $player$: $message$"
+    override: true
+    format: "<green>[g]<nation_f><white><player>: <message>"
   local:
     enabled: true
     icon: GRASS
-    format: "[Local] [$alliance_or_town$] $player$: $message$"
+    format: "[<yellow>local<reset>]<nation_f><white><player>:<yellow><message>"
   friend:
     enabled: true
     icon: PLAYER_HEAD
+    format: "[F] <player>: <message>"
   town:
     enabled: true
     icon: BRICKS
-    format: "[$channel$] $player$: $message$"
+    format: "[<aqua>Tc<reset>]<town_f> <player>:<aqua><message>"
   nation:
     enabled: true
     icon: BLUE_BANNER
-    format: "[$town$] $player$: $message$"
+    format: "[<gold>Nc<reset>]<town_f> <player>:<gold><message>"
   alliance:
     enabled: true
     icon: GOLDEN_SWORD
-    format: "[$town$] $player$: $message$"
+    format: "[<lightpurple>Al<reset>]<town_f> <player>:<lightpurple> <message>"
+
+# If player do not belong to any nation, or town formatted tags will eventually fallback to empty string
+chat-tags-format:
+  town_f: "<white>[<gold>$1<white>]"
+  nation_f: "<white>[<gold>$1<white>]"
 
 allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"
