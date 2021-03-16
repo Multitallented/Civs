@@ -246,25 +246,39 @@ prefix-all-text: ""
 civs-item-prefix: "Civs"
 
 chat-channel-format: "[$channel$]$player$: $message$"
-chat-channels:
+
+#In order to reference a placeholder use format <%PLACEHOLDER%>
+  #For more formatting options such as using onClick events, custom fonts, or color gradients check out https://docs.adventure.kyori.net/minimessage.html#formatchat-channels:
   global:
     enabled: true
     icon: ENDER_CHEST
+    override: true
+    format: "<green>[g]<nation_f><white><player>: <message>"
   local:
     enabled: true
     icon: GRASS
+    format: "[<yellow>local<reset>]<nation_f><white><player>:<yellow><message>"
   friend:
     enabled: true
     icon: PLAYER_HEAD
+    format: "[F] <player>: <message>"
   town:
     enabled: true
     icon: BRICKS
+    format: "[<aqua>Tc<reset>]<town_f> <player>:<aqua><message>"
   nation:
     enabled: true
     icon: BLUE_BANNER
+    format: "[<gold>Nc<reset>]<town_f> <player>:<gold><message>"
   alliance:
     enabled: true
     icon: GOLDEN_SWORD
+    format: "[<lightpurple>Al<reset>]<town_f> <player>:<lightpurple> <message>"
+
+# If player do not belong to any nation, or town formatted tags will eventually fallback to empty string
+chat-tags-format:
+  town_f: "<white>[<gold>$1<white>]"
+  nation_f: "<white>[<gold>$1<white>]"
 
 allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"
@@ -277,7 +291,7 @@ use-announcements: true
 announcement-period: 240
 
 # Display chat message if there are no players online for the chat channel
-warn-on-empty-chat-channel: true
+warn-on-empty-chat-channel: false
 
 ## do not turn this on unless you want to spam your console with potentially useless info
 debug-log: false

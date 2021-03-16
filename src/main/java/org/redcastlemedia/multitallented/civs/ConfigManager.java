@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.civs;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.redcastlemedia.multitallented.civs.chat.ChatChannelConfig;
 import org.redcastlemedia.multitallented.civs.civilians.ChatChannel;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -141,7 +142,9 @@ public class ConfigManager {
     int lineBreakLength;
     Map<String, Integer> lineLengthMap;
     @Getter
-    EnumMap<ChatChannel.ChatChannelType, String> chatChannels;
+    EnumMap<ChatChannel.ChatChannelType, ChatChannelConfig> chatChannels;
+    @Getter
+    Map<String, String> chatTagFormat;
     @Getter
     long unloadedChestRefreshRate;
     @Getter
@@ -425,18 +428,30 @@ public class ConfigManager {
             if (config.isSet("chat-channels")) {
                 for (String chatChannel : config.getConfigurationSection("chat-channels").getKeys(false)) {
                     try {
-                        if (config.getBoolean("chat-channels." + chatChannel + ".enabled", false)) {
-                            chatChannels.put(ChatChannel.ChatChannelType.valueOf(chatChannel.toUpperCase()),
-                                    config.getString("chat-channels." + chatChannel + ".icon", Material.GRASS.name()));
-                        }
+                        boolean enabled = config.getBoolean("chat-channels." + chatChannel + ".enabled", false);
+                        boolean override = config.getBoolean("chat-channels." + chatChannel + ".override", false);
+                        String format = config.getString("chat-channels." + chatChannel + ".format", "$channel$ $player$: $message$");
+                        String icon = config.getString("chat-channels." + chatChannel + ".icon", Material.GRASS.name());
+                        ChatChannel.ChatChannelType chatChannelType = ChatChannel.ChatChannelType.valueOf(chatChannel.toUpperCase());
+
+                        chatChannels.put(chatChannelType,
+                                new ChatChannelConfig(chatChannelType, enabled, Material.valueOf(icon.toUpperCase(Locale.ROOT)), format, override));
                     } catch (Exception e) {
                         Civs.logger.log(Level.WARNING, "Invalid chat channel type {0}", chatChannel);
                     }
                 }
             }
-            if (chatChannels.isEmpty()) {
-                chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, Material.GRASS.name());
+
+            if (config.isSet("chat-tags-format")) {
+                for (String tag : config.getConfigurationSection("chat-tags-format").getKeys(false)) {
+                    try {
+                        chatTagFormat.put(tag,config.getString("chat-tags-format." + tag, "[$1]"));
+                    } catch (Exception e) {
+                        Civs.logger.log(Level.WARNING, "Unable to read chat-tags-format section");
+                    }
+                }
             }
+
             chatChannelFormat = config.getString("chat-channel-format", "[$channel$]$player$: $message$");
 
             if (config.isSet("player-residencies-count")) {
@@ -511,7 +526,12 @@ public class ConfigManager {
         lineLengthMap = new HashMap<>();
         unloadedChestRefreshRate = 600000;
         chatChannels = new EnumMap<>(ChatChannel.ChatChannelType.class);
-        chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, Material.GRASS.name());
+        ChatChannelConfig chatChannelConfig = new ChatChannelConfig(ChatChannel.ChatChannelType.GLOBAL,
+                true,
+                Material.GRASS,
+                "[$town$] $player$: $message$",
+                false);
+        chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, chatChannelConfig);
         lineBreakLength = 40;
         minPopulationForGovTransition = 4;
         defaultConfigSet = "hybrid";
@@ -595,6 +615,9 @@ public class ConfigManager {
         residenciesCount = -1;
         residenciesCountOverride = new TreeMap<>();
         warnOnEmptyChatChannel = true;
+        chatTagFormat = new HashMap<>();
+        chatTagFormat.put("town_f", "[$1]");
+        chatTagFormat.put("nation_f", "[$1]");
     }
 
     public static ConfigManager getInstance() {

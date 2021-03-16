@@ -52,6 +52,8 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.chat.ChatChannelConfig;
+import org.redcastlemedia.multitallented.civs.chat.ChatManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -665,7 +667,10 @@ public class CivilianListener implements Listener {
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         ChatChannel chatChannel = civilian.getChatChannel();
-        if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.GLOBAL) {
+        ConfigManager configManager = ConfigManager.getInstance();
+        ChatChannelConfig chatChannelConfig = configManager.getChatChannels().get(chatChannel.getChatChannelType());
+        if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.GLOBAL
+                && ! chatChannelConfig.override) {
             return;
         }
         event.setCancelled(true);
@@ -707,7 +712,6 @@ public class CivilianListener implements Listener {
                 }
             }
         }
-        ConfigManager configManager = ConfigManager.getInstance();
 
         boolean warn = configManager.isWarnOnEmptyChatChannel();
         if (warn && (event.getRecipients().isEmpty() || (event.getRecipients().size() == 1 &&
@@ -715,12 +719,8 @@ public class CivilianListener implements Listener {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "no-recipients").replace("$1", chatChannel.getName(player)));
         } else {
-            for (Player currentPlayer : event.getRecipients()) {
-                currentPlayer.sendMessage(Util.parseColors(ConfigManager.getInstance().getChatChannelFormat())
-                        .replace("$channel$", chatChannel.getName(currentPlayer))
-                        .replace("$player$", player.getDisplayName())
-                        .replace("$message$", event.getMessage()));
-            }
+            ChatManager instance = ChatManager.getInstance();
+            instance.formatMessage(event.getPlayer(), civilian, chatChannelConfig, event.getMessage(),event.getRecipients());
         }
     }
 

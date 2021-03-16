@@ -245,26 +245,33 @@ civs-chat-prefix: "@{GREEN}[Civs] "
 prefix-all-text: ""
 civs-item-prefix: "Civs"
 
-chat-channel-format: "[$channel$]$player$: $message$"
+# Deprecated
+chat-channel-format: "[$channel$] $player$: $message$"
 chat-channels:
   global:
     enabled: true
     icon: ENDER_CHEST
+    override: false
+    format: "[$alliance_or_town$] $player$: $message$"
   local:
     enabled: true
     icon: GRASS
+    format: "[Local] [$alliance_or_town$] $player$: $message$"
   friend:
     enabled: true
     icon: PLAYER_HEAD
   town:
     enabled: true
     icon: BRICKS
+    format: "[$channel$] $player$: $message$"
   nation:
     enabled: true
     icon: BLUE_BANNER
+    format: "[$town$] $player$: $message$"
   alliance:
     enabled: true
     icon: GOLDEN_SWORD
+    format: "[$town$] $player$: $message$"
 
 allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"
