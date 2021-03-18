@@ -874,9 +874,14 @@ public class TownManager {
                     ownerName = offlinePlayer.getName();
                 }
             }
-            Civs.logger.log(Level.INFO,"{0} failed to build a {1} at {2} because it would be too close to a {3} owned by {4}",
-                    new Object[] { player.getName(), townType.getProcessedName(), Region.locationToString(town.getLocation()),
-                    townType1.getProcessedName(), ownerName });
+            if (town != null) {
+                Civs.logger.log(Level.INFO,"{0} failed to build a {1} at {2} because it would be too close to a {3} owned by {4}",
+                        new Object[] { player.getName(), townType.getProcessedName(), Region.locationToString(town.getLocation()),
+                                townType1.getProcessedName(), ownerName });
+            } else {
+                Civs.logger.log(Level.INFO,"{0} failed to build a {1} because it would be too close to a {2} owned by {3}",
+                        new Object[] { player.getName(), townType.getProcessedName(), townType1.getProcessedName(), ownerName });
+            }
             return true;
         }
         return false;
