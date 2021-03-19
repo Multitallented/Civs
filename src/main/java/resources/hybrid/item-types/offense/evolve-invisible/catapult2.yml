@@ -32,3 +32,5 @@ upkeep:
       - REDSTONE*8
     input:
       - TNT*1
+    output:
+      - AIR*1%50,TNT*1%50

@@ -34,3 +34,5 @@
 #      - REDSTONE*8
 #    input:
 #      - TNT*1
+#    output:
+#      - AIR*1%75,TNT*1%25
