@@ -48,7 +48,7 @@
 #  - block_liquid
 #  - block_fire
 #  - deny_mob_spawn
-#  - block_explosion
+#  - power_shield
 #  - control_override
 #  - potion:SATURATION.80
 #  - anticamp:2.1500.1000 #2 damage for 25 minutes costs $1000
