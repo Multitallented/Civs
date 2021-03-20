@@ -12,7 +12,7 @@ public class PlayerEnterRegionEvent extends Event {
     private final UUID uuid;
     private final Region region;
     private final RegionType regionType;
-
+    private boolean notify;
     @Override
     public HandlerList getHandlers() {
         return hList;
@@ -24,6 +24,7 @@ public class PlayerEnterRegionEvent extends Event {
         this.uuid = uuid;
         this.region = region;
         this.regionType = regionType;
+        this.notify = true;
     }
 
     public UUID getUuid() {
@@ -36,5 +37,13 @@ public class PlayerEnterRegionEvent extends Event {
 
     public RegionType getRegionType() {
         return regionType;
+    }
+
+    public boolean isNotify() {
+        return notify;
+    }
+
+    public void setNotify(boolean notify) {
+        this.notify = notify;
     }
 }
