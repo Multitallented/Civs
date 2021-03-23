@@ -2,7 +2,6 @@ package org.redcastlemedia.multitallented.civs.regions.effects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -274,7 +273,7 @@ public class TNTCannon implements Listener, RegionCreatedListener {
         long cooldownTime = System.currentTimeMillis() + cooldown * 1000;
         automaticFire.remove(id);
         if (player != null && player.isSneaking()) {
-            automaticFire.put(id, new TNTCannonFiringState(fireLocation, cooldownTime));
+            automaticFire.put(id, new TNTCannonFiringState(targetLocation, cooldownTime));
         }
         cooldowns.put(region.getLocation(), cooldownTime);
 
