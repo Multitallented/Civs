@@ -92,6 +92,14 @@
 #    name: leaderboard
 #    actions:
 #      - menu:gov-list?leaderboard=true
+#  nation-list:
+#    pre-reqs:
+#      - tutorial=default^build^coal_shop^0
+#    index: 16
+#    icon: GREEN_BANNER
+#    name: nations
+#    actions:
+#      - menu:nation-list
 #  town:
 #    pre-reqs:
 #      - tutorial=default^build^coal_shop^0
@@ -108,6 +116,24 @@
 #    # icon: region icon
 #    actions:
 #      - menu:region?region=$region$
+#  nation:
+#    pre-reqs:
+#      - tutorial=default^build^coal_shop^0
+#    index: 20
+#    # name: nation name
+#    # icon: nation icon
+#    # desc: nation desc
+#    actions:
+#      - menu:nation?nation=$nation$
+#  claim-map:
+#    pre-reqs:
+#      - tutorial=default^build^coal_shop^0
+#    index: 21
+#    name: claims
+#    icon: COMPASS
+#    desc: claim-desc
+#    actions:
+#      - menu:claim-map
 #  class:
 #    pre-reqs:
 #      - tutorial=default^build^coal_shop^0
