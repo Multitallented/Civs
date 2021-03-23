@@ -44,7 +44,7 @@ effects:
 - block_liquid
 - block_fire
 - deny_mob_spawn
-- block_explosion
+- power_shield
 - control_override
 - door_use
 - anticamp:3.1800.200 #3 damage for 30 minutes costs $200
