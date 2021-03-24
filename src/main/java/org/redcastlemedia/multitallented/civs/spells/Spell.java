@@ -16,7 +16,6 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 import org.redcastlemedia.multitallented.civs.spells.effects.Effect;
@@ -630,37 +629,57 @@ public class Spell {
         input = input.replace("$level$", "" + level);
         input = input.replace("$rand$", "" + Math.random());
         String[] inputParts = input.split("\\$");
-        if (spell != null && target != null) {
-            input = "";
-            Map<String, Map<Object, Map<String, Double>>> abilityVariables = spell.getAbilityVariables();
-            for (int i = 0; i < inputParts.length; i++) {
-                if (inputParts[i].contains("#")) {
-                    Map<String, Map<Object, Map<String, Double>>> variables = new HashMap<>(abilityVariables);
-                    Map<Object, Map<String, Double>> targetVars = variables.get(inputParts[i].split("#")[0]);
-                    if (targetVars == null) {
-                        continue;
-                    }
-                    Map<String, Double> componentVars = targetVars.get(target);
-                    if (componentVars == null) {
-                        if (targetVars.isEmpty()) {
-                            continue;
-                        } else {
-                            componentVars = targetVars.values().iterator().next();
-                        }
-                    }
-                    Double var = componentVars.get(inputParts[i].split("#")[1]);
-                    if (var == null) {
-                        continue;
-                    }
-                    inputParts[i] = "" + var;
-                    if (inputParts[i] == null || inputParts[i].equals("")) {
-                        inputParts[i] = "0";
-                    }
-                }
-                input += inputParts[i];
+        if (spell == null || target == null) {
+            return input;
+        }
+        input = "";
+        Map<String, Map<Object, Map<String, Double>>> abilityVariables = spell.getAbilityVariables();
+        StringBuilder inputBuilder = new StringBuilder(input);
+        for (int i = 0; i < inputParts.length; i++) {
+            if (replaceVariable(target, inputParts, abilityVariables, i)) {
+                inputBuilder.append("0");
+            } else {
+                inputBuilder.append(inputParts[i]);
             }
         }
+        input = inputBuilder.toString();
         return input;
+    }
+
+    private static boolean replaceVariable(Object target, String[] inputParts,
+                                           Map<String, Map<Object, Map<String, Double>>> abilityVariables,
+                                           int i) {
+
+        if (!inputParts[i].contains("#")) {
+            return false;
+        }
+//        System.out.println("Replacing var " + inputParts[i]);
+
+        Map<String, Map<Object, Map<String, Double>>> variables = new HashMap<>(abilityVariables);
+        Map<Object, Map<String, Double>> targetVars = variables.get(inputParts[i].split("#")[0]);
+        if (targetVars == null) {
+//            System.out.println("var key not found");
+            return true;
+        }
+        Map<String, Double> componentVars = targetVars.get(target);
+        if (componentVars == null) {
+            if (targetVars.isEmpty()) {
+//                System.out.println("target var not found");
+                return true;
+            } else {
+                componentVars = targetVars.values().iterator().next();
+            }
+        }
+        Double var = componentVars.get(inputParts[i].split("#")[1]);
+        if (var == null) {
+//            System.out.println("target value not set");
+            return true;
+        }
+        inputParts[i] = "" + var;
+        if (inputParts[i] == null || inputParts[i].equals("")) {
+            inputParts[i] = "0";
+        }
+        return false;
     }
 
     public static void addSelfToTargetMapping(Map<String, Set<?>> mappedTargets, Player self) {

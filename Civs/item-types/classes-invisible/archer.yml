@@ -16,10 +16,11 @@
 #mana-per-second: 2
 #max-mana: 100
 #max-health: 26
-#max-level: 16
+#max-level: 24
 #
 #allowed-actions:
 #  - BOW
+#  - CROSSBOW
 #  - LEATHER_CHESTPLATE
 #  - LEATHER_LEGGINGS
 #  - LEATHER_BOOTS

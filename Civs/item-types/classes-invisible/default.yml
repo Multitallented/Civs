@@ -17,6 +17,7 @@
 #
 #allowed-actions:
 #  - BOW
+#  - CROSSBOW
 #  - TRIDENT
 #  - DIAMOND_SWORD
 #  - DIAMOND_AXE
