@@ -376,6 +376,7 @@ public class DeathListener implements Listener {
         boolean isAxe = RepairEffect.isAxe(mainHand.getType());
         boolean isTrident = mainHand.getType() == Material.TRIDENT;
         boolean isBow = mainHand.getType() == Material.BOW;
+        boolean isCrossbow = mainHand.getType() == Material.CROSSBOW;
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.KILL, event.getEntity().getType().name().toLowerCase());
         for (Skill skill : civilian.getSkills().values()) {
@@ -384,7 +385,8 @@ public class DeathListener implements Listener {
             boolean axeSkill = isAxe && skill.getType().equalsIgnoreCase(CivSkills.AXE.name());
             boolean tridentSkill = isTrident && skill.getType().equalsIgnoreCase(CivSkills.TRIDENT.name());
             boolean bowSkill = isBow && skill.getType().equalsIgnoreCase(CivSkills.BOW.name());
-            if (swordSkill || axeSkill || tridentSkill || bowSkill) {
+            boolean crossbowSkill = isCrossbow && skill.getType().equalsIgnoreCase(CivSkills.CROSSBOW.name());
+            if (swordSkill || axeSkill || tridentSkill || bowSkill || crossbowSkill) {
                 exp = skill.addAccomplishment(event.getEntity().getType().name());
             }
             MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);

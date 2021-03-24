@@ -12,6 +12,7 @@ public class PlayerExitTownEvent extends Event {
     private final UUID uuid;
     private final Town town;
     private final TownType townType;
+    private boolean notify;
 
     @Override
     public HandlerList getHandlers() {
@@ -24,6 +25,7 @@ public class PlayerExitTownEvent extends Event {
         this.uuid = uuid;
         this.town = town;
         this.townType = townType;
+        this.notify = true;
     }
 
     public UUID getUuid() {
@@ -36,5 +38,13 @@ public class PlayerExitTownEvent extends Event {
 
     public TownType getTownType() {
         return townType;
+    }
+
+    public boolean isNotify() {
+        return notify;
+    }
+
+    public void setNotify(boolean notify) {
+        this.notify = notify;
     }
 }
