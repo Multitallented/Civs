@@ -158,12 +158,11 @@ public class PlaceHook extends PlaceholderExpansion {
         }
     }
 
-    private String getNation(Civilian civilian) {
+    public static String getNation(Civilian civilian) {
         Nation nation = NationManager.getInstance().getNationByPlayer(civilian.getUuid());
         if (nation != null) {
             return nation.getName();
         }
-
         for (Alliance alliance : AllianceManager.getInstance().getAllSortedAlliances()) {
             for (String townName : alliance.getMembers()) {
                 Town town = TownManager.getInstance().getTown(townName);

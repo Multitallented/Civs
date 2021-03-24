@@ -60,7 +60,8 @@ public class JammerEffect implements Listener, RegionCreatedListener {
                 cooldowns.remove(event.getPlayer().getUniqueId());
             }
         }
-        if (event.getTo() == null) {
+        if (event.getTo() == null || (event.getFrom().getWorld().equals(event.getTo().getWorld()) &&
+                event.getFrom().distanceSquared(event.getTo()) < 101)) {
             return;
         }
 

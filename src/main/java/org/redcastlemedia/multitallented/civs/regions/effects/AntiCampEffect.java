@@ -132,7 +132,6 @@ public class AntiCampEffect implements Listener {
         if (!town.getEffects().containsKey(KEY)) {
             return;
         }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         double antiCampCost = 0;
         if (town.getEffects().get(AntiCampEffect.KEY) != null) {
