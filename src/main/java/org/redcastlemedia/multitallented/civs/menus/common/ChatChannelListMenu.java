@@ -106,7 +106,7 @@ public class ChatChannelListMenu extends CustomMenu {
                 cvItem = new CVItem(townType.getMat(), 1, 1, chatChannel.getName(player),
                         Util.textWrap(civilian, chatChannel.getDesc(player)));
             } else {
-                cvItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getChatChannels().get(chatChannel.getChatChannelType()));
+                cvItem = CVItem.createCVItemFromString(ConfigManager.getInstance().getChatChannels().get(chatChannel.getChatChannelType()).icon);
                 cvItem.setDisplayName(chatChannel.getName(player));
                 cvItem.setLore(Util.textWrap(civilian, chatChannel.getDesc(player)));
             }
