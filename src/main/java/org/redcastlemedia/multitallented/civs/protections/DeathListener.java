@@ -506,7 +506,7 @@ public class DeathListener implements Listener {
         if (powerPerKill > 0 && !damagerCiv.isFriend(dyingCiv) &&
                 TownManager.getInstance().findCommonTowns(damagerCiv, dyingCiv).isEmpty()) {
             for (Town town : new ArrayList<>(TownManager.getInstance().getTowns())) {
-                if (!town.getPeople().containsKey(dyingCiv.getUuid()) ||
+                if (town.isDevolvedToday() || !town.getPeople().containsKey(dyingCiv.getUuid()) ||
                         town.getPeople().get(dyingCiv.getUuid()).contains("ally")) {
                     continue;
                 }

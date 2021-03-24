@@ -614,7 +614,8 @@ public class ProtectionHandler implements Listener {
                 Town town = TownManager.getInstance().getTownAt(event.getLocation());
                 if (town != null) {
                     int powerReduce = 1;
-                    if (town.getEffects().get(RegionEffectConstants.POWER_SHIELD) != null) {
+                    if (!town.isDevolvedToday() &&
+                            town.getEffects().get(RegionEffectConstants.POWER_SHIELD) != null) {
                         powerReduce = Integer.parseInt(town.getEffects().get(RegionEffectConstants.POWER_SHIELD));
                     }
                     if (town.getPower() > 0) {

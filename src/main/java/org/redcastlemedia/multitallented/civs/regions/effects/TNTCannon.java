@@ -75,12 +75,11 @@ public class TNTCannon implements Listener, RegionCreatedListener {
                     continue;
                 }
                 Location fireLocation = region.getLocation().getBlock().getRelative(BlockFace.UP, 2).getLocation();
-                Player player = null;
-                Set<UUID> owners = region.getOwners();
-                if (!owners.isEmpty()) {
-                    player = Bukkit.getPlayer(owners.iterator().next());
+
+                if (cooldowns.get(region.getLocation()) != null && cooldowns.get(region.getLocation()) > System.currentTimeMillis()) {
+                    continue;
                 }
-                fireTheCannon(player, entry.getKey(), getCooldown(region), fireLocation, entry.getValue().getLocation());
+                fireTheCannon(null, entry.getKey(), getCooldown(region), fireLocation, entry.getValue().getLocation());
             }
         }
     }
@@ -181,8 +180,11 @@ public class TNTCannon implements Listener, RegionCreatedListener {
         }
         event.setCancelled(true);
 
+        if (!player.isSneaking()) {
+            automaticFire.remove(id);
+        }
         if (cooldowns.get(regionLocation) != null && cooldowns.get(regionLocation) > System.currentTimeMillis()) {
-            long timeLeft = System.currentTimeMillis() - cooldowns.get(regionLocation);
+            long timeLeft = (cooldowns.get(regionLocation) - System.currentTimeMillis()) / 1000;
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     LocaleConstants.COOLDOWN).replace("$1", Util.formatTime(timeLeft)));
             return;
@@ -271,7 +273,6 @@ public class TNTCannon implements Listener, RegionCreatedListener {
         tnt.setFuseTicks(240);
 
         long cooldownTime = System.currentTimeMillis() + cooldown * 1000;
-        automaticFire.remove(id);
         if (player != null && player.isSneaking()) {
             automaticFire.put(id, new TNTCannonFiringState(targetLocation, cooldownTime));
         }
