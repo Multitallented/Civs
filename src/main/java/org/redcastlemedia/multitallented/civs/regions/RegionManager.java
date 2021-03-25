@@ -113,6 +113,9 @@ public class RegionManager {
         Civs.logger.log(Level.INFO, "Region {0} created {1}.yml", params);
     }
     public void loadAllRegions() {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         regions.clear();
         regionLocations.clear();
         File regionFolder = new File(Civs.dataLocation, Constants.REGIONS);

@@ -23,12 +23,10 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.spells.SpellManager;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.spells.SpellUtil;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
-import org.redcastlemedia.multitallented.civs.util.Constants;
 
 @CivsSingleton
 public class ClassManager {
@@ -45,6 +43,9 @@ public class ClassManager {
     }
 
     void loadClasses() {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         File classFolder = new File(Civs.dataLocation, "class-data");
         if (!classFolder.exists()) {
             classFolder.mkdir();
@@ -115,7 +116,7 @@ public class ClassManager {
         }
     }
     public void saveClass(CivClass civClass) {
-        if (!ConfigManager.getInstance().getUseClassesAndSpells()) {
+        if (!ConfigManager.getInstance().getUseClassesAndSpells() || Civs.getInstance() == null) {
             return;
         }
         File classFolder = new File(Civs.dataLocation, "class-data");
