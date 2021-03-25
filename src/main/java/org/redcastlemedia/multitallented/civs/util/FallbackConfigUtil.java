@@ -26,9 +26,11 @@ public final class FallbackConfigUtil {
     public static FileConfiguration getConfigFullPath(File originalFile, String url) {
         FileConfiguration config = new YamlConfiguration();
         try {
-            InputStream inputStream = FallbackConfigUtil.class.getResourceAsStream(url);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-            config.load(reader);
+            if (Civs.getInstance() != null || !url.contains("config.yml")) {
+                InputStream inputStream = FallbackConfigUtil.class.getResourceAsStream(url);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+                config.load(reader);
+            }
             if (originalFile != null && originalFile.exists()) {
                 FileConfiguration configOverride = new YamlConfiguration();
                 configOverride.load(originalFile);
