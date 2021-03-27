@@ -170,17 +170,19 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
             <version>4.7.0</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
             <version>4.1.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
             <version>4.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -274,6 +276,15 @@
                         </filter>
                     </filters>
                     <relocations combine.children="append">
+                        <relocation>
+                            <pattern>net.kyori</pattern>
+                            <shadedPattern>
+                                shaded.net.kyori
+                            </shadedPattern>
+                            <includes>
+                                <include>net.kyori.**</include>
+                            </includes>
+                        </relocation>
                         <relocation>
                             <pattern>org.reflections</pattern>
                             <shadedPattern>
