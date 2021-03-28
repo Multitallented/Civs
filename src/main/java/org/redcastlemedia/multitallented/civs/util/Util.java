@@ -311,7 +311,7 @@ public final class Util {
         if (input == null) {
             return null;
         }
-        String returnInput = new String(input);
+        String returnInput = input;
         boolean continueLoop = true;
         int i = 0;
         while (continueLoop && i < 99) {

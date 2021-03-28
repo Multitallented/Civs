@@ -211,41 +211,47 @@ public class CommonScheduler implements Runnable {
         PlayerEnterTownEvent playerEnterTownEvent = new PlayerEnterTownEvent(player.getUniqueId(),
                 town, townType);
         Bukkit.getPluginManager().callEvent(playerEnterTownEvent);
-        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
-        String govName = "Unknown";
-        if (government != null) {
-            govName = LocaleManager.getInstance().getTranslation(player,
-                    government.getName().toLowerCase() + LocaleConstants.NAME_SUFFIX);
-        }
-        if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
-            player.sendTitle(ChatColor.GREEN + town.getName(), ChatColor.BLUE + govName, 5, 40, 5);
-        } else {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                    "town-enter").replace("$1", town.getName())
-                    .replace("$2", govName));
-        }
-        if (!town.getPeople().containsKey(player.getUniqueId())) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                    "town-enter-warning"));
+
+        if (playerEnterTownEvent.isNotify()) {
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            String govName = "Unknown";
+            if (government != null) {
+                govName = LocaleManager.getInstance().getTranslation(player,
+                        government.getName().toLowerCase() + LocaleConstants.NAME_SUFFIX);
+            }
+            if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
+                player.sendTitle(ChatColor.GREEN + town.getName(), ChatColor.BLUE + govName, 5, 40, 5);
+            } else {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        "town-enter").replace("$1", town.getName())
+                        .replace("$2", govName));
+            }
+            if (!town.getPeople().containsKey(player.getUniqueId())) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        "town-enter-warning"));
+            }
         }
     }
+
     private void exitTown(Player player, Civilian civilian, Town town, TownType townType) {
         PlayerExitTownEvent playerExitTownEvent = new PlayerExitTownEvent(player.getUniqueId(),
                 town, townType);
         Bukkit.getPluginManager().callEvent(playerExitTownEvent);
-        Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
-        String govName = "Unknown";
-        if (government != null) {
-            govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    government.getName().toLowerCase() + LocaleConstants.NAME_SUFFIX);
-        }
-        if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
-            String wild = LocaleManager.getInstance().getTranslation(civilian.getLocale(), "wild");
-            player.sendTitle(ChatColor.GREEN + wild, "", 5, 40, 5);
-        } else {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                    "town-exit").replace("$1", town.getName())
-                    .replace("$2", govName));
+        if (playerExitTownEvent.isNotify()) {
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            String govName = "Unknown";
+            if (government != null) {
+                govName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        government.getName().toLowerCase() + LocaleConstants.NAME_SUFFIX);
+            }
+            if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
+                String wild = LocaleManager.getInstance().getTranslation(civilian.getLocale(), "wild");
+                player.sendTitle(ChatColor.GREEN + wild, "", 5, 40, 5);
+            } else {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "town-exit").replace("$1", town.getName())
+                        .replace("$2", govName));
+            }
         }
     }
 
@@ -269,12 +275,15 @@ public class CommonScheduler implements Runnable {
         for (Region r : containedRegions) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(r.getType());
             if (!previousRegions.contains(r)) {
-                if (ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
+
+                PlayerEnterRegionEvent playerEnterRegionEvent = new PlayerEnterRegionEvent(player.getUniqueId(),
+                        r, regionType);
+
+                if (playerEnterRegionEvent.isNotify() && ConfigManager.getInstance().isEnterExitMessagesUseTitles()) {
                     String localRegionTypeName = regionType.getDisplayName(player);
                     player.sendTitle(" ", ChatColor.BLUE + localRegionTypeName, 5, 40, 5);
                 }
-                PlayerEnterRegionEvent playerEnterRegionEvent = new PlayerEnterRegionEvent(player.getUniqueId(),
-                        r, regionType);
+
                 Bukkit.getPluginManager().callEvent(playerEnterRegionEvent);
             }
         }

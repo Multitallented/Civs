@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.dynmap.DynmapCommonAPI;
+import org.redcastlemedia.multitallented.civs.chat.ChatManager;
 import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -87,6 +89,7 @@ public class Civs extends JavaPlugin {
         getLogger().info(LogInfo.DISABLED);
         Bukkit.getScheduler().cancelTasks(this);
         AllowedActionsListener.getInstance().onDisable();
+        ChatManager.getInstance().onDisable();
     }
 
 
@@ -166,6 +169,9 @@ public class Civs extends JavaPlugin {
         Set<Class<? extends CivCommand>> commands = reflections.getSubTypesOf(CivCommand.class);
         for (Class<? extends CivCommand> currentCommandClass : commands) {
             try {
+                if (Modifier.isAbstract(currentCommandClass.getModifiers())) {
+                    continue;
+                }
                 CivCommand currentCommand = currentCommandClass.newInstance();
                 for (String key : currentCommandClass.getAnnotation(CivsCommand.class).keys()) {
                     commandList.put(key, currentCommand);

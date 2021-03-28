@@ -5,6 +5,7 @@
 #dynmap-marker: bomb
 #name: Catapult
 #price: 250
+#is-in-shop: false
 #max: 4
 #groups:
 #  - offense
@@ -22,9 +23,9 @@
 #  - block_build
 #  - block_liquid
 #  - block_fire
-#  - tnt_cannon:30
-#  - evolve:catapult1.20
+#  - tnt_cannon:20
 #  - chest_use
+#  - evolve:catapult2.30
 #
 #period: daily
 #upkeep:
@@ -33,3 +34,5 @@
 #      - REDSTONE*8
 #    input:
 #      - TNT*1
+#    output:
+#      - AIR*1%75,TNT*1%25

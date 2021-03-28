@@ -3,7 +3,8 @@ icon: CHEST
 shop-icon: TNT
 dynmap-marker: bomb
 name: Catapult
-price: 150
+max: 4
+price: 250
 groups:
 - offense
 level: 1
@@ -20,7 +21,8 @@ effects:
 - block_build
 - block_liquid
 - block_fire
-- tnt_cannon:4
+- tnt_cannon:30
+- evolve:catapult1.20
 - chest_use
 
 period: daily
