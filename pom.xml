@@ -138,7 +138,7 @@
             <groupId>com.gmail.olexorus.witherac.api</groupId>
             <artifactId>WitherAC_API</artifactId>
             <scope>provided</scope>
-            <version>latest</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>fr.neatmonster</groupId>
