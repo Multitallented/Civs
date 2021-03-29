@@ -120,44 +120,38 @@
         <dependency>
             <groupId>net.Indyuce.mmoitems</groupId>
             <artifactId>MMOItems</artifactId>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/MMOItems Premium.jar</systemPath>
+            <scope>provided</scope>
             <version>6.2.1</version>
         </dependency>
         <dependency>
             <groupId>net.mmogroup.mmolib</groupId>
             <artifactId>MMOLib</artifactId>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/MMOLib.jar</systemPath>
+            <scope>provided</scope>
             <version>1.3.7.1</version>
         </dependency>
         <dependency>
             <groupId>me.vagdedes.spartan.api</groupId>
             <artifactId>API</artifactId>
-            <scope>system</scope>
+            <scope>provided</scope>
             <version>Universal</version>
-            <systemPath>${basedir}/lib/SpartanAPI.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>me.jinky</groupId>
             <artifactId>BAC</artifactId>
-            <scope>system</scope>
+            <scope>provided</scope>
             <version>1.2.2</version>
-            <systemPath>${basedir}/lib/BAC-1.14.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.gmail.olexorus.witherac.api</groupId>
             <artifactId>WitherAC_API</artifactId>
-            <scope>system</scope>
-            <version>latest</version>
-            <systemPath>${basedir}/lib/WitherAC_API.jar</systemPath>
+            <scope>provided</scope>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>fr.neatmonster</groupId>
             <artifactId>nocheatplus-parent</artifactId>
-            <scope>system</scope>
+            <scope>provided</scope>
             <version>3.17-SNAPSHOT-b1153-CustomFork</version>
-            <systemPath>${basedir}/lib/NoCheatPlus.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>rip.reflex</groupId>
@@ -169,6 +163,7 @@
             <groupId>de.janmm14</groupId>
             <artifactId>aac-api</artifactId>
             <version>4.2.0</version>
+            <scope>provided</scope>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>AntiAuraAPI</groupId>-->
@@ -181,17 +176,19 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
             <version>4.7.0</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
             <version>4.1.0-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
             <version>4.0.0-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -298,6 +295,15 @@
                         </filter>
                     </filters>
                     <relocations combine.children="append">
+                        <relocation>
+                            <pattern>net.kyori</pattern>
+                            <shadedPattern>
+                                shaded.net.kyori
+                            </shadedPattern>
+                            <includes>
+                                <include>net.kyori.**</include>
+                            </includes>
+                        </relocation>
                         <relocation>
                             <pattern>org.reflections</pattern>
                             <shadedPattern>
