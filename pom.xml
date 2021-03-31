@@ -49,12 +49,16 @@
             <url>https://archiva.reflex.rip/repository/public/</url>
         </repository>
         <repository>
-            <id>my-local-repo</id>
-            <url>file://${basedir}/lib</url>
-        </repository>
-        <repository>
             <id>enginehub-maven</id>
             <url>https://maven.enginehub.org/repo/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>lumine</id>
+            <url>https://mvn.lumine.io/repository/maven-releases/</url>
         </repository>
     </repositories>
 
@@ -111,19 +115,26 @@
         </dependency>
 
         <dependency>
-            <groupId>net.Indyuce.mmoitems</groupId>
+            <groupId>net.Indyuce</groupId>
             <artifactId>MMOItems</artifactId>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/MMOItems Premium.jar</systemPath>
-            <version>6.2.1</version>
+            <version>6.5.4</version>
+            <scope>provided</scope>
         </dependency>
+
         <dependency>
-            <groupId>net.mmogroup.mmolib</groupId>
-            <artifactId>MMOLib</artifactId>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/MMOLib.jar</systemPath>
-            <version>1.3.7.1</version>
+            <groupId>io.lumine</groupId>
+            <artifactId>MythicLib</artifactId>
+            <version>1.0.17</version>
+            <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>net.Indyuce</groupId>
+            <artifactId>MMOLib</artifactId>
+            <version>1.7.3</version>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>me.vagdedes.spartan.api</groupId>
             <artifactId>API</artifactId>
@@ -131,33 +142,27 @@
             <version>Universal</version>
             <systemPath>${basedir}/lib/SpartanAPI.jar</systemPath>
         </dependency>
+
         <dependency>
-            <groupId>me.jinky</groupId>
-            <artifactId>BAC</artifactId>
-            <scope>system</scope>
-            <version>1.2.2</version>
-            <systemPath>${basedir}/lib/BAC-1.14.jar</systemPath>
+            <groupId>com.github.Olexorus</groupId>
+            <artifactId>WitherAC</artifactId>
+            <version>0a45a67bee</version>
         </dependency>
+
         <dependency>
-            <groupId>com.gmail.olexorus.witherac.api</groupId>
-            <artifactId>WitherAC_API</artifactId>
-            <scope>system</scope>
-            <version>latest</version>
-            <systemPath>${basedir}/lib/WitherAC_API.jar</systemPath>
+            <groupId>com.github.Updated-NoCheatPlus.NoCheatPlus</groupId>
+            <artifactId>nocheatplus</artifactId>
+            <version>v1.5</version>
+            <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>fr.neatmonster</groupId>
-            <artifactId>nocheatplus-parent</artifactId>
-            <scope>system</scope>
-            <version>3.17-SNAPSHOT-b1153-CustomFork</version>
-            <systemPath>${basedir}/lib/NoCheatPlus.jar</systemPath>
-        </dependency>
+
         <dependency>
             <groupId>rip.reflex</groupId>
             <artifactId>ReflexAPI</artifactId>
             <scope>provided</scope>
             <version>7</version>
         </dependency>
+
         <dependency>
             <groupId>de.janmm14</groupId>
             <artifactId>aac-api</artifactId>
