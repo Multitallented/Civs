@@ -27,7 +27,6 @@ public final class SpartanExemptionAssembler {
                 hackTypes.add(Enums.HackType.IrregularMovements);
                 hackTypes.add(Enums.HackType.Velocity);
                 hackTypes.add(Enums.HackType.Sprint);
-                hackTypes.add(Enums.HackType.Liquids);
                 break;
             case KILL_AURA:
                 hackTypes.add(Enums.HackType.Criticals);
@@ -35,7 +34,6 @@ public final class SpartanExemptionAssembler {
                 hackTypes.add(Enums.HackType.KillAura);
                 hackTypes.add(Enums.HackType.NoSwing);
                 hackTypes.add(Enums.HackType.FastBow);
-                hackTypes.add(Enums.HackType.Nuker);
                 break;
             case FAST_BREAK:
                 hackTypes.add(Enums.HackType.BlockReach);
