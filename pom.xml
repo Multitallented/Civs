@@ -139,12 +139,14 @@
             <groupId>com.github.NeumimTo</groupId>
             <artifactId>SpartanAPI</artifactId>
             <version>6033d44eba</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.github.Olexorus</groupId>
             <artifactId>WitherAC</artifactId>
             <version>0a45a67bee</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
