@@ -136,11 +136,9 @@
         </dependency>
 
         <dependency>
-            <groupId>me.vagdedes.spartan.api</groupId>
-            <artifactId>API</artifactId>
-            <scope>system</scope>
-            <version>Universal</version>
-            <systemPath>${basedir}/lib/SpartanAPI.jar</systemPath>
+            <groupId>com.github.NeumimTo</groupId>
+            <artifactId>SpartanAPI</artifactId>
+            <version>6033d44eba</version>
         </dependency>
 
         <dependency>
