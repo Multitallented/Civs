@@ -169,7 +169,7 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
             <version>4.7.0</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
@@ -275,15 +275,6 @@
                         </filter>
                     </filters>
                     <relocations combine.children="append">
-                        <relocation>
-                            <pattern>net.kyori</pattern>
-                            <shadedPattern>
-                                shaded.net.kyori
-                            </shadedPattern>
-                            <includes>
-                                <include>net.kyori.**</include>
-                            </includes>
-                        </relocation>
                         <relocation>
                             <pattern>org.reflections</pattern>
                             <shadedPattern>
