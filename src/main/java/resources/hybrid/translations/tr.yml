@@ -1,0 +1,1251 @@
+name: Turkish
+icon: BROWN_WOOL
+starter-book: Civs için Menü
+next-button: Sonraki
+prev-button: Önceki
+language-menu: Dil seçin
+language-set: Dilin $1 olarak değiştirildi
+back-button: Geri
+north: Kuzey
+east: Doğu
+south: Güney
+west: Batı
+orientation-name: "Dönüş: $1"
+orientation-desc: Haritayı 90 derece döndürmek için tıklayın
+constitution: Anayasa
+claim-map: Yakındaki claimleri görüntüle
+capture-claim: Claim Ele Geçir
+pay-capture-claim: Bu claimi ele geçirmek için 8 Kızıltaş ödeyin /cv captureclaim
+claim-unclaimed-chunks: Yalnızca claimlenmemiş parçaları talep edebilirsiniz
+not-enough-claim-items: Sadece 8 kızıltaşınız varsa bir claim talep edebilirsiniz
+need-nation-to-claim: Parça talep etmek için bir ulus içinde olmalısın
+chunk-claimed: Bu parçayı $1 karşılığında $2 talep ettiniz
+nation-own-adjacent: Bu parçayı claimlemek için, ulusunuzun bitişik bir parçayı claimlemesi
+  gerekiyor
+claim-safe: Kabul Edilmiş
+claim-unsafe: "Sahipsiz: $1"
+no-adjacent-claim: $1 tüm bitişik hak taleplerini içerdiğinden, bu parça hak talebinde bulunulamaz
+claim-map-desc: Burada yakınınızdaki tüm ulus iddialarını görüntüleyebilirsiniz. Her hak
+  talebi 16x16 büyüklüğündedir
+tutorial-url: https://youtu.be/pa_rfrpUAS8
+start-tutorial: Başarımlar Açık
+start-tutorial-desc: Başarımları tamamlayarak para ve eşya kazan
+skip: Başarımlar kapalı
+tutorial-click: Lütfen Civs pluginin rehber videosunu izleyin
+tutorial-wiki: Civs wiki
+click-info: Daha fazla bilgi için tıkla.
+guide: Kılavuz
+income: Gelir
+item-received: Bir öğe aldınız
+income-desc: Senin $1, dün $2 kazandı ve önceki hafta $3 kazandı
+rebuild: Yeniden İnşa
+rebuild-req-desc: Bu bina aşağıdaki binaların üzerine inşa edilmelidir
+rebuild-opt-desc: Bu bina aşağıdaki yapı(lar)ın üzerine inşa edilebilir
+guide-desc: Bir sonraki hedefini görmek için tıkla
+choose-path: Yolunuzu seçin
+new-owner-town: $1 has replaced $2 as an owner of $3
+town-bank-balance: "Banka bakiyesi: $1"
+town-bank-desc: Geri çekmek için /cv withdraw $1 miktar
+withdrawn-money: $2'ın bankasından $1 miktar para çektin
+deposit-money: $2'ın bankasına $1 miktar para yatırdın
+too-much-money: Bankaya $1’den fazla yatıramazsın
+town-tax: "Kasaba vergisi: $1"
+town-tax-desc: vergiyi ayarlamak için /cv tax $1 miktar
+town-tax-gov-type: $1 vergileri ayarlayamıyorum
+town-tax-set: $1 vergisi $2 olarak belirlendi
+tax-too-high: Vergiyi $1’dan fazla yapamazsın
+town-assist-price: Your town bank paid $1 to thank you for the construction of your $2
+colony-town-set: $1’i $2’nin kolonisi olarak seçtin
+cant-build-feudal: Kasabaya bizzat sahip olmadığın sürece feodal bir kasabada bölge kuramazsın
+tribalism-no-invite: Kabilecilik şehriniz davet etmenizi yasaklıyor $1 müttefik olmayan kasaba $2
+vote-member: Bir sonraki sahip olmak için oy ver
+capitalism-voting-cost: Ekstra oy fiyatı $1
+voted: Oyunu $1 için kullandın
+gov-type-change: $1, $2’den $3’e değiştirildi
+gov-type-changed-recently: Hükümet sisteminiz bugün bir kere değiştirildi. Bir kez daha değiştirmek için
+  bir gün bekleyin.
+cant-change-gov-type-daily: Hükümet sisteminizi günde 1 kereden fazla değiştirmeye izniniz yoktur.
+revolt: İsyan
+revolt-desc: İsyana katılmak için tıklayın $1. Costs $2 $3
+revolt-display: $1 / $2 Üyeler isyan ediyor.
+cancel-revolt: İsyanı terk etmek için tıklayın $1
+item-cost: Bu eylem maliyeti $1 $2
+cost-buff: $3 kasabasında $2 inşa ettiğin için $1 iade edildi.
+refund: Paranız iade edildi $$1
+insufficient-exp: Yetersiz XP
+action-not-allowed: $1, senin $2’ye sahip olmana izin vermiyor
+spell-cast: "@{BLUE}$1 @{WHITE}kullanılmış @{RED}$2"
+exp-gained: $2 Da $1 XP Kazandın
+merit-new-owner: Tebrikler yeni kasaba sahibi oldun $1
+item-locked: Bu öğenin kilidini henüz açmadınız.
+ai-invite: Hey, @$1 Kasabama katılmak istermisin?
+ai-help: $1 size etrafı gösterebilir.
+cooldown-buff-desc: $1% bekleme süresi azaltma hepsi için $2
+payout-buff-desc: $1% Tüm bölgede ödeme artışı  $2
+power-buff-desc: $1% günlük güç artışı
+max_power-buff-desc: Maksimum güç artışı $1%
+cost-buff-desc: $1% tüm maliyet iadesi $2
+shop: Dükkan
+buy-item: Satılık
+price: Fiyat $1
+buy: Satın al $1
+cancel: İptal
+item-bought: Tebrikler! $2 paraya $1 aldın
+max-item: Daha fazlasını satın alamazsınız $2 $1. Ya sat $1 veya başkasının inşa
+  etmesini sağla.
+max-qty: $1’in çok fazla $2’si var ve daha fazlasına sahip olamaz.
+any-region: Bu bölgelerden herhangi biri
+items: Eşyalar
+click-for-item-group: Bu gruptaki tüm eşyaları görmek için tıkla
+classes: Sınıflar
+spells: Büyüler
+blueprints: Şemalar
+regions: Bölgeler
+community: Topluluk
+players: Oyuncular
+towns: Kasabalar
+town: Kasaba
+your-towns: Kasaban
+wars: Savaşlar
+alliances: Müttefikler
+leaderboard: Lider Tablosu
+ports: Erişim noktaları
+money: "Para: $$1"
+points: "Puan: $1"
+killstreak: "Öldürme Serisi: $1"
+highest-killstreak: "En yüksek Öldürme Serisi: $1"
+kills: "Öldürmeler: $1"
+deaths: "Ölümler: $1"
+friends: Arkadaşlar
+confirm: Onayla
+reject: Reddet
+effects: Efektler
+size: Boyut
+range: Aralık
+build-reqs-title: İnşaat Gereksinimleri
+population: Popülasyon
+population-req: $2 popülasyonunda $1 gerektirir
+biomes: Biyomlar
+devolve-town: $1’in gücü bitti ve $2’ye düştü!
+pop-desc: Nüfus $1 / Evler $2/ Köylüler $3
+max-housing: Eviniz dolu. Kasabaya daha fazla oyuncu davet etmek istiyorsanız daha fazla
+  konut inşa edin.
+build-reqs: $1 inşa etmek için gereken tüm bloklar
+reagents-title: Malzemeler
+reagents: $1 sandığında olması gereken eşyalar
+upkeep-title: Giriş
+upkeep: $1 tarafından harcanan eşyalar
+output-title: Çıkış
+output: $1 tarafından üretilen eşyalar
+payout-title: Ödeme
+payout: Bu bölge şu kadar para kazanıyor $$1
+power-input-title: Güç girişi
+power-input: Bu bölge $1 güç harcıyor
+power-output-title: Güç çıkışı
+power-output: Bu bölge $1 güç üretiyor
+power-history: "Son $1 günün güç geçmişi:"
+too-close-region: Senin $1 çok yakın olur $2
+too-close-town: Senin $1 çok yakın olur $2
+town-created: $1 kuruldu!
+town-destroyed: $1 yıkıldı!
+region-built: Başarıyla $1 inşa ettin
+wonder-built: "@{RED}$1 birini inşa etti tek ve harika $2"
+wonder-destroyed: "@{RED} $1 harikası yok edildi!"
+cant-build-wonder: $1 zaten bu harikayı inşa etti. Önce imha edilmeli
+region-type: Bölge tipi
+destroy: Yok et
+region-in-town: $1 Bölgeniz içinde
+town-req-desc: Bölgeniz yerleşik olmalıdır
+view-members: Üyeleri görüntüle
+add-member: Üye ekle
+time-seconds: $1s
+time-minutes: $1d $2s
+time-hours: $1s $2d $3s
+region-cooldown: Bir sonraki döngüye kadar $1
+region-working: Bölgeniz sorunsuz bir şekilde devam ediyor
+region-not-working: Bölgenizde bir şey eksik
+filter-online: Sadece çevrimiçi oyuncular için filtrele
+sort-alphabetical: Alfabeye göre sırala
+sort-points: Öldürme puanına göre sırala
+sort-rank: Rütbeye göre sırala
+sort-power: Güce göre sırala
+owner: Sahip
+member: Üye
+guest: Misafir
+recruiter: İşveren
+set-owner: Sahibi belirle
+set-member: Üyeyi belirle
+set-guest: Misafiri belirle
+set-recruiter: İşvereni belirle
+remove-member: Üyeyi sil
+leave-town: Kasabadan Çık
+you-left-town: $1’den çıktın
+invite-sent: Davet gönderildi
+add-member-region: $1 bölgesinin bir üyesi yapıldın
+member-added-region: $1 artık senin $2’nin bir üyesi
+owner-description: Sahipler bölgede istediği herşeyi yapabilir
+guest-description: Misafirler bölgedeki kapıları ve butonları kullanabilir
+member-description: Üyeler bölge kullanabilir ve inşa edebilir
+recruiter-description: Alımcılar kasabaya oyuncuları davet edebilir
+remove-member-region: Artık $1’in bir üyesi değilsin
+member-removed-region: $1 artık $2’in bir üyesi değil
+add-owner-region: $1’in sahibi oldun
+owner-added-region: $1 artık senin $2’nin bir sahibi
+add-recruiter-region: $1’in bir alımcısı olarak yetkilendirildin
+recruiter-added-region: $1 artık $2 için bir alımcı
+add-guest-region: $1’in misafiri oldun
+guest-added-region: $1 artık senin $2’nin misafiri
+invite-member-region: $1’in bir üyesi oldun
+member-invited-region: $1 senin $2’ne eklendi
+no-invite: Hiç bekleyen davetin yok
+stand-in-region: Please have $1 stand in the region
+create: Oluştur
+click-for-region-limits: Bölge sınırlarının listesini görmek için tıkla
+click-for-req-regions: Gerekli olan bölgeler listesini görmek için tıkla
+town-instructions: Oluşturmak $1, kullanarak /cv town Kasabaİsmim
+town-enter: Girdiniz $1 ($2)
+nation-enter: Ulusa girdiniz $1
+town-enter-warning: "@{RED}Tehlike! Bu kasaba aktif defanslara sahip. Eğer saldırmak istiyorsan
+  yağma ışınlayıcısı kullan ya da kasabayı kuşat."
+town-exit: $1’den ayrıldın. ($2)
+nation-exit: Ulustan çıktın $1
+wild: Vahşi
+new-town-member: $1 $2’ye katıldı
+must-be-built-on-top: Bir $1 bir $2’nin üstüne kurulmalı.
+town-power: "Güç: $1/$2"
+nation-claims: "Claimler: $1/$2"
+port-warmup: Işınlanıyorsun $1s
+teleported: Işınlandınız!
+location: Konum
+location-set: Konum kur $1
+rename-town: Kasabanın ismini değiştir
+rename-desc: Kullan /cv rename Eskiİsim Yeniİsim
+town-renamed: Kasabanızın adı $1’den $2 olarak değiştirildi
+bounty-set: $1 kafasına  $2 miktarında ödül konuldu
+bounty-bonus: "Bu kadar ödül kazandın: $1"
+allied-bounty: Dost öldürdüğün için ödül alınmadı
+add-friend: Arkadaş ekle
+remove-friend: Arkadaş çıkar
+friend-added: $1 arkadaş listene eklendi
+friend-removed: $1 arkadaş listenden çıkarıldı
+bounty: Bir ödül ayarlayın /cv bounty $1 miktar
+click-me: ">>>Tıkla bana<<<"
+bounty-command: /cv bounty $1 miktar
+rename-command: /cv rename $1 Yeniİsim
+really-command: /cv really $1 Yeniİsim
+town-ally: $1'i müttefik olarak ayarla
+town-unally: $1'i düşman olarak ayarla
+town-ally-invites: Kasaba müttefikliği için davetlerin var
+town-ally-request-sent: $1’e bir ittifak teklif edildi
+town-ally-request-accepted: $1 ve $2 arasında ittifak kuruldu
+town-ally-request-denied: $1 ile yapılan ittifak teklifi reddedildi
+town-ally-removed: $1 ve $2 arasındaki ittifak feshedildi
+decline-all: Bütün davetleri reddet
+accept-invite: Daveti kabul et
+region-evolve: $1 dönüşür $2
+region-evolved: Sizin $1 dönüşür $2
+anti-camp-active: $1 anti-kamp etkinleştirildi
+anti-camp-expired: $1 anti-kamp süresi doldu
+activate-anticamp-question: $1 içinde öldü $2 İçin anti-kamp savunmaları etkinleştirmek ister misiniz?
+region-sale-set: $1 $2 fiyatına satılık
+sell-region: Bölgeyi sat
+cancel-sale: Satış İptal
+buy-region: Bu $1’i  $2 fiyatına satın al
+regions-for-sale: Satılık bölge
+use-sell-command: Örnek /cv sell FiyatıBurayaGir
+region-bought: Bu $1’i  $2 fiyatına satın alındı
+region-sold: Senin $1, $2 fiyatına satıldı. $3 kazandın
+sort-by-level: Bölgeleri Seviyelere Göre Sırala
+level: "Seviye: $1"
+level-up: Bu sınıfta seviye atlamak için büyüleyici deneyimler harcamak için tıklayın.
+  Büyüleyici deneyiminiz sınıf seviyenizden düşükse, harcama yapamazsınız.
+level-up-max: Maksimum seviyeye ulaştın.
+not-enough-levels: Bunu yapmak için $1 seviyeye ihtiyacın var.
+rename-alliance: ittifakı yeniden adlandır.
+rename-alliance-desc: Örnek /cv really $1 yeni/İttifakAdı
+alliance-renamed: $1, $2 olarak yeniden adlandırıldı
+invalid-name: Geçersiz isim
+region-not-allowed-in-world: Bu dünyada bir $1 kuramazsın
+last-renamed-by: "Son olarak yeniden adlandırıldı: $1"
+leave-alliance: Müttefiklikten çık
+hunting-players: "@{RED}Dikkat! Biri senin bölgendeki insanları avlıyor."
+no-hunting-new-players: Hiçbir kasabaya üye olmayan bir oyuncuya zarar veremezsin
+target-not-in-world: $1 seninle aynı dünyada değil
+cant-place-town: Örnek /cv town kasabaİsmi
+no-region-type-found: $1 İçin bölge türü bulunamadı
+building-too-big: Yapın çok büyük $1
+no-required-blocks: Yapı için gerekli blokları yerleştirmediniz $1
+cant-build-on-region: İnşa edemezsin $1 üstüne $2
+rebuild-required: Bunu inşa etmen gerek $1 üstüne $2
+max-rebuild-required: Zaten bunlara sahipsin $1 ve $2 $3. Sadece bunu kullanabilirsin $4 yükseltmek
+  için $5.
+prevent-civs-item-share: Civ eşyalarını paylaşma izniniz yok
+region-protected: Bu bölge korunuyor
+region-destroyed: $1 bölgesi yıkıldı!
+specify-player-town: Lütfen bir oyuncu ve bir kasaba belirt
+specify-town-name: Lütfen kasabanın ismini belirt
+specify-player-region: Lütfen bir oyuncu ve bir bölge belirt
+town-not-exist: $1 bir kasaba değil
+no-permission-invite: $1 e oyuncuları davet etmek için yetkin yok
+player-not-online: $1 çevrimiçi değil
+invite-player: $1 seni $2 $3 katılmaya davet ediyor. Kabul?
+already-member: $1 zaten bir $2 üyesi
+broke-own-region: Senin $1 in blok eksiği var
+no-permission: İznin yok
+too-far-from-cannon: Senden çok uzakta $1
+target-too-close: Bu hedef çok yakın
+target-too-far: Bu hedef çok uzak
+cannon-fired: $1 hedef bloğa ateş etti
+cannon-controller: Top Kontrolü
+no-anti-camp-duing-raidporter: BaskınIşınlayıcı aktifken anti-kampı etkinleştiremezsiniz. BaskınIşınllayıcıyı
+  yok edin!
+class-changed: Sınıfınız $1 olarak değiştirildi
+not-enough-money: $$1 paraya sahip değilsin
+not-allowed-place: $1 yerleştirilemez
+hold-town: Lütfen bir kasaba eşyası tutun
+no-commands-in-jail: Hapishanedeki komutları başkası için kullanamazsınız $1
+building-requires-2space: Bu bina, merkez sandığın üzerinde 2 boş alan gerektirir.
+missing-blocks-build: Oluşturmak için bu eksik $1 blokları yerleştirmeniz gerekir.
+intruder-enter: "@{RED}[WARNING] $1 giriş yaptı $2"
+intruder-exit: $1 çıkış yaptı $2
+in-combat: Bunu savaşta yapamazsın
+cooldown: $1 Bu bekleme süresinde
+need-more-health: $1 Bunu yapmak için daha fazla sağlığa ihtiyacın var
+need-more-stamina: $1 Bunu yapmak için daha fazla dayanıklılığa ihtiyacın var
+need-more-mana: İhtiyacın var $1 daha fazla $2 bunu yapmak için
+port-not-found: Erişim noktası bulunamadı
+region-missing-upkeep-items: Bölge gerekli eşyalara sahip değil
+raid-porter-offline: Baskın yapamazsın $1 üyelerinin hiçbiri çevrimiçi değil.
+raid-target-lost: Adında bir kasaba yok $1 blok içinde $2
+searching-for-target: Baskın ışınlayıcısı aranıyor...
+raid-target-blocked: Baskın ışınlanma hedefi engellendi.
+raid-porter-warning: UYARI! $1 yarattı $2 hedefliyor $3
+siege-built: UYARI! $1 yarattı $2 hedefliyor $3
+cant-nether-portal: Düşman bir kasabaya veya bölgeye giden bir nether portal kullanamazsınız.
+jammer-built: "@{RED}[UYARI] $1 bir yere inşa edildi. Işınlanırken dikkatli olun."
+raid-remote: Bunu kontrol etmeniz için size bir eşya verildi $1
+raid-sign: Hedef kasabanın adını taşıyan sandığın üzerinde bir işarete ihtiyacın var
+no-blocks-above-chest: merkezi sandık üzerinde hiçbir blok olmamalıdır $1
+invalid-target: Geçersiz hedef
+no-tp-out-of-town: Müttefik olmayan bir kasabaya ışınlanamazsın
+jammer-redirect: "@{RED}[ALERT] Işınlanma tarafından engellendi $1"
+raid-target-inside-region: Bir bölge içinde konum ayarlayamazsınız
+req-build-inside-town: Bu $1 içinde inşa edilmelidir $2
+missing-region-requirements: Sizin $1 gerekli bölgeler eksik
+friendly-fire: Arkadaş listendeki birine zarar veremezsin
+catapult-elytra-equipped: Elytra giyerken mancınık ateş edemezsin
+limits: Limitler
+item-limit: Var $1 ve $2 $3
+region-limit-reached: Bir $1 sadece sahip olabilir $2 $3
+region-in-biome: İnşa edemezsin $1 içinde $2
+not-enough-housing: İnsanları davet etmeden önce daha fazla ev inşa etmelisin
+not-member-port: Bu erişim noktasının bir üyesi değilsin.
+cant-repair-item: O eşya burada tamir edebileceğin bir şey değil
+more-repair-items: O eşyayı tamir edebilmen için daha fazla $1 sahip olman gerek
+hold-repair-item: Tamir etmek istediğin eşyayı elinde tutmalısın
+player-not-found: $1 adlı oyuncu bulunamadı
+repeat-kill: $1 yakın bir süre içerisinde öldürüldü. Bu yüzden puan alınmadı.
+kill-streak: $1 oyuncusu, $2 katletme serisinde
+kill-joy: $2 $1 ‘in $3 katletme serisine son verdi
+death: Öldüğün için $1 puan kaybettin
+kill: "Katletme: $1"
+low-health: "Düşük can bonusu: $1"
+killstreak-points: "Katletme serisi bonusu: $1"
+killjoy-points: "katletme bonusu: $1"
+total-points: "Toplam puan: $1"
+karma: Karma $1
+karma-desc: Karma kötü şöhret ölçüsüdür. Karma ne kadar düşükse, ölümdeki ödül de bir o
+  kadar fazladır. Karma her 12 saatte azalır.
+hardship: "Zorluk: $1"
+hardship-desc: Zorluk, sıklıkla saldırıya uğradığınızın bir ölçüsüdür. Zorluk ne kadar
+  yüksekse, onlara saldırmak o kadar masraflı olur. Zorluklar her 7 günde bir
+  azalır.
+hardship-too-high: Bu eyleme izin verilmiyor. 1$ için zorluk çok yüksek.
+karma-gained: Karma +$1, $2 para kazandı
+karma-lost: Karma -$1, $2 para kaybettin
+claims: Claimler
+claim-desc: Uluslar, ulusun gücünü kullanarak toprak talep edebilirler.
+claim-no-nation: Sahipsiz
+capture-not-started: Kabul edilmiş claim
+cant-build-in-nation: İçini inşa edemezsin $1 claimlenmiş arazi
+neutralized-claim: $1'ın korumaları yığın halinde $2x $3z Kaldırıldı.
+nation-created: $1 yeterince yüksek bir seviyeye ulaştı ve bir ulus haline geldi!
+karma-display: "Karma: $1 / Değer: $2"
+karma-town-desc: Kasaba karması, kasabanın hak ettiği zararın bir ölçüsüdür. Baskınlarda ve
+  savaşta, hasar karmayı aşarsa, farkı saldırgan öder.
+combat-tagged: "@{RED} Dövüşte etiketlendin Oturumu kapatmayın $1s. Güvenli bölgeler sizi
+  korumaz."
+ann-limit: "[Bilgi] Var $1 olan $2 $3 binalar."
+ann-achievement: "[Bilgi] Mevcut bir sonraki başarınızı görmek için kılavuzu kontrol edin"
+ann-town-join: "[Bilgi] Birden çok kasabaya üye olabilirsiniz. Genellikle kasabalar insan
+  eklemeyi sever."
+ann-town-protection: "[Bilgi] Kasabalar çok sayıda araziyi korur ve dükkandaki yeni binaların
+  kilidini açar."
+ann-town-housing: "[Bilgi] $1 vardır $2 olan $3 evler dolu. Kasabanızı büyütmek istiyorsanız
+  daha fazla konut inşa edin."
+ann-make-allies: "[Bilgi]Bir ittifaka katılmayı düşünün. Topluluk> kasabalar> kasaba altında
+  kasabaları müttefik olarak ayarlayabilirsiniz."
+ann-town-low-power: "@{RED}[UYARI] $1 sadece $2 olan $3 güç. Güç üreten daha fazla yapı inşa
+  etmeyi düşünün."
+ann-bank: "[Bilgi] $1 var $$2 bankada duruyor. Bu parayı kullanarak çekebilirsiniz /cv
+  withdraw $1 miktar"
+ann-vote: "[Bilgi] Bir sonraki sahibine oy vermeyi unutmayın $1. Topluluk >
+  Kasabalarınız> $1 > Üyeleri Görüntüle > oyuncu > Oy Ver"
+ann-karma: "@{YELLOW}[Dikkat] $1 çevrimiçi. Eğer öldürebilirsen $1, o zaman
+  ödüllendirileceksin"
+ann-missing-input: "[Bilgi] Senin $1 öğelere ihtiyacın var. Hangi reaktiflere/girdilere ihtiyaç
+  duyduğunu kontrol etmek için Civs kitabını kullanın."
+ann-bounty: "[Info] $1 bir ödül var $2 kafasına."
+and-more: Ve dahası...
+tut-default-0: Öncelikle, kitabı aç, taslaklara git, barınağı al ve yerleştir.
+tut-default-1: Sonra, 4 ekmek, 32 havuç, 32 biftek, ya da 32 patates topla. Topladıklarını
+  barınak sandığına koy.
+tut-default-2: Barınak size yiyecek için para ödüyor, ancak kömür dükkanı daha fazla ödüyor.
+  Kitabınızı açın, dükkana gidin ve kömür dükkanını satın alın.
+tut-default-3: 25 odun, 14 çit, ve 2 sandık koy. Sonra kömür dükkanını yerleştir.
+tut-default-4: Tebrikler! Rehberi tamamladın!. Şimdi devam etmek istediğin yolu seç.
+tut-warrior-name: Yağmalama ve Savaş
+tut-warrior-desc: Kasabalar savunma yerleridir. Kasabalardan çalmak, kasabalara baskın yapmak ya
+  da kasabaları yıkmayı öğrenmek istiyorsan bu yolu seç.
+tut-warrior-0: İlk olarak Altar satın al. Bu altarı elmas eşyalar almak için kullanabilirsin.
+tut-warrior-1: Şimdi bir demir kılıcı altar sandığına koy.. Eğer 300 doların varsa, eşyayı
+  alacaksın.
+tut-warrior-2: Şimdi ihtiyacın olan her şeye sahipsin. Sonraki hedefin birini öldürmek, ancak
+  kasabalardan uzak dur. Kasabaların senin henüz öğrenmediğin bir sürü savunması
+  var.
+tut-warrior-3: Şimdi bir kasabayı yağmalama zamanı. Eğer mümkünse küçük kasabalardan başla ve
+  ok tuzaklarından uzak dur. Bir yağma ışınlayıcısı satın al ve kasabaya yakın
+  bir yere inşaa et. Ortasına kasabanın ismi yazılı olan bir tabela koy.
+tut-warrior-4: Yağma ışınlayıcın aktif olduğunda (aktif olması 3 dakika sürer), seni kasabaya
+  ışınlaması için üstünde dur. Korunmamış sandıklardan çal ve ganimet için
+  insanları öldür. İşin bittiğinde Civs menüsünü kullanarak dışarıya
+  ışınlanabilirsin.
+tut-warrior-5: Eğer gerçekten ganimet almak ve kasabayı dışarı çıkartıp duvarlarının dışında
+  savaşmak istiyorsan, kuşatmaya ihtiyacın olacak. Düşman kasabanın yakınına bir
+  komuta çadırı kur.
+tut-warrior-6: Komuta çadırına ek olarak bir askeri karakol kur. Ondan sonra, kuşatma
+  makinesini satın al ve inşa et.
+tut-warrior-7: Kuşatma makinesi düşman kasabanın gücünü düşürecektir. Düşman kasabada
+  çevrimiçi biri yoksa yavaş olur.. Komuta çadırının üstüne bir kale al ve inşa
+  et.
+tut-warrior-8: Kaleyi kurduğuna göre hisar satın al ve inşa et. Sonra bir anıt inşa etl.
+  Anıt, savaş süresince orada doğmanı sağlar.
+tut-warrior-9: Tebrikler! Artık savaş konusunda uzmansın. Bu savaşçı yolunu içerir.
+tut-builder-name: Kasaba Kurucusu
+tut-builder-desc: Kendi kasabanın olmasını ister misin? Kendi kasabanı kurmak, geliştirmek ve
+  güçlü savunmalar kurmak için bu yolu seç.
+tut-builder-0: Konsey odasını satın alarak başlayın. Bu bir kasabanın kalbi. Güç yaratır ve 2
+  ev sağlar.
+tut-builder-1: Şimdi konsey odasını inşa edin.
+tut-builder-2: Artık kasabanın kalbini inşa ettiğine göre, toprağını al. Yerleşimi satın alın.
+tut-builder-3: "Tebrikler! Claiminizi oluşturun /cv town kasaba_ismi: Bunu yaptığında satın
+  al ve bir kulübe inşa et."
+tut-builder-4: Bir kulübe barınma sağlar. İnsanları şehrinize davet etmek için barınma
+  gereklidir. Şimdi satın al ve yerleştir NPCKulübe Kulübenizin içinde.
+tut-builder-5: Köylüler nüfus olarak sayılır. Ölürlerse kasaba güç kaybeder. Köylüler de
+  yeniden doğar. Şimdi bir kilise inşa edin.
+tut-builder-6: Güç üreten binalar yapmak önemlidir. Güç kasabayı korur. Kasabanızı daha da
+  savunmak için bir ok_tuzak oluşturun.
+tut-builder-7: Ardından, savunmalarınıza oklar sağlamak için bir ok_fabrikası oluşturun.
+tut-builder-8: Yerleşimler 4 kulübe ile sınırlıdır. Konutunuzu en üst düzeye çıkarmak için
+  bir kulübe inşa edin, ardından o kulübenin içine bir kulübe satın alın ve
+  yerleştirin.
+tut-builder-9: Sonra bir mancınık inşa edin. Mancınıklar, saldırganın kuşatma yapılarını yok
+  etmek için kullanabileceğiniz hassas TNT toplardır.
+tut-builder-10: Devam edin ve şehrinizi bir küçük köy'e yükseltin. Bunu yaptıktan sonra bir ev
+  inşa edin. Her yeni kasaba seviyesinde bağımsız bir konut seviyesi elde
+  edersiniz.
+tut-builder-11: Şimdi şehrinizi tekrar köye yükseltin. Bunu yaptıktan sonra Ahırları inşa edin.
+tut-builder-12: Köyünüzü yükseltmeden önce konsey_odası'nı yükseltmeniz gerekir.
+tut-builder-13: Tebrikler! Oldukça başarılı bir mimarsınız. Bu, oluşturucu yolunu sonlandırır.
+tut-merchant-name: Tüccar
+tut-merchant-desc: Parayla mı ilgileniyorsun? Bir şehre katılın ve bu yolu seçin. Konut,
+  dükkanlar ve bunların arkasındaki endüstri hakkında bilgi edineceksiniz.
+tut-merchant-0: Bir şehre katılın. Bunu yaptıktan sonra, planlarınıza gidin ve bir Arsa7x7 ,
+  ve bir yere yerleştirin. Bu, satılabilecek claiminiz olacak /cv sell miktar
+tut-merchant-1: Devam edin ve dükkandan bir kulübe satın alın ve inşa edin. Kulübeler
+  kullanılarak da satılabilir /cv sell miktar
+tut-merchant-2: Şimdi Kulübe sandığına biraz patates koyun.
+tut-merchant-3: Size daha fazla para kazandırmak için ev yükseltilebilir. Kulübe'yi dükkandan
+  satın alın.
+tut-merchant-4: Kulübe sandığını kulübeye yerleştirin. Bunu yapmak için Kulübenize eklemenizi
+  gerektirebilir 9x9x9 bölge.
+tut-merchant-5: Kulübe sandığınıza 384 patates koyun. 24 saat içinde, Kulübe'iniz hepsini
+  satacak ve bir Kulübe1'e yükseltecek.
+tut-merchant-6: Bir elma bahçesi satın alın ve inşa edin. Elma_Bahçesi'nizin içinden
+  Kulübe1'inizin içine bir maden arabası yolu oluşturun.
+tut-merchant-7: Tekrar yükseltme zamanı. bir konut satın al ve içine koy Kulübe1.
+tut-merchant-8: Konutlar size çok para verir, ancak bir Ev size daha fazlasını verir.
+  Konutunuzu satın alın ve bir Ev olarak yükseltin.
+tut-merchant-9: Bir Ev1'e yükseltmek için bu ekmeği Evinize koyun.
+tut-merchant-10: Bu somonu bir House2'ye yükseltmek için House1'inize koyun.
+tut-merchant-11: Şimdi gelirinizi daha da artırmak için bir demir_dükka'nı kurun.
+tut-merchant-12: Her oyuncunun sadece 3 mağazası olabilir. En kazançlı mağaza bir ticaret
+  mağazasıdır. İnşan et Zümrüt_Dükkan. Zaten 3 dükkanınız varsa, diğer
+  dükkanlarınızdan birini yok edin.
+tut-merchant-13: Tebrikler! Artık başka bir kasabadan satın aldığınız eşyaları satabilirsiniz
+  Zümrüt_Madeni. Bu, tüccarın yolunu sonlandırır.
+anarchy-name: Anarşi
+anarchy-desc: Şehir ve bölge üyeliğini herkes yönetebilir. Vergi yok. İttifak yok.
+capitalism-name: Kapitalizm
+capitalism-desc: Demokrasi + Town üyeleri ekstra oy satın alabilir.
+colonialism-name: Kolonileşme
+colonialism-desc: Kasaba mülkiyeti yok. Bir ana kasaba, kasaba sahipliğini geçersiz kılar.
+communism-name: Komünizm
+communism-desc: Herkes her şeyin sahibidir. Tüm bölge geliri eşit olarak dağıtılır.
+cooperative-name: Kooparetif
+cooperative-desc: Demokrasi + Tüm bölge geliri kasaba üyeleri ve vergiler arasında eşit olarak
+  dağıtılır.
+cybersynacy-name: Teknokrasi
+cybersynacy-desc: Kasabayı npc yönetir.
+democracy-name: Demokrasi
+democracy-desc: Kasaba sahipleri ittifakları yönetir, vergileri belirler ve kasaba üyeliğini
+  belirler. Oylama, periyodik olarak yeni kasaba mülkiyetini belirler.
+democratic_socialism-name: Demokratik Sosyalizm
+democratic_socialism-desc: Demokrasi + Tüm tesisler, çiftlikler, madenler, fabrikalar ve taş ocakları
+  kamuya aittir.
+dictatorship-name: Diktatörlük
+dictatorship-desc: Kasaba sahipleri ittifakları yönetir, bölge ve kasaba üyeliğini geçersiz
+  kılabilir ve vergileri belirleyebilir.
+feudalism-name: Feodalizm
+feudalism-desc: Dikdatörlük + Kasaba üyeleri bu kasaba içinde bölgeler inşaat edemez.
+idiocracy-name: İdiokrasi
+idiocracy-desc: En çok havai fişek atan ve tabela üzerinde en çok isminin yazılı olduğu kişi
+  yeni sahip olur.
+kraterocracy-name: Kratokrasi
+kraterocracy-desc: Diktatörlük + Bir kasaba üyesi bir sahibi öldürdüğünde, ikisi yer değiştirir.
+libertarian-name: Özgürlükçü
+libertarian-desc: Kasaba mülkiyeti yok.
+libertarian_socialism-name: Özgürlükçü Sosyalizm
+libertarian_socialism-desc: Özgürlükçü + Sosyalizm
+meritocracy-name: Meritokrasi
+meritocracy-desc: Diktatörlük + En iyi binalara ve en çok öldürme puanına sahip olan kişi kasaba
+  sahibi olur.
+oligarchy-name: Oligarşi
+oligarchy-desc: Diktatörlük + Kasaba mülkiyeti satın alınabilir için ve satın alındı.
+socialism-name: Sosyalizm
+socialism-desc: Diktatörlük + Tüm tesisler, çiftlikler, madenler, fabrikalar ve taş ocakları
+  kamuya aittir.
+tribalism-name: Kabilecilik
+tribalism-desc: Diktatörlük + Üyeler müttefik olmayan kasabalara katılamaz.
+admin_graveyard-name: Admin Mezarlığı
+admin_graveyard-desc: Tüm oyuncuların yeniden doğabileceği bir yer. Ayrıca hasarı önler.
+shelter-name: Barınak
+shelter-desc: Öğeleri saklamak için güvenli bir yer, ve ekmek, sığır eti, havuç veya patates
+  her 30 dakikada bir.
+arrow_trap-name: Ok Tuzak
+arrow_trap-desc: Seviye 1 | Menzil 17 | Hasar 30 | Hız 38 | Dağılım 3 | Yakında üye olmayan
+  oyuncuları ve canavarları vuran oklar.
+arrow_trap_fast-name: Ok Tuzak 2
+arrow_trap_fast-desc: Seviye 2 | Menzil 19 | Hasar 34 | Hız 38 | Dağılım 4 | Yakında üye olmayan
+  oyuncuları ve canavarları vuran oklar.
+arrow_trap_fastest-name: Ok Tuzak 3
+arrow_trap_fastest-desc: Seviye 3 | Menzil 21 | Hasar 38 | Hız 42 | Dağılım 3 | Yakında üye olmayan
+  oyuncuları ve canavarları vuran oklar.
+barracks-name: Kışla
+barracks-desc: Kasabaya 6 konut ekler. Günde 288 güç üretir. Han olan bir kasabada yapılamaz.
+bell_tower-name: Çan Kulesi
+bell_tower-desc: Kasabaya bir davetsiz misafir girdiğinde kasaba üyelerini uyarır.
+church-name: Kilise
+church-desc: Kimsenin zarar görmeyeceği güvenli bir yer ve günde 192 güç üretir.
+graveyard-name: Mezarlık
+graveyard-desc: Kasaba üyelerinin yeniden doğabileceği bir yer. Ayrıca hasarı önler.
+hospital-name: Hastane
+hospital-desc: Hastanedeki tüm oyuncuları iyileştir. Günde 192 güç üretir
+idol-name: İdol
+idol-desc: Üyelere hasar direnci ve hasar güçlendirmesi uygular. Günde 192 güç üretir.
+jail-name: Hapishane
+jail-desc: Kasabada ölen işgalcileri geçici olarak tuzağa düşürmek için bir yer. Günde
+  192 güç oluşturur.
+monument-name: Anıt
+monument-desc: Üyelere hasar direnci, hasar güçlendirmesi ve hız uygular. Günde 192 güç
+  üretir.
+statue-name: Heykel
+statue-desc: Üyelere hasar direnci uygular. Günde 192 güç üretir.
+arrow_factory-name: Ok Fabrikası
+arrow_factory-desc: Otomatik ok fabrikası
+bakery-name: Fırın
+bakery-desc: Her iki dakika da bir kurabiye ve balkabağı turtası yapar. Sandığın içine
+  sandıklı vagon koy. Fırından hedef bölgeye raylar inşaa et. Başlangıca eğimli
+  güçlendirilmiş ray koy
+cakery-name: Pastane
+cakery-desc: Her yarım saatte bir pasta yapar. Sandığın içine sandıklı vagon koy.
+  Pastaneden hedef bölgeye raylar inşaa et. Başlangıca eğimli güçlendirilmiş ray
+  koy.
+dye_works-name: Boyahane
+dye_works-desc: Renkli boyaların otomasyonu
+flint_works-name: Çakmaktaşı İşleri
+flint_works-desc: Otomatik çakmaktaşı oluşturma. Sandığın içine sandıklı vagon koy. Çakmaktaşı
+  işlerinden hedef bölgeye raylar inşaa et. Başlangıca eğimli güçlendirilmiş ray
+  koy
+gold_infuser-name: Altın Demlik
+gold_infuser-desc: Altın havuç ve elmanın otomatik işçiliği
+ice_maker-name: Buz Yapıcı
+ice_maker-desc: Otomatik buz oluşturma
+iron_works-name: Demir işleri
+iron_works-desc: Demir aletlerin otomatik olarak işlenmesi. Sandığın içine sandıklı vagon koy.
+  Demir işlerinden hedef bölgeye raylar inşaa et. Başlangıca eğimli
+  güçlendirilmiş ray koy
+lava_works-name: Lav işleri
+lava_works-desc: Otomatik lav oluşturma. Sandığın içine sandıklı vagon koy. Lav işlerinden
+  hedef bölgeye raylar inşaa et. Başlangıca eğimli güçlendirilmiş ray koy
+mill-name: Değirmen
+mill-desc: Her otuz saniyede bir iki buğdayı bir ekmeğe çevirir. Sandığın içine sandıklı
+  vagon koy. Değirmenden hedef bölgeye raylar inşaa et. Başlangıca eğimli
+  güçlendirilmiş ray koy.
+boot_grinder-name: Çizme Öğütücü
+boot_grinder-desc: Deri çizmeleri deriye çevirir. Sandığın içine sandıklı vagon koy. Çizme
+  öğütücüsünden hedef bölgeye raylar inşaa et. Başlangıca eğimli güçlendirilmiş
+  ray koy.
+stone_works-name: Taş İşleri
+stone_works-desc: Taş aletlerin otomatik işçiliği. Sandığın içine sandıklı vagon koy. Taş
+  işlerinden hedef bölgeye raylar inşaa et. Başlangıca eğimli güçlendirilmiş ray
+  koy.
+weapons_factory-name: Silah fabrikası
+weapons_factory-desc: Barut ve kumu patlayıcıya dönüştürür.
+jammer_trap-name: Sinyal Bozucu Tuzak
+jammer_trap-desc: 100 blok içinde seyahat edecek ışınlanmaları kesen bir bina. Hedefi sinyal
+  bozucuya yakın bir yere yönlendirir.
+chicken_coop-name: Tavuk Kümesi
+chicken_coop-desc: Otomatik tavuk çiftliği. Sandığın içine sandıklı vagon koy. Tavuk kümesinden
+  hedef bölgeye raylar inşaa et. Başlangıca eğimli güçlendirilmiş ray koy.
+donkey_farm-name: Eşek Çiftliği
+donkey_farm-desc: Her saat eşek ve eyer yaratır.
+mule_farm-name: Katır Çiftliği
+mule_farm-desc: Her saat katır ve eyer oluşturur.
+pig_pen-name: Domuz Çiftliği
+pig_pen-desc: Otomatik domuz çiftliği
+apiary-name: Arı kovanı
+apiary-desc: Otomatik bal çiftliği. Sandığın içine sandıklı vagon koy. Arılıktan hedef
+  bölgeye raylar oluşturun. Başlangıca eğimli güçlendirilmiş ray koy.
+rabbit_hutch-name: Tavşan Kümesi
+rabbit_hutch-desc: Otomatik tavşan kümesi
+ranch-name: Çiftlik
+ranch-desc: Otomatik inek çiftliği.
+sheep_farm-name: Koyun Çiftliği
+sheep_farm-desc: Otomatik koyun çiftliği
+stables-name: Ahırlar
+stables-desc: Her saat at ve eyer yaratır.
+acacia_lumberyard-name: Akasya odunu deposu
+acacia_lumberyard-desc: Otomatik akasya odunu tarlası. Sandığın içine sandıklı vagon koy. Akasya odunu
+  deposundan hedef bölgeye raylar oluşturun. Başlangıçta eğimli, Başlangıca
+  eğimli güçlendirilmiş ray koy.
+birch_lumberyard-name: Huş odunu deposu
+birch_lumberyard-desc: Otomatik huş odunu tarlası. Sandığın içine sandıklı vagon koy. Huş odunu
+  deposundan hedef bölgeye raylar oluşturun. Başlangıçta eğimli, Başlangıca
+  eğimli güçlendirilmiş ray koy.
+dark_oak_lumberyard-name: Koyu meşe odunu deposu
+dark_oak_lumberyard-desc: Otomatik koyu meşe odunu tarlası. Koyu meşe odunu deposundan hedef bölgeye
+  raylar oluşturun. Başlangıçta eğimli, Başlangıca eğimli güçlendirilmiş ray
+  koy.
+jungle_lumberyard-name: Orman ağacı deposu
+jungle_lumberyard-desc: Otomatik orman ağacı tarlası. Orman ağacı deposundan hedef bölgeye raylar
+  oluşturun. Başlangıçta eğimli, Başlangıca eğimli güçlendirilmiş ray koy.
+oak_lumberyard-name: Meşe odunu deposu
+oak_lumberyard-desc: Otomatik meşe odunu tarlası. Meşe odunu deposundan hedef bölgeye raylar
+  oluşturun. Başlangıçta eğimli, Başlangıca eğimli güçlendirilmiş ray koy.
+spruce_lumberyard-name: Ladin odunu deposu
+spruce_lumberyard-desc: Otomatik ladin odunu tarlası. Ladin odunu deposundan hedef bölgeye raylar
+  oluşturun. Başlangıçta eğimli, Başlangıca eğimli güçlendirilmiş ray koy.
+crimson_stemyard-name: Kızıl Kökbahçe
+crimson_stemyard-desc: Otomatik kızıl kök tarımı. Sandığın içine sandıklı vagon koy. Kızıl Kök
+  bahçesinden hedef bölgeye raylar oluşturun. Başlangıca eğimli güçlendirilmiş
+  ray koy.
+warped_stemyard-name: Çarpık Kökbahçe
+warped_stemyard-desc: Otomatik çarpık kök tarımı. Sandığın içine sandıklı vagon koy. Çarpık kök
+  tarımından hedef bölgeye raylar oluşturun. Başlangıca eğimli güçlendirilmiş
+  ray koy.
+hyphaeworks-name: Hifişçiliği
+hyphaeworks-desc: Kökbahçelerin her türü için Hif
+apple_orchard-name: Elma Bahçesi
+apple_orchard-desc: Otomatik elma çiftliği. Sandığın içine sandıklı vagon koy. Elma bahçesinden
+  hedef bölgeye raylar oluşturun. Başlangıçta eğimli eğimli güçlendirilmiş ray
+  koy.
+carrot_farm-name: Havuç Çiftliği
+carrot_farm-desc: Her 5 dakikada 16 havuç üretir. Sandığın içine sandıklı vagon koy. Havuç
+  tarlasından hedef bölgeye raylar oluşturun. Başlangıçta eğimli eğimli
+  güçlendirilmiş ray koy.
+beetroot_farm-name: Pancar Çiftliği
+beetroot_farm-desc: Her 5 dakikada 28 pancar üretir. Sandığın içine sandıklı vagon koy. Pancar
+  tarlasından hedef bölgeye raylar oluşturun. Başlangıçta eğimli güçlendirilmiş
+  ray koy.
+melting_pot-name: Eritme Kazanı
+melting_pot-desc: Tavşan ve pancar yahnisi üretilir. Sandığın içine sandıklı vagon koy. Eritme
+  kazanından hedef bölgeye raylar oluşturun. Başlangıçta eğimli güçlendirilmiş
+  ray koy.
+cocoa_farm-name: Kakao Çiftliği
+cocoa_farm-desc: Her 5 dakikada 16 kakao üretir. Sandığın içine sandıklı vagon koy. Kakao
+  tarlasından hedef bölgeye raylar oluşturun. Başlangıçta eğimli eğimli
+  güçlendirilmiş ray koy.
+ender_pearl_farm-name: Ender İncisi Çiftiği
+ender_pearl_farm-desc: Otomatik ender incisi çiftliği
+fishing_hut-name: Balıkçı Kulübesi
+fishing_hut-desc: Her 5 dakikada somon, tropik balık, balon balığı, sazan balığı, ya da deri
+  botlar üretir.
+greenhouse-name: Sera
+greenhouse-desc: Otomatik bitki bahçesi.
+melon_farm-name: Karpuz Çiftliği
+melon_farm-desc: Her 10 dakikada karpuz üretir. Sandığın içine sandıklı vagon koy. Karpuz
+  tarlasından hedef bölgeye raylar oluşturun. Başlangıçta eğimli eğimli
+  güçlendirilmiş ray koyt.
+potato_farm-name: Patates Çiftliği
+potato_farm-desc: Her 5 dakikada 16 kakao üretir. Sandığın içine sandıklı vagon koy. Kakao
+  tarlasından hedef bölgeye raylar oluşturun. Başlangıçta eğimli eğimli
+  güçlendirilmiş ray koy.
+potato_farm1-name: Patates Çiftliği
+potato_farm1-desc: Her 5 dakikada patates veya zehirli patates üretir.
+pumpkin_farm-name: Balkabağı Çiftliği
+pumpkin_farm-desc: Her 10 dakikada balkabağı üretir. Sandığın içine sandıklı vagon koy. Balkabağı
+  tarlasından hedef bölgeye raylar oluşturun. Başlangıçta eğimli eğimli
+  güçlendirilmiş ray koy.
+sugar_cane_farm-name: Şeker Kamışı Çiftliği
+sugar_cane_farm-desc: Her 5 dakikada 16 şeker kamışı üretir. Sandığın içine sandıklı vagon koy.
+  Şeker kamışı tarlasından hedef bölgeye raylar oluşturun. Başlangıçta eğimli
+  eğimli güçlendirilmiş ray koy.
+wheat_farm-name: Buğday Çiftliği
+wheat_farm-desc: Her 5 dakikada buğday ve ölü bitki üretir. Sandığın içine sandıklı vagon koy.
+  Buğday çiftliğinden hedef bölgeye raylar oluşturun. Başlangıçta eğimli eğimli
+  güçlendirilmiş ray koy.
+shack-name: Baraka
+shack-desc: Basit ev. Patates satarak günlük $96 kazanırsın.
+hovel-name: Kulübe
+hovel-desc: Level 2 ev. Patates ve elma satarak günlük $182.88 kazanırsın.
+hovel1-name: Kulübe1
+hovel1-desc: Level 2 ev. Patates, elma ve şüpheli güveç satarak günlük $204.24 kazanırsın.
+dwelling-name: Konut
+dwelling-desc: Level 3 ev. Patates ve elma satarak günlük $213.6 kazanırsın.
+dwelling1-name: Konut1
+dwelling1-desc: Level 3 ev. Patates, elma ve morina satarak günlük $271 kazanırsın.
+dwelling2-name: Konut2
+dwelling2-desc: Level 3 ev. Patates, elma, morina ve çiğ koyun eti satarak günlük $333
+  kazanırsın.
+house-name: Ev
+house-desc: Level 4 ev. Ekmek ve elma satarak günlük $213.6 kazanırsın.
+house1-name: Ev1
+house1-desc: Level 4 ev. Ekmek, elma ve somon satarak günlük $635 kazanırsın.
+house2-name: Ev2
+house2-desc: Level 4 ev. Ekmek, elma, somon ve karpuz dilimi satarak günlük $412.8
+  kazanırsın.
+chalet-name: Dağ evi
+chalet-desc: Level 5 ev. Ekmek ve havuç satarak $325.92 kazanırsın
+chalet1-name: Dağ evi1
+chalet1-desc: Level 5 ev. Ekmek, havuç ve tropikal balık satarak günlük $419.76 kazanırsın.
+chalet2-name: Dağ evi2
+chalet2-desc: Level 5 ev. Ekmek, havuç, tropikal balık ve karpuz dilimi satarak $537.6
+  kazanırsın.
+chalet3-name: Dağ evi3
+chalet3-desc: Level 5 ev.  Ekmek, havuç, tropikal balık, karpuz dilimi ve kurabiye satarak
+  günlük $633.6 kazanırsın.
+mansion-name: Köşk
+mansion-desc: Level 6 ev. Ekmek, havuç ve çiğ biftek satarak günlük $425.76
+  kazanırsın.Yalnızca Dağ Evi'ne yükseltme olarak mevcuttur
+mansion1-name: Köşk1
+mansion1-desc: Level 6 ev. Ekmek, havuç, çiğ biftek ve kurabiye satarak günlük $521.76
+  kazanırsın.
+mansion2-name: Köşk2
+mansion2-desc: Level 6 ev. Ekmek, havuç, çiğ biftek, kurabiye ve süt satarak günlük $596.16
+  kazanırsın.
+mansion3-name: Köşk3
+mansion3-desc: Level 6 ev. Ekmek, havuç, çiğ biftek, kurabiye, süt satarak günlük $687.96
+  kazanırsın.
+manor-name: Malikane
+manor-desc: Level 7 ev. Altın havuç, kurabiye ve sığır eti satarak günlük $382.08
+  kazanıyor. Sadece Köşk yükseltme olarak mevcuttur.
+manor1-name: Malikane1
+manor1-desc: Level 7 ev. Altın havuç, kurabiye, sığır eti ve süt satarak günlük $485.24
+  kazanıyor.
+manor2-name: Malikane3
+manor2-desc: Level 7 ev. Altın havuç, balkabağı turtası, sığır eti, kurabiye ve süt satarak
+  günde $729.08 kazanıyor.
+manor3-name: Malikane3
+manor3-desc: Level 7 ev. Altın havuç, turta, kurabiye, çiğ biftek, çiğ domuz eti ve süt
+  satarak günlük $826.44 kazanırsın.
+villa-name: Villa
+villa-desc: Level 8 ev. Altın havuç, turta ve çiğ biftek satarak günlük $585.6 kazanırsın.
+villa1-name: Villa1
+villa1-desc: Level 8 ev. Altın havuç, turta, çiğ biftek ve bal satarak günlük $665.6
+  kazanırsın.
+villa2-name: Villa2
+villa2-desc: Level 8 ev. Altın havuç, turta, çiğ biftek, bal ve altın elma satarak günlük
+  $867.6 kazanırsın.
+villa3-name: Villa3
+villa3-desc: Level 8 ev. Altın havuç, turta, çiğ biftek, bal, altın elma ve nakarat meyvesi
+  satarak günlük $986.6 kazanırsın.
+estate-name: Mülk
+estate-desc: Level 9 ev. Altın havuç, turta ve altın elma satarak günlük $763.2 kazanırsın.
+estate1-name: Mülk1
+estate1-desc: Level 9 ev. Altın havuç, turta, altın elma ve pasta satarak günlük $982.08
+  kazanırsın.
+estate2-name: Mülk2
+estate2-desc: Level 9 ev. Altın havuç, turta, altın elma, pasta ve tavşan yahnisi satarak
+  günlük $1255.44 kazanırsın.
+estate3-name: Mülk3
+estate3-desc: Level 9 ev. Altın havuç, turta, altın elma, pasta, tavşan yahnisi ve pancar
+  çorbası satarak günlük  $1410.4 kazanırsın.
+inn-name: Han
+inn-desc: 12 konut ve bir bağlantı noktası sağlar.konut inşa etmek zorunda kalmadan
+  insanları şehre eklemek için kullanışlıdır.
+jade_mine-name: Zümrüt Madeni
+jade_mine-desc: Her gün zümrüt dükkana satmak için 16 Zümrüt madeni kazar. Zümrüt dükkanı olan
+  bir kasabanın içine kurulamaz.
+coal_mine-name: Kömür Madeni
+coal_mine-desc: Kazma kullanarak kömür madeni kazar. Sandığın içine sandıklı vagon koy. Kömür
+  madeninden hedef bölgeye raylar oluştur. Başlangıçta eğimli güçlendirilmiş ray
+  koy.
+diamond_mine-name: Elmas Madeni
+diamond_mine-desc: Demir kazma kullanarak elmas kazar.
+gold_mine-name: Altın Madeni
+gold_mine-desc: Demir kazma kullanarak altın kazar. Sandığın içine sandıklı vagon koy. Altın
+  madeninden hedef bölgeye raylar oluştur. Başlangıçta eğimli güçlendirilmiş ray
+  koy.
+gunpowder_mine-name: Barut Madeni
+gunpowder_mine-desc: Demir kazma kullanarak barut kazar.
+iron_mine-name: Demir Madeni
+iron_mine-desc: Kazma kullanarak saat başı demir kazar.
+lapis_mine-name: Lapis Madeni
+lapis_mine-desc: Demir kazma kullanarak saat başı lapis kazar.
+marine_mine-name: Deniz Madeni
+marine_mine-desc: Kazma kullanarak prizmarin kazar.
+obsidian_mine-name: Obsidyen Madeni
+obsidian_mine-desc: Yavaşça obsidyen kazar.
+quartz_mine-name: Kuvars Madeni
+quartz_mine-desc: Kazma kullanarak kuvars kazar.
+redstone_mine-name: Kızıltaş Madeni
+redstone_mine-desc: Kazma kullanarak kızıltaş üretir. Sandığın içine sandıklı vagon koy. Kızıltaş
+  madeninden hedef bölgeye raylar oluşturun. Başlangıçta eğimli güçlendirilmiş
+  ray koy.
+npc_chalet-name: NPC Dağ evi
+npc_chalet-desc: 5 köylü için bir ev. kasaba nüfusuna sayılır.
+npc_dwelling-name: NPC Konut
+npc_dwelling-desc: 3 köylü için bir ev. Kasaba nüfusuna sayılır.
+npc_house-name: 4 köylü için bir ev. Kasaba nüfusuna sayılır.
+npc_house-desc: NPC Barınak
+npc_hovel-name: 2 köylü için bir Kulübe. Kasaba nüfusuna sayılır.
+npc_hovel-desc: NPC Konağı
+npc_mansion-name: 6 köylü için bir ev. Kasaba nüfusuna sayılır.
+npc_mansion-desc: NPC Kulübesi
+npc_shack-name: 1 köylü için bir ev. Kasaba nüfusuna sayılır.
+raid_porter-name: Baskın Işınlayıcı
+raid_porter-desc: Bir düşman kasabasına girmenin güvenilir bir yolu. Isınması 3 dakika sürer.
+  Kasabanın anti-kampı çalıştırmasını engeller. Bir düşman kasabasının içinden
+  bu binaya erişim yapabilirsiniz.
+raid_porter_active-name: Baskın Işınlayıcı Aktif
+raid_porter_active-desc: Hedef kasabanın adını içeren tabelayı merkez bloğun üzerine yerleştirin.
+  Sonra, merkez bloğun üstünde durun.
+siege_machine-name: Kuşatma Makinesi
+siege_machine-desc: Tüm savaşların temeli. Yakındaki hedef kasabanın gücünü yavaşça çeker.
+  Isınması 4 dakika sürer.
+siege_machine_active-name: Kuşatma Makinesi Etkin
+siege_machine_active-desc: Her 3 dakikada bir 2 gücü yok eder. 20 çekimden sonra yükselir.
+siege_machine1-name: Kuşatma Makinesi1
+siege_machine1-desc: Her 2.5 dakikada bir 4 gücü yok eder. 20 çekimden sonra yükselir.
+siege_machine2-name: Kuşatma Makinesi2
+siege_machine2-desc: Her 2 dakikada bir 6 gücü yok eder. 20 çekimden sonra yükselir.
+siege_machine3-name: Kuşatma Makinesi3
+siege_machine3-desc: Her 1,5 dakikada bir 10 gücü yok eder. (saatte 400).
+no-tp-pearl-chorus: Düşman kasabalarında ender incisi veya nakarat meyvesi kullanamazsınız
+altar-name: Sunak
+altar-desc: Saatte bir kez 300 dolara tam bir elmas zırh, kılıç, yay ve ok seti oluşturur.
+blindness_trap-name: Körlük tuzağı
+blindness_trap-desc: Üye olmayanlara körlük, yavaşlık ve zayıflık uygular. 30 dakika içinde kendini
+  yok eder.
+castle-name: Kale
+castle-desc: Kalenin merkezi Karakolu bir kaleye yükseltmeden önce gereklidir 15 dakkada
+  bir 6 güç üretir.
+catapult-name: Mancınık
+catapult-desc: Uzak mesafeden doğruluk oranı ile TNT fırlatır.
+command_tent-name: Komuta Çadırı
+command_tent-desc: Askeri karakolun merkezi.Yakın bir kasabayı kuşatmanı sağlar. Her 15 dakikada
+  1 güç üretir.
+hunting_lodge-name: Avcı Kulübesi
+hunting_lodge-desc: Obsidiyen bloğunun üzerine avınızın adı yazan bir tabela yerleştirerek,
+  obsidiyene sağ tıklayıp yakınlarına ışınlanabilirsiniz.
+memorial-name: Anıt
+memorial-desc: Kasaba üyelerinin yeniden doğabileceği bir yer. Ayrıca hasarı önler.
+mobile_hospital-name: Seyyar Hastane
+mobile_hospital-desc: Mobil hastanedeki tüm oyuncuları iyileştirir. 30 dakika içinde kendini yok
+  eder.
+temp_arrow_trap-name: Sıcak ok tuzağı
+temp_arrow_trap-desc: Yakındaki üye olmayanlara ok atar. 15 dakika içinde kendini yok eder.
+clay_quarry-name: Kil Ocağı
+clay_quarry-desc: Otomatik kil oluşturma.
+cobble_quarry-name: Taş Ocağı
+cobble_quarry-desc: Her 30 saniyede bir kırık taş oluşturur.
+cobble_grinder-name: Kırıktaş Öğütücü
+cobble_grinder-desc: Sandığın içine sandıklı vagon koy. Kömür madeninden hedef bölgeye raylar
+  oluştur. Başlangıçta eğimli güçlendirilmiş ray koy.
+dirt_quarry-name: Toprak Ocağı
+dirt_quarry-desc: Otomatik toprak oluşturma.
+red_sand_pit-name: Kızıl Kum Çukuru
+red_sand_pit-desc: Her 30 saniyede bir kırmızı kum oluşturur.
+sand_pit-name: Kum çukuru
+sand_pit-desc: Her 30 saniyede bir kum oluşturur.
+sifter-name: Elek
+sifter-desc: Değerli öğeleri bulmak için toprak eler.
+jade_shop-name: Zümrüt Dükkanı
+jade_shop-desc: Sunucuya günde $1000'e 16 zümrüt satıyor. Yeşim Madeni olan bir kasabada inşa
+  edilemez.
+coal_shop-name: Kömür Dükkanı
+coal_shop-desc: Sunucuya günde $432 değerinde 144 kömür satıyor
+diamond_shop-name: Elmas Dükkanı
+diamond_shop-desc: Sunucuya günde $1536 değerinde 24 elmas satıyor.
+flower_shop-name: Çiçekçi Dükkanı
+flower_shop-desc: Sunucuya günde $288 değerinde çiçek satar.
+gold_shop-name: Altın Dükkanı
+gold_shop-desc: Sunucuya günde $672 değerinde 288 altın satıyor.
+gunpowder_shop-name: Barut Dükkanı
+gunpowder_shop-desc: Sunucuya günde $360 ​​değerinde 192 barut satıyor
+iron_shop-name: Demir Dükkanı
+iron_shop-desc: Sunucuya günde $576 değerinde 288 demir satıyor.
+leather_shop-name: Deri Dükkanı
+leather_shop-desc: Sunucuya günlük $360 değerinde deri satıyor.
+lapis_shop-name: Lapis Dükkanı
+lapis_shop-desc: Sunucuya günlük $600 değerinde sunucuya lapis satıyor
+city-name: Şehir
+city-desc: Bir kasabanın beşinci seviyesi. 80 nüfus gerektirir.
+hamlet-name: Küçük Köy
+hamlet-desc: Bir kasabanın ikinci seviyesi. 5 nüfus gerektirir.
+keep-name: Tut
+keep-desc: Kuşatma üssünün ikinci seviyesi.
+metropolis-name: Başkent
+metropolis-desc: Altıncı seviye kasaba. 160 popülasyon gerekir.
+mining_colony-name: Maden Kolonisi
+mining_colony-desc: Canavarların üremesini engeller ve hızlı kazma güçlendirmesi verir.
+outpost-name: Karakol
+outpost-desc: Bir kuşatma üssünün ilk seviyesi.
+settlement-name: Yerleşim Yeri
+settlement-desc: Kasabanın ilk seviyesi.
+town-name: Kasaba
+town-desc: Bir kasabanın dördüncü seviyesi. 40 nüfus gerektirir.
+village-name: Köy
+village-desc: Bir kasabanın üçüncü seviyesi. 15 nüfus gerektirir.
+bank-name: Banka
+bank-desc: Günde 192 güç üretir. 64 zümrüdü $640 dolara çevirir veya tam tersi
+bath_house-name: Hamam
+bath_house-desc: Kasabaya her gün 192 güç sağlar
+capitol-name: Başkent
+capitol-desc: Bir kasaba için merkezi yapı. Günde 768 güç üretir. Ayrıca bir ana bağlantı
+  noktası görevi görür.
+city_hall-name: Belediye binası
+city_hall-desc: Bir kasaba için merkezi yapı. Günde 576 güç üretir. Aynı zamanda bir ana
+  erişim noktası görevi görür.
+council_room-name: Konsey odası
+council_room-desc: Bir kasaba için merkezi yapı. Günde 192 güç üretir. Aynı zamanda bir ana
+  bağlantı noktası görevi görür.
+embassy-name: Elçilik
+embassy-desc: Günde 192 güç üretir. Aynı zamanda bir ana erişim noktası görevi görür.
+library-name: Kütüphane
+library-desc: Günde 192 güç üretir. Her 15 dakikada bir 2 deneyim şişesi oluşturur.
+purifier-name: Temizleyici
+purifier-desc: Çürük eti deriye dönüştürür ve 15 dakikada bir patatesteki zehiri temizler.
+smithy-name: Demirci
+smithy-desc: Öğeleri onarmak için demir bloğa sağ tıklayın. Günde 192 güç üretir.
+town_hall-name: Belediye binası
+town_hall-desc: Bir kasaba için merkezi yapı. Günde 384 güç üretir. Aynı zamanda bir ana
+  erişim noktası görevi görür.
+warehouse-name: Depo
+warehouse-desc: Öğeleri birçok sandığından ihtiyaç duyulan bölgelere dağıtır.
+warehouse-toggle-on: Depo Malzemeleri Açık
+warehouse-toggle-off: Depo Malzemeleri Kapalı
+warehouse-toggle-desc: Bu bölge için ambar sarf malzemelerini değiştirmek için tıklayın
+item-jade-name: Zümrüt
+item-jade-desc: 16 zümrütü bir zümrüt mağazasında $1000 karşılığında kullanın
+farms-name: Çiftlikler
+farms-desc: Tüm gıda, hayvan ve doğal malzeme üreten yapılar.
+towns-name: Kasabalar
+towns-desc: Tüm kasaba yükseltmeleri, savaş kampları ve maden kasabaları.
+shops-name: Mağazalar
+shops-desc: Sunucuya mal satmak için mağazalar. Oyuncu başına maksimum 3
+utilities-name: Araçlar
+utilities-desc: Kasabayı korumak için güç üreten tüm kamu malları ve altyapı binaları.
+housing-name: Evler
+housing-desc: Kasabaların maksimum nüfusunu artıran binalar. Çoğu ev, sunucuya yiyecek satar.
+defense-name: Defans
+defense-desc: Bir kasabanın defansına yardımcı olan binalar. Bazı defans binaları da güç
+  üretir.
+quarries-name: Ocaklar
+quarries-desc: Toprak/Taş malzemeler üreten binalar.
+factories-name: Fabrikalar
+factories-desc: Öğeleri verimli bir şekilde işleyen binalar. Çoğu, öğeleri diğer bölgelere
+  teslim etmek için minecart raylarını kullanır.
+offense-name: Saldırı
+offense-desc: Kasabaların dışındaki savaşa yardımcı olan binalar. Kasabaları yok etmek için
+  kuşatma makineleri içerir.
+mines-name: Madenler
+mines-desc: Cevher ve diğer değerli derin toprak malzemeleri üreten binalar.
+woodworks-name: Ağaç işleri
+woodworks-desc: Her Odun için kereste tersaneleri.
+animals-name: Hayvan Çiftlikleri
+animals-desc: Hayvan üreten çiftlikler.
+npchousing-name: NPC Evi
+npchousing-desc: Köylüler şeklinde konut ve nüfus sağlayan binalar. Bu binalar gelir getirmez
+  ve normal konutlardan yükseltilmelidir.
+trading-name: Ticaret
+trading-desc: Kasabalar arası ticareti içeren binalar.
+fireworks_factory-name: Havai Fişek Fabrikası
+fireworks_factory-desc: Barut tüketmeden havai fişek yıldızları yaratır
+admin-name: Admin
+admin-desc: Admin itemleri
+house-evolve-name: Ev gelişimi
+house-evolve-desc: Konut binalarının gizli gelişmiş formları
+trade-mines-name: Ticaret madenleri
+trade-mines-desc: Diğer şehirlerde satılmak üzere ürünler üreten madenler.
+defense-evolve-name: Geliştir
+defense-evolve-desc: Çeşitli binaların gizli gelişmiş formları
+evolve-name: Geliştir
+evolve-desc: Çeşitli binaların gizli gelişmiş formları
+plot7x7-name: Arsa7x7
+plot7x7-desc: 7x7 ve daha küçük bölgeler için yer tutucu
+plot11x11-name: Arsa11x11
+plot11x11-desc: 11x11 ve daha küçük bölgeler için bir yer tutucu
+plot15x15-name: Arsa15x15
+plot15x15-desc: 15x15 ve daha küçük bölgeler için bir yer tutucu
+plot19x19-name: Arsa19x19
+plot19x19-desc: 19x19 ve daha küçük bölgeler için bir yer tutucu
+vault-name: Kasa
+vault-desc: Kasabanın maksimum gücünü 500 artırır. Kasabaya her gün 96 güç sağlar.
+housing-group: Evler
+defense-group: Savunma
+trap-group: Tuzaklar
+arrowtrapgroup-group: Ok Tuzakları
+publichousing-group: Toplu Konut
+idolgroup-group: Putlar
+factory-group: Fabrikalar
+farm-group: Çiftlikler
+raw-group: Hammadde Üretimi
+woodwork-group: Odun Depoları
+allchalet-group: Herhangi dağ Evi
+basechalet-group: Olmayan-NPC Dağ Evi
+allhousing-group: Herhangi Ev
+npchousinggroup-group: NPC Ev
+alldwelling-group: Herhangi Konut
+basedwelling-group: Olmayan-NPC Konut
+allestate-group: Herhangi Mülk
+baseestate-group: Olmayan-NPC Mülk
+allhouse-group: Herhangi Ev
+basehouse-group: Olmayan-NPC Ev
+allhovel-group: Herhangi Kulübe
+basehovel-group: Olmayan-NPC Kulübe
+allmanor-group: Herhangi Malikane
+basemanor-group: Olmayan-NPC Malikane
+allmansion-group: Herhangi Köşk
+basemansion-group: Olmayan-NPC Mansion
+allshack-group: Herhangi Kulübe
+baseshack-group: Olmayan-NPC Kulübe
+allvilla-group: Herhangi Villa
+basevilla-group: Olmayan-NPC Villa
+trademine-group: Ticaret Madeni
+trading-group: Ticaret
+mine-group: Madenler
+offense-group: Saldırı
+basecenter-group: Üs
+raidport-group: Baskın Işınlayıcıları
+siegemachinegroup-group: Kuşatma Makineleri
+townpowerreduce-group: Kuşatma Malzemeleri
+quarry-group: Taş Ocağı
+tradeshop-group: Ticaret Dükkanı
+shop-group: Dükkanlar
+oreshop-group: Maden dükkanları
+superregion-group: Kasabalar
+utility-group: Kamu kuruluşları
+town_center-group: Kasaba Merkezi
+maxpower-group: Son seviye yapılar
+skills: Yetenekler
+armor-skill: Zırh
+armor-skill-desc: "Seviye: $1 ($2/$3) Farklı zırhlar giyerken hasar alın. Savunma binalarında
+  indirim sağlar."
+building-skill: İnşa
+building-skill-desc: "Seviye: $1 ($2/$3) Deneyim kazanmak için farklı bölgeler oluşturun. ev / npc
+  evlerinde indirim sağlar."
+sword-skill: Kılıç
+sword-skill-desc: "Seviye: $1 ($2/$3) Kılıç kullanarak farklı canavarları öldür. Karakoldaki
+  önemli binalarda indirim sağlar."
+axe-skill: Balta
+axe-skill-desc: "Seviye: $1 ($2/$3) Baltaları kullanarak farklı canavarları öldür. Kereste,
+  baskın ışınlayıcı, bozucu tuzakları ve av kulübelerinde indirim sağlar."
+bow-skill: Yay
+bow-skill-desc: "Seviye: $1 ($2/$3) Yayları kullanarak farklı canavarları öldür. Kuşatma
+  makinelerinde ve okla ilgili binalarda indirim sağlar."
+crossbow-skill: Kundaklı Yay
+crossbow-skill-desc: "Seviye: $1 ($2/$3) Kundaklı yay kullanarak farklı yaratıkları öldür. Kuşatma
+  makinelerinde ve okla ilgili binalarda indirim sağlar."
+enchant-skill: Büyüleme
+enchant-skill-desc: "Seviye: $1 ($2/$3) Farklı büyüler oluşturun. Tesisat ve enerji binalarında
+  indirim sağlar."
+mining-skill: Madencilik
+mining-skill-desc: "Seviye: $1 ($2/$3) İpek dokunuşu olmadan farklı cevherler çıkar. Madencilik
+  binalarında indirim sağlar."
+trident-skill: Mızrak
+trident-skill-desc: "Seviye: $1 ($2/$3) Mızrak kullanarak farklı canavarları öldürün. Su ile
+  ilgili binalarda indirim sağlar."
+crafting-skill: Üretim
+crafting-skill-desc: "Seviye: $1 ($2/$3) Exp kazanmak için farklı öğeler oluşturun. Zanaat
+  fabrikalarında indirimler sağlar."
+exploration-skill: Keşifçilik
+exploration-skill-desc: "Seviye: $1 ($2/$3) Deneyim kazanmak için farklı biyomları keşfedin. Kasaba
+  yükseltmelerinde ve ahırlarda indirim sağlar."
+food-skill: Yeme
+food-skill-desc: "Seviye: $1 ($2/$3) Exp kazanmak için farklı yiyecekler yiyin. Çiftliklerde
+  indirim sağlar."
+shield-skill: Kalkan
+shield-skill-desc: "Seviye: $1 ($2/$3) Exp kazanmak için okları engelleyin ve hasar verin.
+  Savunmalarda ve kamu kuruluşlarında indirim sağlar."
+potion-skill: İksircilik
+potion-skill-desc: "Seviye: $1 ($2/$3) Exp kazanmak için farklı iksirler için/atın. Güç
+  yapılarında indirim sağlar."
+skill-bar: "@{GREEN}$1@{RED}$2"
+chat-channels: Sohbet Kanalları
+chat-change-chat: Sohbet kanalını değiştir $1
+friend-channel: Arkadaşlar
+friend-channel-desc: Sadece arkadaşlar
+global-channel: Küresel
+global-channel-desc: Tüm oyuncular
+local-channel: Yerel
+local-channel-desc: Sadece 100 blok içindeki oyuncular
+town-channel-desc: Sadece oyuncular $1
+alliance-channel-desc: Sadece ittifaktaki oyuncu $1
+chat-channel-set: Sohbet kanalındasınız $1
+click-change-chat: Sohbet kanalını değiştirmek için tıkla
+no-recipients: çevrimiçi kimse yok $1 sohbet kanalı
+netherite_mine-name: Netherit Madeni
+netherite_mine-desc: Elmas kazma kullanarak netherite kazar.
+change-class: Sınıf değiştir
+change-class-desc: Önceden kaydedilmiş ya da yeni bir sınıf seç.
+health: Can
+health-desc: "Max: $1"
+mana: Mana
+heat: Sıcaklık
+stamina: Dayanıklılık
+or: VEYA
+mana-desc: "Max: $1 Yenileme: $2"
+spell-slot-desc: Yeni bir büyü seçmek için sol tıklayın. Bu büyülerin sırasını değiştirmek için
+  sağ tıklayın.
+spell-slot-desc-change-order: Büyülerin sırasını değiştirmek için sağ tıkla
+empty-spell-slot: Boş Büyü Slotu
+empty-spell-slot-desc: Bu slot için bir büyü seç
+allowed-items: İzin verilmiş eşyalar
+allowed-items-desc: Tüm eşyalar $1 kullanımına izin verildi
+see-all-spells: Tüm büyüleri görüntüle
+see-all-spells-desc: Mevcut tüm büyüleri görüntüle $1
+req-skill-level: Asgari seviyeye sahip olmalısın $2 içinde $1
+req-item: Önce satın almalısın $1
+req-build: Önce inşa etmelisiniz $1
+spell-command: Büyülerinize geçin /cv spells
+switch-spell-cast: Kullanmak için bu öğeye geçin.
+infinite-cooldown: "@{RED}$1 belirsiz bir bekleme süresi vardır"
+view-all-classes: Tüm sınıfları görüntüle
+new-class: Yeni sınıf
+new-class-desc: Şu anki sınıfının ilerlemesini kaybetmeden yeni bir sınıfa başla.
+spell-block: "@{RED}Bir büyü bunu yapmanı engelliyor."
+default-name: Asker
+default-desc: "Can: 16 Mana: 50 Yenilenme: 1/s Silahlar: Tüm Zırhlar: Ağır Çok çeşitli
+  büyüler. En özelleştirilebilir sınıf."
+alchemist-name: Simyacı
+alchemist-desc: "Can: 28 Mana: 500 Yenilenme: 2/s Silahlar: Balta Zırh: Hafif Kombolar için
+  çok çeşitli iksirler ve sıçrama iksirleri."
+elemental-name: Alev elementali
+elemental-desc: "Can: 16 Mana: 50 Yenilenme: 10/s Silahlar: Kundaklı yay, Mızrak, Kılıç Zırhı:
+  Ağır Hızlı hareket eden AoE yangın hasarı."
+archer-name: Okçu
+archer-desc: "Can: 26 Mana: 100 Yenilenme: 2/s Silahlar: Yay, Kundaklı yay Zırh: Devre dışı
+  bırakma ve kaçma ile Hafif Uzun menzilli."
+potion_poison-name: "İksir: Zehir"
+potion_poison-desc: "Mana: 25  BeklemeSüresi: 20s Patlayıcı zehir 2 iksiri oluşturur."
+potion_strength-name: "İksir: Kuvvet"
+potion_strength-desc: "Mana: 25  BeklemeSüresi: 20s Güç 2 iksiri yaratır."
+potion_speed-name: "İksir: Hız"
+potion_speed-desc: "Mana: 25  BeklemeSüresi: 20s Hız 2 iksiri yaratır"
+potion_harm-name: "İksir: Zarar"
+potion_harm-desc: "Mana: 25  BeklemeSüresi: 20s Zarar 2 iksiri yaratır"
+potion_regen-name: "İksir: Yenilenme"
+potion_regen-desc: "Mana: 25  BeklemeSüresi: 20s Yenilenme iksiri 2 yaratır."
+potion_heal-name: "İksir: Sağlık"
+potion_heal-desc: "Mana: 35  BeklemeSüresi: 25s Sağlık 2 iksiri yaratır"
+potion_invis-name: "İksir: Görünmezlik"
+potion_invis-desc: "Mana: 50  BeklemeSüresi: 75s Uzatılmış görünmezlik iksiri yaratır:"
+potion_weakness-name: "İksir: Zayıflık"
+potion_weakness-desc: "Mana: 50  BeklemeSüresi: 75s Zayıflık iksiri yaratır"
+petrify-name: Taşlaştırma
+petrify-desc: "Mana: 60  BeklemeSüresi: 45s Kendinizi temizleyin, köklendirin ve yenilmez
+  olun 10s."
+evaporate-name: Buharlaşma
+evaporate-desc: "Mana: 10 BeklemeSüresi: 5s Menzil: 30 Düşmanın elindeki kovayı veya iksiri
+  boşaltır"
+spoil-name: Spoil
+spoil-desc: "Mana: 10 BeklemeSüresi: 3s Menzil 30 Transmute target held food into a
+  something spoiled."
+jump-name: Zıpla
+jump-desc: "Mana: 10 BeklemeSüresi: 10s Havaya doğru ilerleyin."
+backflip-name: Ters Takla
+backflip-desc: "Mana: 10 BeklemeSüresi: 10s havada ters takla at"
+disentangle-name: Çöz
+disentangle-desc: "Mana: 20 BeklemeSüresi: 14s Menzil: 20 Kendinizi temizleyin ve sizi ve
+  rakibinizi ayırmaya zorlayan sarsıcı bir patlama yapın."
+empathy-name: Empati
+empathy-desc: "Mana: 35 BeklemeSüresi:15s Menzil: 20 Eksik olan sağlığın 60%'ını hasar
+  olarak verin."
+chug-name: Kafaya Dik
+chug-desc: Pasif Herhangi bir iksiri veya süt kovasını anında iç.
+burning-presence-name: Yanan Varlık
+burning-presence-desc: "Yarıçap: 7 Değiştirilebilir Pasif Her 4 saniyede 1 gerçek hasar verir"
+quicken-name: Çabuk
+quicken-desc: "Mana: 20 BeklemeSüresi: 10s 5 saniye kendinizi yavaşlatın, sonra 5 metre için
+  hız 2 kazanın"
+sap-strength-name: Diri Güç
+sap-strength-desc: "Mana: 30 BeklemeSüresi: 55s Yarıçap: 9 Önümüzdeki 10 saniye boyunca bir
+  hedefin menzilinde kaldığınız her 2 saniye için, hedefe +1 zayıflık ve
+  kendinize +1 güç uygulayın."
+launch-name: Fırlatma
+launch-desc: "Mana: 30 BeklemeSüresi: 1d Yarıçap: 6 Bir yarıçap içinde 10 hasar verin ve
+  yavaş düşerek kendinizi havaya fırlatın."
+screech-name: Çığlık
+screech-desc: "Mana: 25 BeklemeSüresi: 30s Yarıçap: 7 Yarım saniyelik bir gecikmeden sonra,
+  etrafınızdaki tüm hedefleri 3 saniye boyunca sersemletin."
+dodge-name: Kaçınma
+dodge-desc: "Mana: 10 BeklemeSüresi: 5s boyunca kendinizi yenilmez yapın 1s."
+blunted_arrows-name: Körelmiş Oklar
+blunted_arrows-desc: Ok ile her vurduğunuzda 0,5s boyunca sersemletme şansı 25% pasiftir.
+webbed_arrows-name: Perdeli Oklar
+webbed_arrows-desc: Ok ile her vurduğunuzda 1s boyunca köklenme şansı 25% pasiftir.
+arrow_storm-name: Ok Fırtınası
+arrow_storm-desc: "Mana: 25 BeklemeSüresi: 20s Hızı artırarak ve doğruluğu azaltarak 5 ok
+  ateşler"
+wild_jump-name: Vahşi Atlama
+wild_jump-desc: "Mana: 10 BeklemeSüresi:10s Rastgele bir hızla rastgele bir yönde atlayın."
+nation-destroyed: "@{RED}$1 yok edildi!"
+set-nation-icon-name: Ulus simgesini ayarla
+set-nation-icon-desc: Simge olarak ayarlamak istediğiniz öğeyi tutun ve yazın /cv nation-icon
+hold-nation-icon: Ulus simgesi olmasını istediğiniz bir öğeyi tutun
+nation-icon-set: $1 ulus simgesi belirlendi
+hold-lore: Lore'nin olmasını istediğiniz yazılı bir kitabı tutun
+lore-set: Lore için ayarlandı
+constitution-name: $1'yin Lore
+constitution-desc: Ulusun lore'sini kitap olarak almak için tıklayın. Kullanarak ulusun lore'sini
+  ayarlayabilirsiniz
+set-nation-info-name: Ülke bilgilerini ayarla
+set-nation-info-desc: Bilgileri kullanarak ayarla /cv nation yazılı bir kitap tutarken lore
+nation-lore-command: /cv nation-lore
+nations: Uluslar
+create-nation: Ulus Yarat
+create-nation-desc: Kasabanızda bir ulus yaratmak için yeterli seviye var! Uluslar geniş toprak
+  korumasına ve artan güce sahip olur.
+rename-nation: Ulusu Yeniden Adlandır
+rename-nation-desc: Şunu kullanarak yeniden adlandır /cv rename ulus Eskiİsim Yeniİsim
+rename-nation-command: /cv rename ulus $1 Yeniİsim
+join-nation: Ulusa Katıl
+join-nation-desc: Kasabanızın bu Ulusa katılmasını istemek için tıklayın
+leave-nation: Ulustan Ayrıl
+leave-nation-desc: Kasabanızın bu ulustan ayrılması için tıklayın
+left-nation: $1 ulusu terk etti $2
+nation-capitol: Başkent $1
+set-capitol-desc: Ülkenin başkentini en çok nüfusa sahip kasaba olarak değiştirmek için buraya
+  tıklayın
+capitol-must-exceed-pop: Sadece bir kasaba $1 nüfus başkent olarak belirlenebilir
+capitol-set: $1 başkent olarak ayarlandı $2
+nation-app-sent: Kasabanız ulusa katılmak için bir başvuru gönderdi $1
+nation-invite: $1 ulusa katılmak istiyor $2 Kabul?
+nation-apps: Uygulamalara Katılın
+nation-apps-desc: Kasabalar bu ulusa katılmak için başvurdu
+region-summary: "@{GREEN}Tür: $1 @{BLUE}Sahipler: $2 @{YELLOW}Konum: $3 @{BLUE}Çalışma: $4
+  @{GREEN}Bugün gelir: $5"
+town-summary: "@{GREEN}Tür: $1 @{BLUE}Sahipler: $2 @{YELLOW}Güç: $3/$4 @{GREEN}Nüfus: $5/$6"
