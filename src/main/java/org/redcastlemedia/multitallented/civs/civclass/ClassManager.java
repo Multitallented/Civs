@@ -98,7 +98,7 @@ public class ClassManager {
                 }
             }
         } catch (Exception e) {
-            Civs.logger.severe("Unable to load class files");
+            Civs.logger.log(Level.SEVERE, "Unable to load class files", e);
             return;
         }
         try {
