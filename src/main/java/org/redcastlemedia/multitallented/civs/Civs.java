@@ -39,6 +39,7 @@ import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
 import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
 import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
+import org.redcastlemedia.multitallented.civs.worldedit.WorldEditSessionListener;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
@@ -135,6 +136,10 @@ public class Civs extends JavaPlugin {
         }
         if (discordSRV != null) {
             logger.log(Level.INFO, "{0} DiscordSRV", LogInfo.HOOKCHAT);
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled("WorldEdit") && ConfigManager.getInstance().isSafeWE()) {
+            WorldEditSessionListener.init();
+            logger.log(Level.INFO, "{0}", LogInfo.HOOKWE);
         }
         logger.info(LogInfo.PH_INFO);
 

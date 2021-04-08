@@ -192,6 +192,8 @@ public class ConfigManager {
 
     @Getter boolean warnOnEmptyChatChannel;
 
+    @Getter private boolean safeWE;
+
     public ConfigManager() {
         loadDefaults();
     }
@@ -502,6 +504,10 @@ public class ConfigManager {
             }
 
             warnOnEmptyChatChannel = config.getBoolean("warn-on-empty-chat-channel", true);
+
+            safeWE = config.getBoolean("safe-worldedit", false);
+
+
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read from config.yml", e);
         }
@@ -668,6 +674,7 @@ public class ConfigManager {
         chatTagFormat = new HashMap<>();
         chatTagFormat.put("town_f", "[$1]");
         chatTagFormat.put("nation_f", "[$1]");
+        safeWE = false;
     }
 
     public static ConfigManager getInstance() {

@@ -328,3 +328,8 @@ player-residencies-count: -1
 player-residencies-count-override:
   2: "civs.residencyoverride.vip"
   3: "civs.residencyoverride.vip+"
+
+#If enabled civs will prevent any WorldEdit actions within regions
+#This has been tested only with "THE" original WorldEdit made by EngineHub
+#May, or may not cause issues with various WE forks such as FAWE
+safe-worldedit: false

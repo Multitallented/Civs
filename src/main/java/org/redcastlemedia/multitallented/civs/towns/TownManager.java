@@ -84,12 +84,13 @@ public class TownManager {
 
                     loadTown(config, file);
                 } catch (Exception e) {
-                    Civs.logger.warning("Unable to read from towns/" + file.getName());
+                    String message = "Unable to read from towns/" + file.getName();
+                    Civs.logger.log(Level.SEVERE, message, e);
                     e.printStackTrace();
                 }
             }
         } catch (NullPointerException npe) {
-            Civs.logger.severe("Unable to read from town folder!");
+            Civs.logger.log(Level.SEVERE, "Unable to read from town folder!", npe);
         }
     }
 

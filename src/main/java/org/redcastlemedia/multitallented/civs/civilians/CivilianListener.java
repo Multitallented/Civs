@@ -673,9 +673,12 @@ public class CivilianListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         ChatChannel chatChannel = civilian.getChatChannel();
         ConfigManager configManager = ConfigManager.getInstance();
+        if (chatChannel == null) {
+            chatChannel = new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null);
+        }
         ChatChannelConfig chatChannelConfig = configManager.getChatChannels().get(chatChannel.getChatChannelType());
         if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.GLOBAL
-                && ! chatChannelConfig.override) {
+                && !chatChannelConfig.override) {
             return;
         }
         event.setCancelled(true);
