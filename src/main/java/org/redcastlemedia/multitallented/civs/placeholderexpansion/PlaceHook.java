@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.chat.ChatManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.ChatChannel;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -146,7 +147,7 @@ public class PlaceHook extends PlaceholderExpansion {
             }
             return offlinePlayer.getName() + " $" + bountyString;
         } else if (NATION.equals(identifier)) {
-            String nation = getNation(civilian);
+            String nation = ChatManager.getNation(civilian);
             if (nation == null) {
                 return TownManager.getInstance().getBiggestTown(civilian);
             }
@@ -156,20 +157,5 @@ public class PlaceHook extends PlaceholderExpansion {
         }
     }
 
-    public static String getNation(Civilian civilian) {
-        for (Alliance alliance : AllianceManager.getInstance().getAllSortedAlliances()) {
-            for (String townName : alliance.getMembers()) {
-                Town town = TownManager.getInstance().getTown(townName);
-                if (town == null) {
-                    continue;
-                }
-                if (town.getRawPeople().containsKey(civilian.getUuid()) &&
-                        !town.getRawPeople().get(civilian.getUuid()).contains("ally")) {
-                    return alliance.getName();
-                }
-            }
-        }
-        return null;
-    }
 
 }
