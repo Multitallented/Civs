@@ -5,26 +5,19 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.MiniMessageImpl;
-import net.kyori.adventure.text.minimessage.Template;
-import net.kyori.text.adapter.bukkit.TextAdapter;
-import org.apache.commons.collections.map.HashedMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
-import org.redcastlemedia.multitallented.civs.civilians.ChatChannel;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
+import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.Map;
 
 /**
  * https://docs.adventure.kyori.net/minimessage.html
@@ -53,7 +46,7 @@ public class ChatManager {
         ConfigManager instance = ConfigManager.getInstance();
         Map<String, String> chatTagFormat = instance.getChatTagFormat();
 
-        String nation = PlaceHook.getNation(civilian);
+        String nation = getNation(civilian);
 
         String format = config.format
                 .replace("<town_f>", biggestTown == null ? "" : chatTagFormat.get("town_f").replace("$1", biggestTown))
@@ -86,5 +79,21 @@ public class ChatManager {
 
     public void onDisable() {
         bukkitAudiences.close();
+    }
+
+    public static String getNation(Civilian civilian) {
+        for (Alliance alliance : AllianceManager.getInstance().getAllSortedAlliances()) {
+            for (String townName : alliance.getMembers()) {
+                Town town = TownManager.getInstance().getTown(townName);
+                if (town == null) {
+                    continue;
+                }
+                if (town.getRawPeople().containsKey(civilian.getUuid()) &&
+                        !town.getRawPeople().get(civilian.getUuid()).contains("ally")) {
+                    return alliance.getName();
+                }
+            }
+        }
+        return null;
     }
 }

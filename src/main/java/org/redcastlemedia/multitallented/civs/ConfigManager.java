@@ -190,8 +190,6 @@ public class ConfigManager {
     @Getter
     private NavigableMap<Integer, String> residenciesCountOverride;
 
-    @Getter boolean warnOnEmptyChatChannel;
-
     @Getter private boolean safeWE;
 
     public ConfigManager() {
@@ -503,8 +501,6 @@ public class ConfigManager {
                 }
             }
 
-            warnOnEmptyChatChannel = config.getBoolean("warn-on-empty-chat-channel", true);
-
             safeWE = config.getBoolean("safe-worldedit", false);
 
 
@@ -670,7 +666,6 @@ public class ConfigManager {
         regionLockedNations = new HashMap<>();
         residenciesCount = -1;
         residenciesCountOverride = new TreeMap<>();
-        warnOnEmptyChatChannel = true;
         chatTagFormat = new HashMap<>();
         chatTagFormat.put("town_f", "[$1]");
         chatTagFormat.put("nation_f", "[$1]");

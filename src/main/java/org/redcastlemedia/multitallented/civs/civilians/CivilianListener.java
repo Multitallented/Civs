@@ -721,15 +721,9 @@ public class CivilianListener implements Listener {
             }
         }
 
-        boolean warn = configManager.isWarnOnEmptyChatChannel();
-        if (warn && (event.getRecipients().isEmpty() || (event.getRecipients().size() == 1 &&
-                player.equals(event.getRecipients().iterator().next())))) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                    "no-recipients").replace("$1", chatChannel.getName(player)));
-        } else {
-            ChatManager instance = ChatManager.getInstance();
-            instance.formatMessage(event.getPlayer(), civilian, chatChannelConfig, event.getMessage(),event.getRecipients());
-        }
+
+        ChatManager instance = ChatManager.getInstance();
+        instance.formatMessage(event.getPlayer(), civilian, chatChannelConfig, event.getMessage(),event.getRecipients());
     }
 
     @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")

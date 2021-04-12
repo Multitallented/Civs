@@ -295,9 +295,6 @@ days-between-elections: 7
 use-announcements: true
 announcement-period: 240
 
-# Display chat message if there are no players online for the chat channel
-warn-on-empty-chat-channel: true
-
 ## do not turn this on unless you want to spam your console with potentially useless info
 debug-log: false
 

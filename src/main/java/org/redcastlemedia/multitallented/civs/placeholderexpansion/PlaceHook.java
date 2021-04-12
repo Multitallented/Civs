@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.chat.ChatManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.ChatChannel;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -148,7 +149,7 @@ public class PlaceHook extends PlaceholderExpansion {
             }
             return offlinePlayer.getName() + " $" + bountyString;
         } else if (NATION.equals(identifier)) {
-            String nation = getNation(civilian);
+            String nation = ChatManager.getNation(civilian);
             if (nation == null) {
                 return TownManager.getInstance().getBiggestTown(civilian);
             }
