@@ -235,7 +235,8 @@ public class Civs extends JavaPlugin {
         configurationBuilder.addUrls(ClasspathHelper.forPackage("org.redcastlemedia.multitallented.civs"));
         filterBuilder.includePackage("org.redcastlemedia.multitallented.civs")
                 .excludePackage("org.redcastlemedia.multitallented.civs.dynmaphook")
-                .excludePackage("org.redcastlemedia.multitallented.civs.placeholderexpansion");
+                .excludePackage("org.redcastlemedia.multitallented.civs.placeholderexpansion")
+                .excludePackage("org.redcastlemedia.multitallented.civs.worldedit");
         configurationBuilder.filterInputsBy(filterBuilder);
         Reflections reflections = new Reflections(configurationBuilder);
         Set<Class<?>> classes = reflections.getTypesAnnotatedWith(CivsSingleton.class);
