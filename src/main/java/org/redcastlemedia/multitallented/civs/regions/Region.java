@@ -76,6 +76,8 @@ public class Region {
     private List<List<CVItem>> missingBlocks = new ArrayList<>();
     @Getter
     private List<String> chests = new ArrayList<>();
+    @Getter
+    private boolean idle = false;
 
     public Region(String type,
                   HashMap<UUID, String> people,
@@ -750,11 +752,13 @@ public class Region {
         if (regionType.getUpkeeps().isEmpty() || !missingBlocks.isEmpty()) {
             return false;
         }
-        if (checkTick && !shouldTick()) {
-            return false;
-        }
         if (checkTick) {
+            boolean shouldTick = shouldTick();
+            if (!shouldTick) {
+                return false;
+            }
             tick();
+            idle = true;
         }
         if (ConfigManager.getInstance().isDisableRegionsInUnloadedChunks() && !Util.isChunkLoadedAt(getLocation())) {
             return false;
@@ -865,6 +869,7 @@ public class Region {
             }
 
             if (checkTick) {
+                idle = false;
                 tick();
             }
             hadUpkeep = true;

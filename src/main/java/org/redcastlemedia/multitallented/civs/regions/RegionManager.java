@@ -1072,7 +1072,7 @@ public class RegionManager {
                 WarehouseEffect.getInstance().refreshChest(region, location);
             }
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-            if (region.getFailingUpkeeps().size() >= regionType.getUpkeeps().size()) {
+            if (region.isIdle() && region.getFailingUpkeeps().size() >= regionType.getUpkeeps().size()) {
                 region.lastTick = -1;
             }
         }
