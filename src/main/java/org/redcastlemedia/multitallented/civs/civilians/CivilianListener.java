@@ -111,6 +111,33 @@ public class CivilianListener implements Listener {
         if (configManager.getUseStarterBook()) {
             giveMenuBookIfNoneInInventory(player);
         }
+        addStartingItems(player);
+    }
+
+    private void addStartingItems(Player player) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (!player.hasPlayedBefore()) {
+            for (CivItem civItem : ItemManager.getInstance().getAllItemTypes().values()) {
+                giveItemFromStashIfStartingItem(player, civilian, civItem);
+            }
+        }
+    }
+
+    private void giveItemFromStashIfStartingItem(Player player, Civilian civilian, CivItem civItem) {
+        if (civItem instanceof RegionType) {
+            RegionType regionType = (RegionType) civItem;
+            if (regionType.isStartInInventory()) {
+                player.getInventory().addItem(regionType.createItemStack(player));
+                if (civilian.getStashItems().containsKey(regionType.getProcessedName())) {
+                    int qty = civilian.getStashItems().get(regionType.getProcessedName());
+                    if (qty > 1) {
+                        civilian.getStashItems().put(regionType.getProcessedName(), qty - 1);
+                    } else {
+                        civilian.getStashItems().remove(regionType.getProcessedName());
+                    }
+                }
+            }
+        }
     }
 
     public static void giveMenuBookIfNoneInInventory(Player player) {

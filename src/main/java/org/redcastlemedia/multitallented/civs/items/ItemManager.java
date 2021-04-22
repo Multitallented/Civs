@@ -447,6 +447,9 @@ public class ItemManager {
         if (config.isSet("dynmap-marker")) {
             regionType.setDynmapMarkerKey(config.getString("dynmap-marker"));
         }
+        if (config.getBoolean("start-in-inventory", false)) {
+            regionType.setStartInInventory(true);
+        }
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;
     }
