@@ -20,12 +20,12 @@ import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+import io.lumine.mythic.lib.api.item.NBTItem;
 import lombok.Getter;
 import lombok.Setter;
 import net.Indyuce.mmoitems.MMOItems;
 import net.Indyuce.mmoitems.api.Type;
 import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
-import net.mmogroup.mmolib.api.item.NBTItem;
 
 /**
  *
