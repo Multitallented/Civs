@@ -418,7 +418,8 @@ public final class Util {
     }
     public static boolean validateFileName(String fileName) {
         return fileName.matches("^[^.\\\\/:*?\"<>|]?[^\\\\/:*?\"<>|]*")
-                && getValidFileName(fileName).length()>0;
+                && getValidFileName(fileName).length()>0 &&
+                fileName.length() < 41;
     }
 
     public static String getValidFileName(String fileName) {
