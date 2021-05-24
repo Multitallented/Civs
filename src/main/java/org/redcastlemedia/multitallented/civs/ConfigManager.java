@@ -168,6 +168,7 @@ public class ConfigManager {
     @Getter boolean warningLogger;
     @Getter double percentPowerForUpgrade;
     @Getter boolean showKillStreakMessages;
+    @Getter boolean combatTagEnabled;
 
     @Getter
     String chatChannelFormat;
@@ -375,6 +376,7 @@ public class ConfigManager {
             customItemDescriptions = processMap(config.getConfigurationSection("custom-items"));
             levelList = config.getStringList("levels");
             useParticleBoundingBoxes = config.getBoolean("use-particle-bounding-boxes", false);
+            combatTagEnabled = config.getBoolean("combat-tag-enabled", true);
             getGovSettings(config);
             maxTax = config.getDouble("max-town-tax", 50);
             daysBetweenVotes = config.getInt("days-between-elections", 7);
@@ -511,6 +513,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        combatTagEnabled = true;
         warningLogger = false;
         percentPowerForUpgrade = 0.1;
         huntCrossWorld = false;

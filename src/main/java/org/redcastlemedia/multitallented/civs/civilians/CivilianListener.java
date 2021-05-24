@@ -161,7 +161,8 @@ public class CivilianListener implements Listener {
         UUID uuid = player.getUniqueId();
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
 
-        if (civilian.isInCombat() && ConfigManager.getInstance().getCombatLogPenalty() > 0) {
+        if (ConfigManager.getInstance().isCombatTagEnabled() &&
+                civilian.isInCombat() && ConfigManager.getInstance().getCombatLogPenalty() > 0) {
             int penalty = (int) (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() *
                     ConfigManager.getInstance().getCombatLogPenalty() / 100);
             if (civilian.getLastDamager() != null) {

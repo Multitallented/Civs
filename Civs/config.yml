@@ -86,6 +86,8 @@ stop-mobs-from-dropping-items-in-safe-zones: false
 
 ##cooldown in seconds before killing the same player reduces the town power
 death-grace-period-seconds: 60
+
+combat-tag-enabled: true
 ##how many seconds a player is considered in combat after taking or dealing damage
 combat-tag-duration: 60
 ##how much damage should a player receive if they log out during combat
