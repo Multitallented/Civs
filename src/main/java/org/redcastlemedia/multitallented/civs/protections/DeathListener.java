@@ -69,7 +69,9 @@ public class DeathListener implements Listener {
             return;
         }
 
-        if (!ConfigManager.getInstance().isAllowTeleportInCombat() && getDistanceSquared(event.getFrom(), event.getTo()) > 9) {
+        if (ConfigManager.getInstance().isCombatTagEnabled() &&
+                !ConfigManager.getInstance().isAllowTeleportInCombat() &&
+                getDistanceSquared(event.getFrom(), event.getTo()) > 9) {
             if (civilian.isInCombat()) {
                 event.setCancelled(true);
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
@@ -217,7 +219,7 @@ public class DeathListener implements Listener {
                 }
             }
             if (damager != player) {
-                if (!damagerCiv.isInCombat()) {
+                if (ConfigManager.getInstance().isCombatTagEnabled() && !damagerCiv.isInCombat()) {
                     damager.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(damager,
                             "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
                 }
@@ -228,7 +230,7 @@ public class DeathListener implements Listener {
         if (!civilian.isInCombat() && player.equals(damager)) {
             return;
         }
-        if (!civilian.isInCombat()) {
+        if (ConfigManager.getInstance().isCombatTagEnabled() && !civilian.isInCombat()) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
         }
