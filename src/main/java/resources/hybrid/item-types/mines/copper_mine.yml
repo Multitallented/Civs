@@ -18,7 +18,7 @@ build-reqs:
  - g:door*1
  - CHEST*2
  - FURNACE*2
- - COPPER_ORE*4
+ - COPPER_ORE*4,DEEPSLATE_COPPER_ORE*4
  - g:primary*45
  - g:secondary*6
 

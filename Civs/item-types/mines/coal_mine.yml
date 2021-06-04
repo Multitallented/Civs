@@ -15,7 +15,7 @@
 #  - g:door*1
 #  - CHEST*2
 #  - FURNACE*2
-#  - COAL_ORE*4
+#  - COAL_ORE*4,DEEPSLATE_COAL_ORE*4
 #  - g:primary*45
 #  - g:secondary*6
 #

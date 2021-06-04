@@ -20,7 +20,7 @@
 #
 #build-reqs:
 #  - IRON_BARS*2
-#  - GOLD_ORE*4
+#  - GOLD_ORE*4,DEEPSLATE_GOLD_ORE*4
 #  - g:door*1
 #  - CHEST*2
 #  - FURNACE*2

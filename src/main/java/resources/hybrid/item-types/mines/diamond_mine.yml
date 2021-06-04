@@ -17,7 +17,7 @@ towns:
 
 build-reqs:
 - IRON_BARS*2
-- DIAMOND_ORE*2
+- DIAMOND_ORE*2,DEEPSLATE_DIAMOND_ORE*2
 - g:door*1
 - CHEST*2
 - FURNACE*2
