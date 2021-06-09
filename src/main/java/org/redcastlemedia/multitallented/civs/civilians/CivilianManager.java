@@ -249,6 +249,9 @@ public class CivilianManager {
         return civilian;
     }
     public void saveCivilian(Civilian civilian) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         File civilianFolder = new File(Civs.dataLocation, "players");
         if (!civilianFolder.exists()) {
             if (!civilianFolder.mkdir()) {
@@ -289,12 +292,12 @@ public class CivilianManager {
                 }
                 civConfig.set("items." + civItem.getProcessedName(), civItem.getQty());
             }
-            List<Integer> classes = new ArrayList<>();
+            List<String> classes = new ArrayList<>();
             for (CivClass civClass : civilian.getCivClasses()) {
                 if (civClass == null) {
                     continue;
                 }
-                classes.add(civClass.getId());
+                classes.add(civClass.getId().toString());
             }
             for (Skill skill : civilian.getSkills().values()) {
                 for (Map.Entry<String, Integer> accomplishment : skill.getAccomplishments().entrySet()) {

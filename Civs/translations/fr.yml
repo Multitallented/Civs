@@ -713,92 +713,92 @@
 #  de stockage dans le coffre. Construire des rails de la ferme de blé à une
 #  région de destination. Placez un rail de propulsion incliné au début.
 #shack-name: Cabane
-#shack-desc: L'habitation la plus basique. Gagne 122 $ par jour en vendant des pommes de
+#shack-desc: L'habitation la plus basique. Gagne 96 $ par jour en vendant des pommes de
 #  terre.
 #hovel-name: "Baraque "
-#hovel-desc: Le second niveau d'habitation. Gagne 144 $ par jour en vendant des pommes de
-#  terre et des pommes. Uniquement disponible en tant que mise à niveau de la
-#  cabane.
+#hovel-desc: Le second niveau d'habitation. Gagne 182,88 $ par jour en vendant des pommes de
+#  terre et des pommes.
 #hovel1-name: Baraque-1
-#hovel1-desc: Le second niveau d'habitation. Gagne 310 $ par jour en vendant des pommes de
+#hovel1-desc: Le second niveau d'habitation. Gagne 204,24 $ par jour en vendant des pommes de
 #  terre et des pommes.
 #dwelling-name: Résidence
-#dwelling-desc: Le troisième niveau d'habitation. Gagne 309 $ par jour en vendant des pommes
+#dwelling-desc: Le troisième niveau d'habitation. Gagne 213,6 $ par jour en vendant des pommes
 #  de terre et des pommes.
 #dwelling1-name: Résidence-1
-#dwelling1-desc: Le troisième niveau d'habitation. Gagne 326 $ par jour en vendant des pommes
+#dwelling1-desc: Le troisième niveau d'habitation. Gagne 271,2 $ par jour en vendant des pommes
 #  de terre et des pommes.
 #dwelling2-name: Résidence-2
-#dwelling2-desc: Le troisième niveau d'habitation. Gagne 598 $ par jour en vendant des pommes
+#dwelling2-desc: Le troisième niveau d'habitation. Gagne 333,4 $ par jour en vendant des pommes
 #  de terre, des pommes, et des poissons.
 #house-name: Maison
-#house-desc: 4ème niveau d'habitation. Gagne 491 $ par jour en vendant des pains et des
-#  pommes. Uniquement disponible en tant que mise à niveau de l'habitation.
+#house-desc: 4ème niveau d'habitation. Gagne 213,6 $ par jour en vendant des pains et des
+#  pommes.
 #house1-name: Maison-1
-#house1-desc: 4ème niveau d'habitation. Gagne 635 $ par jour en vendant des pains, des
+#house1-desc: 4ème niveau d'habitation. Gagne 301,68 $ par jour en vendant des pains, des
 #  pommes, et des poissons.
 #house2-name: Maison-2
-#house2-desc: 4ème niveau d'habitation. Gagne 832 $ par jour en vendant des pains, des
+#house2-desc: 4ème niveau d'habitation. Gagne 412,8 $ par jour en vendant des pains, des
 #  pommes, des poissons, et des tranches de pastèque.
 #chalet-name: Chalet
-#chalet-desc: 5ème niveau d'habitation. Gagne 548 $ par jour en vendant des pains et des
+#chalet-desc: 5ème niveau d'habitation. Gagne 325,92 $ par jour en vendant des pains et des
 #  carottes.
 #chalet1-name: Chalet-1
-#chalet1-desc: 5ème niveau d'habitation. Gagne 692 $ par jour en vendant des pains, des
+#chalet1-desc: 5ème niveau d'habitation. Gagne 419,76 $ par jour en vendant des pains, des
 #  carottes, et des poissons.
 #chalet2-name: Chalet-2
-#chalet2-desc: 5ème niveau d'habitation. Gagne 890 $ par jour en vendant des pains, des
+#chalet2-desc: 5ème niveau d'habitation. Gagne 537,6 $ par jour en vendant des pains, des
 #  carottes, des poissons, et des tranches de pastèque.
 #chalet3-name: Chalet-3
-#chalet3-desc: 5ème niveau d'habitation. Gagne 1022 $ par jour en vendant des pains, des
+#chalet3-desc: 5ème niveau d'habitation. Gagne 633,6 $ par jour en vendant des pains, des
 #  carottes, des poissons, des cookies, et des tranches de pastèque.
 #mansion-name: Manoir
-#mansion-desc: 6ème niveau d'habitation. Gagne 648 $ par jour en vendant du pain, des
-#  carottes et du bœuf. Disponible uniquement en tant qu'amélioration du chalet.
+#mansion-desc: 6ème niveau d'habitation. Gagne 425,76 $ par jour en vendant du pain, des
+#  carottes et du bœuf.
 #mansion1-name: Manoir-1
-#mansion1-desc: 6ème niveau d'habitation. Gagne 894 $ par jour en vendant du pain, des
+#mansion1-desc: 6ème niveau d'habitation. Gagne 521,76 $ par jour en vendant du pain, des
 #  carottes, du bœuf et des biscuits.
 #mansion2-name: Manoir-2
-#mansion2-desc: 6ème niveau d'habitation. Gagne 1167 $ par jour en vendant du pain, des
+#mansion2-desc: 6ème niveau d'habitation. Gagne 596,16 $ par jour en vendant du pain, des
 #  carottes, du bœuf et des biscuits.
 #mansion3-name: Manoir-3
-#mansion3-desc: 6ème niveau d'habitation. Gagne 1407 $ par jour en vendant du pain, des
+#mansion3-desc: 6ème niveau d'habitation. Gagne 687,96 $ par jour en vendant du pain, des
 #  carottes, du bœuf et des biscuits.
 #manor-name: Castel
-#manor-desc: 7ème niveau d'habitation. Gagne 1032 $ par jour en vendant des carottes
-#  dorées, des biscuits et du bœuf. Disponible uniquement en tant qu'amélioration
-#  du manoir.
+#manor-desc: 7ème niveau d'habitation. Gagne 382,08 $ par jour en vendant des carottes
+#  dorées, des biscuits et du bœuf.
 #manor1-name: Castel-1
-#manor1-desc: 7ème niveau d'habitation. Gagne 1276 $ par jour en vendant des carottes
+#manor1-desc: 7ème niveau d'habitation. Gagne 485,24 $ par jour en vendant des carottes
 #  dorées, des biscuits, du bœuf et du lait.
 #manor2-name: Castel-2
-#manor2-desc: 7ème niveau d'habitation. Gagne 1679 $ par jour en vendant des carottes
+#manor2-desc: 7ème niveau d'habitation. Gagne 729,08 $ par jour en vendant des carottes
 #  dorées, des biscuits, du bœuf et du lait.
 #manor3-name: Castel-3
-#manor3-desc: 7ème niveau d'habitation. Gagne 1751 $ par jour en vendant des carottes
+#manor3-desc: 7ème niveau d'habitation. Gagne 826,44 $ par jour en vendant des carottes
 #  dorées, des biscuits, du bœuf et du lait.
 #villa-name: Villa
-#villa-desc: 8ème niveau d'habitation. Gagne 1100 $ par jour en vendant des carottes
+#villa-desc: 8ème niveau d'habitation. Gagne 585,6 $ par jour en vendant des carottes
 #  dorées, de la tarte à la citrouille et du bœuf.
 #villa1-name: Villa-1
-#villa1-desc: 8ème niveau d'habitation. Gagne 1397 $ par jour en vendant des carottes
+#villa1-desc: 8ème niveau d'habitation. Gagne 663,8 $ par jour en vendant des carottes
 #  dorées, de la tarte à la citrouille, du bœuf et du lait.
 #villa2-name: Villa-2
-#villa2-desc: 8ème niveau d'habitation. Gagne 1877 $ par jour en vendant des carottes
+#villa2-desc: 8ème niveau d'habitation. Gagne 855,8 $ par jour en vendant des carottes
+#  dorées, de la tarte à la citrouille, du lait, du bœuf et des pommes dorées.
+#villa3-name: Villa-3
+#villa3-desc: 8ème niveau d'habitation. Gagne 964,8 $ par jour en vendant des carottes
 #  dorées, de la tarte à la citrouille, du lait, du bœuf et des pommes dorées.
 #estate-name: Propriété
-#estate-desc: 9ème niveau d'habitation. Gagne 1480 $ par jour en vendant des carottes
-#  dorées, de la tarte à la citrouille et des pommes dorées. Uniquement
-#  disponible en tant qu'amélioration de la Villa.
+#estate-desc: 9ème niveau d'habitation. Gagne 763,2 $ par jour en vendant des carottes
+#  dorées, de la tarte à la citrouille et des pommes dorées.
 #estate1-name: Propriété-1
-#estate1-desc: 9ème niveau d'habitation. Gagne 1917 $ par jour en vendant des carottes
+#estate1-desc: 9ème niveau d'habitation. Gagne 982,08 $ par jour en vendant des carottes
 #  dorées, de la tarte à la citrouille, des pommes dorées et des gâteaux
 #estate2-name: Propriété-2
-#estate2-desc: 9ème niveau d'habitation. Gagne 2397  $ par jour en vendant des carottes
+#estate2-desc: 9ème niveau d'habitation. Gagne 1255,44 $ par jour en vendant des carottes
 #  dorées & des pommes dorées, de la tarte à la citrouille, du ragoût de lapin et
 #  des gâteaux.
 #estate3-name: Propriété-3
-#estate3-desc: 9ème niveau d'habitation. Gagne 2621 $ par jour en vendant des carottes dorées
+#estate3-desc: 9ème niveau d'habitation. Gagne 1410,4 $ par jour en vendant des carottes dorées
 #  & des pommes dorées, de la tarte à la citrouille, du ragoût de lapin et des
 #  gâteaux.
 #inn-name: Auberge

@@ -192,7 +192,7 @@ public class TutorialManager {
                 TutorialType tutorialType = TutorialType.valueOf(nextStep.getType().toUpperCase());
                 key = getKey(civilian.getTutorialPath(), tutorialType, nextStep);
             }
-        } while (key != null && !civilian.getCompletedTutorialSteps().contains(key));
+        } while (key != null && civilian.getCompletedTutorialSteps().contains(key));
         civilian.setTutorialIndex(nextIndex);
         CivilianManager.getInstance().saveCivilian(civilian);
 
@@ -237,6 +237,7 @@ public class TutorialManager {
         String type = step.getType();
         if ("choose".equals(type)) {
             player.closeInventory();
+            MenuManager.clearHistory(player.getUniqueId());
             MenuManager.getInstance().openMenu(player, "tutorial-choose-path", new HashMap<>());
         }
     }
@@ -373,6 +374,7 @@ public class TutorialManager {
         UPKEEP,
         KILL,
         BUY,
-        MENU_ACTION
+        MENU_ACTION,
+        CHOOSE
     }
 }

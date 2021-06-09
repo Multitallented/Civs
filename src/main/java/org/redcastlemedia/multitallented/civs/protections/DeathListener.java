@@ -59,7 +59,9 @@ public class DeathListener implements Listener {
             return;
         }
 
-        if (!ConfigManager.getInstance().isAllowTeleportInCombat() && getDistanceSquared(event.getFrom(), event.getTo()) > 9) {
+        if (ConfigManager.getInstance().isCombatTagEnabled() &&
+                !ConfigManager.getInstance().isAllowTeleportInCombat() &&
+                getDistanceSquared(event.getFrom(), event.getTo()) > 9) {
             if (civilian.isInCombat()) {
                 event.setCancelled(true);
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
@@ -206,7 +208,7 @@ public class DeathListener implements Listener {
                 }
             }
             if (damager != player) {
-                if (!damagerCiv.isInCombat()) {
+                if (ConfigManager.getInstance().isCombatTagEnabled() && !damagerCiv.isInCombat()) {
                     damager.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(damager,
                             "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
                 }
@@ -217,7 +219,7 @@ public class DeathListener implements Listener {
         if (!civilian.isInCombat() && player.equals(damager)) {
             return;
         }
-        if (!civilian.isInCombat()) {
+        if (ConfigManager.getInstance().isCombatTagEnabled() && !civilian.isInCombat()) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
         }
@@ -360,6 +362,7 @@ public class DeathListener implements Listener {
         boolean isAxe = RepairEffect.isAxe(mainHand.getType());
         boolean isTrident = mainHand.getType() == Material.TRIDENT;
         boolean isBow = mainHand.getType() == Material.BOW;
+        boolean isCrossbow = mainHand.getType() == Material.CROSSBOW;
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.KILL, event.getEntity().getType().name().toLowerCase());
         for (Skill skill : civilian.getSkills().values()) {
@@ -368,7 +371,8 @@ public class DeathListener implements Listener {
             boolean axeSkill = isAxe && skill.getType().equalsIgnoreCase(CivSkills.AXE.name());
             boolean tridentSkill = isTrident && skill.getType().equalsIgnoreCase(CivSkills.TRIDENT.name());
             boolean bowSkill = isBow && skill.getType().equalsIgnoreCase(CivSkills.BOW.name());
-            if (swordSkill || axeSkill || tridentSkill || bowSkill) {
+            boolean crossbowSkill = isCrossbow && skill.getType().equalsIgnoreCase(CivSkills.CROSSBOW.name());
+            if (swordSkill || axeSkill || tridentSkill || bowSkill || crossbowSkill) {
                 exp = skill.addAccomplishment(event.getEntity().getType().name());
             }
             MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
@@ -490,7 +494,7 @@ public class DeathListener implements Listener {
         if (powerPerKill > 0 && !damagerCiv.isFriend(dyingCiv) &&
                 TownManager.getInstance().findCommonTowns(damagerCiv, dyingCiv).isEmpty()) {
             for (Town town : new ArrayList<>(TownManager.getInstance().getTowns())) {
-                if (!town.getPeople().containsKey(dyingCiv.getUuid()) ||
+                if (town.isDevolvedToday() || !town.getPeople().containsKey(dyingCiv.getUuid()) ||
                         town.getPeople().get(dyingCiv.getUuid()).contains("ally")) {
                     continue;
                 }
@@ -514,7 +518,7 @@ public class DeathListener implements Listener {
         double killStreakBonus = ConfigManager.getInstance().getPointsPerKillStreak() * damagerCiv.getKillStreak();
 
         econBonus += damagerCiv.getKillStreak() * ConfigManager.getInstance().getMoneyPerKillStreak();
-        if (damagerCiv.getKillStreak() >= 3) {
+        if (damagerCiv.getKillStreak() >= 3 && ConfigManager.getInstance().isShowKillStreakMessages()) {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.sendMessage(Civs.getPrefix() + localeManager.getTranslation(p, "kill-streak")
                         .replace("$1", damager.getDisplayName())
@@ -525,7 +529,7 @@ public class DeathListener implements Listener {
 
         double killJoyBonus = ConfigManager.getInstance().getPointsPerKillJoy() * dyingCiv.getKillStreak();
         econBonus += ConfigManager.getInstance().getMoneyPerKillJoy() * dyingCiv.getKillStreak();
-        if (dyingCiv.getKillStreak() > 2) {
+        if (dyingCiv.getKillStreak() > 2 && ConfigManager.getInstance().isShowKillStreakMessages()) {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.sendMessage(Civs.getPrefix() + localeManager.getTranslation(p, "kill-joy")
                         .replace("$1", player.getDisplayName())

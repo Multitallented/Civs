@@ -75,7 +75,7 @@ public abstract class TestUtil {
         }
         Civs.logger = mock(PluginLogger.class);
 
-        Civs.dataLocation = new File("/src/resources/hybrid");
+        Civs.dataLocation = new File("Civs");
 
         CivilianManager.getInstance();
         Server server = mock(Server.class);
@@ -313,9 +313,5 @@ public abstract class TestUtil {
         itemStack.getItemMeta().setDisplayName(name);
         itemStack.getItemMeta().setLore(lore);
         return itemStack;
-    }
-
-    public void setRegionStandby(boolean standby) {
-        ConfigManager.getInstance().regionStandby = standby;
     }
 }

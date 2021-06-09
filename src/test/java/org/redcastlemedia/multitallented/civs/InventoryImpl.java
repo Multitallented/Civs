@@ -17,6 +17,12 @@ import java.util.ListIterator;
 public class InventoryImpl implements Inventory {
     private final HashMap<Integer, ItemStack> contents = new HashMap<>();
 
+    public InventoryImpl() {
+        for (int i = 0; i < getSize(); i++) {
+            contents.put(i, null);
+        }
+    }
+
     @Override
     public int getSize() {
         return 27;
@@ -216,9 +222,13 @@ public class InventoryImpl implements Inventory {
 
     @Override
     public ItemStack[] getContents() {
-        ItemStack[] itemStacks = new ItemStack[contents.keySet().size()];
+        ItemStack[] itemStacks = new ItemStack[this.getSize()];
         for (Integer i : contents.keySet()) {
-            itemStacks[i] = new ItemStack(contents.get(i).getType(), contents.get(i).getAmount());
+            if (contents.get(i) == null) {
+                itemStacks[i] = null;
+            } else {
+                itemStacks[i] = new ItemStack(contents.get(i).getType(), contents.get(i).getAmount());
+            }
         }
         return itemStacks;
     }
@@ -279,7 +289,7 @@ public class InventoryImpl implements Inventory {
     @Override
     public int firstEmpty() {
         for (int i = 0; i < getSize(); i++) {
-            if (contents.get(i) == null) {
+            if (contents.get(i) == null || contents.get(i).getType() == Material.AIR) {
                 return i;
             }
         }

@@ -346,6 +346,8 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
         }
         CVInventory destinationInventory = UnloadedInventoryHandler.getInstance().getChestInventory(destination.getLocation());
 
+        int size = destinationInventory.getSize();
+        int firstEmpty = destinationInventory.firstEmpty();
         if (destinationInventory == null || destinationInventory.firstEmpty() < 0 ||
                 destinationInventory.firstEmpty() > destinationInventory.getSize() - 4) {
             return;

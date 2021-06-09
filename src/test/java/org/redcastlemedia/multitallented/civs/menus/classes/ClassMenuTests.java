@@ -2,13 +2,18 @@ package org.redcastlemedia.multitallented.civs.menus.classes;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Map;
+import java.util.UUID;
+
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
 
 public class ClassMenuTests extends TestUtil {
 
@@ -21,7 +26,7 @@ public class ClassMenuTests extends TestUtil {
         civClass = civilian.getCurrentClass();
         if (civClass == null) {
             String defaultClassName = ConfigManager.getInstance().getDefaultClass();
-            civClass = new CivClass(0, player.getUniqueId(), defaultClassName);
+            civClass = new CivClass(UUID.randomUUID(), player.getUniqueId(), defaultClassName);
         }
         civClass.resetSpellSlotOrder();
     }

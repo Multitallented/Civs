@@ -66,12 +66,13 @@ public class TownManager {
 
                     loadTown(config, file);
                 } catch (Exception e) {
-                    Civs.logger.warning("Unable to read from towns/" + file.getName());
+                    String message = "Unable to read from towns/" + file.getName();
+                    Civs.logger.log(Level.SEVERE, message, e);
                     e.printStackTrace();
                 }
             }
         } catch (NullPointerException npe) {
-            Civs.logger.severe("Unable to read from town folder!");
+            Civs.logger.log(Level.SEVERE, "Unable to read from town folder!", npe);
         }
     }
 
@@ -682,6 +683,14 @@ public class TownManager {
                         .replace("$2", "" + townType.getChildPopulation()));
                 return;
             }
+
+            int powerRequired = (int) Math.round((double) town.getMaxPower() * ConfigManager.getInstance().getPercentPowerForUpgrade());
+            if (town.getPower() < powerRequired) {
+                player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player, "not-enough-power")
+                        .replace("$1", town.getName()).replace("$2", "" + powerRequired));
+                return;
+            }
+
             people = intersectTown.getPeople();
             newTownLocation = intersectTown.getLocation();
             childLocations.add(newTownLocation);
@@ -709,6 +718,11 @@ public class TownManager {
             evolveTown(player, civilian, townType, townTypeLocalName, childTownType, newTown, government);
 
         } else {
+            if (!canJoinAnotherTown(player)) {
+                player.sendMessage(Civs.getPrefix() +
+                        localeManager.getTranslation(player, "residence-limit-reached").replace("$1", name));
+                return;
+            }
             TownCreatedEvent townCreatedEvent = new TownCreatedEvent(newTown, townType);
             newTown.setLastVote(System.currentTimeMillis());
             Bukkit.getPluginManager().callEvent(townCreatedEvent);
@@ -729,6 +743,7 @@ public class TownManager {
         if (childTownType == null && GovernmentManager.getInstance().getGovermentTypes().size() > 1) {
             HashMap<String, String> params = new HashMap<>();
             params.put("town", newTown.getName());
+            MenuManager.clearHistory(player.getUniqueId());
             MenuManager.getInstance().openMenu(player, "gov-list", params);
         }
     }
@@ -803,6 +818,7 @@ public class TownManager {
                 }
                 regionString.substring(0, regionString.length() - 1);
                 params.put("regionList", regionString.toString());
+                MenuManager.clearHistory(player.getUniqueId());
                 MenuManager.getInstance().openMenu(player, "region-type-list", params);
                 return true;
             }
@@ -853,9 +869,14 @@ public class TownManager {
                     ownerName = offlinePlayer.getName();
                 }
             }
-            Civs.logger.log(Level.INFO,"{0} failed to build a {1} at {2} because it would be too close to a {3} owned by {4}",
-                    new Object[] { player.getName(), townType.getProcessedName(), Region.locationToString(town.getLocation()),
-                    townType1.getProcessedName(), ownerName });
+            if (town != null) {
+                Civs.logger.log(Level.INFO,"{0} failed to build a {1} at {2} because it would be too close to a {3} owned by {4}",
+                        new Object[] { player.getName(), townType.getProcessedName(), Region.locationToString(town.getLocation()),
+                                townType1.getProcessedName(), ownerName });
+            } else {
+                Civs.logger.log(Level.INFO,"{0} failed to build a {1} because it would be too close to a {2} owned by {3}",
+                        new Object[] { player.getName(), townType.getProcessedName(), townType1.getProcessedName(), ownerName });
+            }
             return true;
         }
         return false;
@@ -918,5 +939,28 @@ public class TownManager {
     private Set<Region> getRegionsInTown(Location location, int radius, int radiusY) {
         //TODO fix this to account for vertical radius being different
         return RegionManager.getInstance().getContainingRegions(location, radius);
+    }
+
+    public boolean canJoinAnotherTown(Player player) {
+        ConfigManager cm = ConfigManager.getInstance();
+        if (cm.getResidenciesCount() == -1) {
+            return true;
+        }
+
+        Set<Town> townsForPlayer = getTownsForPlayer(player.getUniqueId());
+        if (townsForPlayer.size() < cm.getResidenciesCount()) {
+            return true;
+        }
+
+        Map<Integer, String> residenciesCountOverride = cm.getResidenciesCountOverride();
+        for (Map.Entry<Integer, String> entry : residenciesCountOverride.entrySet()) {
+            int key = entry.getKey();
+            if (townsForPlayer.size() <= key) {
+                if (Civs.perm.has(player, entry.getValue())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

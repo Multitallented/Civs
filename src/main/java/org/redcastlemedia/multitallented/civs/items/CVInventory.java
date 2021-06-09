@@ -14,8 +14,6 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 import java.util.*;
 
 public class CVInventory {
-    private final List<Integer> indexes = new ArrayList<>();
-    private final Map<Integer, ItemStack> contents = new HashMap<>();
     @Getter
     private final Location location;
     private Inventory inventory;
@@ -23,8 +21,6 @@ public class CVInventory {
     private int size;
     @Getter
     private boolean valid = true;
-    @Getter
-    private long lastUnloadedModification = -1;
 
     protected CVInventory(@NonNull Location location) {
         this.location = location;
@@ -57,113 +53,40 @@ public class CVInventory {
         }
     }
 
-    // This method assumes the chunk is loaded
     public void update() {
         setInventory();
-        if (!this.valid) {
-            return;
-        }
-        this.contents.clear();
-        for (int i = 0; i < inventory.getSize(); i++) {
-            ItemStack itemStack = inventory.getItem(i);
-            if (itemStack != null && itemStack.getType() != Material.AIR) {
-                this.contents.put(i, new ItemStack(itemStack));
-            }
-        }
-    }
-
-    public void sync() {
-        if (!this.valid) {
-            return;
-        }
-        this.size = this.inventory.getSize();
-        this.lastUnloadedModification = -1;
-        for (int i = 0; i < getSize(); i++) {
-            if (this.contents.containsKey(i)) {
-                if (this.contents.get(i) == null) {
-                    this.inventory.setItem(i, new ItemStack(Material.AIR));
-                } else {
-                    this.inventory.setItem(i, this.contents.get(i));
-                }
-            } else {
-                this.inventory.setItem(i, new ItemStack(Material.AIR));
-            }
-        }
-    }
-
-    private void cleanUp() {
-        indexes.removeIf(index -> !contents.containsKey(index));
-        Collections.sort(indexes);
     }
 
     public int firstEmpty() {
-        if (Util.isChunkLoadedAt(this.location)) {
-            update();
-            if (!this.valid) {
-                return -1;
-            }
-            return this.inventory.firstEmpty();
-        } else {
-            cleanUp();
-            for (int i = 0; i < getSize(); i++) {
-                if (!indexes.contains(i)) {
-                    return i;
-                }
-            }
+        update();
+        if (!this.valid) {
             return -1;
         }
+        return this.inventory.firstEmpty();
     }
 
     public ItemStack getItem(int i) {
-        if (Util.isChunkLoadedAt(this.location)) {
-            update();
-            if (!this.valid) {
-                return null;
-            }
-            return this.inventory.getItem(i);
-        } else {
-            return contents.get(i);
+        update();
+        if (!this.valid) {
+            return null;
         }
+        return this.inventory.getItem(i);
     }
 
     public void setItem(int i, ItemStack itemStack) {
-        if (Util.isChunkLoadedAt(this.location)) {
-            update();
-            if (!this.valid) {
-                return;
-            }
-            this.inventory.setItem(i, itemStack);
-        } else {
-            if (i >= 0 && i < getSize()) {
-                if (itemStack != null) {
-                    contents.put(i, itemStack);
-                } else {
-                    contents.remove(i);
-                }
-            }
+        update();
+        if (!this.valid) {
+            return;
         }
+        this.inventory.setItem(i, itemStack);
     }
 
     public ItemStack[] getContents() {
-        if (Util.isChunkLoadedAt(this.location)) {
-            update();
-            if (!this.valid) {
-                return new ItemStack[0];
-            }
-            return this.inventory.getContents();
-        } else {
-            int biggestIndex = 0;
-            for (Integer i : this.contents.keySet()) {
-                if (i > biggestIndex) {
-                    biggestIndex = i;
-                }
-            }
-            ItemStack[] itemStacks = new ItemStack[Math.max(getSize(), biggestIndex)];
-            for (Map.Entry<Integer, ItemStack> entry : this.contents.entrySet()) {
-                itemStacks[entry.getKey()] = entry.getValue();
-            }
-            return itemStacks;
+        update();
+        if (!this.valid) {
+            return new ItemStack[0];
         }
+        return this.inventory.getContents();
     }
 
     public Map<Integer, ItemStack> checkAddItems(ItemStack... itemStacks) {
@@ -173,29 +96,23 @@ public class CVInventory {
         return addOrCheckItems(true, itemStackParams);
     }
     private Map<Integer, ItemStack> addOrCheckItems(boolean modify, ItemStack... itemStackParams) {
-        boolean isChunkLoaded = Util.isChunkLoadedAt(this.location);
-        if (isChunkLoaded && modify) {
+        if (modify) {
             if (!this.valid) {
                 return new HashMap<>();
             }
-            Map<Integer, ItemStack> returnMap = this.inventory.addItem(itemStackParams);
             update();
-            return returnMap;
-        } else if (isChunkLoaded) {
+            return this.inventory.addItem(itemStackParams);
+        } else {
             update();
-        }
-        if (!isChunkLoaded && modify) {
-            this.lastUnloadedModification = System.currentTimeMillis();
         }
         HashMap<Integer, ItemStack> returnItems = new HashMap<>();
         ArrayList<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(itemStackParams));
         Map<Integer, ItemStack> contentsToModify;
-        if (modify) {
-            contentsToModify = this.contents;
-        } else {
-            contentsToModify = new HashMap<>();
-            for (Map.Entry<Integer, ItemStack> entry : this.contents.entrySet()) {
-                contentsToModify.put(entry.getKey(), new ItemStack(entry.getValue()));
+        contentsToModify = new HashMap<>();
+        for (int i = 0; i < this.inventory.getSize(); i++) {
+            ItemStack item = this.inventory.getItem(i);
+            if (item != null && item.getType() != Material.AIR) {
+                contentsToModify.put(i, new ItemStack(item));
             }
         }
 
@@ -244,81 +161,21 @@ public class CVInventory {
     }
 
     public Map<Integer, ItemStack> removeItem(ItemStack... itemStackParams) {
-        if (Util.isChunkLoadedAt(this.location)) {
-            if (!this.valid) {
-                return new HashMap<>();
-            }
-            Map<Integer, ItemStack> returnMap = this.inventory.removeItem(itemStackParams);
-            update();
-            return returnMap;
-        } else {
-            this.lastUnloadedModification = System.currentTimeMillis();
-            HashMap<Integer, ItemStack> returnItems = new HashMap<>();
-            ArrayList<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(itemStackParams));
-
-            int index = 0;
-            while(!itemStacks.isEmpty()) {
-                boolean itemRemoved = false;
-                for (int i = 0; i < getSize(); i++) {
-                    if (itemStacks.isEmpty()) {
-                        return returnItems;
-                    }
-                    itemRemoved = adjustItemToRemove(itemStacks, this.contents, i);
-                    if (itemRemoved) {
-                        break;
-                    }
-                }
-                if (!itemRemoved) {
-                    returnItems.put(index, itemStacks.get(0));
-                    index++;
-                    itemStacks.remove(0);
-                }
-            }
-            return returnItems;
+        if (!this.valid) {
+            return new HashMap<>();
         }
-    }
-
-    private boolean adjustItemToRemove(ArrayList<ItemStack> itemStacks,
-                                    Map<Integer, ItemStack> contentsToModify, int i) {
-        boolean itemRemoved = false;
-        ItemStack currentStack = itemStacks.get(0);
-        if (!contentsToModify.containsKey(i)) {
-            return false;
-        } else if (contentsToModify.get(i).isSimilar(currentStack)) {
-            if (contentsToModify.get(i).getAmount() > currentStack.getAmount()) {
-                contentsToModify.get(i).setAmount(contentsToModify.get(i).getAmount() - currentStack.getAmount());
-                itemStacks.remove(0);
-                itemRemoved = true;
-            } else if (contentsToModify.get(i).getAmount() < currentStack.getAmount()) {
-                int amount = contentsToModify.get(i).getAmount();
-                contentsToModify.remove(i);
-                currentStack.setAmount(currentStack.getAmount() - amount);
-            } else {
-                itemStacks.remove(0);
-                contentsToModify.remove(i);
-                itemRemoved = true;
-            }
-        }
-        return itemRemoved;
+        update();
+        return this.inventory.removeItem(itemStackParams);
     }
 
     public boolean contains(Material material) {
         if (material == null) {
             return false;
         }
-        if (Util.isChunkLoadedAt(this.location)) {
-            update();
-            if (!this.valid) {
-                return false;
-            }
-            return this.inventory.contains(material);
-        } else {
-            for (Map.Entry<Integer, ItemStack> entry : this.contents.entrySet()) {
-                if (material.equals(entry.getValue().getType())) {
-                    return true;
-                }
-            }
+        update();
+        if (!this.valid) {
             return false;
         }
+        return this.inventory.contains(material);
     }
 }

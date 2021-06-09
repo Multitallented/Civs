@@ -1,11 +1,9 @@
 package org.redcastlemedia.multitallented.civs.items;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.Indyuce.mmoitems.MMOItems;
-import net.Indyuce.mmoitems.api.Type;
-import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
-import net.mmogroup.mmolib.api.item.NBTItem;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,9 +20,12 @@ import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
+import io.lumine.mythic.lib.api.item.NBTItem;
+import lombok.Getter;
+import lombok.Setter;
+import net.Indyuce.mmoitems.MMOItems;
+import net.Indyuce.mmoitems.api.Type;
+import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
 
 /**
  *

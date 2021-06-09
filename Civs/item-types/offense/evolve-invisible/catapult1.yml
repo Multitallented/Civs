@@ -1,0 +1,38 @@
+#enabled: true
+#type: region
+#icon: CHEST
+#shop-icon: TNT
+#dynmap-marker: bomb
+#name: Catapult
+#price: 250
+#is-in-shop: false
+#max: 4
+#groups:
+#  - offense
+#level: 1
+#
+#build-reqs:
+#  - OBSIDIAN*8
+#  - IRON_BARS*8
+#  - REDSTONE_BLOCK*2
+#  - TNT*4
+#
+#build-radius: 2 #5x5x5
+#effects:
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - tnt_cannon:20
+#  - chest_use
+#  - evolve:catapult2.30
+#
+#period: daily
+#upkeep:
+#  0:
+#    reagents:
+#      - REDSTONE*8
+#    input:
+#      - TNT*1
+#    output:
+#      - AIR*1%75,TNT*1%25

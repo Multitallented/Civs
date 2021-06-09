@@ -191,6 +191,9 @@ public class MenuManager implements Listener {
     }
 
     private void loadExtraMenus(File menuFolder, Set<Class<? extends CustomMenu>> menuClasses) {
+        if (Civs.getInstance() == null) {
+            return;
+        }
         for (File file : menuFolder.listFiles()) {
             FileConfiguration config = FallbackConfigUtil.getConfig(file, "menus/" + file.getName());
             String menuName = file.getName().replace(".yml", "");
@@ -357,7 +360,7 @@ public class MenuManager implements Listener {
         menus.get(menuName).onCloseMenu(civilian, player.getOpenInventory().getTopInventory());
         openMenus.remove(civilian.getUuid());
         Inventory menu = menus.get(menuName).createMenu(civilian);
-        if (menu != null) {
+        if (menu == null) {
             return;
         }
         player.openInventory(menu);

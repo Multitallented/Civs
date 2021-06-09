@@ -682,80 +682,80 @@
 #  no baú. Construa trilhos da Fazenda de Trigo até a região de destino. Coloque
 #  um trilho elétrico inclinado no começo da linha.
 #shack-name: Barraco
-#shack-desc: A habitação mais básica. Ganhe $122 por dia vendendo batatas.
+#shack-desc: A habitação mais básica. Ganhe $96 por dia vendendo batatas.
 #hovel-name: Cabana
-#hovel-desc: 2º nível de habitação. Ganhe $144 por dia vendendo batatas. Só disponível como
-#  uma atualização do Barraco.
+#hovel-desc: 2º nível de habitação. Ganhe $182.88 por dia vendendo batatas.
 #hovel1-name: Cabana1
-#hovel1-desc: 2º nível de habitação. Ganhe $310 por dia vendendo batatas e maçãs.
+#hovel1-desc: 2º nível de habitação. Ganhe $204.24 por dia vendendo batatas e maçãs.
 #dwelling-name: Casa
-#dwelling-desc: 3º nível de habitação. Ganhe $309 por dia vendendo batatas e maçãs.
+#dwelling-desc: 3º nível de habitação. Ganhe $213.6 por dia vendendo batatas e maçãs.
 #dwelling1-name: Casa1
-#dwelling1-desc: 3º nível de habitação. Ganhe $326 por dia vendendo batatas e maçãs.
+#dwelling1-desc: 3º nível de habitação. Ganhe $271.2 por dia vendendo batatas e maçãs.
 #dwelling2-name: Casa2
-#dwelling2-desc: 3º nível de habitação. Ganhe $598 por dia vendendo batatas, maçãs e peixes.
+#dwelling2-desc: 3º nível de habitação. Ganhe $333.4 por dia vendendo batatas, maçãs e peixes.
 #house-name: Casa-grande
-#house-desc: 4º nível de habitação. Ganhe $491 por dia vendendo pães e maçãs. Só disponível
-#  como uma atualização da Casa.
+#house-desc: 4º nível de habitação. Ganhe $213.6 por dia vendendo pães e maçãs.
 #house1-name: Casa-grande1
-#house1-desc: 4º nível de habitação. Ganhe $635 por dia vendendo pães, maçãs e peixes.
+#house1-desc: 4º nível de habitação. Ganhe $301.68 por dia vendendo pães, maçãs e peixes.
 #house2-name: Casa-grande2
-#house2-desc: 4º nível de habitação. Ganhe $832 por dia vendendo pães & peixes, maçãs e
+#house2-desc: 4º nível de habitação. Ganhe $412.8 por dia vendendo pães & peixes, maçãs e
 #  fatias de melão.
 #chalet-name: Chalé
-#chalet-desc: 5º nível de habitação. Ganhe $548 por dia vendendo pães e cenouras.
+#chalet-desc: 5º nível de habitação. Ganhe $325.92 por dia vendendo pães e cenouras.
 #chalet1-name: Chalé1
-#chalet1-desc: 5º nível de habitação. Ganhe $692 por dia vendendo pães, cenouras e peixes.
+#chalet1-desc: 5º nível de habitação. Ganhe $419.76 por dia vendendo pães, cenouras e peixes.
 #chalet2-name: Chalé2
-#chalet2-desc: 5º nível de habitação. Ganhe $890 por dia vendendo pães & peixes, cenouras e
+#chalet2-desc: 5º nível de habitação. Ganhe $537.6 por dia vendendo pães & peixes, cenouras e
 #  fatias de melão.
 #chalet3-name: Chalé3
-#chalet3-desc: 5º nível de habitação. Ganhe $1022 por dia vendendo pães & peixes, cenouras &
+#chalet3-desc: 5º nível de habitação. Ganhe $633.6 por dia vendendo pães & peixes, cenouras &
 #  biscoitos, e fatias de melão.
 #mansion-name: Solar
-#mansion-desc: 6º nível de habitação. Ganhe $648 por dia vendendo pães, cenouras e bifes. Só
-#  disponível como uma atualização do Chalé.
+#mansion-desc: 6º nível de habitação. Ganhe $425.76 por dia vendendo pães, cenouras e bifes.
 #mansion1-name: Solar1
-#mansion1-desc: 6º nível de habitação. Ganhe $894 por dia vendendo pães, cenouras, bifes e
+#mansion1-desc: 6º nível de habitação. Ganhe $521.76 por dia vendendo pães, cenouras, bifes e
 #  biscoitos.
 #mansion2-name: Solar2
-#mansion2-desc: 6º nível de habitação. Ganhe $1167 por dia vendendo pães, cenouras, bifes e
+#mansion2-desc: 6º nível de habitação. Ganhe $596.16 por dia vendendo pães, cenouras, bifes e
 #  biscoitos.
 #mansion3-name: Solar3
-#mansion3-desc: 6º nível de habitação. Ganhe $1167 por dia vendendo pães, cenouras, bifes e
+#mansion3-desc: 6º nível de habitação. Ganhe $687.96 por dia vendendo pães, cenouras, bifes e
 #  biscoitos & leite.
 #manor-name: Mansão
-#manor-desc: 7º nível de habitação. Ganhe $1032 por dia vendendo cenouras douradas,
-#  biscoitos e bifes. Só disponível como uma atualização do Solar.
+#manor-desc: 7º nível de habitação. Ganhe $382.08 por dia vendendo cenouras douradas,
+#  biscoitos e bifes.
 #manor1-name: Mansão1
-#manor1-desc: 7º nível de habitação. Ganhe $1276 por dia vendendo cenouras douradas,
+#manor1-desc: 7º nível de habitação. Ganhe $485.24 por dia vendendo cenouras douradas,
 #  biscoitos, bifes e leite.
 #manor2-name: Mansão2
-#manor2-desc: 7º nível de habitação. Ganhe $1679 por dia vendendo cenouras douradas, torta
+#manor2-desc: 7º nível de habitação. Ganhe $729.08 por dia vendendo cenouras douradas, torta
 #  de abóbora, bifes e biscoitos & leite.
 #manor3-name: Mansão3
-#manor3-desc: 7º nível de habitação. Ganhe $1751 por dia vendendo cenouras douradas, torta
+#manor3-desc: 7º nível de habitação. Ganhe $826.44 por dia vendendo cenouras douradas, torta
 #  de abóbora, bifes e biscoitos & leite.
 #villa-name: Vila
-#villa-desc: 8º nível de habitação. Ganhe $1100 por dia vendendo cenouras douradas, torta
+#villa-desc: 8º nível de habitação. Ganhe $585.6 por dia vendendo cenouras douradas, torta
 #  de abóbora e bifes.
 #villa1-name: Vila1
-#villa1-desc: 8º nível de habitação. Ganhe $1397 por dia vendendo cenouras douradas, torta
+#villa1-desc: 8º nível de habitação. Ganhe $663.8 por dia vendendo cenouras douradas, torta
 #  de abóbora, bifes e leite.
 #villa2-name: Vila2
-#villa2-desc: 8º nível de habitação. Ganhe $1877 por dia vendendo cenouras douradas & torta
+#villa2-desc: 8º nível de habitação. Ganhe $855.8 por dia vendendo cenouras douradas & torta
+#  de abóbora, leite, bifes e maças douradas.
+#villa3-name: Vila3
+#villa3-desc: 8º nível de habitação. Ganhe $964.8 por dia vendendo cenouras douradas & torta
 #  de abóbora, leite, bifes e maças douradas.
 #estate-name: Palácio
-#estate-desc: 9º nível de habitação. Ganhe $1480 por dia vendendo cenouras douradas, torta
-#  de abóbora e maças douradas. Só disponível como uma atualização da Vila.
+#estate-desc: 9º nível de habitação. Ganhe $763.2 por dia vendendo cenouras douradas, torta
+#  de abóbora e maças douradas.
 #estate1-name: Palácio1
-#estate1-desc: 9º nível de habitação. Ganhe $1917 por dia vendendo cenouras douradas, torta
+#estate1-desc: 9º nível de habitação. Ganhe $982.08 por dia vendendo cenouras douradas, torta
 #  de abóbora, maças douradas e bolos.
 #estate2-name: Palácio2
-#estate2-desc: 9º nível de habitação. Ganhe $2397 por dia vendendo cenouras douradas & maçãs
+#estate2-desc: 9º nível de habitação. Ganhe $1255.44 por dia vendendo cenouras douradas & maçãs
 #  douradas, torta de abóbora, ensopados de coelho e bolos.
 #estate3-name: Palácio3
-#estate3-desc: 9º nível de habitação. Ganhe $2621 por dia vendendo cenouras & maçãs douradas,
+#estate3-desc: 9º nível de habitação. Ganhe $1410.4 por dia vendendo cenouras & maçãs douradas,
 #  torta de abóbora, ensopados de coelho e bolos.
 #inn-name: Pousada
 #inn-desc: Provê 12 habitações e um porto. Útil para adicionar pessoas à cidade sem ter

@@ -1,4 +1,4 @@
-#enabled: true
+#enabled: false
 #type: region
 #icon: CHEST
 #shop-icon: TNT
@@ -22,7 +22,7 @@
 #  - block_build
 #  - block_break
 #  - drain_power:4
-#  - evolve:siege_machine2.20
+#  - evolve:siege_machine2.10
 #
 #towns:
 #  - outpost

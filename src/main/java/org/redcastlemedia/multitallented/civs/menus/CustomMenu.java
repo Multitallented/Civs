@@ -295,7 +295,7 @@ public class CustomMenu {
         } else if (data instanceof String) {
             return (String) data;
         } else if (data instanceof CivClass) {
-            return "" + ((CivClass) data).getId();
+            return "" + ((CivClass) data).getId().toString();
         } else {
             return "" + data;
         }

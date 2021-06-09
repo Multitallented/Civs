@@ -55,6 +55,7 @@ public class TeleportEffect implements Listener, RegionCreatedListener {
                         hasPotentialDestinations(region)) {
                     HashMap<String, String> params = new HashMap<>();
                     params.put("region", region.getId());
+                    MenuManager.clearHistory(player.getUniqueId());
                     MenuManager.getInstance().openMenu(player, "port", params);
                 }
             }
@@ -80,6 +81,7 @@ public class TeleportEffect implements Listener, RegionCreatedListener {
                     hasPotentialDestinations(region)) {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("region", region.getId());
+                MenuManager.clearHistory(player.getUniqueId());
                 MenuManager.getInstance().openMenu(player, "port", params);
             }
             break;

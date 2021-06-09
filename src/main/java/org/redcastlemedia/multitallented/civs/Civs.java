@@ -1,10 +1,17 @@
 package org.redcastlemedia.multitallented.civs;
 
-import github.scarsz.discordsrv.DiscordSRV;
-import me.clip.placeholderapi.PlaceholderAPIPlugin;
-import net.Indyuce.mmoitems.MMOItems;
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
+import java.io.File;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,6 +19,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.dynmap.DynmapCommonAPI;
+import org.redcastlemedia.multitallented.civs.chat.ChatManager;
+import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsListener;
@@ -29,15 +38,19 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
+import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
+import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
+import org.redcastlemedia.multitallented.civs.worldedit.WorldEditSessionListener;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
 
-import java.io.File;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import github.scarsz.discordsrv.DiscordSRV;
+import me.clip.placeholderapi.PlaceholderAPIPlugin;
+import net.Indyuce.mmoitems.MMOItems;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 
 public class Civs extends JavaPlugin {
 
@@ -80,6 +93,7 @@ public class Civs extends JavaPlugin {
         getLogger().info(LogInfo.DISABLED);
         Bukkit.getScheduler().cancelTasks(this);
         AllowedActionsListener.getInstance().onDisable();
+        ChatManager.getInstance().onDisable();
     }
 
 
@@ -121,6 +135,10 @@ public class Civs extends JavaPlugin {
         if (discordSRV != null) {
             logger.log(Level.INFO, "{0} DiscordSRV", LogInfo.HOOKCHAT);
         }
+        if (Bukkit.getPluginManager().isPluginEnabled("WorldEdit") && ConfigManager.getInstance().isSafeWE()) {
+            WorldEditSessionListener.init();
+            logger.log(Level.INFO, "{0}", LogInfo.HOOKWE);
+        }
         logger.info(LogInfo.PH_INFO);
 
         logger.info(LogInfo.PH_VOID);
@@ -155,6 +173,9 @@ public class Civs extends JavaPlugin {
         Set<Class<? extends CivCommand>> commands = reflections.getSubTypesOf(CivCommand.class);
         for (Class<? extends CivCommand> currentCommandClass : commands) {
             try {
+                if (Modifier.isAbstract(currentCommandClass.getModifiers())) {
+                    continue;
+                }
                 CivCommand currentCommand = currentCommandClass.newInstance();
                 for (String key : currentCommandClass.getAnnotation(CivsCommand.class).keys()) {
                     commandList.put(key, currentCommand);
@@ -213,7 +234,8 @@ public class Civs extends JavaPlugin {
         configurationBuilder.addUrls(ClasspathHelper.forPackage("org.redcastlemedia.multitallented.civs"));
         filterBuilder.includePackage("org.redcastlemedia.multitallented.civs")
                 .excludePackage("org.redcastlemedia.multitallented.civs.dynmaphook")
-                .excludePackage("org.redcastlemedia.multitallented.civs.placeholderexpansion");
+                .excludePackage("org.redcastlemedia.multitallented.civs.placeholderexpansion")
+                .excludePackage("org.redcastlemedia.multitallented.civs.worldedit");
         configurationBuilder.filterInputsBy(filterBuilder);
         Reflections reflections = new Reflections(configurationBuilder);
         Set<Class<?>> classes = reflections.getTypesAnnotatedWith(CivsSingleton.class);
@@ -235,9 +257,9 @@ public class Civs extends JavaPlugin {
         return perm;
     }
     public static String getPrefix() {
-        return ConfigManager.getInstance().getCivsChatPrefix() + " ";
+        return ConfigManager.getInstance().getCivsChatPrefix();
     }
-    public static String getRawPrefix() { return ConfigManager.getInstance().civsChatPrefix + " ";}
+    public static String getRawPrefix() { return ConfigManager.getInstance().civsChatPrefix;}
     public static synchronized Civs getInstance() {
         return civs;
     }

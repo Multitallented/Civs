@@ -4,7 +4,7 @@
 
     <groupId>org.redcastlemedia.multitallented</groupId>
     <artifactId>civs</artifactId>
-    <version>1.7.5</version>
+    <version>1.9.3</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -48,15 +48,29 @@
             <name>Public Reflex Repository</name>
             <url>https://archiva.reflex.rip/repository/public/</url>
         </repository>
+        <repository>
+            <id>enginehub-maven</id>
+            <url>https://maven.enginehub.org/repo/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>lumine</id>
+            <url>https://mvn.lumine.io/repository/maven-releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
+
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.12</version>
             <scope>compile</scope>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.javassist/javassist -->
         <dependency>
             <groupId>org.javassist</groupId>
@@ -71,12 +85,6 @@
             <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.bukkit</groupId>-->
-            <!--<artifactId>bukkit</artifactId>-->
-            <!--<version>1.13.2-R0.1-SNAPSHOT</version>-->
-            <!--<scope>provided</scope>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>me.clip</groupId>
@@ -107,57 +115,52 @@
         </dependency>
 
         <dependency>
-            <groupId>net.Indyuce.mmoitems</groupId>
+            <groupId>net.Indyuce</groupId>
             <artifactId>MMOItems</artifactId>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/MMOItems Premium.jar</systemPath>
-            <version>6.2.1</version>
+            <version>6.5.4</version>
+            <scope>provided</scope>
         </dependency>
+
         <dependency>
-            <groupId>net.mmogroup.mmolib</groupId>
-            <artifactId>MMOLib</artifactId>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/MMOLib.jar</systemPath>
-            <version>1.3.7.1</version>
+            <groupId>io.lumine</groupId>
+            <artifactId>MythicLib</artifactId>
+            <version>1.0.17</version>
+            <scope>provided</scope>
         </dependency>
+
         <dependency>
-            <groupId>me.vagdedes.spartan.api</groupId>
-            <artifactId>API</artifactId>
-            <scope>system</scope>
-            <version>Universal</version>
-            <systemPath>${basedir}/lib/SpartanAPI.jar</systemPath>
+            <groupId>com.github.NeumimTo</groupId>
+            <artifactId>SpartanAPI</artifactId>
+            <version>6033d44eba</version>
+            <scope>provided</scope>
         </dependency>
+
         <dependency>
-            <groupId>me.jinky</groupId>
-            <artifactId>BAC</artifactId>
-            <scope>system</scope>
-            <version>1.2.2</version>
-            <systemPath>${basedir}/lib/BAC-1.14.jar</systemPath>
+            <groupId>com.github.Olexorus</groupId>
+            <artifactId>WitherAC</artifactId>
+            <version>0a45a67bee</version>
+            <scope>provided</scope>
         </dependency>
+
         <dependency>
-            <groupId>com.gmail.olexorus.witherac.api</groupId>
-            <artifactId>WitherAC_API</artifactId>
-            <scope>system</scope>
-            <version>latest</version>
-            <systemPath>${basedir}/lib/WitherAC_API.jar</systemPath>
+            <groupId>com.github.Updated-NoCheatPlus.NoCheatPlus</groupId>
+            <artifactId>nocheatplus</artifactId>
+            <version>v1.5</version>
+            <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>fr.neatmonster</groupId>
-            <artifactId>nocheatplus-parent</artifactId>
-            <scope>system</scope>
-            <version>3.17-SNAPSHOT-b1153-CustomFork</version>
-            <systemPath>${basedir}/lib/NoCheatPlus.jar</systemPath>
-        </dependency>
+
         <dependency>
             <groupId>rip.reflex</groupId>
             <artifactId>ReflexAPI</artifactId>
             <scope>provided</scope>
             <version>7</version>
         </dependency>
+
         <dependency>
             <groupId>de.janmm14</groupId>
             <artifactId>aac-api</artifactId>
             <version>4.2.0</version>
+            <scope>provided</scope>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>AntiAuraAPI</groupId>-->
@@ -166,7 +169,24 @@
 <!--            <scope>system</scope>-->
 <!--            <systemPath>${basedir}/lib/AAAPI.jar</systemPath>-->
 <!--        </dependency>-->
-
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-api</artifactId>
+            <version>4.7.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-minimessage</artifactId>
+            <version>4.1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bukkit</artifactId>
+            <version>4.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -177,11 +197,18 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.6</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.discordsrv</groupId>
             <artifactId>discordsrv</artifactId>
             <version>1.19.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-bukkit</artifactId>
+            <version>7.2.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -245,7 +272,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.4</version>
                 <configuration>
                     <shadedArtifactAttached>false</shadedArtifactAttached>
                     <artifactSet>
@@ -258,14 +285,20 @@
                             <artifact>*:*</artifact>
                         </filter>
                     </filters>
-                    <relocations combine.children="append">
+                    <relocations>
                         <relocation>
                             <pattern>org.reflections</pattern>
-                            <shadedPattern>
-                                shaded.org.reflections
-                            </shadedPattern>
+                            <shadedPattern>shaded.org.reflections</shadedPattern>
                             <includes>
                                 <include>org.reflections.**</include>
+                            </includes>
+                        </relocation>
+                        <!-- Should be safe to drop on 1.17 -->
+                        <relocation>
+                            <pattern>net.kyori</pattern>
+                            <shadedPattern>shaded.net.kyori</shadedPattern>
+                            <includes>
+                                <include>net.kyori.**</include>
                             </includes>
                         </relocation>
                     </relocations>

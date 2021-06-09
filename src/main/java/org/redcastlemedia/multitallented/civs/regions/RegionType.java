@@ -36,6 +36,8 @@ public class RegionType extends CivItem {
     private final List<String> commandsOnDestruction;
     @Getter @Setter
     private String dynmapMarkerKey = "";
+    @Getter @Setter
+    private boolean startInInventory = false;
 
     public RegionType(String key, String name,
                       CVItem icon,

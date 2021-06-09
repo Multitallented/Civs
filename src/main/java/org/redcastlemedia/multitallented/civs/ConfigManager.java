@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.redcastlemedia.multitallented.civs.chat.ChatChannelConfig;
 import org.redcastlemedia.multitallented.civs.civilians.ChatChannel;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
@@ -140,7 +141,9 @@ public class ConfigManager {
     int lineBreakLength;
     Map<String, Integer> lineLengthMap;
     @Getter
-    EnumMap<ChatChannel.ChatChannelType, String> chatChannels;
+    EnumMap<ChatChannel.ChatChannelType, ChatChannelConfig> chatChannels;
+    @Getter
+    Map<String, String> chatTagFormat;
     @Getter
     long unloadedChestRefreshRate;
     @Getter
@@ -159,13 +162,21 @@ public class ConfigManager {
     @Getter boolean huntCrossWorld;
     @Getter boolean silentExp;
     @Getter boolean deleteInvalidRegions;
-    @Getter boolean regionStandby;
     @Getter boolean skinsInMenu;
     @Getter boolean useBounties;
     @Getter boolean warningLogger;
+    @Getter double percentPowerForUpgrade;
+    @Getter boolean showKillStreakMessages;
+    @Getter boolean combatTagEnabled;
 
     @Getter
     String chatChannelFormat;
+    @Getter
+    private int residenciesCount;
+    @Getter
+    private NavigableMap<Integer, String> residenciesCountOverride;
+
+    @Getter private boolean safeWE;
 
     public ConfigManager() {
         loadDefaults();
@@ -283,6 +294,7 @@ public class ConfigManager {
             expModifier = config.getDouble("exp-modifier", 0.2);
             expBase = config.getInt("exp-base", 100);
             defaultClass = config.getString("default-class", "default");
+            showKillStreakMessages = config.getBoolean("show-killstreak-messages", true);
             folderIcons = new HashMap<>();
             ConfigurationSection section2 = config.getConfigurationSection("folders");
             if (section2 != null) {
@@ -363,13 +375,14 @@ public class ConfigManager {
             customItemDescriptions = processMap(config.getConfigurationSection("custom-items"));
             levelList = config.getStringList("levels");
             useParticleBoundingBoxes = config.getBoolean("use-particle-bounding-boxes", false);
+            combatTagEnabled = config.getBoolean("combat-tag-enabled", true);
             getGovSettings(config);
             maxTax = config.getDouble("max-town-tax", 50);
             daysBetweenVotes = config.getInt("days-between-elections", 7);
             capitalismVotingCost = config.getDouble("capitalism-voting-cost", 200);
             topGuideSpacer = config.getString("top-guide-spacer", "-----------------Civs-----------------");
             bottomGuideSpacer = config.getString("bottom-guide-spacer", "--------------------------------------");
-            civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs]");
+            civsChatPrefix = config.getString("civs-chat-prefix", "@{GREEN}[Civs] ");
             prefixAllText = Util.parseColors(config.getString("prefix-all-text", ""));
             civsItemPrefix = config.getString("civs-item-prefix", "Civs");
             skinsInMenu = config.getBoolean("show-player-skins-in-menus", true);
@@ -402,11 +415,11 @@ public class ConfigManager {
             keepRegionChunksLoaded = config.getBoolean("keep-region-chunks-loaded", true);
             silentExp = config.getBoolean("no-exp-chat-messages", false);
             deleteInvalidRegions = config.getBoolean("delete-invalid-regions", false);
-            regionStandby = config.getBoolean("region-standby", false);
             lineLengthMap = new HashMap<>();
             useBounties = config.getBoolean("use-bounties", true);
             useSkills = config.getBoolean("use-skills", true);
             warningLogger = config.getBoolean("show-warning-logs", false);
+            percentPowerForUpgrade = config.getDouble("percent-power-for-town-upgrade", 0.1);
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
                     lineLengthMap.put(key, config.getInt("line-break-length-per-language." + key, lineBreakLength));
@@ -416,19 +429,45 @@ public class ConfigManager {
             if (config.isSet("chat-channels")) {
                 for (String chatChannel : config.getConfigurationSection("chat-channels").getKeys(false)) {
                     try {
-                        if (config.getBoolean("chat-channels." + chatChannel + ".enabled", false)) {
-                            chatChannels.put(ChatChannel.ChatChannelType.valueOf(chatChannel.toUpperCase()),
-                                    config.getString("chat-channels." + chatChannel + ".icon", Material.GRASS.name()));
-                        }
+                        boolean enabled = config.getBoolean("chat-channels." + chatChannel + ".enabled", false);
+                        boolean override = config.getBoolean("chat-channels." + chatChannel + ".override", false);
+                        String format = config.getString("chat-channels." + chatChannel + ".format", "$channel$ $player$: $message$");
+                        String icon = config.getString("chat-channels." + chatChannel + ".icon", Material.GRASS.name());
+                        ChatChannel.ChatChannelType chatChannelType = ChatChannel.ChatChannelType.valueOf(chatChannel.toUpperCase());
+
+                        chatChannels.put(chatChannelType,
+                                new ChatChannelConfig(chatChannelType, enabled, Material.valueOf(icon.toUpperCase(Locale.ROOT)), format, override));
                     } catch (Exception e) {
                         Civs.logger.log(Level.WARNING, "Invalid chat channel type {0}", chatChannel);
                     }
                 }
             }
-            if (chatChannels.isEmpty()) {
-                chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, Material.GRASS.name());
+
+            if (config.isSet("chat-tags-format")) {
+                for (String tag : config.getConfigurationSection("chat-tags-format").getKeys(false)) {
+                    try {
+                        chatTagFormat.put(tag,config.getString("chat-tags-format." + tag, "[$1]"));
+                    } catch (Exception e) {
+                        Civs.logger.log(Level.WARNING, "Unable to read chat-tags-format section");
+                    }
+                }
             }
+
             chatChannelFormat = config.getString("chat-channel-format", "[$channel$]$player$: $message$");
+
+            if (config.isSet("player-residencies-count")) {
+                residenciesCount = config.getInt("player-residencies-count");
+            }
+
+            if (config.isSet("player-residencies-count-override")) {
+                for (String count : config.getConfigurationSection("player-residencies-count-override").getKeys(false)) {
+                    String perm = config.getString("player-residencies-count-override." + count);
+                    residenciesCountOverride.put(Integer.parseInt(count), perm);
+                }
+            }
+
+            safeWE = config.getBoolean("safe-worldedit", false);
+
 
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read from config.yml", e);
@@ -473,12 +512,13 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        combatTagEnabled = true;
         warningLogger = false;
+        percentPowerForUpgrade = 0.1;
         huntCrossWorld = false;
         skinsInMenu = true;
         useBounties = true;
         deleteInvalidRegions = false;
-        regionStandby = false;
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         silentExp = false;
         useSkills = true;
@@ -490,7 +530,12 @@ public class ConfigManager {
         lineLengthMap = new HashMap<>();
         unloadedChestRefreshRate = 600000;
         chatChannels = new EnumMap<>(ChatChannel.ChatChannelType.class);
-        chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, Material.GRASS.name());
+        ChatChannelConfig chatChannelConfig = new ChatChannelConfig(ChatChannel.ChatChannelType.GLOBAL,
+                true,
+                Material.GRASS,
+                "[$town$] $player$: $message$",
+                false);
+        chatChannels.put(ChatChannel.ChatChannelType.GLOBAL, chatChannelConfig);
         lineBreakLength = 40;
         minPopulationForGovTransition = 4;
         defaultConfigSet = "hybrid";
@@ -509,7 +554,7 @@ public class ConfigManager {
         announcementPeriod = 240;
         useAnnouncements = true;
         prefixAllText = "";
-        civsChatPrefix = "@{GREEN}[Civs]";
+        civsChatPrefix = "@{GREEN}[Civs] ";
         civsItemPrefix = "Civs";
         capitalismVotingCost = 200;
         daysBetweenVotes = 7;
@@ -555,6 +600,7 @@ public class ConfigManager {
         portSlowWarmup = true;
         combatTagDuration = 60;
         portDuringCombat = false;
+        showKillStreakMessages = false;
         townRings = true;
         karmaDepreciatePeriod = 43200;
         combatLogPenalty = 80;
@@ -570,6 +616,12 @@ public class ConfigManager {
         levelList = new ArrayList<>();
         defaultGovernmentType = GovernmentType.DICTATORSHIP.name();
         allowChangingOfGovType = false;
+        residenciesCount = -1;
+        residenciesCountOverride = new TreeMap<>();
+        chatTagFormat = new HashMap<>();
+        chatTagFormat.put("town_f", "[$1]");
+        chatTagFormat.put("nation_f", "[$1]");
+        safeWE = false;
     }
 
     public static ConfigManager getInstance() {

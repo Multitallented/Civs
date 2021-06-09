@@ -132,7 +132,6 @@ public class AntiCampEffect implements Listener {
         if (!town.getEffects().containsKey(KEY)) {
             return;
         }
-        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
         double antiCampCost = 0;
         if (town.getEffects().get(AntiCampEffect.KEY) != null) {
@@ -251,7 +250,7 @@ public class AntiCampEffect implements Listener {
 
                 p.damage(damage);
                 Civilian civilian = CivilianManager.getInstance().getCivilian(p.getUniqueId());
-                if (!civilian.isInCombat()) {
+                if (ConfigManager.getInstance().isCombatTagEnabled() && !civilian.isInCombat()) {
                     long combatTagDuration = ConfigManager.getInstance().getCombatTagDuration();
                     p.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(p,
                             "combat-tagged").replace("$1", "" + combatTagDuration));

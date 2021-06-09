@@ -15,6 +15,22 @@
 #    - type: upkeep
 #      region: shelter
 #      rewards:
+#        items:
+#          - IRON_PICKAXE
+#          - IRON_AXE
+#          - IRON_SHOVEL
+#          - IRON_SWORD
+#    - type: menu_action
+#      region: menu:region-list
+#      rewards:
+#        items:
+#          - IRON_HELMET
+#          - IRON_CHESTPLATE
+#          - IRON_LEGGINGS
+#          - IRON_BOOTS
+#    - type: menu_action
+#      region: teleport
+#      rewards:
 #        money: 200
 #    - type: buy
 #      region: coal_shop

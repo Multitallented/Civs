@@ -416,7 +416,8 @@ public final class Util {
     }
     public static boolean validateFileName(String fileName) {
         return fileName.matches("^[^.\\\\/:*?\"<>|]?[^\\\\/:*?\"<>|]*")
-                && getValidFileName(fileName).length()>0;
+                && getValidFileName(fileName).length()>0 &&
+                fileName.length() < 41;
     }
 
     public static String getValidFileName(String fileName) {
@@ -628,7 +629,7 @@ public final class Util {
                     int amount = item.getQty();
                     int max = is.getMaxStackSize();
                     for (ItemStack iss : inv.getContents()) {
-                        if (iss == null) {
+                        if (iss == null || iss.getType() == Material.AIR) {
                             ItemStack isa;
                             if (amount > max) {
                                 isa = item.createItemStack();

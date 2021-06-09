@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -43,7 +44,7 @@ public class SpellListMenu extends CustomMenu {
         CivClass selectedClass = null;
         if (params.containsKey(Constants.CLASS)) {
             for (CivClass civClass : civilian.getCivClasses()) {
-                if (civClass.getId() == Integer.parseInt(params.get(Constants.CLASS))) {
+                if (civClass.getId().equals(UUID.fromString(params.get(Constants.CLASS)))) {
                     selectedClass = civClass;
                     CivItem civItem = ItemManager.getInstance().getItemType(selectedClass.getType());
                     data.put("classTypeName", civItem.getDisplayName(player));

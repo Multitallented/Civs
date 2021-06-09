@@ -52,6 +52,8 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.chat.ChatChannelConfig;
+import org.redcastlemedia.multitallented.civs.chat.ChatManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -109,6 +111,33 @@ public class CivilianListener implements Listener {
         if (configManager.getUseStarterBook()) {
             giveMenuBookIfNoneInInventory(player);
         }
+        addStartingItems(player);
+    }
+
+    private void addStartingItems(Player player) {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        if (!player.hasPlayedBefore()) {
+            for (CivItem civItem : ItemManager.getInstance().getAllItemTypes().values()) {
+                giveItemFromStashIfStartingItem(player, civilian, civItem);
+            }
+        }
+    }
+
+    private void giveItemFromStashIfStartingItem(Player player, Civilian civilian, CivItem civItem) {
+        if (civItem instanceof RegionType) {
+            RegionType regionType = (RegionType) civItem;
+            if (regionType.isStartInInventory()) {
+                player.getInventory().addItem(regionType.createItemStack(player));
+                if (civilian.getStashItems().containsKey(regionType.getProcessedName())) {
+                    int qty = civilian.getStashItems().get(regionType.getProcessedName());
+                    if (qty > 1) {
+                        civilian.getStashItems().put(regionType.getProcessedName(), qty - 1);
+                    } else {
+                        civilian.getStashItems().remove(regionType.getProcessedName());
+                    }
+                }
+            }
+        }
     }
 
     public static void giveMenuBookIfNoneInInventory(Player player) {
@@ -132,7 +161,8 @@ public class CivilianListener implements Listener {
         UUID uuid = player.getUniqueId();
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
 
-        if (civilian.isInCombat() && ConfigManager.getInstance().getCombatLogPenalty() > 0) {
+        if (ConfigManager.getInstance().isCombatTagEnabled() &&
+                civilian.isInCombat() && ConfigManager.getInstance().getCombatLogPenalty() > 0) {
             int penalty = (int) (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() *
                     ConfigManager.getInstance().getCombatLogPenalty() / 100);
             if (civilian.getLastDamager() != null) {
@@ -290,6 +320,7 @@ public class CivilianListener implements Listener {
             civilian.getStashItems().put(itemName, 1);
         }
         CivilianManager.getInstance().saveCivilian(civilian);
+        MenuManager.clearHistory(player.getUniqueId());
         MenuManager.openMenuFromString(civilian, "blueprints");
         return true;
     }
@@ -439,6 +470,7 @@ public class CivilianListener implements Listener {
                 MenuManager.clearHistory(player.getUniqueId());
                 HashMap<String, String> params = new HashMap<>();
                 params.put(Constants.REGION, region.getId());
+                MenuManager.clearHistory(player.getUniqueId());
                 MenuManager.getInstance().openMenu(player, Constants.REGION, params);
             } else {
                 player.performCommand("cv");
@@ -447,6 +479,7 @@ public class CivilianListener implements Listener {
             MenuManager.clearHistory(player.getUniqueId());
             HashMap<String, String> params = new HashMap<>();
             params.put(Constants.REGION, region.getId());
+            MenuManager.clearHistory(player.getUniqueId());
             MenuManager.getInstance().openMenu(player, Constants.REGION, params);
         }
         if (region != null) {
@@ -612,7 +645,6 @@ public class CivilianListener implements Listener {
 
     @EventHandler @SuppressWarnings("unused")
     public void onRegionDestroyedEvent(RegionDestroyedEvent event) {
-        UnloadedInventoryHandler.getInstance().deleteUnloadedChestInventory(event.getRegion().getLocation());
         if (ConfigManager.getInstance().isKeepRegionChunksLoaded()) {
             event.getRegion().getLocation().getChunk().setForceLoaded(false);
         }
@@ -631,32 +663,8 @@ public class CivilianListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
-    public void onItemMoveEvent(InventoryMoveItemEvent event) {
-        RegionManager.getInstance().removeCheckedRegion(event.getDestination().getLocation());
-        if (event.getDestination().getHolder() instanceof Chest) {
-            Location inventoryLocation = ((Chest) event.getDestination().getHolder()).getLocation();
-            UnloadedInventoryHandler.getInstance().updateInventoryAtLocation(inventoryLocation);
-        }
-        if (event.getSource().getHolder() instanceof Chest) {
-            Location inventoryLocation = ((Chest) event.getSource().getHolder()).getLocation();
-            UnloadedInventoryHandler.getInstance().updateInventoryAtLocation(inventoryLocation);
-        }
-//        if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
-//            return;
-//        }
-//        if (!CVItem.isCivsItem(event.getItem())) {
-//            return;
-//        }
-//        event.setCancelled(true);
-    }
-
     @EventHandler(ignoreCancelled = true)
     public void onCivilianDragItem(InventoryDragEvent event) {
-        if (event.getView().getTopInventory().getHolder() instanceof Chest) {
-            Location inventoryLocation = ((Chest) event.getView().getTopInventory().getHolder()).getLocation();
-            UnloadedInventoryHandler.getInstance().updateInventoryAtLocation(inventoryLocation);
-        }
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
             return;
         }
@@ -684,7 +692,13 @@ public class CivilianListener implements Listener {
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         ChatChannel chatChannel = civilian.getChatChannel();
-        if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.GLOBAL) {
+        ConfigManager configManager = ConfigManager.getInstance();
+        if (chatChannel == null) {
+            chatChannel = new ChatChannel(ChatChannel.ChatChannelType.GLOBAL, null);
+        }
+        ChatChannelConfig chatChannelConfig = configManager.getChatChannels().get(chatChannel.getChatChannelType());
+        if (chatChannel.getChatChannelType() == ChatChannel.ChatChannelType.GLOBAL
+                && !chatChannelConfig.override) {
             return;
         }
         event.setCancelled(true);
@@ -726,26 +740,14 @@ public class CivilianListener implements Listener {
                 }
             }
         }
-        if (event.getRecipients().isEmpty() || (event.getRecipients().size() == 1 &&
-                player.equals(event.getRecipients().iterator().next()))) {
-            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                    "no-recipients").replace("$1", chatChannel.getName(player)));
-        } else {
-            for (Player currentPlayer : event.getRecipients()) {
-                currentPlayer.sendMessage(Util.parseColors(ConfigManager.getInstance().getChatChannelFormat())
-                        .replace("$channel$", chatChannel.getName(currentPlayer))
-                        .replace("$player$", player.getDisplayName())
-                        .replace("$message$", event.getMessage()));
-            }
-        }
+
+
+        ChatManager instance = ChatManager.getInstance();
+        instance.formatMessage(event.getPlayer(), civilian, chatChannelConfig, event.getMessage(),event.getRecipients());
     }
 
     @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onCivilianClickItem(InventoryClickEvent event) {
-        if (event.getClickedInventory() != null) {
-            Location inventoryLocation = event.getClickedInventory().getLocation();
-            UnloadedInventoryHandler.getInstance().updateInventoryAtLocation(inventoryLocation);
-        }
         handleCustomItem(event.getCurrentItem(), event.getWhoClicked().getUniqueId());
         if (ConfigManager.getInstance().getAllowSharingCivsItems()) {
             return;

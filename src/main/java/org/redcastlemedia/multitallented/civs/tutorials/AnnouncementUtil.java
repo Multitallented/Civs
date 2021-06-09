@@ -128,7 +128,7 @@ public final class AnnouncementUtil {
                 keys.add("ann-town-protection");
                 messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-town-protection"));
             }
-            if (!alreadySentMessages.get(civilian.getUuid()).contains("ann-town-join")) {
+            if (!alreadySentMessages.get(civilian.getUuid()).contains("ann-town-join") && ConfigManager.getInstance().getResidenciesCount() > -1) {
                 keys.add("ann-town-join");
                 messages.add(LocaleManager.getInstance().getRawTranslation(civilian.getLocale(), "ann-town-join"));
             }
@@ -242,6 +242,7 @@ public final class AnnouncementUtil {
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        MenuManager.clearHistory(player.getUniqueId());
         if ("ann-make-allies".equals(key)) {
             MenuManager.openMenuFromString(civilian, "select-town");
         } else if (key.startsWith("ann-vote-")) {
@@ -282,7 +283,7 @@ public final class AnnouncementUtil {
         }
         message.addExtra(mainMessage);
 
-        TextComponent unsub = new TextComponent("[X]");
+        TextComponent unsub = new TextComponent("[✘]");
         unsub.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/cv toggleann"));
         unsub.setColor(ChatColor.RED);
         unsub.setUnderlined(true);
