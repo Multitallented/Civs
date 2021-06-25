@@ -298,6 +298,11 @@ public class InventoryImpl implements Inventory {
     }
 
     @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
     public void remove(Material material) throws IllegalArgumentException {
 
     }

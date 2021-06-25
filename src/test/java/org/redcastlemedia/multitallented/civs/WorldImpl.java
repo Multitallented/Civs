@@ -235,8 +235,20 @@ public class WorldImpl implements World {
         return null;
     }
 
+    @NotNull
+    @Override
+    public Item dropItem(@NotNull Location location, @NotNull ItemStack itemStack, @Nullable Consumer<Item> consumer) {
+        return null;
+    }
+
     @Override
     public Item dropItemNaturally(Location location, ItemStack itemStack) {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public Item dropItemNaturally(@NotNull Location location, @NotNull ItemStack itemStack, @Nullable Consumer<Item> consumer) {
         return null;
     }
 
@@ -386,6 +398,11 @@ public class WorldImpl implements World {
     }
 
     @Override
+    public boolean setSpawnLocation(int i, int i1, int i2, float v) {
+        return false;
+    }
+
+    @Override
     public boolean setSpawnLocation(int i, int i1, int i2) {
         return false;
     }
@@ -408,6 +425,11 @@ public class WorldImpl implements World {
     @Override
     public void setFullTime(long l) {
 
+    }
+
+    @Override
+    public long getGameTime() {
+        return 0;
     }
 
     @Override
@@ -448,6 +470,21 @@ public class WorldImpl implements World {
     @Override
     public void setThunderDuration(int i) {
 
+    }
+
+    @Override
+    public boolean isClearWeather() {
+        return false;
+    }
+
+    @Override
+    public void setClearWeatherDuration(int i) {
+
+    }
+
+    @Override
+    public int getClearWeatherDuration() {
+        return 0;
     }
 
     @Override
@@ -630,6 +667,11 @@ public class WorldImpl implements World {
 
     @Override
     public double getHumidity(int i, int i1, int i2) {
+        return 0;
+    }
+
+    @Override
+    public int getMinHeight() {
         return 0;
     }
 

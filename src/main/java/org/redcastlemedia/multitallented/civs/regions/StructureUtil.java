@@ -226,7 +226,7 @@ public final class StructureUtil {
         Location location = new Location(world, x, y, z);
         Block block = location.getBlock();
         if (block.getType() != Material.AIR ||
-                block.getRelative(BlockFace.DOWN).getType() == Material.GRASS_PATH ||
+                block.getRelative(BlockFace.DOWN).getType() == Material.DIRT_PATH ||
                 block.getRelative(BlockFace.DOWN).getType() == Material.FARMLAND) {
             return;
         }

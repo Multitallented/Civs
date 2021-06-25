@@ -323,6 +323,11 @@ public class PlayerInventoryImpl implements PlayerInventory {
     }
 
     @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
     public void remove(Material material) throws IllegalArgumentException {
 
     }
