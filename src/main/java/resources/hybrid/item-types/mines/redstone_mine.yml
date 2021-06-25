@@ -14,7 +14,7 @@ build-reqs:
 - g:door*1
 - CHEST*2
 - FURNACE*2
-- REDSTONE_ORE*4
+- REDSTONE_ORE*4,DEEPSLATE_REDSTONE_ORE*4
 - g:primary*55
 - g:secondary*6
 
