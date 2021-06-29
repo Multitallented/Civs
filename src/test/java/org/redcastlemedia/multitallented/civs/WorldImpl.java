@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs;
 
+import lombok.Setter;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
@@ -26,8 +27,6 @@ import java.util.function.Predicate;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import lombok.Setter;
-
 public class WorldImpl implements World {
     private final String name;
     @Setter
@@ -38,7 +37,7 @@ public class WorldImpl implements World {
         this.name = name;
     }
 
-    private HashMap<String, Block> blockMap = new HashMap<>();
+    private final HashMap<String, Block> blockMap = new HashMap<>();
 
     public void putBlock(int x, int y, int z, Block block) {
         blockMap.put(x+":"+y+":"+z, block);
@@ -297,8 +296,9 @@ public class WorldImpl implements World {
         return null;
     }
 
+    @SafeVarargs
     @Override
-    public <T extends Entity> Collection<T> getEntitiesByClass(Class<T>... classes) {
+    public final <T extends Entity> Collection<T> getEntitiesByClass(Class<T>... classes) {
         return null;
     }
 

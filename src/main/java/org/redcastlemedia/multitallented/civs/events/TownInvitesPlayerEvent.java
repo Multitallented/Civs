@@ -3,7 +3,6 @@ package org.redcastlemedia.multitallented.civs.events;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 
 import java.util.UUID;

@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.spells.effects.particles;
 
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.spells.effects.ParticleEffect;
 

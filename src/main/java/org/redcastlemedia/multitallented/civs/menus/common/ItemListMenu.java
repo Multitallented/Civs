@@ -16,7 +16,6 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
-import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
 
 @CivsMenu(name = "item-list") @SuppressWarnings("unused")
 public class ItemListMenu extends CustomMenu {

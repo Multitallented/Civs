@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 public class PlayerInventoryImpl implements PlayerInventory {
 
-    private HashMap<Integer, ItemStack> contents = new HashMap<>();
+    private final HashMap<Integer, ItemStack> contents = new HashMap<>();
 
     @Override
     public ItemStack[] getArmorContents() {
@@ -121,7 +121,7 @@ public class PlayerInventoryImpl implements PlayerInventory {
     @Override
     public HashMap<Integer, ItemStack> addItem(ItemStack... items) {
         Validate.noNullElements(items, "Item cannot be null");
-        HashMap<Integer, ItemStack> leftover = new HashMap();
+        HashMap<Integer, ItemStack> leftover = new HashMap<>();
 
         label35:
         for(int i = 0; i < items.length; ++i) {
@@ -221,7 +221,7 @@ public class PlayerInventoryImpl implements PlayerInventory {
     @Override
     public HashMap<Integer, ItemStack> removeItem(ItemStack... items) throws IllegalArgumentException {
         Validate.notNull(items, "Items cannot be null");
-        HashMap<Integer, ItemStack> leftover = new HashMap();
+        HashMap<Integer, ItemStack> leftover = new HashMap<>();
 
         for(int i = 0; i < items.length; ++i) {
             ItemStack item = items[i];

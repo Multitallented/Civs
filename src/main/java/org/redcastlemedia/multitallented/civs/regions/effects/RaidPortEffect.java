@@ -1,17 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -44,12 +33,14 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
+import java.util.*;
+
 @CivsSingleton
 public class RaidPortEffect implements Listener, CreateRegionListener {
     public static String KEY = "raid_port";
     public static String CHARGING_KEY = "charging_raid_port";
-    private HashMap<Region, Location> raidLocations = new HashMap<>();
-    private HashMap<Town, Long> cooldowns = new HashMap<>();
+    private final HashMap<Region, Location> raidLocations = new HashMap<>();
+    private final HashMap<Town, Long> cooldowns = new HashMap<>();
     public static Set<Player> portedTo = new HashSet<>();
 
     public static void getInstance() {
@@ -256,9 +247,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         }
 
         if (!isValidTeleportTarget(targetLoc, false)) {
-            if (raidLocations.containsKey(r)) {
-                raidLocations.remove(r);
-            }
+            raidLocations.remove(r);
             l.getBlock().getRelative(BlockFace.UP).breakNaturally();
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "raid-target-blocked"));
@@ -304,8 +293,8 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         int yMin = (int) location.getY() - region.getRadiusYN();
         int zMax = (int) location.getZ() + 1 + region.getRadiusZP();
         int zMin = (int) location.getZ() - region.getRadiusZN();
-        yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
-        yMin = yMin < 0 ? 0 : yMin;
+        yMax = Math.min(yMax, currentWorld.getMaxHeight());
+        yMin = Math.max(yMin, 0);
 
         //Top
         top: {

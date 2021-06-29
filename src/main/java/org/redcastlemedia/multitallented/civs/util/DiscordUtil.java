@@ -17,7 +17,7 @@ public final class DiscordUtil {
     }
 
     public static String atAllTownOwners(Town town) {
-        String defaultMessage = "";
+        StringBuilder defaultMessage = new StringBuilder();
         try {
             for (UUID uuid : town.getRawPeople().keySet()) {
                 if (!town.getRawPeople().get(uuid).contains(Constants.OWNER)) {
@@ -25,7 +25,7 @@ public final class DiscordUtil {
                 }
                 String discordUserId = Civs.discordSRV.getAccountLinkManager().getDiscordId(uuid);
                 if (discordUserId != null) {
-                    defaultMessage += " @" + discordUserId;
+                    defaultMessage.append(" @").append(discordUserId);
                     continue;
                 }
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
@@ -40,13 +40,13 @@ public final class DiscordUtil {
                     if (mention.isEmpty()) {
                         mention = " @" + offlinePlayer.getName();
                     }
-                    defaultMessage += mention;
+                    defaultMessage.append(mention);
                 }
             }
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to broadcast discord message", e);
         }
-        return defaultMessage;
+        return defaultMessage.toString();
     }
 
     public static void sendMessageToMainChannel(String message) {

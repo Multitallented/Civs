@@ -12,7 +12,7 @@ import java.util.HashMap;
 @CivsSingleton
 public class TemporaryEffect implements Listener {
     public static String KEY = "temporary";
-    private HashMap<String, Long> created = new HashMap<>();
+    private final HashMap<String, Long> created = new HashMap<>();
 
     public static void getInstance() {
         Bukkit.getPluginManager().registerEvents(new TemporaryEffect(), Civs.getInstance());

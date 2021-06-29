@@ -26,7 +26,7 @@ public class VectorTarget extends Target {
 
     @Override
     public Set<?> getTargets() {
-        Set<LivingEntity> returnSet = new HashSet<LivingEntity>();
+        Set<LivingEntity> returnSet = new HashSet<>();
         int level = getLevel();
         ConfigurationSection config = getConfig();
         Entity origin = getOrigin();

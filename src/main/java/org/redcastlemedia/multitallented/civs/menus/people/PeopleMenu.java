@@ -1,7 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus.people;
 
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -133,16 +132,13 @@ public class PeopleMenu extends CustomMenu {
         if (ranks == null || ranks.isEmpty()) {
             return;
         }
-        civilians.sort(new Comparator<Civilian>() {
-            @Override
-            public int compare(Civilian o1, Civilian o2) {
-                if (!ranks.containsKey(o1.getUuid()) ||
-                        !ranks.containsKey(o2.getUuid())) {
-                    return 0;
-                }
-                return Integer.compare(rankWeight(ranks.get(o1.getUuid())),
-                        rankWeight(ranks.get(o2.getUuid())));
+        civilians.sort((o1, o2) -> {
+            if (!ranks.containsKey(o1.getUuid()) ||
+                    !ranks.containsKey(o2.getUuid())) {
+                return 0;
             }
+            return Integer.compare(rankWeight(ranks.get(o1.getUuid())),
+                    rankWeight(ranks.get(o2.getUuid())));
         });
     }
     private int rankWeight(String rank) {
@@ -158,30 +154,22 @@ public class PeopleMenu extends CustomMenu {
     }
 
     private void pointsSort(List<Civilian> civilians) {
-        civilians.sort(new Comparator<Civilian>() {
-            @Override
-            public int compare(Civilian o1, Civilian o2) {
-                return Double.compare(o1.getPoints(), o2.getPoints());
-            }
-        });
+        civilians.sort(Comparator.comparingDouble(Civilian::getPoints));
     }
 
     private void alphabeticalSort(List<Civilian> civilians) {
-        civilians.sort(new Comparator<Civilian>() {
-            @Override
-            public int compare(Civilian civilian1, Civilian civilian2) {
-                OfflinePlayer offlinePlayer1 = Bukkit.getOfflinePlayer(civilian1.getUuid());
-                OfflinePlayer offlinePlayer2 = Bukkit.getOfflinePlayer(civilian2.getUuid());
-                if (offlinePlayer1.getName() == null || offlinePlayer2.getName() == null) {
-                    return 0;
-                }
-                try {
-                    return offlinePlayer1.getName().compareTo(offlinePlayer2.getName());
-                } catch (Exception e) {
-                    Object[] args = { Civs.NAME, offlinePlayer1.getName(), offlinePlayer2.getName()};
-                    Civs.logger.log(Level.WARNING, "{0} Failed to compare name {1} with {2}", args);
-                    return 0;
-                }
+        civilians.sort((civilian1, civilian2) -> {
+            OfflinePlayer offlinePlayer1 = Bukkit.getOfflinePlayer(civilian1.getUuid());
+            OfflinePlayer offlinePlayer2 = Bukkit.getOfflinePlayer(civilian2.getUuid());
+            if (offlinePlayer1.getName() == null || offlinePlayer2.getName() == null) {
+                return 0;
+            }
+            try {
+                return offlinePlayer1.getName().compareTo(offlinePlayer2.getName());
+            } catch (Exception e) {
+                Object[] args = { Civs.NAME, offlinePlayer1.getName(), offlinePlayer2.getName()};
+                Civs.logger.log(Level.WARNING, "{0} Failed to compare name {1} with {2}", args);
+                return 0;
             }
         });
     }

@@ -1,15 +1,7 @@
 package org.redcastlemedia.multitallented.civs.towns;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
@@ -21,8 +13,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.*;
 
 public class Town {
     @Getter @Setter
@@ -30,12 +21,12 @@ public class Town {
 
     private int maxPower;
     private int power;
-    private Location location;
+    private final Location location;
     private String name;
-    private HashMap<UUID, String> people;
+    private final HashMap<UUID, String> people;
     private int housing;
     private ArrayList<Bounty> bounties = new ArrayList<>();
-    private List<String> allyInvites = new ArrayList<>();
+    private final List<String> allyInvites = new ArrayList<>();
     private List<Location> childLocations = new ArrayList<>();
     @Getter @Setter
     private HashMap<String, String> effects = new HashMap<>();
@@ -73,7 +64,7 @@ public class Town {
     private HashMap<UUID, Integer> idiocracyScore = new HashMap<>();
 
     @Getter
-    private HashSet<UUID> revolt = new HashSet<>();
+    private final HashSet<UUID> revolt = new HashSet<>();
 
     public Town(String name, String type, Location location, HashMap<UUID, String> people, int power, int maxPower,
                 int housing, int villagers, long lastDisable) {
@@ -198,14 +189,11 @@ public class Town {
         if (bounties.size() < 2) {
             return;
         }
-        Collections.sort(bounties, new Comparator<Bounty>() {
-            @Override
-            public int compare(Bounty o1, Bounty o2) {
-                if (o1.getAmount() == o2.getAmount()) {
-                    return 0;
-                }
-                return o1.getAmount() > o2.getAmount() ? 1 : -1;
+        bounties.sort((o1, o2) -> {
+            if (o1.getAmount() == o2.getAmount()) {
+                return 0;
             }
+            return o1.getAmount() > o2.getAmount() ? 1 : -1;
         });
     }
 

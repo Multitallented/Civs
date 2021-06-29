@@ -1,12 +1,9 @@
 package org.redcastlemedia.multitallented.civs.tutorials;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.UUID;
-
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -23,21 +20,14 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.HousingEffect;
-import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import java.util.*;
 
 public final class AnnouncementUtil {
-    private static HashMap<UUID, HashSet<String>> alreadySentMessages = new HashMap<>();
+    private static final HashMap<UUID, HashSet<String>> alreadySentMessages = new HashMap<>();
 
     public static void clearPlayer(UUID uuid) {
         alreadySentMessages.remove(uuid);

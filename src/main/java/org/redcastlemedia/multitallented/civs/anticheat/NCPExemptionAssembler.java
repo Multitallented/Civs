@@ -14,15 +14,12 @@ public final class NCPExemptionAssembler {
         Set<CheckType> checks = new HashSet<>();
         switch (exemptionType) {
             case FLY:
+            case JESUS:
                 checks.add(CheckType.MOVING_SURVIVALFLY);
                 checks.add(CheckType.MOVING);
                 break;
             case FALL:
                 checks.add(CheckType.MOVING_NOFALL);
-                break;
-            case JESUS:
-                checks.add(CheckType.MOVING_SURVIVALFLY);
-                checks.add(CheckType.MOVING);
                 break;
             case KILL_AURA:
                 checks.add(CheckType.FIGHT);

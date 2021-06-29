@@ -1,10 +1,5 @@
 package org.redcastlemedia.multitallented.civs.civilians.allowedactions;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -23,11 +18,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.inventory.EnchantingInventory;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -43,7 +34,6 @@ import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
 import org.redcastlemedia.multitallented.civs.skills.CivSkills;
@@ -53,6 +43,11 @@ import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.MessageUtil;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.logging.Level;
 
 @CivsSingleton @SuppressWarnings("unused")
 public class AllowedActionsListener implements Listener {
@@ -295,7 +290,7 @@ public class AllowedActionsListener implements Listener {
     }
 
     // Is set with ClickEvent, when placing in crafting slot of an anvil.
-    private static Map <UUID, Integer> prevXP = new HashMap<>();
+    private static final Map <UUID, Integer> prevXP = new HashMap<>();
 
     @EventHandler (ignoreCancelled = true)
     public void closeAnvilMonitor(InventoryCloseEvent event) {

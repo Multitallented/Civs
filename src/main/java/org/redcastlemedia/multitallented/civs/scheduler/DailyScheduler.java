@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.UUID;
-import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -112,7 +111,7 @@ public class DailyScheduler implements Runnable {
                     government.getGovernmentType() != GovernmentType.CAPITALISM) {
                 continue;
             }
-            long daysBetweenVotes = ConfigManager.getInstance().getDaysBetweenVotes() * 86400000;
+            long daysBetweenVotes = ConfigManager.getInstance().getDaysBetweenVotes() * 86400000L;
             if (town.getLastVote() > System.currentTimeMillis() - daysBetweenVotes) {
                 continue;
             }

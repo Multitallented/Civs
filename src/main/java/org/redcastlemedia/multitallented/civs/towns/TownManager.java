@@ -13,13 +13,13 @@ import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.events.*;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.*;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -37,10 +37,10 @@ import java.util.logging.Level;
 public class TownManager {
 
     private static TownManager townManager = null;
-    private HashMap<String, Town> towns = new HashMap<>();
-    private List<Town> sortedTowns = new ArrayList<>();
-    private HashMap<UUID, Town> invites = new HashMap<>();
-    private ArrayList<Town> needsSaving = new ArrayList<>();
+    private final HashMap<String, Town> towns = new HashMap<>();
+    private final List<Town> sortedTowns = new ArrayList<>();
+    private final HashMap<UUID, Town> invites = new HashMap<>();
+    private final ArrayList<Town> needsSaving = new ArrayList<>();
 
 
     public void reload() {
@@ -273,7 +273,7 @@ public class TownManager {
     }
 
     public Set<Town> getOwnedTowns(Civilian civilian) {
-        HashSet<Town> townSet = new HashSet();
+        HashSet<Town> townSet = new HashSet<>();
         for (Town town : towns.values()) {
             if (!town.getRawPeople().containsKey(civilian.getUuid()) ||
                     !town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
@@ -288,22 +288,18 @@ public class TownManager {
         towns.put(town.getName(), town);
         sortedTowns.add(town);
         if (sortedTowns.size() > 1) {
-            Collections.sort(sortedTowns, new Comparator<Town>() {
-
-                @Override
-                public int compare(Town o1, Town o2) {
-                    ItemManager itemManager = ItemManager.getInstance();
-                    TownType townType1 = (TownType) itemManager.getItemType(o1.getType());
-                    TownType townType2 = (TownType) itemManager.getItemType(o2.getType());
-                    if (o1.getLocation().getX() - townType1.getBuildRadius() >
-                            o2.getLocation().getX() - townType2.getBuildRadius()) {
-                        return 1;
-                    } else if (o1.getLocation().getX() - townType1.getBuildRadius() <
-                            o2.getLocation().getX() - townType2.getBuildRadius()) {
-                        return -1;
-                    }
-                    return 0;
+            sortedTowns.sort((o1, o2) -> {
+                ItemManager itemManager = ItemManager.getInstance();
+                TownType townType1 = (TownType) itemManager.getItemType(o1.getType());
+                TownType townType2 = (TownType) itemManager.getItemType(o2.getType());
+                if (o1.getLocation().getX() - townType1.getBuildRadius() >
+                        o2.getLocation().getX() - townType2.getBuildRadius()) {
+                    return 1;
+                } else if (o1.getLocation().getX() - townType1.getBuildRadius() <
+                        o2.getLocation().getX() - townType2.getBuildRadius()) {
+                    return -1;
                 }
+                return 0;
             });
         }
     }
@@ -330,11 +326,7 @@ public class TownManager {
     }
 
     public void setTownPower(Town town, int power) {
-        if (power > town.getMaxPower()) {
-            town.setPower(town.getMaxPower());
-        } else {
-            town.setPower(power);
-        }
+        town.setPower(Math.min(power, town.getMaxPower()));
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         if (town.getPower() < 1 && ConfigManager.getInstance().getDestroyTownsAtZero() &&
                 townType.getChild() == null) {

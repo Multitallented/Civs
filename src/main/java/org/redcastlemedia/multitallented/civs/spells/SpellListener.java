@@ -2,7 +2,6 @@ package org.redcastlemedia.multitallented.civs.spells;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -34,8 +33,8 @@ import lombok.Getter;
 @CivsSingleton
 public class SpellListener implements Listener {
 
-    private final HashMap<LivingEntity, AbilityListen> damageListeners = new HashMap<LivingEntity, AbilityListen>();
-    private final HashMap<Projectile, AbilityListen> projectileListeners = new HashMap<Projectile, AbilityListen>();
+    private final HashMap<LivingEntity, AbilityListen> damageListeners = new HashMap<>();
+    private final HashMap<Projectile, AbilityListen> projectileListeners = new HashMap<>();
     public static SpellListener spellListener = null;
 
     public SpellListener() {

@@ -38,36 +38,41 @@ public class MenuIcon {
         this.key = key;
         if (section != null) {
             this.index = parseIndexArrayFromString(section.getString("index", "-1"));
-            if (key.equals("back")) {
-                MenuIcon backIcon = MenuManager.getInstance().getBackButton();
-                this.icon = backIcon.getIcon();
-                this.name = backIcon.getName();
-                this.desc = backIcon.getDesc();
-            } else if (key.equals("prev")) {
-                MenuIcon prevButton = MenuManager.getInstance().getPrevButton();
-                this.icon = prevButton.getIcon();
-                this.name = prevButton.getName();
-                this.desc = prevButton.getDesc();
-            } else if (key.equals("next")) {
-                MenuIcon nextButton = MenuManager.getInstance().getNextButton();
-                this.icon = nextButton.getIcon();
-                this.name = nextButton.getName();
-                this.desc = nextButton.getDesc();
-            } else {
-                this.icon = section.getString("icon", "STONE");
-                this.name = section.getString("name", "");
-                this.desc = section.getString("desc", "");
-                this.actions = section.getStringList("actions");
-                List<String> actionsRightClick = section.getStringList("actions-right-click");
-                if (section.isSet("pre-reqs")) {
-                    preReqs = section.getStringList("pre-reqs");
-                }
-                if (actionsRightClick.isEmpty()) {
-                    this.rightClickActions = this.actions;
-                } else {
-                    this.rightClickActions = actionsRightClick;
-                }
-                this.perm = section.getString("permission", "");
+            switch (key) {
+                case "back":
+                    MenuIcon backIcon = MenuManager.getInstance().getBackButton();
+                    this.icon = backIcon.getIcon();
+                    this.name = backIcon.getName();
+                    this.desc = backIcon.getDesc();
+                    break;
+                case "prev":
+                    MenuIcon prevButton = MenuManager.getInstance().getPrevButton();
+                    this.icon = prevButton.getIcon();
+                    this.name = prevButton.getName();
+                    this.desc = prevButton.getDesc();
+                    break;
+                case "next":
+                    MenuIcon nextButton = MenuManager.getInstance().getNextButton();
+                    this.icon = nextButton.getIcon();
+                    this.name = nextButton.getName();
+                    this.desc = nextButton.getDesc();
+                    break;
+                default:
+                    this.icon = section.getString("icon", "STONE");
+                    this.name = section.getString("name", "");
+                    this.desc = section.getString("desc", "");
+                    this.actions = section.getStringList("actions");
+                    List<String> actionsRightClick = section.getStringList("actions-right-click");
+                    if (section.isSet("pre-reqs")) {
+                        preReqs = section.getStringList("pre-reqs");
+                    }
+                    if (actionsRightClick.isEmpty()) {
+                        this.rightClickActions = this.actions;
+                    } else {
+                        this.rightClickActions = actionsRightClick;
+                    }
+                    this.perm = section.getString("permission", "");
+                    break;
             }
         }
     }

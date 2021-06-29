@@ -12,8 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.commands.PortCommand;
 import org.redcastlemedia.multitallented.civs.items.CVItem;

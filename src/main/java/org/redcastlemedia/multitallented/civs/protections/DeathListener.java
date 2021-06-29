@@ -1,10 +1,5 @@
 package org.redcastlemedia.multitallented.civs.protections;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -14,12 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -40,16 +30,16 @@ import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
 import org.redcastlemedia.multitallented.civs.skills.CivSkills;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
-import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.MessageUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @CivsSingleton()
 public class DeathListener implements Listener {
@@ -98,7 +88,6 @@ public class DeathListener implements Listener {
                     event.setCancelled(true);
                     player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                             "no-tp-out-of-town"));
-                    return;
                 }
             }
         }
@@ -334,12 +323,7 @@ public class DeathListener implements Listener {
         Location respawnLocation = civilian.getRespawnPoint();
 
         if (ConfigManager.getInstance().getUseStarterBook()) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    player.getInventory().addItem(Util.createStarterBook(civilian.getLocale()));
-                }
-            }, 5L);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> player.getInventory().addItem(Util.createStarterBook(civilian.getLocale())), 5L);
         }
         if (respawnLocation == null) {
             return;
@@ -426,7 +410,7 @@ public class DeathListener implements Listener {
         Region jail = regionManager.getRegionAt(deathLocation);
         boolean bypassJail = jail != null;
         Player damager = null;
-        EntityDamageByEntityEvent entityDamageByEntityEvent = null;
+        EntityDamageByEntityEvent entityDamageByEntityEvent;
 
         if (event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) {
             entityDamageByEntityEvent = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
@@ -680,72 +664,42 @@ public class DeathListener implements Listener {
         long interval = 10L;
         final Player dPlayer = damager;
         if (bountyBonus > 0) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    dPlayer.sendMessage(Civs.getPrefix() + ChatColor.GREEN +
-                            localeManager.getTranslation(dPlayer, "bounty-bonus")
-                                    .replace("$1", "" + BOUNTY_BONUS));
-                }
-            }, interval);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> dPlayer.sendMessage(Civs.getPrefix() + ChatColor.GREEN +
+                    localeManager.getTranslation(dPlayer, "bounty-bonus")
+                            .replace("$1", "" + BOUNTY_BONUS)), interval);
             interval += 10L;
         }
         if (points > 0) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    dPlayer.sendMessage(Civs.getPrefix() +
-                            localeManager.getTranslation(dPlayer, "kill")
-                                    .replace("$1", "" + ConfigManager.getInstance().getPointsPerKill()));
-                }
-            }, interval);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> dPlayer.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(dPlayer, "kill")
+                            .replace("$1", "" + ConfigManager.getInstance().getPointsPerKill())), interval);
             interval += 10L;
         }
         if (healthBonus > 0) {
             final double ptsHealth = healthBonus;
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    dPlayer.sendMessage(Civs.getPrefix() +
-                            localeManager.getTranslation(dPlayer, "low-health")
-                                    .replace("$1", "" + ptsHealth));
-                }
-            }, interval);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> dPlayer.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(dPlayer, "low-health")
+                            .replace("$1", "" + ptsHealth)), interval);
             interval += 10L;
         }
         if (killStreakBonus > 0) {
             final double killStreakPts = killStreakBonus;
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    player.sendMessage(Civs.getPrefix() +
-                            localeManager.getTranslation(dPlayer, "killstreak-points")
-                                    .replace("$1", "" + killStreakPts));
-                }
-            }, interval);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(dPlayer, "killstreak-points")
+                            .replace("$1", "" + killStreakPts)), interval);
             interval += 10L;
         }
         if (killJoyBonus > 0) {
             final double killJoyPts = killJoyBonus;
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    player.sendMessage(Civs.getPrefix() +
-                            localeManager.getTranslation(dPlayer, "killjoy-points")
-                                    .replace("$1", "" + killJoyPts));
-                }
-            }, interval);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(dPlayer, "killjoy-points")
+                            .replace("$1", "" + killJoyPts)), interval);
             interval += 10L;
         }
         final double pts = points;
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                player.sendMessage(Civs.getPrefix() +
-                        localeManager.getTranslation(dPlayer, "total-points")
-                                .replace("$1", "" + pts));
-            }
-        }, interval);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> player.sendMessage(Civs.getPrefix() +
+                localeManager.getTranslation(dPlayer, "total-points")
+                        .replace("$1", "" + pts)), interval);
     }
 
     private void removePlayersFromCombat(Civilian dyingCiv) {

@@ -1,18 +1,18 @@
 package org.redcastlemedia.multitallented.civs.menus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
 class CycleGUI {
     private final UUID uuid;
-    private HashMap<Integer, CycleGUIItemSet> cycleItems;
+    private final HashMap<Integer, CycleGUIItemSet> cycleItems;
 
     private static class CycleGUIItemSet {
         private int position;
@@ -59,7 +59,7 @@ class CycleGUI {
                 inventory.setItem(index, is);
                 CycleGUIItemSet.setPosition(pos);
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }

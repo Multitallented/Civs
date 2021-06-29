@@ -1,27 +1,22 @@
 package org.redcastlemedia.multitallented.civs.util;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
-import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.towns.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public final class OwnershipUtil {
     private OwnershipUtil() {
@@ -83,7 +78,7 @@ public final class OwnershipUtil {
     }
 
     public static double invalidAmountOrTown(Player player, String[] args, Civilian civilian) {
-        double amount = 0;
+        double amount;
         try {
             amount = Double.parseDouble(args[2]);
         } catch (Exception e) {

@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @CivsSingleton
 public class BedEffect implements RegionCreatedListener {
-    private static String KEY = "bed";
+    private static final String KEY = "bed";
 
     public static void getInstance() {
         new BedEffect();

@@ -1,19 +1,18 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
+import lombok.Getter;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 
-import lombok.Getter;
-
 public class ChatChannel {
     @Getter
-    private ChatChannelType chatChannelType;
+    private final ChatChannelType chatChannelType;
 
     @Getter
-    private Object target;
+    private final Object target;
 
     public ChatChannel(ChatChannelType chatChannelType, Object target) {
         this.chatChannelType = chatChannelType;

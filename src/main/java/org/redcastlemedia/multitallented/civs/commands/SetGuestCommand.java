@@ -6,9 +6,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
@@ -26,7 +26,7 @@ public class SetGuestCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = null;
-        boolean isAdmin = false;
+        boolean isAdmin;
         if (commandSender instanceof Player) {
             player = (Player) commandSender;
             isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION));

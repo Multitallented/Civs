@@ -132,7 +132,7 @@ public class ProtectionsTests extends TestUtil {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(uuid, Constants.OWNER);
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
-        RegionManager.getInstance().addRegion(new Region("cobble", owners, regionLocation, RegionsTests.getRadii(), new HashMap<String, String>(),0));
+        RegionManager.getInstance().addRegion(new Region("cobble", owners, regionLocation, RegionsTests.getRadii(), new HashMap<>(),0));
 
         ProtectionHandler protectionHandler = new ProtectionHandler();
 
@@ -157,7 +157,7 @@ public class ProtectionsTests extends TestUtil {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(uuid2, Constants.OWNER);
         Location regionLocation = new Location(Bukkit.getWorld("world"), 0,0,0);
-        RegionManager.getInstance().addRegion(new Region("dirt", owners, regionLocation, RegionsTests.getRadii(), new HashMap<String, String>(),0));
+        RegionManager.getInstance().addRegion(new Region("dirt", owners, regionLocation, RegionsTests.getRadii(), new HashMap<>(),0));
 
         ProtectionHandler protectionHandler = new ProtectionHandler();
         BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, player);
@@ -217,7 +217,7 @@ public class ProtectionsTests extends TestUtil {
         PlayerInteractEvent event = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK,null,Bukkit.getWorld("world").getBlockAt(0,0,0), BlockFace.NORTH);
 //        BlockBreakEvent event = new BlockBreakEvent(TestUtil.block3, player);
         protectionHandler.onBlockInteract(event);
-        assertTrue(!event.isCancelled());
+        assertFalse(event.isCancelled());
     }
 
     private void explodeInRegion(boolean throwException, Location regionLocation) throws SuccessException {

@@ -5,8 +5,6 @@ import org.bukkit.event.HandlerList;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 
-import java.util.UUID;
-
 public class RegionTickEvent extends Event {
     private static final HandlerList hList = new HandlerList();
     private final Region region;

@@ -1,14 +1,16 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.redcastlemedia.multitallented.civs.CivsSingleton;
-import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -27,14 +29,11 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class CivilianManager {
 
-    private HashMap<UUID, Civilian> civilians = new HashMap<>();
-    private ArrayList<Civilian> sortedCivilians = new ArrayList<>();
+    private final HashMap<UUID, Civilian> civilians = new HashMap<>();
+    private final ArrayList<Civilian> sortedCivilians = new ArrayList<>();
     @Getter
     @Setter
     private boolean listNeedsToBeSorted = false;
@@ -97,14 +96,11 @@ public class CivilianManager {
             return;
         }
         listNeedsToBeSorted = false;
-        sortedCivilians.sort(new Comparator<Civilian>() {
-            @Override
-            public int compare(Civilian o1, Civilian o2) {
-                if (o1.getPoints() == o2.getPoints()) {
-                    return 0;
-                }
-                return o1.getPoints() < o2.getPoints() ? 1 : -1;
+        sortedCivilians.sort((o1, o2) -> {
+            if (o1.getPoints() == o2.getPoints()) {
+                return 0;
             }
+            return o1.getPoints() < o2.getPoints() ? 1 : -1;
         });
     }
     void unloadCivilian(Player player) {
@@ -358,7 +354,6 @@ public class CivilianManager {
         } catch (Exception ex) {
             Civs.logger.severe("Unable to write " + civilian.getUuid() + ".yml");
             ex.printStackTrace();
-            return;
         }
     }
 

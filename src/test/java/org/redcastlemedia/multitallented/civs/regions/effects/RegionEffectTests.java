@@ -3,14 +3,10 @@ package org.redcastlemedia.multitallented.civs.regions.effects;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.junit.*;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.WorldImpl;
@@ -177,15 +173,13 @@ public class RegionEffectTests extends TestUtil {
 
     @Test
     public void repairEffectShouldGetCorrectAmount() {
-        RepairEffect repairEffect = new RepairEffect();
-        int repairCost = repairEffect.getRepairCost(Material.DIAMOND_PICKAXE, 1);
+        int repairCost = RepairEffect.getRepairCost(Material.DIAMOND_PICKAXE, 1);
         assertEquals(1, repairCost);
     }
 
     @Test
     public void maxRepairEffectShouldGetCorrectAmount() {
-        RepairEffect repairEffect = new RepairEffect();
-        int repairCost = repairEffect.getRepairCost(Material.DIAMOND_PICKAXE, Material.DIAMOND_PICKAXE.getMaxDurability() - 1);
+        int repairCost = RepairEffect.getRepairCost(Material.DIAMOND_PICKAXE, Material.DIAMOND_PICKAXE.getMaxDurability() - 1);
         assertEquals(3, repairCost);
     }
 

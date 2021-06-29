@@ -4,8 +4,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.regions.Region;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class BlockLogger {
     private static BlockLogger blockLogger = null;
-    private HashMap<String, CVItem> blocks = new HashMap<>();
+    private final HashMap<String, CVItem> blocks = new HashMap<>();
 
 //    private long lastSave = 0;
 //    private int intervalId = -1;
@@ -65,24 +65,20 @@ public class BlockLogger {
         }
         final File blockData = new File(Civs.dataLocation, "block-data.yml");
         final HashMap<String, CVItem> finalBlocks = blocks;
-        Runnable runMe = new Runnable() {
-            @Override
-            public void run() {
-                FileConfiguration config = new YamlConfiguration();
-                try {
-                    //Don't load the file. Overwrite it
-                    for (String location : finalBlocks.keySet()) {
-                        CVItem cvItem = finalBlocks.get(location);
-                        String locationString = location.replaceAll("\\.", "^");
-                        config.set(locationString + ".mat", cvItem.getMat().toString());
-                        config.set(locationString + ".name", cvItem.getDisplayName());
-                        config.set(locationString + ".lore", cvItem.getLore());
-                    }
-                    config.save(blockData);
-                } catch (Exception e) {
-                    Civs.logger.severe("Unable to save to block-data.yml");
-                    return;
+        Runnable runMe = () -> {
+            FileConfiguration config = new YamlConfiguration();
+            try {
+                //Don't load the file. Overwrite it
+                for (String location : finalBlocks.keySet()) {
+                    CVItem cvItem = finalBlocks.get(location);
+                    String locationString = location.replaceAll("\\.", "^");
+                    config.set(locationString + ".mat", cvItem.getMat().toString());
+                    config.set(locationString + ".name", cvItem.getDisplayName());
+                    config.set(locationString + ".lore", cvItem.getLore());
                 }
+                config.save(blockData);
+            } catch (Exception e) {
+                Civs.logger.severe("Unable to save to block-data.yml");
             }
         };
         runMe.run();
@@ -117,13 +113,11 @@ public class BlockLogger {
                 } catch (Exception e) {
                     Civs.logger.severe("Unable to read line from block-data.yml");
                     e.printStackTrace();
-                    continue;
                 }
             }
 
         } catch (Exception e) {
             Civs.logger.severe("Unable to read from block-data.yml");
-            return;
         }
     }
 

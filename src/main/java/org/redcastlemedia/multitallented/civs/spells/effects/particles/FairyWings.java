@@ -1,14 +1,12 @@
 package org.redcastlemedia.multitallented.civs.spells.effects.particles;
 
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.util.Vector;
 import org.redcastlemedia.multitallented.civs.spells.effects.ParticleEffect;
 
 public class FairyWings extends CivParticleEffect {
     boolean x = true;
     boolean o = false;
-    private boolean[][] shape = {
+    private final boolean[][] shape = {
             {o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o, o},
             {o, x, x, x, x, o, o, o, o, o, o, o, x, x, x, x, o, o},
             {o, o, x, x, x, x, x, o, o, o, x, x, x, x, x, o, o, o},

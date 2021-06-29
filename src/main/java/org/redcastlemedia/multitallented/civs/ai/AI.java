@@ -1,25 +1,24 @@
 package org.redcastlemedia.multitallented.civs.ai;
 
-import java.util.UUID;
-
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 
-import lombok.Getter;
+import java.util.UUID;
 
 @Getter
 public class AI {
     private final String townName;
-    private Town town;
+    private final Town town;
 
     public AI(String townName) {
         this.townName = townName;
@@ -113,34 +112,21 @@ public class AI {
 
         String[] args = new String[1];
         args[0] = player.getDisplayName();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                broadcastToAllPlayers("ai-invite", args, getDisplayName());
-            }
-        }, 100);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                Civilian inviteCiv = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> broadcastToAllPlayers("ai-invite", args, getDisplayName()), 100);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> {
+            Civilian inviteCiv = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
-                if (TownManager.getInstance().addInvite(player.getUniqueId(), town)) {
-                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                            "invite-player").replace("$1", getDisplayName() + ChatColor.GREEN)
-                            .replace("$2", town.getType())
-                            .replace("$3", townName));
-                }
+            if (TownManager.getInstance().addInvite(player.getUniqueId(), town)) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                        "invite-player").replace("$1", getDisplayName() + ChatColor.GREEN)
+                        .replace("$2", town.getType())
+                        .replace("$3", townName));
             }
         }, 120);
 
         String[] args2 = new String[1];
         args2[0] = Bukkit.getPlayer(uuid).getDisplayName();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                broadcastToAllPlayers("ai-help", args2, getDisplayName());
-            }
-        }, 130);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), () -> broadcastToAllPlayers("ai-help", args2, getDisplayName()), 130);
 
         return true;
     }

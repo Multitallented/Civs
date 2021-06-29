@@ -54,12 +54,7 @@ public class CivStateEffect extends Effect {
         variables.put(builtInCivState.name(), true);
         CivState civState = new CivState(getSpell(), super.getKey(), -1, -1, (String) null, variables);
         if (duration > 0) {
-            cancelTaskId = Bukkit.getScheduler().runTaskLater(Civs.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    civState.remove(player);
-                }
-            }, this.duration / 50).getTaskId();
+            cancelTaskId = Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> civState.remove(player), this.duration / 50).getTaskId();
         }
         civState.setDurationId(cancelTaskId);
         civilian.getStates().put(stateName, civState);

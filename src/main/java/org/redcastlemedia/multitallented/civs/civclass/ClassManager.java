@@ -1,16 +1,5 @@
 package org.redcastlemedia.multitallented.civs.civclass;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,13 +17,18 @@ import org.redcastlemedia.multitallented.civs.spells.SpellType;
 import org.redcastlemedia.multitallented.civs.spells.SpellUtil;
 import org.redcastlemedia.multitallented.civs.spells.civstate.CivState;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.logging.Level;
+
 @CivsSingleton
 public class ClassManager {
     private static ClassManager classManager = null;
-    private static Map<UUID, Set<CivClass>> classes = new HashMap<>();
+    private static final Map<UUID, Set<CivClass>> classes = new HashMap<>();
 
     public ClassManager() {
-        this.classManager = this;
+        classManager = this;
         loadClasses();
     }
 
@@ -94,7 +88,6 @@ public class ClassManager {
                 } catch (Exception ex) {
                     Civs.logger.severe("Unable to load " + file.getName());
                     ex.printStackTrace();
-                    continue;
                 }
             }
         } catch (Exception e) {

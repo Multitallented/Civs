@@ -60,7 +60,7 @@ public class VelocityEffect extends Effect {
             return true;
         }
         if (livingEntity instanceof Player) {
-            ((Player) livingEntity).sendMessage(
+            livingEntity.sendMessage(
                     ChatColor.RED + Civs.getPrefix() +
                             ((Player) livingEntity).getDisplayName() +
                             " isn't moving fast enough");

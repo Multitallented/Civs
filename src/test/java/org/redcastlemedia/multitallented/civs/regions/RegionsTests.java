@@ -34,6 +34,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.ItemMetaImpl;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
@@ -240,7 +241,7 @@ public class RegionsTests extends TestUtil {
     public void regionManagerShouldGetRegionBasedOnLocation() {
         Location location = new Location(Bukkit.getWorld("world"), 100, 0, 0);
         HashMap<UUID, String> people = new HashMap<>();
-        RegionManager.getInstance().addRegion(new Region("cobble", people, location, getRadii(), new HashMap<String, String>(),0));
+        RegionManager.getInstance().addRegion(new Region("cobble", people, location, getRadii(), new HashMap<>(),0));
         assertNull(RegionManager.getInstance().getRegionAt(new Location(Bukkit.getWorld("world"), 0,0,0)));
     }
 
@@ -839,7 +840,7 @@ public class RegionsTests extends TestUtil {
         TownManager.getInstance().addTown(town);
         try {
             new DailyScheduler().run();
-        } catch (SuccessException se) {
+        } catch (SuccessException ignored) {
 
         }
         assertEquals(412, town.getPower());
@@ -915,7 +916,7 @@ public class RegionsTests extends TestUtil {
                 500,
                 40,
                 false);
-        assertTrue(!regions.isEmpty());
+        assertFalse(regions.isEmpty());
     }
 
     @Test
@@ -1220,7 +1221,7 @@ public class RegionsTests extends TestUtil {
         owners.put(new UUID(1, 4), Constants.OWNER);
         Location location1 = new Location(Bukkit.getWorld("world"), 4.5, 0.5, 0.5);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
-        Region region = new Region(type, owners, location1, getRadii(), (HashMap) regionType.getEffects().clone(),0);
+        Region region = new Region(type, owners, location1, getRadii(), (HashMap<String, String>) regionType.getEffects().clone(),0);
         RegionManager.getInstance().addRegion(region);
         return region;
     }
@@ -1228,7 +1229,7 @@ public class RegionsTests extends TestUtil {
         HashMap<UUID, String> owners = new HashMap<>();
         owners.put(new UUID(1, 4), Constants.OWNER);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
-        Region region = new Region(type, owners, location, getRadii(), (HashMap) regionType.getEffects().clone(),0);
+        Region region = new Region(type, owners, location, getRadii(), (HashMap<String, String>) regionType.getEffects().clone(),0);
         RegionManager.getInstance().addRegion(region);
         return region;
     }

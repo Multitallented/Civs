@@ -8,8 +8,6 @@ import static org.junit.Assert.assertNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.InventoryImpl;
 import org.redcastlemedia.multitallented.civs.ItemMetaImpl;
 import org.redcastlemedia.multitallented.civs.ItemStackImpl;
@@ -137,7 +134,7 @@ public class BlueprintsMenuTests extends TestUtil {
         this.blueprintsMenu.createMenu(this.civilian, params);
         try {
             MenuManager.getInstance().goBack(this.civilian.getUuid());
-        } catch (NullPointerException npe) {
+        } catch (NullPointerException ignored) {
 
         }
         this.blueprintsMenu.createMenu(this.civilian, params);

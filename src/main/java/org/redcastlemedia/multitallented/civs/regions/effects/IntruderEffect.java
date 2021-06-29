@@ -35,9 +35,7 @@ public class IntruderEffect implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        if (lastMessage.containsKey(event.getPlayer().getName())) {
-            lastMessage.remove(event.getPlayer().getName());
-        }
+        lastMessage.remove(event.getPlayer().getName());
     }
 
     @EventHandler

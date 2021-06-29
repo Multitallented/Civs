@@ -13,10 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 
 public class InventoryImpl implements Inventory {
-    private HashMap<Integer, ItemStack> contents = new HashMap<>();
+    private final HashMap<Integer, ItemStack> contents = new HashMap<>();
 
     public InventoryImpl() {
         for (int i = 0; i < getSize(); i++) {
@@ -87,7 +86,7 @@ public class InventoryImpl implements Inventory {
     @Override
     public HashMap<Integer, ItemStack> addItem(ItemStack... items) {
         Validate.noNullElements(items, "Item cannot be null");
-        HashMap<Integer, ItemStack> leftover = new HashMap();
+        HashMap<Integer, ItemStack> leftover = new HashMap<>();
 
         label35:
         for(int i = 0; i < items.length; ++i) {
@@ -187,7 +186,7 @@ public class InventoryImpl implements Inventory {
     @Override
     public HashMap<Integer, ItemStack> removeItem(ItemStack... items) throws IllegalArgumentException {
         Validate.notNull(items, "Items cannot be null");
-        HashMap<Integer, ItemStack> leftover = new HashMap();
+        HashMap<Integer, ItemStack> leftover = new HashMap<>();
 
         for(int i = 0; i < items.length; ++i) {
             ItemStack item = items[i];

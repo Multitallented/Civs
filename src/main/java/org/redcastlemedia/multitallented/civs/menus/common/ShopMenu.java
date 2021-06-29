@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -23,7 +21,6 @@ import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
-import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "shop") @SuppressWarnings("unused")
 public class ShopMenu extends CustomMenu {
@@ -76,15 +73,12 @@ public class ShopMenu extends CustomMenu {
             }
         } else {
             shopItems = ItemManager.getInstance().getShopItems(civilian, parent);
-            shopItems.removeIf(new Predicate<CivItem>() {
-                @Override
-                public boolean test(CivItem civItem) {
-                    if (!(civItem instanceof FolderType)) {
-                        return false;
-                    }
-                    FolderType folderType = (FolderType) civItem;
-                    return !folderType.getVisible();
+            shopItems.removeIf(civItem -> {
+                if (!(civItem instanceof FolderType)) {
+                    return false;
                 }
+                FolderType folderType = (FolderType) civItem;
+                return !folderType.getVisible();
             });
         }
         if (shopItems != null) {

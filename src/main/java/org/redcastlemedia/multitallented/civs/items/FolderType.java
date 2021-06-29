@@ -27,7 +27,7 @@ public class FolderType extends CivItem {
                 1,
                 price,
                 permission,
-                new ArrayList<String>(),
+                new ArrayList<>(),
                 true,
                 level);
         this.children = children;

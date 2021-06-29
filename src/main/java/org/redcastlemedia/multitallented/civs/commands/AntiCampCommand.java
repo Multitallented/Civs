@@ -117,9 +117,9 @@ public class AntiCampCommand extends CivCommand {
     public List<String> getWord(CommandSender commandSender, String[] args) {
         if (args.length == 2) {
             if (commandSender instanceof Player) {
-                return getTownNames(args[1]);
-            } else {
                 return getTownNamesForPlayer(args[1], (Player) commandSender);
+            } else {
+                return getTownNames(args[1]);
             }
         }
         return super.getWord(commandSender, args);

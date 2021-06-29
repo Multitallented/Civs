@@ -26,7 +26,9 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.spells.effects.DamageEffect;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.UUID;
 
 import static org.redcastlemedia.multitallented.civs.util.Util.isLocationWithinSightOfPlayer;
 
@@ -77,7 +79,7 @@ public class ArrowTurret implements Listener {
             return;
         }
         //Check if the region has the shoot arrow effect and return arrow velocity
-        int damage = 1;
+        int damage;
         double speed = 0.5;
         int spread = 12;
         String[] parts = vars.split("\\.");

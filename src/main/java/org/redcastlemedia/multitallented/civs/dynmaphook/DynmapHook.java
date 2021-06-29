@@ -1,8 +1,5 @@
 package org.redcastlemedia.multitallented.civs.dynmaphook;
 
-import java.util.HashSet;
-import java.util.logging.Level;
-
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,13 +9,7 @@ import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
-import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
-import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
-import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
-import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
-import org.redcastlemedia.multitallented.civs.events.TownDevolveEvent;
-import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
+import org.redcastlemedia.multitallented.civs.events.*;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -26,6 +17,9 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+
+import java.util.HashSet;
+import java.util.logging.Level;
 
 //https://github.com/webbukkit/dynmap/wiki/Using-markers
 public class DynmapHook implements Listener {
@@ -36,7 +30,7 @@ public class DynmapHook implements Listener {
         if (dynmapCommonAPI == null) {
             return false;
         }
-        boolean initialized = false;
+        boolean initialized;
         try {
             initialized = dynmapCommonAPI.markerAPIInitialized();
         } catch (NullPointerException npe) {

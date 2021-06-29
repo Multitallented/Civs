@@ -13,7 +13,6 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.skills.CivSkills;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
-import org.redcastlemedia.multitallented.civs.skills.SkillManager;
 
 public class SkillTests extends TestUtil {
 

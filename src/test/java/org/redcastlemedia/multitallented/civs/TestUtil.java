@@ -21,8 +21,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -34,12 +32,8 @@ import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.junit.BeforeClass;
-import org.mockito.ArgumentMatcher;
 import org.mockito.Matchers;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.skills.SkillManager;
 
@@ -87,26 +81,17 @@ public abstract class TestUtil {
         Server server = mock(Server.class);
         Inventory inventory = new InventoryImpl();
         Logger logger = mock(Logger.class);
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
-                Object[] args = invocationOnMock.getArguments();
-                return args[0];
-            }
+        doAnswer(invocationOnMock -> {
+            Object[] args = invocationOnMock.getArguments();
+            return args[0];
         }).when(logger).severe(Matchers.anyString());
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
-                Object[] args = invocationOnMock.getArguments();
-                return args[0];
-            }
+        doAnswer(invocationOnMock -> {
+            Object[] args = invocationOnMock.getArguments();
+            return args[0];
         }).when(logger).warning(Matchers.anyString());
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
-                Object[] args = invocationOnMock.getArguments();
-                return args[0];
-            }
+        doAnswer(invocationOnMock -> {
+            Object[] args = invocationOnMock.getArguments();
+            return args[0];
         }).when(logger).info(Matchers.anyString());
         when(server.getLogger()).thenReturn(logger);
         when(server.createInventory(Matchers.any(InventoryHolder.class), Matchers.anyInt(), Matchers.anyString())).thenReturn(inventory);

@@ -1,12 +1,5 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,7 +14,6 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RegionTickEvent;
 import org.redcastlemedia.multitallented.civs.items.CVInventory;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -36,12 +28,14 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+import java.util.*;
+
 @CivsSingleton
 public class WarehouseEffect implements Listener, RegionCreatedListener {
     public static final String KEY = "warehouse";
     public Map<Region, List<CVInventory>> invs = new HashMap<>();
     public Map<Region, HashMap<String, CVInventory>> availableItems = new HashMap<>();
-    private Map<Region, Long> cooldowns = new HashMap<>();
+    private final Map<Region, Long> cooldowns = new HashMap<>();
     private static WarehouseEffect instance = null;
 
     public static WarehouseEffect getInstance() {

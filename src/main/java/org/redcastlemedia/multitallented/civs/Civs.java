@@ -23,11 +23,14 @@ import org.redcastlemedia.multitallented.civs.chat.ChatManager;
 import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsListener;
 import org.redcastlemedia.multitallented.civs.commands.CivCommand;
 import org.redcastlemedia.multitallented.civs.commands.CivsCommand;
 import org.redcastlemedia.multitallented.civs.commands.TabComplete;
 import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
+import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 import org.redcastlemedia.multitallented.civs.regions.effects.ConveyorEffect;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
@@ -52,7 +55,7 @@ import net.milkbowl.vault.permission.Permission;
 public class Civs extends JavaPlugin {
 
     public static File dataLocation;
-    private HashMap<String, CivCommand> commandList = new HashMap<>();
+    private final HashMap<String, CivCommand> commandList = new HashMap<>();
     public static final String NAME = "Civs";
     public static Economy econ;
     public static Permission perm;
@@ -159,13 +162,9 @@ public class Civs extends JavaPlugin {
         CommonScheduler commonScheduler = new CommonScheduler();
         getServer().getScheduler().scheduleSyncRepeatingTask(this, commonScheduler, 4L, 4L);
 
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-
-            @Override
-            public void run() {
-                RegionManager.getInstance().saveNextRegion();
-                TownManager.getInstance().saveNextTown();
-            }
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
+            RegionManager.getInstance().saveNextRegion();
+            TownManager.getInstance().saveNextTown();
         }, 20L, 20L);
     }
 
@@ -241,19 +240,11 @@ public class Civs extends JavaPlugin {
         Reflections reflections = new Reflections(configurationBuilder);
         Set<Class<?>> classes = reflections.getTypesAnnotatedWith(CivsSingleton.class);
         List<Class<?>> classList = new ArrayList<>(classes);
-        classList.sort(new Comparator<Class<?>>() {
-            @Override
-            public int compare(Class<?> o1, Class<?> o2) {
-                return o1.getAnnotation(CivsSingleton.class).priority().compareTo(o2.getAnnotation(CivsSingleton.class).priority());
-            }
-        });
+        classList.sort(Comparator.comparing(o -> o.getAnnotation(CivsSingleton.class).priority()));
         for (Class<?> currentSingleton : classList) {
             try {
-                Method method = currentSingleton.getMethod("getInstance");
-                if (method != null) {
-                    method.invoke(currentSingleton);
-                }
-            } catch (Exception e) {
+                currentSingleton.getMethod("getInstance").invoke(currentSingleton);
+            } catch (Exception ignored) {
 
             }
         }

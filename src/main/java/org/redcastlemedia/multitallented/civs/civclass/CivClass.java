@@ -1,10 +1,8 @@
 package org.redcastlemedia.multitallented.civs.civclass;
 
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.potion.PotionEffectType;
@@ -14,8 +12,9 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
 import org.redcastlemedia.multitallented.civs.spells.SpellType;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class CivClass {
 
@@ -35,9 +34,9 @@ public class CivClass {
     @Getter @Setter
     private int level = 0;
     @Getter
-    private Map<Integer, String> selectedSpells = new HashMap<>();
+    private final Map<Integer, String> selectedSpells = new HashMap<>();
     @Getter
-    private Map<Integer, Integer> spellSlotOrder = new HashMap<>();
+    private final Map<Integer, Integer> spellSlotOrder = new HashMap<>();
 
     public CivClass(UUID id, UUID uuid, String type) {
         this.classId = id;

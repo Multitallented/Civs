@@ -1,15 +1,7 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -34,10 +26,8 @@ import org.redcastlemedia.multitallented.civs.spells.effects.ManaEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.ActionBarUtil;
-import org.redcastlemedia.multitallented.civs.util.PermissionUtil;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.*;
 
 public class Civilian {
 
@@ -96,7 +86,7 @@ public class Civilian {
     @Getter @Setter
     private HashMap<String, Skill> skills = new HashMap<>();
     @Getter
-    private Map<Integer, ItemStack> combatBar = new HashMap<>();
+    private final Map<Integer, ItemStack> combatBar = new HashMap<>();
 
     public Civilian(UUID uuid, String locale, Map<String, Integer> stashItems,
                     Map<CivItem, Integer> exp, int kills, int killStreak, int deaths, int highestKillStreak,
@@ -393,14 +383,11 @@ public class Civilian {
         if (bounties.size() < 2) {
             return;
         }
-        Collections.sort(bounties, new Comparator<Bounty>() {
-            @Override
-            public int compare(Bounty o1, Bounty o2) {
-                if (o1.getAmount() == o2.getAmount()) {
-                    return 0;
-                }
-                return o1.getAmount() > o2.getAmount() ? 1 : -1;
+        bounties.sort((o1, o2) -> {
+            if (o1.getAmount() == o2.getAmount()) {
+                return 0;
             }
+            return o1.getAmount() > o2.getAmount() ? 1 : -1;
         });
     }
 

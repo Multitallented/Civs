@@ -2,11 +2,7 @@ package org.redcastlemedia.multitallented.civs.events;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.redcastlemedia.multitallented.civs.regions.Region;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
-
-import java.util.UUID;
 
 public class RenameTownEvent extends Event {
     private static final HandlerList hList = new HandlerList();

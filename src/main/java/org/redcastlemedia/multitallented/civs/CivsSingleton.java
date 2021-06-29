@@ -8,9 +8,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface CivsSingleton {
-    public SingletonLoadPriority priority() default SingletonLoadPriority.MEDIUM;
+    SingletonLoadPriority priority() default SingletonLoadPriority.MEDIUM;
 
-    public enum SingletonLoadPriority {
+    enum SingletonLoadPriority {
         CRITICAL(100),
         HIGHEST(99),
         HIGHER(80),
@@ -19,7 +19,7 @@ public @interface CivsSingleton {
         LOW(25),
         LOWEST(1);
 
-        private int value;
+        private final int value;
         public int getValue() {
             return this.value;
         }
