@@ -241,20 +241,13 @@ public class Civs extends JavaPlugin {
         Reflections reflections = new Reflections(configurationBuilder);
         Set<Class<?>> classes = reflections.getTypesAnnotatedWith(CivsSingleton.class);
         List<Class<?>> classList = new ArrayList<>(classes);
-        classList.sort(new Comparator<Class<?>>() {
-            @Override
-            public int compare(Class<?> o1, Class<?> o2) {
-                return o1.getAnnotation(CivsSingleton.class).priority().compareTo(o2.getAnnotation(CivsSingleton.class).priority());
-            }
-        });
+        classList.sort(Comparator.comparing(o -> o.getAnnotation(CivsSingleton.class).priority()));
         for (Class<?> currentSingleton : classList) {
             try {
                 Method method = currentSingleton.getMethod("getInstance");
-                if (method != null) {
-                    method.invoke(currentSingleton);
-                }
+                method.invoke(currentSingleton);
             } catch (Exception e) {
-
+                logger.log(Level.SEVERE, "There was an error when calling  " + currentSingleton+".getInstance()", e);
             }
         }
     }
