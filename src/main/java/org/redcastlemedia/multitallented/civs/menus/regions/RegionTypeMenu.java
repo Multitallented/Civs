@@ -322,9 +322,9 @@ public class RegionTypeMenu extends CustomMenu {
                     "payout-power-input").replace("$1", powerInput)));
         }
         if (regionType.getUpkeeps().get(count).getPowerOutput() > 0) {
-            String powerInput = "" + regionType.getUpkeeps().get(count).getPowerInput();
+            String powerOutput = "" + regionType.getUpkeeps().get(count).getPowerOutput();
             lore.addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
-                    "payout-power-output").replace("$1", powerInput)));
+                    "payout-power-output").replace("$1", powerOutput)));
         }
         cvItem.setLore(lore);
         ItemStack itemStack = cvItem.createItemStack();
