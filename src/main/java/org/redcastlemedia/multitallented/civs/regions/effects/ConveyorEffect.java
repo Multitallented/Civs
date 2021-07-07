@@ -380,4 +380,12 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
             returnCart(region, true);
         }
     }
+
+    public void reload() {
+        for (Map.Entry<Region, StorageMinecart> entry : carts.entrySet()) {
+            returnCart(entry.getKey(), false);
+        }
+        carts.clear();
+        cacheDestinationRegions.clear();
+    }
 }
