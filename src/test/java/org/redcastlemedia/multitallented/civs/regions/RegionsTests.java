@@ -842,7 +842,7 @@ public class RegionsTests extends TestUtil {
         } catch (SuccessException se) {
 
         }
-        assertEquals(402, town.getPower());
+        assertEquals(412, town.getPower());
     }
 
     @Test
