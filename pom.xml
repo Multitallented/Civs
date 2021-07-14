@@ -58,7 +58,7 @@
         </repository>
         <repository>
             <id>lumine</id>
-            <url>https://mvn.lumine.io/repository/maven-releases/</url>
+            <url>https://mvn.lumine.io/repository/maven-public/</url>
         </repository>
     </repositories>
 
