@@ -44,6 +44,7 @@ public class TaxCommand extends CivCommand {
         if (government.getGovernmentType() == GovernmentType.LIBERTARIAN ||
                 government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
                 government.getGovernmentType() == GovernmentType.ANARCHY ||
+                government.getGovernmentType() == GovernmentType.DISESTABLISHMENT ||
                 government.getGovernmentType() == GovernmentType.COOPERATIVE ||
                 government.getGovernmentType() == GovernmentType.COMMUNISM) {
 

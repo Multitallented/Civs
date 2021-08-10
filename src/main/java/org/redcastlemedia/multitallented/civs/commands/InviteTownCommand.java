@@ -63,7 +63,7 @@ public class InviteTownCommand extends CivCommand {
                         government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
                         government.getGovernmentType() == GovernmentType.LIBERTARIAN));
         if (player != null && Civs.perm != null && !Civs.perm.has(player, Constants.ADMIN_PERMISSION) &&
-                !inviteAnyone) {
+                !inviteAnyone && government.getGovernmentType() != GovernmentType.DISESTABLISHMENT) {
             if (!town.getPeople().containsKey(player.getUniqueId()) ||
                     (!town.getPeople().get(player.getUniqueId()).contains(Constants.OWNER) &&
                     !town.getPeople().get(player.getUniqueId()).contains("recruiter"))) {

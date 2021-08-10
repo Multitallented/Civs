@@ -397,6 +397,8 @@
 #tut-merchant-13: "Congratulations! You can now sell items you buy from another town's Jade_Mine. This concludes the path of the merchant."
 #anarchy-name: "Anarchy"
 #anarchy-desc: "Anyone can manage town and region membership. No taxes. No alliances."
+#disestablishment-name: "No Government"
+#disestablishment-desc: "Anyone can join and can manage town and region membership. No taxes. No alliances."
 #capitalism-name: "Capitalism"
 #capitalism-desc: "Democracy + Town members can buy extra votes."
 #colonialism-name: "Colonialism"

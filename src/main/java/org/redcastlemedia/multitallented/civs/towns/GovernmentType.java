@@ -7,6 +7,7 @@ public enum GovernmentType {
     COMMUNISM,
     COOPERATIVE,
     ANARCHY,
+    DISESTABLISHMENT,
     LIBERTARIAN,
     SOCIALISM,
     DEMOCRATIC_SOCIALISM,

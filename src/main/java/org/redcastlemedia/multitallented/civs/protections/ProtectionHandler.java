@@ -853,7 +853,8 @@ public class ProtectionHandler implements Listener {
             if (town != null && role.contains(Constants.MEMBER)) {
                 Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
                 if (government.getGovernmentType() == GovernmentType.COMMUNISM ||
-                        government.getGovernmentType() == GovernmentType.ANARCHY) {
+                        government.getGovernmentType() == GovernmentType.ANARCHY ||
+                        government.getGovernmentType() == GovernmentType.DISESTABLISHMENT) {
                     role = Constants.OWNER;
                 }
             }
@@ -955,7 +956,8 @@ public class ProtectionHandler implements Listener {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
             Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
             if (government.getGovernmentType() == GovernmentType.COMMUNISM ||
-                    government.getGovernmentType() == GovernmentType.ANARCHY) {
+                    government.getGovernmentType() == GovernmentType.ANARCHY ||
+                    government.getGovernmentType() == GovernmentType.DISESTABLISHMENT) {
                 role = Constants.OWNER;
             } else if (!role.contains(Constants.OWNER) &&
                     (government.getGovernmentType() == GovernmentType.SOCIALISM ||
@@ -1011,7 +1013,8 @@ public class ProtectionHandler implements Listener {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(currentRegion.getType());
             Government government = GovernmentManager.getInstance().getGovernment(currentTown.getGovernmentType());
             if (government.getGovernmentType() == GovernmentType.COMMUNISM ||
-                    government.getGovernmentType() == GovernmentType.ANARCHY) {
+                    government.getGovernmentType() == GovernmentType.ANARCHY ||
+                    government.getGovernmentType() == GovernmentType.DISESTABLISHMENT) {
                 return false;
             } else if ((government.getGovernmentType() == GovernmentType.SOCIALISM ||
                     government.getGovernmentType() == GovernmentType.DEMOCRATIC_SOCIALISM ||

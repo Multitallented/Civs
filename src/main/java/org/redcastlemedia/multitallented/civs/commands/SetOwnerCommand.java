@@ -114,6 +114,7 @@ public class SetOwnerCommand extends CivCommand {
             }
 
             boolean hasPermission = civilian == null || government.getGovernmentType() == GovernmentType.ANARCHY ||
+                    government.getGovernmentType() == GovernmentType.DISESTABLISHMENT ||
                     (town.getRawPeople().containsKey(civilian.getUuid()) &&
                             town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER));
 

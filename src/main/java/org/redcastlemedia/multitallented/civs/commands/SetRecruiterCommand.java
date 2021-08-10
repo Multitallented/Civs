@@ -77,6 +77,7 @@ public class SetRecruiterCommand extends CivCommand {
 
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         boolean hasPermission = civilian == null || government.getGovernmentType() == GovernmentType.ANARCHY ||
+                government.getGovernmentType() == GovernmentType.DISESTABLISHMENT ||
                 (town.getRawPeople().containsKey(civilian.getUuid()) &&
                         town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER));
 

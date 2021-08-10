@@ -211,6 +211,7 @@ public class TownMenu extends CustomMenu {
             if ((town.getPeople().containsKey(civilian.getUuid()) &&
                     town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER) &&
                     government.getGovernmentType() != GovernmentType.ANARCHY &&
+                    government.getGovernmentType() != GovernmentType.DISESTABLISHMENT &&
                     government.getGovernmentType() != GovernmentType.COMMUNISM &&
                     government.getGovernmentType() != GovernmentType.COLONIALISM) ||
                     (Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
@@ -271,7 +272,8 @@ public class TownMenu extends CustomMenu {
             if (isOwner || colonialOverride) {
                 if (government.getGovernmentType() != GovernmentType.COOPERATIVE &&
                         government.getGovernmentType() != GovernmentType.COMMUNISM &&
-                        government.getGovernmentType() != GovernmentType.ANARCHY) {
+                        government.getGovernmentType() != GovernmentType.ANARCHY &&
+                        government.getGovernmentType() != GovernmentType.DISESTABLISHMENT) {
                     cvItem.getLore().add(LocaleManager.getInstance().getTranslation(
                             player, "town-tax-desc")
                             .replace("$1", town.getName()));

@@ -211,6 +211,7 @@ public class GovernmentManager {
         if (town.getBankAccount() > 0 && Civs.econ != null &&
                 (government.getGovernmentType() == GovernmentType.COMMUNISM ||
                         government.getGovernmentType() == GovernmentType.ANARCHY ||
+                        government.getGovernmentType() == GovernmentType.DISESTABLISHMENT ||
                         government.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
                         government.getGovernmentType() == GovernmentType.LIBERTARIAN)) {
             double size = town.getRawPeople().size();

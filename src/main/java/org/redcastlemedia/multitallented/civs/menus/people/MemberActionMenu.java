@@ -77,7 +77,7 @@ public class MemberActionMenu extends CustomMenu {
                 Civs.perm.has(player, Constants.ADMIN_PERMISSION)));
 
         if (town != null && town.getRawPeople().containsKey(civilian.getUuid()) &&
-                governmentType == GovernmentType.ANARCHY) {
+                (governmentType == GovernmentType.ANARCHY || governmentType == GovernmentType.DISESTABLISHMENT)) {
             viewingSelf = false;
         }
         boolean personIsOwner = false;
