@@ -13,6 +13,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.chat.ChatChannelConfig;
 import org.redcastlemedia.multitallented.civs.civilians.ChatChannel;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
@@ -39,22 +40,32 @@ public class ChatChannelListMenu extends CustomMenu {
         }
         List<ChatChannel> channelList = new ArrayList<>();
         for (ChatChannel.ChatChannelType chatChannelType : ConfigManager.getInstance().getChatChannels().keySet()) {
+            ChatChannelConfig chatChannelConfig = ConfigManager.getInstance().getChatChannels().get(chatChannelType);
+            if (!chatChannelConfig.enabled) {
+                continue;
+            }
             if (chatChannelType != ChatChannel.ChatChannelType.TOWN &&
                     chatChannelType != ChatChannel.ChatChannelType.ALLIANCE &&
                     chatChannelType != ChatChannel.ChatChannelType.NATION) {
                 channelList.add(new ChatChannel(chatChannelType, null));
             }
         }
-        if (ConfigManager.getInstance().getChatChannels().containsKey(ChatChannel.ChatChannelType.TOWN)) {
-            for (Town town : TownManager.getInstance().getTowns()) {
-                if (town.getRawPeople().containsKey(civilian.getUuid())) {
-                    channelList.add(new ChatChannel(ChatChannel.ChatChannelType.TOWN, town));
+        ChatChannelConfig chatChannelTownConfig = ConfigManager.getInstance().getChatChannels().get(ChatChannel.ChatChannelType.TOWN);
+        if (chatChannelTownConfig.enabled) {
+            if (ConfigManager.getInstance().getChatChannels().containsKey(ChatChannel.ChatChannelType.TOWN)) {
+                for (Town town : TownManager.getInstance().getTowns()) {
+                    if (town.getRawPeople().containsKey(civilian.getUuid())) {
+                        channelList.add(new ChatChannel(ChatChannel.ChatChannelType.TOWN, town));
+                    }
                 }
             }
         }
-        if (ConfigManager.getInstance().getChatChannels().containsKey(ChatChannel.ChatChannelType.ALLIANCE)) {
-            for (Alliance alliance : AllianceManager.getInstance().getAllAlliances()) {
-                addAllianceIfMember(civilian, alliance, channelList);
+        ChatChannelConfig chatChannelAllianceConfig = ConfigManager.getInstance().getChatChannels().get(ChatChannel.ChatChannelType.TOWN);
+        if (chatChannelAllianceConfig.enabled) {
+            if (ConfigManager.getInstance().getChatChannels().containsKey(ChatChannel.ChatChannelType.ALLIANCE)) {
+                for (Alliance alliance : AllianceManager.getInstance().getAllAlliances()) {
+                    addAllianceIfMember(civilian, alliance, channelList);
+                }
             }
         }
 

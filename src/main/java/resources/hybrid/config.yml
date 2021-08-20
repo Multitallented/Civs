@@ -248,7 +248,8 @@ civs-item-prefix: "Civs"
 chat-channel-format: "[$channel$]$player$: $message$"
 
 #In order to reference a placeholder use format <%PLACEHOLDER%>
-  #For more formatting options such as using onClick events, custom fonts, or color gradients check out https://docs.adventure.kyori.net/minimessage.html#formatchat-channels:
+#For more formatting options such as using onClick events, custom fonts, or color gradients check out https://docs.adventure.kyori.net/minimessage.html#formatchat-channels:
+chat-channels:
   global:
     enabled: true
     icon: ENDER_CHEST
