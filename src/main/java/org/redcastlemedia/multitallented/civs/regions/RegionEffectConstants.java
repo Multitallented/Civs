@@ -18,8 +18,9 @@ public final class RegionEffectConstants {
     public static final String BUTTON_USE = "button_use";
     public static final String BLOCK_USE = "block_use";
     public static final String DENY_MOB_SPAWN = "deny_mob_spawn";
-
-
+	public static final String BYPASS = "bypass";
+    
+    
     private RegionEffectConstants() {
 
     }
