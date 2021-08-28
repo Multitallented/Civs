@@ -86,7 +86,7 @@ max_power-buff-desc: Augmentation de $1% de la puissance maximale
 cost-buff-desc: Remboursement de $1% sur tous les $2
 shop: Boutique
 buy-item: À Vendre
-price: Prix
+price: Prix $1 $
 buy: Acheter
 cancel: Annuler
 item-bought: Félicitations! Vous venez d'acheter une $1 pour $2
