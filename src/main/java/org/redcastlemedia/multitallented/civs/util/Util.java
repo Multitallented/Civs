@@ -819,14 +819,20 @@ public final class Util {
         }
     }
 
-    public static String formatTime(long duration) {
+    public static String formatTime(Player player, long duration) {
         if (duration < 60) {
-            return duration + "s";
+            return LocaleManager.getInstance().getTranslation(player, "time-seconds")
+                    .replace("$1", "" + duration);
         } else if (duration < 3600) {
-            return (int) (duration / 60) + "m " + (int) (duration % 60) + "s";
+            return LocaleManager.getInstance().getTranslation(player, "time-minutes")
+                    .replace("$1", "" + (int) (duration / 60))
+                    .replace("$2", "" + (int) (duration % 60));
         } else {
             int hours = (int) (duration / 3600);
-            return hours + "h " + (int) ((duration - hours * 3600) / 60) + "m " + (int) (duration % 60) + "s";
+            return LocaleManager.getInstance().getTranslation(player, "time-hours")
+                    .replace("$1", "" + hours)
+                    .replace("$2", "" + (int) ((duration - hours * 3600) / 60))
+                    .replace("$3", "" + (int) (duration % 60));
         }
     }
 }

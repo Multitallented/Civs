@@ -18,14 +18,14 @@ items:
   upkeep-working:
     index: 13
     icon: GREEN_WOOL
-    name: operation
-    desc: region-working
+    name: region-working
+    desc: region-cooldown{$cooldown$
     actions: []
   upkeep-not-working:
     index: 13
     icon: RED_WOOL
-    name: operation
-    desc: region-not-working
+    name: region-not-working
+    desc: region-cooldown{$cooldown$
     actions:
       - menu:recipe?region=$region$&regionType=$regionTypeName$&recipe=failing:$failingUpkeeps$
   location:

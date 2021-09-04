@@ -87,7 +87,7 @@ public class CooldownEffect extends Effect {
         long rawCooldown = (long) rawDuration;
         if (System.currentTimeMillis() < rawCooldown) {
             if (!this.silent) {
-                String cooldownString = Util.formatTime((int) ((System.currentTimeMillis() - rawCooldown) / -1000));
+                String cooldownString = Util.formatTime(player, (int) ((System.currentTimeMillis() - rawCooldown) / -1000));
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                         SpellEffectConstants.COOLDOWN).replace("$1", cooldownString));
             }

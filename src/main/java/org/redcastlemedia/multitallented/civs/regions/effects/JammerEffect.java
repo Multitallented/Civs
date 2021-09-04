@@ -55,7 +55,7 @@ public class JammerEffect implements Listener, RegionCreatedListener {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(event.getPlayer().getUniqueId());
                 event.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
                         .getTranslation(civilian.getLocale(), "cooldown")
-                        .replace("$1", Util.formatTime(cooldown)));
+                        .replace("$1", Util.formatTime(event.getPlayer(), cooldown)));
                 return;
             } else {
                 cooldowns.remove(event.getPlayer().getUniqueId());
