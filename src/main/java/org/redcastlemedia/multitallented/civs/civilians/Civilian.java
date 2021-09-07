@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,6 +21,7 @@ import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.anticheat.ExemptionType;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
+import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.civclass.ClassType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
@@ -89,7 +91,7 @@ public class Civilian {
     private boolean useAnnouncements;
     @Getter @Setter
     private ChatChannel chatChannel;
-    @Getter
+
     private CivClass currentClass;
     @Getter
     private final Set<ExemptionType> exemptions = new HashSet<>();
@@ -121,6 +123,20 @@ public class Civilian {
             locale = ConfigManager.getInstance().getDefaultLanguage();
         }
         return locale;
+    }
+    public CivClass getCurrentClass() {
+        if (currentClass == null) {
+            Civs.logger.log(Level.WARNING, "Null class detected for player {}", uuid);
+            if (!civClasses.isEmpty()) {
+                ClassManager.getInstance().switchClass(this, this.civClasses.iterator().next());
+            } else {
+                currentClass = ClassManager.getInstance().createDefaultClass(uuid);
+            }
+            if (currentClass == null) {
+                Civs.logger.log(Level.SEVERE, "Unable to recover default class for player {}", uuid);
+            }
+        }
+        return currentClass;
     }
     public void setLocale(String locale) {
         this.locale = locale;
