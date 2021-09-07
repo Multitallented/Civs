@@ -255,9 +255,9 @@ public class ClassManager {
         civClass.resetSpellSlotOrder();
         civClass.setMaxMana(classType.getMaxMana());
         civClass.setManaPerSecond(classType.getManaPerSecond());
-        if (civilian.getCurrentClass() != null) {
-            civilian.getCurrentClass().setSelectedClass(false);
-            saveClass(civilian.getCurrentClass());
+        if (civilian.getRawCurrentClass() != null) {
+            civilian.getRawCurrentClass().setSelectedClass(false);
+            saveClass(civilian.getRawCurrentClass());
         }
         civClass.setSelectedClass(true);
         civilian.setCurrentClass(civClass);

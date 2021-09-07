@@ -124,6 +124,9 @@ public class Civilian {
         }
         return locale;
     }
+    public CivClass getRawCurrentClass() {
+        return currentClass;
+    }
     public CivClass getCurrentClass() {
         if (currentClass == null) {
             Civs.logger.log(Level.WARNING, "Null class detected for player {}", uuid);
