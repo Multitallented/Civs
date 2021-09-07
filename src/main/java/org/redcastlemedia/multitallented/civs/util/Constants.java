@@ -34,6 +34,7 @@ public final class Constants {
     public static final String BOUNTY_PLAYER_PERMISSION = "civs.bounty.player";
     public static final String BOUNTY_TOWN_PERMISSION = "civs.bounty.town";
     public static final String MENU_PERMISSION = "civs.menu";
+    public static final String STREAM_PERMISSION = "civs.streaming";
 
     private Constants() {
 

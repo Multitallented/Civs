@@ -136,10 +136,14 @@ public class TownMenu extends CustomMenu {
                 CVItem cvItem = menuIcon.createCVItem(player, count);
                 World world = town.getLocation().getWorld();
                 String worldName = world == null ? "null" : world.getName();
-                cvItem.getLore().add(worldName + " " +
-                        (int) town.getLocation().getX() + "x " +
-                        (int) town.getLocation().getY() + "y " +
-                        (int) town.getLocation().getZ() + "z");
+                if (Civs.perm == null || !Civs.perm.playerHas(player, Constants.STREAM_PERMISSION)) {
+                    String coordString = LocaleManager.getInstance().getTranslation(player, "coords")
+                            .replace("$1", worldName)
+                            .replace("$2", "" + ((int) town.getLocation().getX()))
+                            .replace("$3", "" + ((int) town.getLocation().getY()))
+                            .replace("$4", "" + ((int) town.getLocation().getZ()));
+                    cvItem.getLore().add(coordString);
+                }
                 ItemStack itemStack = cvItem.createItemStack();
                 putActions(civilian, menuIcon, itemStack, count);
                 return itemStack;

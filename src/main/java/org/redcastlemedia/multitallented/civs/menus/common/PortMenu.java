@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -80,6 +81,9 @@ public class PortMenu extends CustomMenu {
     @Override @SuppressWarnings("unchecked")
     public ItemStack createItemStack(Civilian civilian, MenuIcon menuIcon, int count) {
         Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            return new ItemStack(Material.AIR);
+        }
         if ("ports".equals(menuIcon.getKey())) {
             List<Region> regions = (List<Region>) MenuManager.getData(civilian.getUuid(), "ports");
             int page = (int) MenuManager.getData(civilian.getUuid(), Constants.PAGE);
@@ -94,10 +98,14 @@ public class PortMenu extends CustomMenu {
             CVItem cvItem = regionType.getShopIcon(player);
             cvItem.setDisplayName(regionType.getDisplayName(player));
             cvItem.getLore().clear();
-            cvItem.getLore().add(region.getLocation().getWorld().getName() + " " +
-                    ((int) region.getLocation().getX()) + "x " +
-                    ((int) region.getLocation().getY()) + "y " +
-                    ((int) region.getLocation().getZ()) + "z ");
+            if (Civs.perm == null || !Civs.perm.playerHas(player, Constants.STREAM_PERMISSION)) {
+                String coordString = LocaleManager.getInstance().getTranslation(player, "coords")
+                        .replace("$1", region.getLocation().getWorld().getName())
+                        .replace("$2", "" + ((int) region.getLocation().getX()))
+                        .replace("$3", "" + ((int) region.getLocation().getY()))
+                        .replace("$4", "" + ((int) region.getLocation().getZ()));
+                cvItem.getLore().add(coordString);
+            }
             Town town = TownManager.getInstance().getTownAt(region.getLocation());
             if (town != null) {
                 cvItem.getLore().add(town.getName());

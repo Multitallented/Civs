@@ -155,11 +155,16 @@ public class RegionMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("location".equals(menuIcon.getKey())) {
+            if (Civs.perm != null && Civs.perm.playerHas(player, Constants.STREAM_PERMISSION)) {
+                return new ItemStack(Material.AIR);
+            }
             CVItem cvItem = CVItem.createCVItemFromString(menuIcon.getIcon());
-            cvItem.setDisplayName(region.getLocation().getWorld().getName() + " " +
-                    (int) region.getLocation().getX() + "x, " +
-                    (int) region.getLocation().getY() + "y, " +
-                    (int) region.getLocation().getZ() + "z");
+            String coordString = LocaleManager.getInstance().getTranslation(player, "coords")
+                    .replace("$1", region.getLocation().getWorld().getName())
+                    .replace("$2", "" + ((int) region.getLocation().getX()))
+                    .replace("$3", "" + ((int) region.getLocation().getY()))
+                    .replace("$4", "" + ((int) region.getLocation().getZ()));
+            cvItem.setDisplayName(coordString);
             if (town != null) {
                 cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                         menuIcon.getDesc()).replace("$1", town.getName())));

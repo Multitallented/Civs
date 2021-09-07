@@ -185,6 +185,7 @@
 #town-power: "Power: $1/$2"
 #port-warmup: "You will be teleported in $1s"
 #teleported: "You have been teleported!"
+#coords: "$1 $2x $3y $4z"
 #location: "Location"
 #location-set: "$1 location set"
 #rename-town: "Rename town"

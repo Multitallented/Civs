@@ -52,4 +52,7 @@ permissions:
   civs.bypasspvp:
     description: Lets you bypass war machines, bounties, and other combat features
     default: false
+  civs.streaming:
+    description: Hides coords and other identifying info for streamers
+    default: false
 loadafter: [Vault, PlaceholderAPI, MMOItems]
