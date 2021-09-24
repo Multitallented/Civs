@@ -4,6 +4,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.chat.ChatChannelConfig;
 import org.redcastlemedia.multitallented.civs.civilians.ChatChannel;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -28,8 +30,10 @@ public abstract class ToggleChatChannelCommand<T> extends CivCommand {
         T o = getRelevantTarget(civilian, args);
 
         LocaleManager localeManager = LocaleManager.getInstance();
-
-        if (isValid(civilian, o)) {
+    
+        ChatChannelConfig chatChannelConfig = ConfigManager.getInstance().getChatChannels().get(this.channelType);
+    
+        if (isValid(civilian, o) && chatChannelConfig.enabled) {
             civilian.setChatChannel(getChatChannel(civilian, o));
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "chat-channel-set").replace("$1", civilian.getChatChannel().getName(player)));
