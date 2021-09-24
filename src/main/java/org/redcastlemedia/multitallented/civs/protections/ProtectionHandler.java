@@ -68,7 +68,6 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -843,6 +842,12 @@ public class ProtectionHandler implements Listener {
         Town town = TownManager.getInstance().getTownAt(location);
         RegionManager regionManager = RegionManager.getInstance();
         for (Region region : regionManager.getContainingRegions(location, mod)) {
+            if (region != null &&
+                    region.getEffects().get(type) != null &&
+                    region.getEffects().get(type).equals(RegionEffectConstants.BYPASS) &&
+                    !region.getLocation().equals(location)) {
+                continue;
+            }
             if (!region.effects.containsKey(type)) {
                 continue;
             }
@@ -897,6 +902,13 @@ public class ProtectionHandler implements Listener {
 
     static boolean shouldBlockAction(Location location, String type) {
         RegionManager regionManager = RegionManager.getInstance();
+        Region region = regionManager.getRegionAt(location);
+        if (region != null &&
+                region.getEffects().get(type) != null &&
+                region.getEffects().get(type).equals(RegionEffectConstants.BYPASS) &&
+                !region.getLocation().equals(location)) {
+            return false;
+        }
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(location);
         if (town != null) {
@@ -910,7 +922,7 @@ public class ProtectionHandler implements Listener {
                 }
             }
         }
-        Region region = regionManager.getRegionAt(location);
+        
         return region != null && region.effects.containsKey(type);
     }
 
@@ -919,6 +931,14 @@ public class ProtectionHandler implements Listener {
             return false;
         }
         RegionManager regionManager = RegionManager.getInstance();
+        Region region = regionManager.getRegionAt(location);
+        if (region != null &&
+                region.getEffects().get(type) != null &&
+                region.getEffects().get(type).equals(RegionEffectConstants.BYPASS) &&
+                !region.getLocation().equals(location)) {
+            return false;
+        }
+        
         TownManager townManager = TownManager.getInstance();
         Town town = townManager.getTownAt(location);
         outer: if (town != null) {
@@ -940,7 +960,6 @@ public class ProtectionHandler implements Listener {
                 return true;
             }
         }
-        Region region = regionManager.getRegionAt(location);
         if (region == null ||
                 !region.getEffects().containsKey(type)) {
             return false;
@@ -987,6 +1006,12 @@ public class ProtectionHandler implements Listener {
     }
 
     private boolean shouldBlockActionInferFromOrigin(Location location, String type, Town town, Region region) {
+        if (region != null &&
+                region.getEffects().get(type) != null &&
+                region.getEffects().get(type).equals(RegionEffectConstants.BYPASS) &&
+                !region.getLocation().equals(location)) {
+            return false;
+        }
         RegionManager regionManager = RegionManager.getInstance();
         TownManager townManager = TownManager.getInstance();
         Town currentTown = townManager.getTownAt(location);
