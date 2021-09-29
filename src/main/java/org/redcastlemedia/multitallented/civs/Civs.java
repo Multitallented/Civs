@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.pl3x.map.api.Pl3xMap;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -27,6 +28,7 @@ import org.redcastlemedia.multitallented.civs.commands.CivCommand;
 import org.redcastlemedia.multitallented.civs.commands.CivsCommand;
 import org.redcastlemedia.multitallented.civs.commands.TabComplete;
 import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
+import org.redcastlemedia.multitallented.civs.pl3xmap.Pl3xMapHook;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.ConveyorEffect;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
@@ -222,10 +224,15 @@ public class Civs extends JavaPlugin {
         if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
             discordSRV = DiscordSRV.getPlugin();
         }
-        Bukkit.getPluginManager().registerEvents(new DynmapHook(), this);
+
         if (Bukkit.getPluginManager().isPluginEnabled("dynmap")) {
+            Bukkit.getPluginManager().registerEvents(new DynmapHook(), this);
             DynmapHook.dynmapCommonAPI = (DynmapCommonAPI) Bukkit.getPluginManager().getPlugin("dynmap");
             DynmapHook.initMarkerSet();
+        }
+
+        if (Bukkit.getPluginManager().isPluginEnabled("Pl3xMap")) {
+            Bukkit.getPluginManager().registerEvents(new Pl3xMapHook(), this);
         }
     }
 

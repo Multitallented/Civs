@@ -19,6 +19,7 @@ softdepend:
 - WitherAC
 - MMOLib
 - Reflex
+- Pl3xMap
 commands:
   cv:
     aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'towny', 'fa', 'f', 'faction']
