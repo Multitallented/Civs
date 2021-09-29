@@ -4,7 +4,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -68,6 +67,7 @@ public class ChatManager {
         Component parse = mm.parse(format);
 
         for (CommandSender recipient : recipients) {
+            recipient.spigot().sendMessage();
             Audience sender = bukkitAudiences.sender(recipient);
             sender.sendMessage(parse);
         }

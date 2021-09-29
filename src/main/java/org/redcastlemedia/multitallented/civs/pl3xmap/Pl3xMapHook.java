@@ -27,18 +27,36 @@ import java.util.logging.Level;
 
 public class Pl3xMapHook implements Listener {
     public static Pl3xMap pl3xMap = null;
-    private static Map<UUID, SimpleLayerProvider> map = new HashMap<>();
+    private static Map<UUID, Providers> map = new HashMap<>();
+
+    private static class Providers {
+        SimpleLayerProvider towns;
+        SimpleLayerProvider regions;
+
+        public Providers(SimpleLayerProvider towns, SimpleLayerProvider regions) {
+            this.towns = towns;
+            this.regions = regions;
+        }
+    }
+
     public static void initMarkerSet() {
         if (pl3xMap == null) {
             pl3xMap = Pl3xMapProvider.get();
-            pl3xMap.mapWorlds().forEach(a->{
-                SimpleLayerProvider layerProvider = SimpleLayerProvider.builder("Civs-" +a.name())
+            pl3xMap.mapWorlds().forEach(a -> {
+                SimpleLayerProvider layerProviderTowns = SimpleLayerProvider.builder("Towns")
                         .defaultHidden(false)
                         .showControls(true)
-                        .zIndex(5)
+                        .zIndex(90)
                         .build();
-                a.layerRegistry().register(Key.of("Civs"), layerProvider);
-                map.put(a.uuid(), layerProvider);
+                a.layerRegistry().register(Key.of("Civs-Towns"), layerProviderTowns);
+
+                SimpleLayerProvider layerProviderRegions = SimpleLayerProvider.builder("Regions")
+                        .defaultHidden(false)
+                        .showControls(true)
+                        .zIndex(91)
+                        .build();
+                a.layerRegistry().register(Key.of("Civs-Regions"), layerProviderRegions);
+                map.put(a.uuid(), new Providers(layerProviderTowns, layerProviderRegions));
             });
 
             for (Region region : RegionManager.getInstance().getAllRegions()) {
@@ -46,7 +64,7 @@ public class Pl3xMapHook implements Listener {
                 if (!"".equals(regionType.getDynmapMarkerKey())) {
                     createMarker(region.getLocation(),
                             regionType.getDisplayName(),
-                            regionType.getDynmapMarkerKey());
+                            regionType.getDynmapMarkerKey(), region);
                 }
             }
             for (Town town : TownManager.getInstance().getTowns()) {
@@ -57,7 +75,7 @@ public class Pl3xMapHook implements Listener {
 
     private static void createAreaMarker(Town town, TownType townType) {
         initMarkerSet();
-        String markerId = "town" + town.getName();
+        String markerId = "town" + town.getName().replaceAll("[\\W_]", "");;;
         int radius = townType.getBuildRadius();
         int centerX = town.getLocation().getBlockX();
         int centerZ = town.getLocation().getBlockZ();
@@ -65,19 +83,18 @@ public class Pl3xMapHook implements Listener {
         double x2 = centerX - radius;
         double z1 = centerZ + radius;
         double z2 = centerZ - radius;
-        double[] x = { x1, x2 };
-        double[] z = { z1, z2 };
+
         try {
             World world = town.getLocation().getWorld();
             if (map.containsKey(world.getUID())) {
                 Rectangle rectangle = Marker.rectangle(Point.point(x1, z1), Point.point(x2, z2));
                 rectangle.markerOptions(MarkerOptions.builder()
-                        .clickTooltip(town.getName())
+                        .hoverTooltip(town.getName())
                         .fill(true)
                         .fillColor(Color.RED)
-                        .fillOpacity(50)
+                        .fillOpacity(0.2)
                         .build());
-                map.get(world.getUID()).addMarker(Key.key(markerId), rectangle);
+                map.get(world.getUID()).towns.addMarker(Key.key(markerId), rectangle);
             }
 
         } catch (NullPointerException npe) {
@@ -85,17 +102,33 @@ public class Pl3xMapHook implements Listener {
         }
     }
 
-    private static void createMarker(Location location, String label, String iconName) {
-        initMarkerSet();
-            Town townAt = TownManager.getInstance().getTownAt(location);
-            World world = townAt.getLocation().getWorld();
+    private static void createMarker(Location location, String label, String iconName, Region region) {
+        World world = location.getWorld();
 
-            if (map.containsKey(world.getUID())) {
-                SimpleLayerProvider layerProvider = map.get(world.getUID());
-                String key = Region.locationToString(location);
-                layerProvider.addMarker(Key.of(key),
-                        Marker.icon(Point.fromLocation(location), Key.key(iconName), 5));
-            }
+        if (map.containsKey(world.getUID())) {
+            SimpleLayerProvider layerProvider = map.get(world.getUID()).regions;
+            String key = Region.locationToString(location).replaceAll("[\\W_]", "");
+            layerProvider.addMarker(Key.of(key + "icon"),
+                    Marker.icon(Point.fromLocation(location), Key.key(iconName), 5));
+
+            int centerX = region.getLocation().getBlockX();
+            int centerZ = region.getLocation().getBlockZ();
+            double x1 = centerX + region.getRadiusXP();
+            double x2 = centerX - region.getRadiusXN();
+            double z1 = centerZ + region.getRadiusZP();
+            double z2 = centerZ - region.getRadiusZN();
+
+            Rectangle rectangle = Marker.rectangle(Point.point(x1, z1), Point.point(x2, z2));
+            rectangle.markerOptions(MarkerOptions.builder()
+                            .fillOpacity(0.001)
+                            .fill(true)
+                            .fillColor(Color.getHSBColor(204, 153, 255))
+                            .strokeColor(Color.getHSBColor(153, 102, 255))
+                            .hoverTooltip(region.getType())
+                    .build());
+            layerProvider.addMarker(Key.of(key), rectangle);
+
+        }
 
     }
 
@@ -105,8 +138,8 @@ public class Pl3xMapHook implements Listener {
         World world = townAt.getLocation().getWorld();
 
         if (map.containsKey(world.getUID())) {
-            SimpleLayerProvider layerProvider = map.get(world.getUID());
-            String key = Region.locationToString(location);
+            SimpleLayerProvider layerProvider = map.get(world.getUID()).regions;
+            String key = Region.locationToString(location).replaceAll("[\\W_]", "");;;
             layerProvider.removeMarker(Key.of(key));
         }
 
@@ -114,11 +147,11 @@ public class Pl3xMapHook implements Listener {
 
     private static void deleteTownMarker(String townName) {
         initMarkerSet();
-        String markerId = "town" + townName;
+        String markerId = "town" + townName.replaceAll("[\\W_]", "");;;
         Town town = TownManager.getInstance().getTown(townName);
         World world = town.getLocation().getWorld();
         if (map.containsKey(world.getUID())) {
-            SimpleLayerProvider layerProvider = map.get(world.getUID());
+            SimpleLayerProvider layerProvider = map.get(world.getUID()).towns;
             layerProvider.removeMarker(Key.of(markerId));
         }
     }
@@ -157,9 +190,11 @@ public class Pl3xMapHook implements Listener {
         if (!"".equals(event.getRegionType().getDynmapMarkerKey())) {
             createMarker(event.getRegion().getLocation(),
                     event.getRegionType().getDisplayName(),
-                    event.getRegionType().getDynmapMarkerKey());
+                    event.getRegionType().getDynmapMarkerKey(),
+                    event.getRegion());
         }
     }
+
     @EventHandler
     public void onRegionDestroyed(RegionDestroyedEvent event) {
         deleteRegionMarker(event.getRegion().getLocation());
