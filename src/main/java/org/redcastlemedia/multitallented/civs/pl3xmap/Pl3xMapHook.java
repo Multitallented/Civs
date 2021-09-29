@@ -74,8 +74,7 @@ public class Pl3xMapHook implements Listener {
     }
 
     private static void createAreaMarker(Town town, TownType townType) {
-        initMarkerSet();
-        String markerId = "town" + town.getName().replaceAll("[\\W_]", "");;;
+        String markerId = "town" + town.getName().replaceAll("[\\W_]", "");
         int radius = townType.getBuildRadius();
         int centerX = town.getLocation().getBlockX();
         int centerZ = town.getLocation().getBlockZ();
@@ -133,7 +132,6 @@ public class Pl3xMapHook implements Listener {
     }
 
     private static void deleteRegionMarker(Location location) {
-        initMarkerSet();
         Town townAt = TownManager.getInstance().getTownAt(location);
         World world = townAt.getLocation().getWorld();
 
@@ -146,7 +144,6 @@ public class Pl3xMapHook implements Listener {
     }
 
     private static void deleteTownMarker(String townName) {
-        initMarkerSet();
         String markerId = "town" + townName.replaceAll("[\\W_]", "");;;
         Town town = TownManager.getInstance().getTown(townName);
         World world = town.getLocation().getWorld();
