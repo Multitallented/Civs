@@ -61,6 +61,10 @@
             <id>lumine</id>
             <url>https://mvn.lumine.io/repository/maven-public/</url>
         </repository>
+        <repository>
+            <id>pl3x-repo</id>
+            <url>https://repo.pl3x.net/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -210,6 +214,12 @@
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-bukkit</artifactId>
             <version>7.2.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.pl3x.map</groupId>
+            <artifactId>pl3xmap-api</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

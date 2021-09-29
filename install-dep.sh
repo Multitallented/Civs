@@ -1,0 +1,2 @@
+mvn install:install-file -Dfile=MythicLib-1.1.3.jar -DgroupId=io.lumine -DartifactId=MythicLib -Dversion=1.0.17 -Dpackaging=jar
+mvn install:install-file -Dfile=MMOItems-6.6.0.jar -DgroupId=net.Indyuce -DartifactId=MMOItems -Dversion=6.5.4 -Dpackaging=jar
