@@ -67,7 +67,6 @@ public class ChatManager {
         Component parse = mm.parse(format);
 
         for (CommandSender recipient : recipients) {
-            recipient.spigot().sendMessage();
             Audience sender = bukkitAudiences.sender(recipient);
             sender.sendMessage(parse);
         }
