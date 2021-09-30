@@ -179,6 +179,8 @@ public class ConfigManager {
 
     @Getter private boolean safeWE;
 
+    @Getter private String pl3xMapTownMarkerDesc;
+
     public ConfigManager() {
         loadDefaults();
     }
@@ -469,6 +471,14 @@ public class ConfigManager {
 
             safeWE = config.getBoolean("safe-worldedit", false);
 
+            pl3xMapTownMarkerDesc = config.getString("pl3xmap-town-desc",
+                    "<h3>%town%</h3> " +
+                        "<b>%town_type%</b> </br>" +
+                    "════════</br>" +
+                    "<b>Government</b>: %government% </br>" +
+                    "<b>Players</b>: %player_count% </br>" +
+                    "<b>Alliance</b>: %alliance% </br>" +
+                    "");
 
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read from config.yml", e);

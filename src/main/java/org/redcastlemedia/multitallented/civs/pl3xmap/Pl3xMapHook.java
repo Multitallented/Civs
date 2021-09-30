@@ -10,20 +10,23 @@ import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.events.*;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.towns.*;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public class Pl3xMapHook implements Listener {
     public static Pl3xMap pl3xMap = null;
@@ -87,11 +90,24 @@ public class Pl3xMapHook implements Listener {
             World world = town.getLocation().getWorld();
             if (map.containsKey(world.getUID())) {
                 Rectangle rectangle = Marker.rectangle(Point.point(x1, z1), Point.point(x2, z2));
+
+                HashSet<Alliance> alliances = AllianceManager.getInstance().getAlliances(town);
+                String ally = alliances.stream().map(Alliance::getName).collect(Collectors.joining(", "));
+
+                Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+
                 rectangle.markerOptions(MarkerOptions.builder()
                         .hoverTooltip(town.getName())
                         .fill(true)
                         .fillColor(Color.RED)
                         .fillOpacity(0.2)
+                        .clickTooltip(
+                                ConfigManager.getInstance().getPl3xMapTownMarkerDesc()
+                                        .replaceAll("%town%", town.getName())
+                                        .replaceAll("%town_type%", townType.getDisplayName())
+                                        .replaceAll("%player_count%", String.valueOf(town.getPeople().size()))
+                                        .replaceAll("%government%", government.getName())
+                                        .replaceAll("%alliance%", ally))
                         .build());
                 map.get(world.getUID()).towns.addMarker(Key.key(markerId), rectangle);
             }
@@ -195,5 +211,19 @@ public class Pl3xMapHook implements Listener {
     @EventHandler
     public void onRegionDestroyed(RegionDestroyedEvent event) {
         deleteRegionMarker(event.getRegion().getLocation());
+    }
+
+    @EventHandler
+    public void onChangeGoverment(TownChangedGovermnentEvent event) {
+        deleteTownMarker(event.getTown().getName());
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(event.getTown().getType());
+        createAreaMarker(event.getTown(), townType);
+    }
+
+    @EventHandler
+    public void onPlayerJoinTown(PlayerAcceptsTownInviteEvent event) {
+        deleteTownMarker(event.getTown().getName());
+        TownType townType = (TownType) ItemManager.getInstance().getItemType(event.getTown().getType());
+        createAreaMarker(event.getTown(), townType);
     }
 }
