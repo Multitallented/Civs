@@ -32,7 +32,8 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 
-@CivsMenu(name = "confirmation") @SuppressWarnings("unused")
+@CivsMenu(name = "confirmation")
+@SuppressWarnings("unused")
 public class ConfirmationMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -88,10 +89,12 @@ public class ConfirmationMenu extends CustomMenu {
                 if (town != null) {
                     PlayerLeaveTownEvent event = new PlayerLeaveTownEvent(civilian.getUuid(), town);
                     Bukkit.getPluginManager().callEvent(event);
-                    town.getRawPeople().remove(civilian.getUuid());
-                    player.sendMessage(LocaleManager.getInstance().getTranslation(player,
-                            "you-left-town").replace("$1", town.getName()));
-                    TownManager.getInstance().saveTown(town);
+                    if (!event.isCancelled()) {
+                        town.getRawPeople().remove(civilian.getUuid());
+                        player.sendMessage(LocaleManager.getInstance().getTranslation(player,
+                                "you-left-town").replace("$1", town.getName()));
+                        TownManager.getInstance().saveTown(town);
+                    }
                 }
                 player.closeInventory();
             }
