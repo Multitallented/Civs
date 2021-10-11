@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
+import org.redcastlemedia.multitallented.civs.events.PlayerLeaveTownEvent;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -31,7 +32,8 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.*;
 
-@CivsMenu(name = "confirmation") @SuppressWarnings("unused")
+@CivsMenu(name = "confirmation")
+@SuppressWarnings("unused")
 public class ConfirmationMenu extends CustomMenu {
     @Override
     public Map<String, Object> createData(Civilian civilian, Map<String, String> params) {
@@ -85,10 +87,14 @@ public class ConfirmationMenu extends CustomMenu {
                 }
             } else if ("leave".equals(type)) {
                 if (town != null) {
-                    town.getRawPeople().remove(civilian.getUuid());
-                    player.sendMessage(LocaleManager.getInstance().getTranslation(player,
-                            "you-left-town").replace("$1", town.getName()));
-                    TownManager.getInstance().saveTown(town);
+                    PlayerLeaveTownEvent event = new PlayerLeaveTownEvent(civilian.getUuid(), town);
+                    Bukkit.getPluginManager().callEvent(event);
+                    if (!event.isCancelled()) {
+                        town.getRawPeople().remove(civilian.getUuid());
+                        player.sendMessage(LocaleManager.getInstance().getTranslation(player,
+                                "you-left-town").replace("$1", town.getName()));
+                        TownManager.getInstance().saveTown(town);
+                    }
                 }
                 player.closeInventory();
             }
