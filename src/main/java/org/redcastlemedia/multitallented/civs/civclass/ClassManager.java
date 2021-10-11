@@ -239,14 +239,13 @@ public class ClassManager {
         String className = ConfigManager.getInstance().getDefaultClass();
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
         ClassType classType = (ClassType) ItemManager.getInstance().getItemType(className);
-        createNewClass(civilian, classType);
-        return civilian.getCurrentClass();
+        return createNewClass(civilian, classType);
     }
 
-    public void createNewClass(Civilian civilian, ClassType classType) {
+    public CivClass createNewClass(Civilian civilian, ClassType classType) {
         Player player = Bukkit.getPlayer(civilian.getUuid());
         if (player == null) {
-            return;
+            return null;
         }
         if (!civilian.getCombatBar().isEmpty()) {
             SpellUtil.removeCombatBar(player, civilian);
@@ -267,6 +266,7 @@ public class ClassManager {
         }
         classes.get(civilian.getUuid()).add(civClass);
         saveClass(civClass);
+        return civClass;
     }
 
     public void switchClass(Civilian civilian, CivClass civClass) {

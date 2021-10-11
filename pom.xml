@@ -61,6 +61,10 @@
             <id>lumine</id>
             <url>https://mvn.lumine.io/repository/maven-public/</url>
         </repository>
+        <repository>
+            <id>pl3x-repo</id>
+            <url>https://repo.pl3x.net/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -69,14 +73,6 @@
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.12</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.javassist/javassist -->
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>3.26.0-GA</version>
             <scope>compile</scope>
         </dependency>
 
@@ -169,24 +165,24 @@
 <!--            <version>0.0.1</version>-->
 <!--            <scope>system</scope>-->
 <!--            <systemPath>${basedir}/lib/AAAPI.jar</systemPath>-->
-<!--        </dependency>-->
+<!--        </dependency> -->
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
-            <version>4.8.1</version>
+            <version>4.9.1</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
-            <version>4.1.0-SNAPSHOT</version>
+            <version>4.2.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <version>4.0.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -197,7 +193,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.6</version>
+            <version>1.18.20</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -210,6 +206,12 @@
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-bukkit</artifactId>
             <version>7.2.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.pl3x.map</groupId>
+            <artifactId>pl3xmap-api</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -294,14 +296,12 @@
                                 <include>org.reflections.**</include>
                             </includes>
                         </relocation>
-                        <!-- Should be safe to drop on 1.17 -->
+                        <!-- Should be safe to drop on 1.17-->
                         <relocation>
                             <pattern>net.kyori</pattern>
-                            <shadedPattern>shaded.net.kyori</shadedPattern>
-                            <includes>
-                                <include>net.kyori.**</include>
-                            </includes>
+                            <shadedPattern>civs.net.kyori</shadedPattern>
                         </relocation>
+
                     </relocations>
                 </configuration>
                 <executions>

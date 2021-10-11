@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.events.TownChangedGovermnentEvent;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.ai.AIManager;
@@ -237,6 +238,10 @@ public class GovernmentManager {
         town.setColonialTown(null);
         town.setGovTypeChangedToday(true);
         town.setGovernmentType(governmentType);
+
+        TownChangedGovermnentEvent townChangedGovermentEvent = new TownChangedGovermnentEvent(town, prevGovernment);
+        Bukkit.getPluginManager().callEvent(townChangedGovermentEvent);
+
         if (save) {
             TownManager.getInstance().saveTown(town);
         }
