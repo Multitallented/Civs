@@ -626,14 +626,20 @@ public class TownManager {
     }
 
     public Town isOwnerOfATown(Civilian civilian) {
+        Town biggestTown = null;
+        int population = 0;
         for (Town town : sortedTowns) {
             if (!town.getRawPeople().containsKey(civilian.getUuid()) ||
                     !town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
                 continue;
             }
-            return town;
+            int currentPopulation = town.getPopulation();
+            if (biggestTown == null || (currentPopulation >= population)) {
+                biggestTown = town;
+                population = currentPopulation;
+            }
         }
-        return null;
+        return biggestTown;
     }
 
     public boolean townNameExists(String name) {
