@@ -283,6 +283,11 @@ public class BlockImpl implements Block {
     }
 
     @Override
+    public boolean canPlace(@NotNull BlockData blockData) {
+        return false;
+    }
+
+    @Override
     public void setMetadata(String s, MetadataValue metadataValue) {
 
     }

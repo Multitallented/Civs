@@ -3,9 +3,11 @@ package org.redcastlemedia.multitallented.civs;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.boss.DragonBattle;
 import org.bukkit.entity.*;
+import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.ItemStack;
@@ -274,6 +276,12 @@ public class WorldImpl implements World {
 
     @Override
     public Entity spawnEntity(Location location, EntityType entityType) {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public Entity spawnEntity(@NotNull Location location, @NotNull EntityType entityType, boolean b) {
         return null;
     }
 
@@ -552,6 +560,12 @@ public class WorldImpl implements World {
         return null;
     }
 
+    @Nullable
+    @Override
+    public BiomeProvider getBiomeProvider() {
+        return null;
+    }
+
     @Override
     public void save() {
 
@@ -572,6 +586,12 @@ public class WorldImpl implements World {
 
     @Override
     public <T extends Entity> T spawn(Location location, Class<T> aClass, Consumer<T> consumer) throws IllegalArgumentException {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public <T extends Entity> T spawn(@NotNull Location location, @NotNull Class<T> aClass, boolean b, @Nullable Consumer<T> consumer) throws IllegalArgumentException {
         return null;
     }
 
@@ -635,9 +655,20 @@ public class WorldImpl implements World {
         return null;
     }
 
+    @NotNull
+    @Override
+    public Biome getBiome(@NotNull Location location) {
+        return null;
+    }
+
     @Override
     public @NotNull Biome getBiome(int i, int i1, int i2) {
         return null;
+    }
+
+    @Override
+    public void setBiome(@NotNull Location location, @NotNull Biome biome) {
+
     }
 
     @Override
@@ -648,6 +679,72 @@ public class WorldImpl implements World {
     @Override
     public void setBiome(int i, int i1, int i2, @NotNull Biome biome) {
 
+    }
+
+    @NotNull
+    @Override
+    public BlockState getBlockState(@NotNull Location location) {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public BlockState getBlockState(int i, int i1, int i2) {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public BlockData getBlockData(@NotNull Location location) {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public BlockData getBlockData(int i, int i1, int i2) {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public Material getType(@NotNull Location location) {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public Material getType(int i, int i1, int i2) {
+        return null;
+    }
+
+    @Override
+    public void setBlockData(@NotNull Location location, @NotNull BlockData blockData) {
+
+    }
+
+    @Override
+    public void setBlockData(int i, int i1, int i2, @NotNull BlockData blockData) {
+
+    }
+
+    @Override
+    public void setType(@NotNull Location location, @NotNull Material material) {
+
+    }
+
+    @Override
+    public void setType(int i, int i1, int i2, @NotNull Material material) {
+
+    }
+
+    @Override
+    public boolean generateTree(@NotNull Location location, @NotNull Random random, @NotNull TreeType treeType) {
+        return false;
+    }
+
+    @Override
+    public boolean generateTree(@NotNull Location location, @NotNull Random random, @NotNull TreeType treeType, @Nullable Consumer<BlockState> consumer) {
+        return false;
     }
 
     @Override
@@ -668,6 +765,51 @@ public class WorldImpl implements World {
     @Override
     public double getHumidity(int i, int i1, int i2) {
         return 0;
+    }
+
+    @Override
+    public int getLogicalHeight() {
+        return 0;
+    }
+
+    @Override
+    public boolean isNatural() {
+        return false;
+    }
+
+    @Override
+    public boolean isBedWorks() {
+        return false;
+    }
+
+    @Override
+    public boolean hasSkyLight() {
+        return false;
+    }
+
+    @Override
+    public boolean hasCeiling() {
+        return false;
+    }
+
+    @Override
+    public boolean isPiglinSafe() {
+        return false;
+    }
+
+    @Override
+    public boolean isRespawnAnchorWorks() {
+        return false;
+    }
+
+    @Override
+    public boolean hasRaids() {
+        return false;
+    }
+
+    @Override
+    public boolean isUltraWarm() {
+        return false;
     }
 
     @Override
@@ -781,6 +923,16 @@ public class WorldImpl implements World {
     }
 
     @Override
+    public long getTicksPerWaterUndergroundCreatureSpawns() {
+        return 0;
+    }
+
+    @Override
+    public void setTicksPerWaterUndergroundCreatureSpawns(int i) {
+
+    }
+
+    @Override
     public long getTicksPerAmbientSpawns() {
         return 0;
     }
@@ -817,6 +969,16 @@ public class WorldImpl implements World {
 
     @Override
     public void setWaterAnimalSpawnLimit(int i) {
+
+    }
+
+    @Override
+    public int getWaterUndergroundCreatureSpawnLimit() {
+        return 0;
+    }
+
+    @Override
+    public void setWaterUndergroundCreatureSpawnLimit(int i) {
 
     }
 
@@ -977,6 +1139,11 @@ public class WorldImpl implements World {
 
     @Override
     public int getViewDistance() {
+        return 0;
+    }
+
+    @Override
+    public int getSimulationDistance() {
         return 0;
     }
 
