@@ -160,8 +160,13 @@ public class Pl3xMapHook implements Listener {
     }
 
     private static void deleteTownMarker(String townName) {
-        String markerId = "town" + townName.replaceAll("[\\W_]", "");;;
         Town town = TownManager.getInstance().getTown(townName);
+        deleteTownMarker(town);
+    }
+
+    private static void deleteTownMarker(Town town) {
+        String townName = town.getName();
+        String markerId = "town" + townName.replaceAll("[\\W_]", "");;;
         World world = town.getLocation().getWorld();
         if (map.containsKey(world.getUID())) {
             SimpleLayerProvider layerProvider = map.get(world.getUID()).towns;
@@ -176,13 +181,13 @@ public class Pl3xMapHook implements Listener {
 
     @EventHandler
     public void onTownEvolve(TownEvolveEvent event) {
-        deleteTownMarker(event.getTown().getName());
+        deleteTownMarker(event.getTown());
         createAreaMarker(event.getTown(), event.getNewTownType());
     }
 
     @EventHandler
     public void onTownDevolve(TownDevolveEvent event) {
-        deleteTownMarker(event.getTown().getName());
+        deleteTownMarker(event.getTown());
         createAreaMarker(event.getTown(), event.getTownType());
     }
 
@@ -215,14 +220,14 @@ public class Pl3xMapHook implements Listener {
 
     @EventHandler
     public void onChangeGoverment(TownChangedGovermnentEvent event) {
-        deleteTownMarker(event.getTown().getName());
+        deleteTownMarker(event.getTown());
         TownType townType = (TownType) ItemManager.getInstance().getItemType(event.getTown().getType());
         createAreaMarker(event.getTown(), townType);
     }
 
     @EventHandler
     public void onPlayerJoinTown(PlayerAcceptsTownInviteEvent event) {
-        deleteTownMarker(event.getTown().getName());
+        deleteTownMarker(event.getTown());
         TownType townType = (TownType) ItemManager.getInstance().getItemType(event.getTown().getType());
         createAreaMarker(event.getTown(), townType);
     }
