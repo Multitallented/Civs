@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
@@ -136,7 +137,14 @@ public class CustomMenu {
                 currentActions.add(newAction);
             }
         }
-        actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName(), currentActions);
+        String iconDisplayName;
+        ItemMeta iconMeta = itemStack.getItemMeta();
+        if (iconMeta != null) {
+            iconDisplayName = iconMeta.getDisplayName();
+        } else {
+            iconDisplayName = menuIcon.getIcon();
+        }
+        actions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + iconDisplayName, currentActions);
         List<String> currentRightClickActions = new ArrayList<>();
         if (menuIcon.getRightClickActions().isEmpty()) {
             currentRightClickActions.add(menuIcon.getKey());
@@ -148,7 +156,7 @@ public class CustomMenu {
                 currentRightClickActions.add(newAction);
             }
         }
-        rightClickActions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + itemStack.getItemMeta().getDisplayName(), currentRightClickActions);
+        rightClickActions.get(civilian.getUuid()).put(itemStack.getType().name() + ":" + iconDisplayName, currentRightClickActions);
     }
 
     protected void putActionList(Civilian civilian, ItemStack itemStack, List<String> actionList) {
