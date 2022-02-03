@@ -39,7 +39,6 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.effects.RepairEffect;
 import org.redcastlemedia.multitallented.civs.skills.CivSkills;
-import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
@@ -49,7 +48,6 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
-import org.redcastlemedia.multitallented.civs.util.MessageUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsSingleton()
@@ -72,6 +70,7 @@ public class DeathListener implements Listener {
 
         if (ConfigManager.getInstance().isCombatTagEnabled() &&
                 !ConfigManager.getInstance().isAllowTeleportInCombat() &&
+                !ConfigManager.getInstance().getBlackListWorlds().contains(player.getWorld().getName()) &&
                 getDistanceSquared(event.getFrom(), event.getTo()) > 9) {
             if (civilian.isInCombat()) {
                 event.setCancelled(true);
@@ -129,6 +128,9 @@ public class DeathListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
+        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getEntity().getWorld().getName())) {
+            return;
+        }
         Player damager = null;
         if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) event;
@@ -267,18 +269,25 @@ public class DeathListener implements Listener {
         ItemStack offHandItem = player.getInventory().getItemInOffHand();
         boolean hasShield = offHandItem != null && offHandItem.getType().equals(Material.SHIELD) &&
                 player.isBlocking();
-        civilian.awardSkill(player, "DAMAGE", CivSkills.SHIELD.name());
+        if (hasShield) {
+            civilian.awardSkill(player, "DAMAGE", CivSkills.SHIELD.name());
+        }
         Collection<String> armorNames = new HashSet<>();
         for (Material mat : armors) {
             if (mat != null && mat != Material.AIR) {
                 armorNames.add(mat.name());
             }
         }
-        civilian.awardSkill(player, armorNames, CivSkills.ARMOR.name());
+        if (!armorNames.isEmpty()) {
+            civilian.awardSkill(player, armorNames, CivSkills.ARMOR.name());
+        }
     }
 
     @EventHandler
     public void onDeflectArrow(ProjectileHitEvent event) {
+        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getEntity().getWorld().getName())) {
+            return;
+        }
         if (!(event.getHitEntity() instanceof Player)) {
             return;
         }
@@ -343,6 +352,9 @@ public class DeathListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onFoodHeal(EntityRegainHealthEvent event) {
+        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getEntity().getWorld().getName())) {
+            return;
+        }
         if (event.getRegainReason() != EntityRegainHealthEvent.RegainReason.SATIATED ||
                 ConfigManager.getInstance().getFoodHealInCombat()) {
             return;
@@ -360,6 +372,9 @@ public class DeathListener implements Listener {
 
     @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onEntityDeath(EntityDeathEvent event) {
+        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getEntity().getWorld().getName())) {
+            return;
+        }
         if (event.getEntity().getKiller() == null) {
             return;
         }
@@ -383,6 +398,9 @@ public class DeathListener implements Listener {
 
     @EventHandler @SuppressWarnings("unused")
     public void onPlayerDeath(PlayerDeathEvent event) {
+        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getEntity().getWorld().getName())) {
+            return;
+        }
         CivilianManager.getInstance().setListNeedsToBeSorted(true);
         final Player player = event.getEntity();
         Civilian dyingCiv = CivilianManager.getInstance().getCivilian(player.getUniqueId());
