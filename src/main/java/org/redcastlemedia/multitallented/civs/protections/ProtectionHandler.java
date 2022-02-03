@@ -22,6 +22,7 @@ import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Phantom;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Slime;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Wither;
 import org.bukkit.entity.WitherSkull;
@@ -816,7 +817,7 @@ public class ProtectionHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
     public void onMobSpawn(CreatureSpawnEvent event) {
-        if ((!(event.getEntity() instanceof Monster) && !(event.getEntity() instanceof Phantom)) ||
+        if ((!(event.getEntity() instanceof Monster) && !(event.getEntity() instanceof Phantom) && !(event.getEntity() instanceof Slime)) ||
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.INFECTION ||
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SLIME_SPLIT ||
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER ||
