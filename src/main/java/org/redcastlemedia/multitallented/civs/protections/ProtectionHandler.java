@@ -248,12 +248,7 @@ public class ProtectionHandler implements Listener {
         if (mainItem.containsEnchantment(Enchantment.SILK_TOUCH)) {
             return;
         }
-        for (Skill skill : civilian.getSkills().values()) {
-            if (skill.getType().equalsIgnoreCase(CivSkills.MINING.name())) {
-                double exp = skill.addAccomplishment(type.name());
-                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
-            }
-        }
+        civilian.awardSkill(player, type.name(), CivSkills.MINING.name());
     }
 
     private boolean blockIsOre(Material type) {

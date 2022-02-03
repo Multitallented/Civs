@@ -108,18 +108,12 @@ public class CommonScheduler implements Runnable {
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        Skill skill = civilian.getSkills().get(CivSkills.EXPLORATION.name().toLowerCase());
-        if (skill != null) {
-            try {
-                Biome biome = player.getLocation().getBlock().getBiome();
-                double exp = skill.addAccomplishment(biome.name());
-                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
-            } catch (NullPointerException npe) {
-                String message = "Invalid biome at " + player.getName() + " location";
-                Civs.logger.log(Level.SEVERE, message, npe);
-            }
+        try {
+            civilian.awardSkill(player, player.getLocation().getBlock().getBiome().name(), CivSkills.EXPLORATION.name().toLowerCase());
+        } catch (NullPointerException npe) {
+            String message = "Invalid biome at " + player.getName() + " location";
+            Civs.logger.log(Level.SEVERE, message, npe);
         }
-
     }
 
     private void sendAnnouncement(Player player) {

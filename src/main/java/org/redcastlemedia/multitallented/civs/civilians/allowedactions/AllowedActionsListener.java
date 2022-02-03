@@ -1,6 +1,8 @@
 package org.redcastlemedia.multitallented.civs.civilians.allowedactions;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -134,15 +136,11 @@ public class AllowedActionsListener implements Listener {
         }
         Player player = event.getEnchanter();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        for (Skill skill : civilian.getSkills().values()) {
-            if (skill.getType().equalsIgnoreCase(CivSkills.ENCHANT.name())) {
-                double exp = 0;
-                for (Map.Entry<Enchantment, Integer> entry : event.getEnchantsToAdd().entrySet()) {
-                    exp += skill.addAccomplishment(entry.getKey().getKey().getKey() + entry.getValue());
-                }
-                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
-            }
+        Collection<String> enchantNames = new HashSet<>();
+        for (Map.Entry<Enchantment, Integer> entry : event.getEnchantsToAdd().entrySet()) {
+            enchantNames.add(entry.getKey().getKey().getKey() + entry.getValue());
         }
+        civilian.awardSkill(player, enchantNames, CivSkills.ENCHANT.name());
     }
 
     private void setCorrectEnchantItemsAndExp(Player player, ItemStack limitedItem, int returnedLevels) {

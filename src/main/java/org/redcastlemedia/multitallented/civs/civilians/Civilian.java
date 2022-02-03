@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ import org.redcastlemedia.multitallented.civs.spells.effects.ManaEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.ActionBarUtil;
+import org.redcastlemedia.multitallented.civs.util.MessageUtil;
 import org.redcastlemedia.multitallented.civs.util.PermissionUtil;
 
 import lombok.Getter;
@@ -447,4 +449,31 @@ public class Civilian {
         return friends.contains(friend.getUuid());
     }
 
+    public void awardSkill(Player player, Collection<String> skillTypes, String skillName) {
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
+        for (Skill skill : skills.values()) {
+            if (skill.getType().equalsIgnoreCase(skillName)) {
+                double exp = 0;
+                for (String potionName : skillTypes) {
+                    exp += skill.addAccomplishment(potionName);
+                }
+                MessageUtil.saveCivilianAndSendExpNotification(player, this, skill, exp);
+            }
+        }
+    }
+
+    public void awardSkill(Player player, String skillType, String skillName) {
+        if (!ConfigManager.getInstance().isUseSkills()) {
+            return;
+        }
+        for (Skill skill : skills.values()) {
+            if (skill.getType().equalsIgnoreCase(skillName)) {
+                double exp = 0;
+                exp += skill.addAccomplishment(skillType);
+                MessageUtil.saveCivilianAndSendExpNotification(player, this, skill, exp);
+            }
+        }
+    }
 }

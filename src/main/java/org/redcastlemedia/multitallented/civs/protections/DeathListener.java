@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.protections;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -266,19 +267,14 @@ public class DeathListener implements Listener {
         ItemStack offHandItem = player.getInventory().getItemInOffHand();
         boolean hasShield = offHandItem != null && offHandItem.getType().equals(Material.SHIELD) &&
                 player.isBlocking();
-        for (Skill skill : civilian.getSkills().values()) {
-            if (skill.getType().equalsIgnoreCase(CivSkills.ARMOR.name())) {
-                double exp = 0;
-                for (Material mat : armors) {
-                    exp += skill.addAccomplishment(mat.name());
-                }
-
-                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
-            } else if (hasShield && skill.getType().equalsIgnoreCase(CivSkills.SHIELD.name())) {
-                double exp = skill.addAccomplishment("DAMAGE");
-                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
+        civilian.awardSkill(player, "DAMAGE", CivSkills.SHIELD.name());
+        Collection<String> armorNames = new HashSet<>();
+        for (Material mat : armors) {
+            if (mat != null && mat != Material.AIR) {
+                armorNames.add(mat.name());
             }
         }
+        civilian.awardSkill(player, armorNames, CivSkills.ARMOR.name());
     }
 
     @EventHandler
@@ -291,12 +287,7 @@ public class DeathListener implements Listener {
             return;
         }
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        for (Skill skill : civilian.getSkills().values()) {
-            if (skill.getType().equalsIgnoreCase(CivSkills.SHIELD.name())) {
-                double exp = skill.addAccomplishment("BLOCKED");
-                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
-            }
-        }
+        civilian.awardSkill(player, "BLOCKED", CivSkills.SHIELD.name());
     }
 
     @EventHandler
@@ -374,24 +365,19 @@ public class DeathListener implements Listener {
         }
         Player player = event.getEntity().getKiller();
         ItemStack mainHand = player.getInventory().getItemInMainHand();
-        boolean isSword = RepairEffect.isSword(mainHand.getType());
-        boolean isAxe = RepairEffect.isAxe(mainHand.getType());
-        boolean isTrident = mainHand.getType() == Material.TRIDENT;
-        boolean isBow = mainHand.getType() == Material.BOW;
-        boolean isCrossbow = mainHand.getType() == Material.CROSSBOW;
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.KILL, event.getEntity().getType().name().toLowerCase());
-        for (Skill skill : civilian.getSkills().values()) {
-            double exp = 0;
-            boolean swordSkill = isSword && skill.getType().equalsIgnoreCase(CivSkills.SWORD.name());
-            boolean axeSkill = isAxe && skill.getType().equalsIgnoreCase(CivSkills.AXE.name());
-            boolean tridentSkill = isTrident && skill.getType().equalsIgnoreCase(CivSkills.TRIDENT.name());
-            boolean bowSkill = isBow && skill.getType().equalsIgnoreCase(CivSkills.BOW.name());
-            boolean crossbowSkill = isCrossbow && skill.getType().equalsIgnoreCase(CivSkills.CROSSBOW.name());
-            if (swordSkill || axeSkill || tridentSkill || bowSkill || crossbowSkill) {
-                exp = skill.addAccomplishment(event.getEntity().getType().name());
-            }
-            MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
+
+        if (RepairEffect.isSword(mainHand.getType())) {
+            civilian.awardSkill(player, event.getEntity().getType().name(), CivSkills.SWORD.name());
+        } else if (RepairEffect.isAxe(mainHand.getType())) {
+            civilian.awardSkill(player, event.getEntity().getType().name(), CivSkills.AXE.name());
+        } else if (mainHand.getType() == Material.TRIDENT) {
+            civilian.awardSkill(player, event.getEntity().getType().name(), CivSkills.TRIDENT.name());
+        } else if (mainHand.getType() == Material.BOW) {
+            civilian.awardSkill(player, event.getEntity().getType().name(), CivSkills.BOW.name());
+        } else if (mainHand.getType() == Material.CROSSBOW) {
+            civilian.awardSkill(player, event.getEntity().getType().name(), CivSkills.CROSSBOW.name());
         }
     }
 

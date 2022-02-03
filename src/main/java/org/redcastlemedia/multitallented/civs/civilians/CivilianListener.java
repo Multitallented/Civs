@@ -1,6 +1,7 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -198,15 +199,11 @@ public class CivilianListener implements Listener {
         }
         Player player = (Player) event.getPotion().getShooter();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        for (Skill skill : civilian.getSkills().values()) {
-            if (skill.getType().equalsIgnoreCase(CivSkills.POTION.name())) {
-                double exp = 0;
-                for (PotionEffect potionEffect : event.getPotion().getEffects()) {
-                    exp += skill.addAccomplishment(potionEffect.getType().getName());
-                }
-                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
-            }
+        Collection<String> potionEffectNames = new HashSet<>();
+        for (PotionEffect potionEffect : event.getPotion().getEffects()) {
+            potionEffectNames.add(potionEffect.getType().getName());
         }
+        civilian.awardSkill(player, potionEffectNames, CivSkills.POTION.name());
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -219,25 +216,16 @@ public class CivilianListener implements Listener {
         if (event.getItem().getType() == Material.POTION ||
                 event.getItem().getType() == Material.LINGERING_POTION) {
             PotionMeta potionMeta = (PotionMeta) event.getItem().getItemMeta();
-            for (Skill skill : civilian.getSkills().values()) {
-                if (skill.getType().equalsIgnoreCase(CivSkills.POTION.name())) {
-                    double exp = 0;
-                    if (potionMeta.getBasePotionData().getType().getEffectType() != null) {
-                        exp += skill.addAccomplishment(potionMeta.getBasePotionData().getType().getEffectType().getName());
-                    }
-                    for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
-                        exp += skill.addAccomplishment(potionEffect.getType().getName());
-                    }
-                    MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
-                }
+            Collection<String> potionNames = new HashSet<>();
+            for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
+                potionNames.add(potionEffect.getType().getName());
             }
+            if (potionMeta.getBasePotionData().getType().getEffectType() != null) {
+                potionNames.add(potionMeta.getBasePotionData().getType().getEffectType().getName());
+            }
+            civilian.awardSkill(player, potionNames, CivSkills.POTION.name());
         } else {
-            for (Skill skill : civilian.getSkills().values()) {
-                if (skill.getType().equalsIgnoreCase(CivSkills.FOOD.name())) {
-                    double exp = skill.addAccomplishment(event.getItem().getType().name());
-                    MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
-                }
-            }
+            civilian.awardSkill(player, event.getItem().getType().name(), CivSkills.FOOD.name());
         }
     }
 
@@ -249,14 +237,12 @@ public class CivilianListener implements Listener {
         }
         Player player = (Player) event.getWhoClicked();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        Skill skill = civilian.getSkills().get(CivSkills.CRAFTING.name().toLowerCase());
-        if (skill != null && event.getCurrentItem() != null &&
-                event.getCurrentItem().getType() != Material.AIR) {
-            double exp = 0;
+        if (event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
+            Collection<String> materialNames = new HashSet<>();
             for (int i = 0; i < event.getCurrentItem().getAmount(); i++) {
-                exp += skill.addAccomplishment(event.getCurrentItem().getType().name());
+                materialNames.add(event.getCurrentItem().getType().name());
             }
-            MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
+            civilian.awardSkill(player, materialNames, CivSkills.CRAFTING.name().toLowerCase());
         }
     }
 
@@ -270,12 +256,7 @@ public class CivilianListener implements Listener {
         }
         Player player = event.getPlayer();
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
-        for (Skill skill : civilian.getSkills().values()) {
-            if (skill.getType().equalsIgnoreCase(CivSkills.BUILDING.name())) {
-                double exp = skill.addAccomplishment(event.getRegion().getType());
-                MessageUtil.saveCivilianAndSendExpNotification(player, civilian, skill, exp);
-            }
-        }
+        civilian.awardSkill(player, event.getRegion().getType(), CivSkills.BUILDING.name());
     }
 
     @EventHandler(ignoreCancelled = true)
