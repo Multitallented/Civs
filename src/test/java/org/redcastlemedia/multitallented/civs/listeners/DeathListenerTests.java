@@ -42,6 +42,7 @@ public class DeathListenerTests extends TestUtil {
         RegionManager.getInstance().reload();
         CivilianManager.getInstance();
         this.player1 = mock(Player.class);
+        when(player1.getWorld()).thenReturn(world);
         AttributeInstance mockAttribute = mock(AttributeInstance.class);
         when(player1.getAttribute(Matchers.any(Attribute.class))).thenReturn(mockAttribute);
         when(player1.getInventory()).thenReturn(new PlayerInventoryImpl());
@@ -49,6 +50,7 @@ public class DeathListenerTests extends TestUtil {
         Location location1 = new Location(Bukkit.getWorld("world"), 0,0,0);
         when(player1.getLocation()).thenReturn(location1);
         this.player2 = mock(Player.class);
+        when(player2.getWorld()).thenReturn(world);
         when(player2.getInventory()).thenReturn(new PlayerInventoryImpl());
         when(player2.getUniqueId()).thenReturn(new UUID(1, 4));
         Location location2 = new Location(Bukkit.getWorld("world"), 1, 0, 1);
