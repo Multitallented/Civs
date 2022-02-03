@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,6 +15,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import lombok.Getter;
@@ -110,6 +112,12 @@ public class CVInventory {
             return this.inventory.addItem(itemStackParams);
         } else {
             update();
+        }
+        if (this.inventory == null) {
+            Civs.logger.log(Level.WARNING, "Invalid region at {0} {1}x {2}y {3}z",
+                    new Object[] {this.location.getWorld().getName(),
+                            this.location.getX(), this.location.getY(), this.location.getZ()});
+            return new HashMap<>();
         }
         HashMap<Integer, ItemStack> returnItems = new HashMap<>();
         ArrayList<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(itemStackParams));

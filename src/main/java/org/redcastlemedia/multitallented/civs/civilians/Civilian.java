@@ -131,14 +131,14 @@ public class Civilian {
     }
     public CivClass getCurrentClass() {
         if (currentClass == null) {
-            Civs.logger.log(Level.WARNING, "Null class detected for player {}", uuid);
+//            Civs.logger.log(Level.WARNING, "Null class detected for player {}", uuid);
             if (!civClasses.isEmpty()) {
                 ClassManager.getInstance().switchClass(this, this.civClasses.iterator().next());
             } else {
                 currentClass = ClassManager.getInstance().createDefaultClass(uuid);
             }
             if (currentClass == null) {
-                Civs.logger.log(Level.SEVERE, "Unable to recover default class for player {}", uuid);
+//                Civs.logger.log(Level.SEVERE, "Unable to recover default class for player {}", uuid);
             }
         }
         return currentClass;
