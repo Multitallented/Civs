@@ -117,9 +117,9 @@ public class RegionMenu extends CustomMenu {
                 !region.getMissingBlocks().isEmpty())) {
             return new ItemStack(Material.AIR);
         } else if ("destroy".equals(menuIcon.getKey())) {
-            boolean isIndestrucible = region.getEffects().containsKey("indestructible");
+            boolean isIndestructible = region.getEffects().containsKey("indestructible");
             boolean isAdmin = Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION);
-            if (!isAdmin && (isIndestrucible || !isOwner)) {
+            if (!isAdmin && (isIndestructible || !isOwner)) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("people".equals(menuIcon.getKey())) {

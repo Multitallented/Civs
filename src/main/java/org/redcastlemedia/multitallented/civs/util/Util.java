@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -703,6 +704,54 @@ public final class Util {
                     town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         }
         return override;
+    }
+
+    public static List<List<CVItem>> convertListMapToDisplayableList(List<HashMap<Material, Integer>> missingBlocks) {
+        List<List<CVItem>> missingList = new ArrayList<>();
+        for (HashMap<Material, Integer> missingMap : missingBlocks) {
+            List<List<CVItem>> futureLists = new ArrayList<>();
+            for (Map.Entry<Material, Integer> entry : missingMap.entrySet()) {
+                int qty = entry.getValue();
+                int maxQty = entry.getKey().getMaxStackSize();
+                int i = 0;
+                do {
+                    if (futureLists.size() <= i) {
+                        futureLists.add(new ArrayList<>());
+                    }
+                    futureLists.get(i).add(new CVItem(entry.getKey(), Math.min(qty, maxQty)));
+                    qty -= maxQty;
+                    i++;
+                } while (maxQty > 0 && qty > 0 && i < 20);
+            }
+            if (!futureLists.isEmpty()) {
+                missingList.addAll(futureLists);
+            }
+        }
+        return missingList;
+    }
+
+    public static List<List<CVItem>> convertListListToDisplayableList(List<List<CVItem>> missingBlocks) {
+        List<List<CVItem>> missingList = new ArrayList<>();
+        for (List<CVItem> missingMap : missingBlocks) {
+            List<List<CVItem>> futureLists = new ArrayList<>();
+            for (CVItem cvItem : missingMap) {
+                int qty = cvItem.getQty();
+                int maxQty = cvItem.getMat().getMaxStackSize();
+                int i = 0;
+                do {
+                    if (futureLists.size() <= i) {
+                        futureLists.add(new ArrayList<>());
+                    }
+                    futureLists.get(i).add(new CVItem(cvItem.getMat(), Math.min(qty, maxQty)));
+                    qty -= maxQty;
+                    i++;
+                } while (maxQty > 0 && qty > 0 && i < 20);
+            }
+            if (!futureLists.isEmpty()) {
+                missingList.addAll(futureLists);
+            }
+        }
+        return missingList;
     }
 
     public static void spawnRandomFirework(Player player) {

@@ -20,6 +20,7 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "recipe") @SuppressWarnings("unused")
 public class RecipeMenu extends CustomMenu {
@@ -56,24 +57,25 @@ public class RecipeMenu extends CustomMenu {
                     }
                 }
             }
+            items = Util.convertListListToDisplayableList(items);
         } else if (recipe.equals("reqs")) {
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
-            items = regionType.getReqs();
+            items = Util.convertListListToDisplayableList(regionType.getReqs());
         } else if (recipe.startsWith("reagent")) {
             int index = Integer.parseInt(recipe.replace("reagent", ""));
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
-            items = regionType.getUpkeeps().get(index).getReagents();
+            items = Util.convertListListToDisplayableList(regionType.getUpkeeps().get(index).getReagents());
         } else if (recipe.startsWith("input")) {
             int index = Integer.parseInt(recipe.replace("input", ""));
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
-            items = regionType.getUpkeeps().get(index).getInputs();
+            items = Util.convertListListToDisplayableList(regionType.getUpkeeps().get(index).getInputs());
         } else if (recipe.startsWith("output")) {
             int index = Integer.parseInt(recipe.replace("output", ""));
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
-            items = regionType.getUpkeeps().get(index).getOutputs();
+            items = Util.convertListListToDisplayableList(regionType.getUpkeeps().get(index).getOutputs());
         } else if (recipe.startsWith("broken")) {
             Region region = RegionManager.getInstance().getRegionById(params.get("region"));
-            items = new ArrayList<>(region.getMissingBlocks());
+            items = Util.convertListListToDisplayableList(new ArrayList<>(region.getMissingBlocks()));
         } else if (recipe.startsWith("g:")) {
             items = new ArrayList<>();
             List<CVItem> cvItems = CVItem.createListFromString(recipe);

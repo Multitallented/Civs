@@ -61,6 +61,7 @@ import org.redcastlemedia.multitallented.civs.util.CommandUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class RegionManager {
@@ -699,34 +700,45 @@ public class RegionManager {
         if (!regionBlockCheckResponse.getRegionPoints().isValid()) {
             RegionPoints radii = Region.hasRequiredBlocks(regionType.getProcessedName(), location, false);
             if (!radii.isValid()) {
-                event.setCancelled(true);
-                StructureUtil.showGuideBoundingBox(player, event.getBlockPlaced().getLocation(), regionType, true);
-                player.sendMessage(Civs.getPrefix() +
-                        localeManager.getTranslation(player, "no-required-blocks")
-                                .replace("$1", regionType.getDisplayName(player)));
-                List<HashMap<Material, Integer>> missingBlocks = regionBlockCheckResponse.getMissingItems();
-                if (missingBlocks != null && !missingBlocks.isEmpty()) {
-                    List<List<CVItem>> missingList = new ArrayList<>();
-                    for (HashMap<Material, Integer> missingMap : missingBlocks) {
-                        List<CVItem> tempList = new ArrayList<>();
-                        for (Map.Entry<Material, Integer> entry : missingMap.entrySet()) {
-                            tempList.add(new CVItem(entry.getKey(), entry.getValue()));
-                        }
-                        missingList.add(tempList);
-                    }
-                    HashMap<String, Object> data = new HashMap<>();
-                    data.put("items", missingList);
-                    data.put("page", 0);
-                    data.put("maxPage", 1);
-                    data.put("regionType", regionType.getProcessedName());
-                    MenuManager.clearHistory(player.getUniqueId());
-                    MenuManager.getInstance().openMenuFromHistory(player, "recipe", data);
-                }
-                return null;
+                return handleInvalidConstructedRegion(event, player, regionType, localeManager, regionBlockCheckResponse);
             }
             return radii;
         }
         return regionBlockCheckResponse.getRegionPoints();
+    }
+
+    @Nullable
+    private RegionPoints handleInvalidConstructedRegion(BlockPlaceEvent event,
+                                                        Player player,
+                                                        RegionType regionType,
+                                                        LocaleManager localeManager,
+                                                        RegionBlockCheckResponse regionBlockCheckResponse) {
+        event.setCancelled(true);
+        StructureUtil.showGuideBoundingBox(player, event.getBlockPlaced().getLocation(), regionType, true);
+        player.sendMessage(Civs.getPrefix() +
+                localeManager.getTranslation(player, "no-required-blocks")
+                        .replace("$1", regionType.getDisplayName(player)));
+        List<HashMap<Material, Integer>> missingBlocks = regionBlockCheckResponse.getMissingItems();
+
+        if (missingBlocks != null && !missingBlocks.isEmpty()) {
+            List<List<CVItem>> missingList = Util.convertListMapToDisplayableList(missingBlocks);
+
+            for (List<CVItem> missingItems : missingList) {
+                for (CVItem cvItem : missingItems) {
+                    Civs.logger.log(Level.INFO, cvItem.getMat().name() + ": " + cvItem.getQty());
+                    break;
+                }
+            }
+
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("items", missingList);
+            data.put("page", 0);
+            data.put("maxPage", 0);
+            data.put("regionType", regionType.getProcessedName());
+            MenuManager.clearHistory(player.getUniqueId());
+            MenuManager.getInstance().openMenuFromHistory(player, "recipe", data);
+        }
+        return null;
     }
 
     private boolean checkCreateRegionListeners(BlockPlaceEvent event, Player player, Block block, RegionType regionType) {

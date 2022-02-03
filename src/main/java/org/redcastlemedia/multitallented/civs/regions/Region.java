@@ -508,10 +508,6 @@ public class Region {
     }
 
     public static RegionBlockCheckResponse hasRequiredBlocksOnCenter(RegionType regionType, Location location) {
-        if (regionType.getBuildRadiusX() != regionType.getBuildRadiusZ() ||
-                regionType.getBuildRadiusX() != regionType.getBuildRadiusY()) {
-            return new RegionBlockCheckResponse(new RegionPoints(), null);
-        }
         List<HashMap<Material, Integer>> itemCheck = cloneReqMap(regionType.getReqs());
         World currentWorld = location.getWorld();
         if (currentWorld == null) {
