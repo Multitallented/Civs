@@ -121,14 +121,18 @@ public class ConfirmationMenu extends CustomMenu {
             if (Civs.econ != null) {
                 Civs.econ.depositPlayer(player, regionType.getPrice(civilian) / 2);
             }
-            RegionManager.getInstance().removeRegion(region, true, true);
             CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), player);
-            ItemManager.getInstance().addMinItems(civilian);
+            Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> {
+                RegionManager.getInstance().removeRegion(region, true, true);
+                ItemManager.getInstance().addMinItems(civilian);
+            }, 1L);
         } else if (town != null) {
             if (doesntHavePermission(civilian, town.getPeople(), player)) {
                 return;
             }
-            TownManager.getInstance().removeTown(town, true);
+            Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> {
+                TownManager.getInstance().removeTown(town, true);
+            }, 1L);
         }
     }
 
