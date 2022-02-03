@@ -24,7 +24,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 public class BountyCommand extends CivCommand {
 
     public boolean runCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if (ConfigManager.getInstance().isUseBounties()) {
+        if (!ConfigManager.getInstance().isUseBounties()) {
             Util.sendMessageToPlayerOrConsole(commandSender, LocaleConstants.PERMISSION_DENIED, "No Permission");
             return true;
         }
