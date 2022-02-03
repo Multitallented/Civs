@@ -485,7 +485,9 @@ public class CivilianListener implements Listener {
             return false;
         }
         UUID uuid = null;
-        if (cvItem.getLore() != null && cvItem.getLore().size() > 0) {
+        if (Civs.getInstance() != null && cvItem.getOwnerBound() != null) {
+            uuid = cvItem.getOwnerBound();
+        } else if (cvItem.getLore() != null && !cvItem.getLore().isEmpty()) {
             uuid = UUID.fromString(ChatColor.stripColor(cvItem.getLore().get(0)));
         }
         blockLogger.removeBlock(block.getLocation());

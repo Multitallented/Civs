@@ -145,6 +145,7 @@ public class ItemManager {
                 new ArrayList<>(),
                 invisible,
                 1);
+        folderType.setCivItemName(folderName.toLowerCase());
         itemTypes.put(folderName.toLowerCase(), folderType);
         return folderType;
     }
@@ -175,6 +176,7 @@ public class ItemManager {
                         currParentList,
                         !file.getName().contains("invisible"),
                         1);
+                folderType.setCivItemName(folderName.toLowerCase());
                 itemTypes.put(folderName.toLowerCase(), folderType);
                 if (parentList != null) {
                     parentList.add(folderType);
@@ -250,6 +252,7 @@ public class ItemManager {
                 i++;
             }
         }
+        civItem.setCivItemName(name);
         itemTypes.put(name, civItem);
         return civItem;
     }
@@ -275,6 +278,7 @@ public class ItemManager {
                 config.getInt("exp-per-use", 0));
         AllowedActionsUtil.loadAllowedActions(spellType.getAllowedActions(),
                 config.getStringList("allowed-actions"));
+        spellType.setCivItemName(name.toLowerCase());
         itemTypes.put(name.toLowerCase(), spellType);
         return spellType;
     }
@@ -331,7 +335,9 @@ public class ItemManager {
                 config.getBoolean("is-in-shop", true),
                 config.getInt("level", 1));
         townType.setDefaultGovType(config.getString("gov-type", ConfigManager.getInstance().getDefaultGovernmentType()));
-        itemTypes.put(Util.getValidFileName(name).toLowerCase(), townType);
+        String townKey = Util.getValidFileName(name).toLowerCase();
+        townType.setCivItemName(townKey);
+        itemTypes.put(townKey, townType);
         return townType;
     }
 
@@ -450,6 +456,7 @@ public class ItemManager {
         if (config.getBoolean("start-in-inventory", false)) {
             regionType.setStartInInventory(true);
         }
+        regionType.setCivItemName(name.toLowerCase());
         itemTypes.put(name.toLowerCase(), regionType);
         return regionType;
     }

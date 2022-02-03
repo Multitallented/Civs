@@ -35,8 +35,8 @@ public final class SpellUtil {
             String localSpellName = spellType.getDisplayName(player);
             cvItem.setDisplayName(localSpellName);
             cvItem.getLore().clear();
-            cvItem.getLore().add(ChatColor.BLACK + civilian.getUuid().toString());
-            cvItem.getLore().add(ChatColor.BLACK + spellType.getProcessedName());
+            cvItem.setOwnerBound(civilian.getUuid());
+            cvItem.setCivItemName(spellType.getProcessedName());
             cvItem.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                     "switch-spell-cast")));
 

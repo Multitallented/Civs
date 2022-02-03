@@ -2,16 +2,19 @@ package org.redcastlemedia.multitallented.civs.items;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -32,11 +35,18 @@ import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
  * @author Multi
  */
 public class CVItem {
+    private static String CUSTOM_ITEM_KEY = Civs.NAME + "_CUSTOM_ITEM";
+    private static String BOUND_OWNER_KEY = Civs.NAME + "_OWNER";
+
     private Material mat;
     private int qty;
     private double chance;
     private String displayName = null;
 
+    @Getter @Setter
+    private UUID ownerBound = null;
+    @Getter @Setter
+    private String civItemName = null;
     @Getter @Setter
     private Integer customModelData = null;
     @Getter @Setter
@@ -156,12 +166,11 @@ public class CVItem {
         } else {
             String displayName = LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + LocaleConstants.NAME_SUFFIX);
             List<String> lore = new ArrayList<>();
-            lore.add(ChatColor.BLACK + nameString);
             lore.addAll(Util.textWrap(ConfigManager.getInstance().getCivsItemPrefix() +
                     LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + LocaleConstants.DESC_SUFFIX)));
             cvItem = new CVItem(mat, quantity, chance, displayName, lore);
         }
-        if (data != null) {
+        if (data != null && !data.isEmpty()) {
             cvItem.setCustomModelData(Integer.parseInt(data));
         }
         return cvItem;
@@ -173,6 +182,7 @@ public class CVItem {
             return null;
         }
         CVItem cvItem = civItem.clone();
+        cvItem.setCivItemName(itemType);
         cvItem.setQty(quantity);
         cvItem.setChance(chance);
         return cvItem;
@@ -209,18 +219,28 @@ public class CVItem {
     public static boolean isCustomItem(ItemStack itemStack) {
         return itemStack != null && itemStack.hasItemMeta() &&
                 itemStack.getItemMeta() != null &&
-                isCustomItem(itemStack.getItemMeta().getLore());
+                isCustomItem(itemStack.getItemMeta());
     }
 
     public static void translateItem(Civilian civilian, ItemStack itemStack) {
         Player player = Bukkit.getPlayer(civilian.getUuid());
-        String itemDisplayName = itemStack.getItemMeta().getLore().get(1);
-        String nameString = ChatColor.stripColor(itemDisplayName
-                .replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase());
+        if (itemStack.getItemMeta() == null) {
+            return;
+        }
+        String nameString;
+        if (Civs.getInstance() != null && itemStack.getItemMeta().getPersistentDataContainer()
+                .has(new NamespacedKey(Civs.getInstance(), CUSTOM_ITEM_KEY), PersistentDataType.STRING)) {
+            nameString = itemStack.getItemMeta().getPersistentDataContainer()
+                    .get(new NamespacedKey(Civs.getInstance(), CUSTOM_ITEM_KEY), PersistentDataType.STRING);
+        } else {
+            String itemDisplayName = itemStack.getItemMeta().getLore().get(1);
+            nameString = ChatColor.stripColor(itemDisplayName
+                    .replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase());
+        }
+
         String displayName = LocaleManager.getInstance().getTranslation(player,
                 "item-" + nameString + LocaleConstants.NAME_SUFFIX);
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.BLACK + nameString);
         lore.addAll(Util.textWrap(civilian,
                 LocaleManager.getInstance().getTranslation(player,
                         "item-" + nameString + LocaleConstants.DESC_SUFFIX)));
@@ -228,11 +248,13 @@ public class CVItem {
         itemStack.getItemMeta().setLore(lore);
     }
 
-    public boolean isCustomItem() {
-        return isCustomItem(lore);
-    }
+    private static boolean isCustomItem(ItemMeta itemMeta) {
+        if (Civs.getInstance() != null && itemMeta.getPersistentDataContainer()
+                .has(new NamespacedKey(Civs.getInstance(), CUSTOM_ITEM_KEY), PersistentDataType.STRING)) {
+            return true;
+        }
 
-    private static boolean isCustomItem(List<String> lore) {
+        List<String> lore = itemMeta.getLore();
         return lore != null && !lore.isEmpty() &&
                 LocaleManager.getInstance().hasTranslation(
                         ConfigManager.getInstance().getDefaultLanguage(),
@@ -255,6 +277,9 @@ public class CVItem {
         if (im == null || im.getDisplayName() == null) {
             return false;
         }
+        if (Civs.getInstance() != null && im.getPersistentDataContainer().has(new NamespacedKey(Civs.getInstance(), Civs.NAME), PersistentDataType.STRING)) {
+            return true;
+        }
         if (im.getLore() == null || im.getLore().size() < 2 ||
                 ItemManager.getInstance().getItemType(ChatColor.stripColor(im.getLore().get(1))) == null) {
             return false;
@@ -263,6 +288,9 @@ public class CVItem {
     }
 
     public CivItem getCivItem() {
+        if (civItemName != null) {
+            return ItemManager.getInstance().getItemType(civItemName);
+        }
         if (lore.size() < 2) {
             return null;
         }
@@ -270,17 +298,39 @@ public class CVItem {
     }
 
     public static CVItem createFromItemStack(ItemStack is) {
-        CVItem cvItem;
-        if (is.hasItemMeta() && is.getItemMeta().getDisplayName() != null &&
-                !"".equals(is.getItemMeta().getDisplayName())) {
-            if (is.getItemMeta().getLore() != null) {
-                cvItem = new CVItem(is.getType(),is.getAmount(), 100, is.getItemMeta().getDisplayName(), is.getItemMeta().getLore());
-            } else {
-                cvItem = new CVItem(is.getType(),is.getAmount(), 100, is.getItemMeta().getDisplayName());
+        CVItem cvItem = null;
+        if (Civs.getInstance() != null && is.getItemMeta() != null && is.getItemMeta().getPersistentDataContainer()
+                .has(new NamespacedKey(Civs.getInstance(), Civs.NAME), PersistentDataType.STRING)) {
+            String civItemName = is.getItemMeta().getPersistentDataContainer()
+                    .get(new NamespacedKey(Civs.getInstance(), Civs.NAME), PersistentDataType.STRING);
+            if (civItemName != null) {
+                cvItem = ItemManager.getInstance().getItemType(civItemName);
             }
-            cvItem.setCustomModelData(is.getItemMeta().getCustomModelData());
-        } else {
-            cvItem = new CVItem(is.getType(),is.getAmount());
+        }
+
+        if (cvItem == null) {
+            if (is.hasItemMeta() && is.getItemMeta().getDisplayName() != null &&
+                    !"".equals(is.getItemMeta().getDisplayName())) {
+                if (is.getItemMeta().getLore() != null) {
+                    cvItem = new CVItem(is.getType(), is.getAmount(), 100, is.getItemMeta().getDisplayName(), is.getItemMeta().getLore());
+                } else {
+                    cvItem = new CVItem(is.getType(), is.getAmount(), 100, is.getItemMeta().getDisplayName());
+                }
+                if (is.getItemMeta().hasCustomModelData()) {
+                    cvItem.setCustomModelData(is.getItemMeta().getCustomModelData());
+                }
+            } else {
+                cvItem = new CVItem(is.getType(), is.getAmount());
+            }
+        }
+
+        if (Civs.getInstance() != null && is.getItemMeta() != null && is.getItemMeta().getPersistentDataContainer()
+                .has(new NamespacedKey(Civs.getInstance(), BOUND_OWNER_KEY), PersistentDataType.STRING)) {
+            String ownerUuidString = is.getItemMeta().getPersistentDataContainer()
+                    .get(new NamespacedKey(Civs.getInstance(), BOUND_OWNER_KEY), PersistentDataType.STRING);
+            if (ownerUuidString != null) {
+                cvItem.setOwnerBound(UUID.fromString(ownerUuidString));
+            }
         }
         return cvItem;
     }
@@ -336,6 +386,10 @@ public class CVItem {
                 im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
                 if (customModelData != null) {
                     is.getItemMeta().setCustomModelData(customModelData);
+                }
+                if (Civs.getInstance() != null && civItemName != null) {
+                    im.getPersistentDataContainer().set(new NamespacedKey(Civs.getInstance(), Civs.NAME),
+                            PersistentDataType.STRING, civItemName);
                 }
                 is.setItemMeta(im);
             }
@@ -441,6 +495,7 @@ public class CVItem {
     public CVItem clone() {
         CVItem cvItem = new CVItem(mat, qty, (int) chance, displayName, new ArrayList<>(lore));
         cvItem.customModelData = customModelData;
+        cvItem.civItemName = civItemName;
         cvItem.mmoItemName = mmoItemName;
         cvItem.mmoItemType = mmoItemType;
         cvItem.setGroup(group);

@@ -19,6 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -27,6 +28,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -520,22 +522,14 @@ public class RegionManager {
         Player player = event.getPlayer();
         Block block = event.getBlockPlaced();
         Location location = Region.idToLocation(Region.blockLocationToString(block.getLocation()));
-        String regionTypeName = ChatColor.stripColor(event.getItemInHand().getItemMeta().getLore().get(1));
-        regionTypeName = regionTypeName.replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "");
-
-        RegionType regionType;
-        try {
-            regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName.toLowerCase());
-        } catch (Exception e) {
-            Civs.logger.severe("Unable to find region type " + regionTypeName.toLowerCase());
+        CivItem heldCivItem = CivItem.getFromItemStack(event.getItemInHand());
+        if (heldCivItem == null || heldCivItem.getItemType() != CivItem.ItemType.REGION) {
+            Civs.logger.severe("Unable to find region type");
             event.setCancelled(true);
             return;
         }
-        if (regionType == null) {
-            Civs.logger.log(Level.SEVERE, "Unable to find region type {0}", regionTypeName.toLowerCase());
-            event.setCancelled(true);
-            return;
-        }
+        String regionTypeName = heldCivItem.getProcessedName();
+        RegionType regionType = (RegionType) heldCivItem;
 
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 

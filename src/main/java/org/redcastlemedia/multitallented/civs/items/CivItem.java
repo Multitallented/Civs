@@ -3,9 +3,11 @@ package org.redcastlemedia.multitallented.civs.items;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
@@ -136,6 +138,7 @@ public abstract class CivItem extends CVItem {
     public ItemStack createShopItemStack(Player player) {
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         CVItem cvItem = getShopIcon(player);
+        cvItem.setCivItemName(getProcessedName());
         if (getItemType() == ItemType.FOLDER) {
             FolderType folderType = (FolderType) this;
             if (!folderType.getVisible() &&
@@ -161,9 +164,6 @@ public abstract class CivItem extends CVItem {
         ItemStack itemStack = cvItem.createItemStack();
         if (cvItem.getMmoItemType() != null) {
             ItemMeta meta = itemStack.getItemMeta();
-            List<String> lore = meta.getLore();
-            lore.add(0, ChatColor.BLACK + getProcessedName());
-            meta.setLore(lore);
             itemStack.setItemMeta(meta);
         }
         return itemStack;
@@ -178,6 +178,15 @@ public abstract class CivItem extends CVItem {
     }
 
     public static CivItem getFromItemStack(ItemStack itemStack) {
+        if (Civs.getInstance() != null && itemStack.getItemMeta() != null &&
+                itemStack.getItemMeta().getPersistentDataContainer()
+                        .has(new NamespacedKey(Civs.getInstance(), Civs.NAME), PersistentDataType.STRING)) {
+            String itemTypeKey = itemStack.getItemMeta().getPersistentDataContainer()
+                    .get(new NamespacedKey(Civs.getInstance(), Civs.NAME), PersistentDataType.STRING);
+            if (itemTypeKey != null) {
+                return ItemManager.getInstance().getItemType(itemTypeKey);
+            }
+        }
         if (itemStack.getItemMeta().getLore().size() < 2) {
             return null;
         }
@@ -186,6 +195,9 @@ public abstract class CivItem extends CVItem {
                 .replace(ChatColor.stripColor(ConfigManager.getInstance().getCivsItemPrefix()), "").toLowerCase());
     }
     public static CivItem getFromItemStack(CVItem cvItem) {
+        if (cvItem.getCivItemName() != null) {
+            return ItemManager.getInstance().getItemType(cvItem.getCivItemName());
+        }
         if (cvItem.getLore().size() < 2) {
             return null;
         }
@@ -204,7 +216,6 @@ public abstract class CivItem extends CVItem {
 
     public List<String> getLore(Player player, boolean includePrice) {
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.BLACK + getProcessedName());
         LocaleManager localeManager = LocaleManager.getInstance();
         if (player == null) {
             String defaultLocale = ConfigManager.getInstance().getDefaultLanguage();
@@ -228,9 +239,7 @@ public abstract class CivItem extends CVItem {
         boolean isTown = itemType == CivItem.ItemType.TOWN;
         boolean isRegion = itemType == CivItem.ItemType.REGION;
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.BLACK + player.getUniqueId().toString());
         String displayName = getDisplayName(player);
-        lore.add(ChatColor.BLACK + key);
         if (isTown) {
             lore.add(ChatColor.GREEN + Util.parseColors(LocaleManager.getInstance().getTranslation(player,
                     "town-instructions").replace("$1", displayName)));
@@ -239,6 +248,8 @@ public abstract class CivItem extends CVItem {
             lore.addAll(Util.textWrap(civilian, Util.parseColors(LocaleManager.getInstance().getTranslation(player,
                     getProcessedName() + LocaleConstants.DESC_SUFFIX))));
         }
+        cvItem.setOwnerBound(player.getUniqueId());
+        cvItem.setCivItemName(key);
         cvItem.setLore(lore);
         cvItem.setDisplayName(displayName);
         return cvItem.createItemStack();
@@ -253,7 +264,7 @@ public abstract class CivItem extends CVItem {
         lore.add("");
         String displayName = getDisplayName();
         String defaultLocale = ConfigManager.getInstance().getDefaultLanguage();
-        lore.add(ChatColor.BLACK + getProcessedName());
+        cvItem.setCivItemName(getProcessedName());
         if (isTown) {
             lore.add(ChatColor.GREEN + Util.parseColors(LocaleManager.getInstance().getTranslation(defaultLocale,
                     "town-instructions").replace("$1", displayName)));
