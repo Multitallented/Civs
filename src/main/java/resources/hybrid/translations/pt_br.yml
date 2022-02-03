@@ -833,8 +833,8 @@ catapult-desc: Atira TNT com precisão a longas distâncias.
 command_tent-name: Posto de Comando
 command_tent-desc: O centro de um posto avançado. Permite cercar uma cidade próxima. Cria 1 de
   poder a cada 15 minutos.
-hunting_lodge-name: Abrigo de Caça
-hunting_lodge-desc: Após colocar uma placa sobre o bloco de Obsidiana com o nome da sua presa,
+hunting-lodge-name: Abrigo de Caça
+hunting-lodge-desc: Após colocar uma placa sobre o bloco de Obsidiana com o nome da sua presa,
   você pode utilizar o botão direito nele para se teleportar próximo a ela.
 memorial-name: Memorial
 memorial-desc: Um lugar para membros da cidade renascerem. Também previne dano.

@@ -836,8 +836,8 @@ catapult-desc: Vrhá TNT s přesností na velkou vzdálenost.
 command_tent-name: Velitelský stan
 command_tent-desc: Hlavní stavba vojenského ležení. Umožňuje obléhání blízkého města. Produkuje 1
   jednotku moci každých 15 minut.
-hunting_lodge-name: Lovecká Bouda
-hunting_lodge-desc: Umožňuje teleportovat se poblíž kořisti jejíž jméno je třeba napsat na cedulku
+hunting-lodge-name: Lovecká Bouda
+hunting-lodge-desc: Umožňuje teleportovat se poblíž kořisti jejíž jméno je třeba napsat na cedulku
   postavenou na bloku obsidiánu.
 memorial-name: Památník
 memorial-desc: Místo kde se budou oživovat členové města. Také se v něm nedá hráčům ubližovat.

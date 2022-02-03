@@ -878,8 +878,8 @@
 #command_tent-name: Tente de Commandement
 #command_tent-desc: Le centre de l'avant poste. Vous permet d'assiéger une ville voisine. Crée 1
 #  de puissance toutes les 15 minutes.
-#hunting_lodge-name: Pavillon de chasse
-#hunting_lodge-desc: En plaçant un panneau au-dessus d'un bloc d'obsidienne avec le nom de votre
+#hunting-lodge-name: Pavillon de chasse
+#hunting-lodge-desc: En plaçant un panneau au-dessus d'un bloc d'obsidienne avec le nom de votre
 #  proie. Vous pouvez cliquer droit dessus pour vous téléporter près de chez eux.
 #memorial-name: Mémorial
 #memorial-desc: Une place pour les membres de la ville à réapparaître. Empêche également les

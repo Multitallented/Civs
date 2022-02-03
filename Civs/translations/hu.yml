@@ -733,8 +733,8 @@
 #command_tent-name: Parancsnoki sátor
 #command_tent-desc: Központja egy előörsnek. Segít megostromolni egy várost. 1 erőpontot generál
 #  15 percenként.
-#hunting_lodge-name: Vadász kabin
-#hunting_lodge-desc: Ha egy táblát helyezel egy obszidián felé az áldozatod nevével és jobb
+#hunting-lodge-name: Vadász kabin
+#hunting-lodge-desc: Ha egy táblát helyezel egy obszidián felé az áldozatod nevével és jobb
 #  egérgombbal kattintsz az obszidiánra, a játékos közelébe teleportál.
 #memorial-name: Ostrom spawnpoint
 #memorial-desc: Egy hely, ahol a város lakosai újraéledhetnek. Megelőzi a sebződést is.

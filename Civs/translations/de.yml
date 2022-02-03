@@ -758,8 +758,8 @@
 #command_tent-name: Kommandozelt
 #command_tent-desc: Der zentrale Befehlsstand des Außenpostens. Erlaubt die Belagerung naher
 #  Städte. Erzeugt 1 Macht alle 15 Minuten.
-#hunting_lodge-name: Jagdhütte
-#hunting_lodge-desc: Schreibe den Namen deines Ziel auf ein Schild über den Obsidianblock. Du
+#hunting-lodge-name: Jagdhütte
+#hunting-lodge-desc: Schreibe den Namen deines Ziel auf ein Schild über den Obsidianblock. Du
 #  kannst jetzt den Obsidian Rechtsklicken um dich in die Nähe deines Ziels zu
 #  teleportieren.
 #memorial-name: Denkmal

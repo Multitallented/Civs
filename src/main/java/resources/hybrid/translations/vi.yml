@@ -745,8 +745,8 @@ catapult-desc: Bắn TNT trong 1 khoảng cách xa
 command_tent-name: Lều chỉ huy
 command_tent-desc: Là trung tâm của Tiền đồn. Cho phép Máy bao vây ở gần với thị trấn khác để
   phát động cuộc đột kích. Tạo ra 1 năng lượng mỗi 15 phút
-hunting_lodge-name: Lều thợ săn
-hunting_lodge-desc: Bằng cách đặt một tấm bảng lên trên hắc diện thạch trong đó có tên hoặc con
+hunting-lodge-name: Lều thợ săn
+hunting-lodge-desc: Bằng cách đặt một tấm bảng lên trên hắc diện thạch trong đó có tên hoặc con
   mồi của bạn, bạn có thể nhấp chuột phải vào hắc diện thạch để dịch chuyển gần
   chúng
 memorial-name: Đài tưởng niệm

@@ -857,8 +857,8 @@ catapult-desc: Uzak mesafeden doğruluk oranı ile TNT fırlatır.
 command_tent-name: Komuta Çadırı
 command_tent-desc: Askeri karakolun merkezi.Yakın bir kasabayı kuşatmanı sağlar. Her 15 dakikada
   1 güç üretir.
-hunting_lodge-name: Avcı Kulübesi
-hunting_lodge-desc: Obsidiyen bloğunun üzerine avınızın adı yazan bir tabela yerleştirerek,
+hunting-lodge-name: Avcı Kulübesi
+hunting-lodge-desc: Obsidiyen bloğunun üzerine avınızın adı yazan bir tabela yerleştirerek,
   obsidiyene sağ tıklayıp yakınlarına ışınlanabilirsiniz.
 memorial-name: Anıt
 memorial-desc: Kasaba üyelerinin yeniden doğabileceği bir yer. Ayrıca hasarı önler.
