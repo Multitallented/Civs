@@ -205,6 +205,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>ru.endlesscode.mimic</groupId>
+            <artifactId>mimic-bukkit-api</artifactId>
+            <version>0.6.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.github.NeumimTo</groupId>
             <artifactId>Pl3xMap</artifactId>
             <version>1.18-2</version>

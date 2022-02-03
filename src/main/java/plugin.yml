@@ -11,15 +11,16 @@ softdepend:
 - PlaceholderAPI
 - DiscordSRV
 - MMOItems
+- MMOCore
 - Spartan
 - AAC
 - BAC
 - BasicAntiCheat
 - NoCheatPlus
 - WitherAC
-- MMOLib
 - Reflex
 - Pl3xMap
+- Mimic
 commands:
   cv:
     aliases: ['township', 'townships', 'towns', 'town', 'to', 'hs', 'towny', 'fa', 'f', 'faction']

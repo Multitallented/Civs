@@ -17,6 +17,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.dynmap.DynmapCommonAPI;
 import org.redcastlemedia.multitallented.civs.chat.ChatManager;
@@ -28,6 +29,8 @@ import org.redcastlemedia.multitallented.civs.commands.CivsCommand;
 import org.redcastlemedia.multitallented.civs.commands.TabComplete;
 import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
 import org.redcastlemedia.multitallented.civs.pl3xmap.Pl3xMapHook;
+import org.redcastlemedia.multitallented.civs.plugins.MimicClassProvider;
+import org.redcastlemedia.multitallented.civs.plugins.PluginListener;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.ConveyorEffect;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
@@ -49,10 +52,12 @@ import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import net.Indyuce.mmoitems.MMOItems;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import ru.endlesscode.mimic.classes.BukkitClassSystem;
 
 public class Civs extends JavaPlugin {
 
     public static File dataLocation;
+    public static Boolean mimic = null;
     private HashMap<String, CivCommand> commandList = new HashMap<>();
     public static final String NAME = "Civs";
     public static Economy econ;
@@ -223,6 +228,11 @@ public class Civs extends JavaPlugin {
         if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
             discordSRV = DiscordSRV.getPlugin();
         }
+        if (Bukkit.getPluginManager().isPluginEnabled("Mimic")) {
+            Civs.mimic = true;
+            getServer().getServicesManager().register(BukkitClassSystem.Provider.class,
+                    new MimicClassProvider.Provider(), this, ServicePriority.Normal);
+        }
 
         if (Bukkit.getPluginManager().isPluginEnabled("dynmap")) {
             Bukkit.getPluginManager().registerEvents(new DynmapHook(), this);
@@ -234,6 +244,7 @@ public class Civs extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new Pl3xMapHook(), this);
             Pl3xMapHook.initMarkerSet();
         }
+        Bukkit.getPluginManager().registerEvents(new PluginListener(), this);
     }
 
     private void instantiateSingletons() {

@@ -455,11 +455,11 @@ public class Civilian {
         }
         for (Skill skill : skills.values()) {
             if (skill.getType().equalsIgnoreCase(skillName)) {
-                double exp = 0;
+                double currentExp = 0;
                 for (String potionName : skillTypes) {
-                    exp += skill.addAccomplishment(potionName);
+                    currentExp += skill.addAccomplishment(potionName);
                 }
-                MessageUtil.saveCivilianAndSendExpNotification(player, this, skill, exp);
+                MessageUtil.saveCivilianAndSendExpNotification(player, this, skill, currentExp);
             }
         }
     }
@@ -470,9 +470,9 @@ public class Civilian {
         }
         for (Skill skill : skills.values()) {
             if (skill.getType().equalsIgnoreCase(skillName)) {
-                double exp = 0;
-                exp += skill.addAccomplishment(skillType);
-                MessageUtil.saveCivilianAndSendExpNotification(player, this, skill, exp);
+                double currentExp = 0;
+                currentExp += skill.addAccomplishment(skillType);
+                MessageUtil.saveCivilianAndSendExpNotification(player, this, skill, currentExp);
             }
         }
     }

@@ -581,51 +581,6 @@ public class CivilianListener implements Listener {
             }
         }
     }
-    @EventHandler
-    public void onPluginEnable(PluginEnableEvent event) {
-        if ("dynmap".equalsIgnoreCase(event.getPlugin().getName())) {
-            DynmapHook.dynmapCommonAPI = (DynmapCommonAPI) event.getPlugin();
-            DynmapHook.initMarkerSet();
-            return;
-        }
-        if (Constants.PLACEHOLDER_API.equals(event.getPlugin().getName()) &&
-                Bukkit.getPluginManager().isPluginEnabled(Constants.PLACEHOLDER_API)) {
-            new PlaceHook().register();
-            Civs.placeholderAPI = (PlaceholderAPIPlugin) event.getPlugin();
-            return;
-        }
-        if ("MMOItems".equals(event.getPlugin().getName()) &&
-                Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
-            Civs.mmoItems = MMOItems.plugin;
-            return;
-        }
-        if ("DiscordSRV".equals(event.getPlugin().getName()) &&
-                Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
-            Civs.discordSRV = DiscordSRV.getPlugin();
-            return;
-        }
-    }
-
-    @EventHandler
-    public void onPluginDisable(PluginDisableEvent event) {
-        if ("dynmap".equalsIgnoreCase(event.getPlugin().getName())) {
-            DynmapHook.dynmapCommonAPI = null;
-        }
-        if ("MMOItems".equals(event.getPlugin().getName()) &&
-                !Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
-            Civs.mmoItems = null;
-            return;
-        }
-        if ("DiscordSRV".equals(event.getPlugin().getName()) &&
-                !Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
-            Civs.discordSRV = null;
-            return;
-        }
-        if (Constants.PLACEHOLDER_API.equals(event.getPlugin().getName())) {
-            Civs.placeholderAPI = null;
-            return;
-        }
-    }
 
     @EventHandler @SuppressWarnings("unused")
     public void onRegionDestroyedEvent(RegionDestroyedEvent event) {
