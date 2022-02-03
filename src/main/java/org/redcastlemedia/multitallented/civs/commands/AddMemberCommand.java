@@ -30,21 +30,34 @@ public class AddMemberCommand extends CivCommand {
         if (player != null) {
             civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         }
+        String locationString = null;
         if (strings.length < 3) {
-            if (player != null) {
+            if (strings.length < 2 || player == null) {
+                if (player != null) {
+                    player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
+                            "specify-player-region"));
+                } else {
+                    commandSender.sendMessage(Civs.getPrefix() + "Please specify a player and a region");
+                }
+                return true;
+            }
+            Region region = RegionManager.getInstance().getRegionAt(player.getLocation());
+            if (region == null) {
                 player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                         "specify-player-region"));
+                return true;
             } else {
-                commandSender.sendMessage(Civs.getPrefix() + "Please specify a player and a region");
+                locationString = Region.locationToString(region.getLocation());
             }
-            return true;
         }
 
         //0 add
         //1 player
         //2 regionname
         String playerName = strings[1];
-        String locationString = strings[2];
+        if (locationString == null) {
+            locationString = strings[2];
+        }
 
         Region region = RegionManager.getInstance().getRegionAt(Region.idToLocation(locationString));
         if (region == null) {
