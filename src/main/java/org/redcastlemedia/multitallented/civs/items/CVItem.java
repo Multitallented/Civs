@@ -38,6 +38,8 @@ public class CVItem {
     private String displayName = null;
 
     @Getter @Setter
+    private Integer customModelData = null;
+    @Getter @Setter
     private String mmoItemType = null;
 
     @Setter @Getter
@@ -148,16 +150,21 @@ public class CVItem {
         if (isCivItem) {
             return getCivItem(itemType, quantity, chance);
         }
+        CVItem cvItem;
         if (nameString == null) {
-            return new CVItem(mat, quantity, chance);
+            cvItem = new CVItem(mat, quantity, chance);
         } else {
             String displayName = LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + LocaleConstants.NAME_SUFFIX);
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.BLACK + nameString);
             lore.addAll(Util.textWrap(ConfigManager.getInstance().getCivsItemPrefix() +
                     LocaleManager.getInstance().getTranslation(locale, "item-" + nameString + LocaleConstants.DESC_SUFFIX)));
-            return new CVItem(mat, quantity, chance, displayName, lore);
+            cvItem = new CVItem(mat, quantity, chance, displayName, lore);
         }
+        if (data != null) {
+            cvItem.setCustomModelData(Integer.parseInt(data));
+        }
+        return cvItem;
     }
 
     private static CVItem getCivItem(String itemType, int quantity, int chance) {
@@ -263,15 +270,19 @@ public class CVItem {
     }
 
     public static CVItem createFromItemStack(ItemStack is) {
+        CVItem cvItem;
         if (is.hasItemMeta() && is.getItemMeta().getDisplayName() != null &&
                 !"".equals(is.getItemMeta().getDisplayName())) {
             if (is.getItemMeta().getLore() != null) {
-                return new CVItem(is.getType(),is.getAmount(), 100, is.getItemMeta().getDisplayName(), is.getItemMeta().getLore());
+                cvItem = new CVItem(is.getType(),is.getAmount(), 100, is.getItemMeta().getDisplayName(), is.getItemMeta().getLore());
             } else {
-                return new CVItem(is.getType(),is.getAmount(), 100, is.getItemMeta().getDisplayName());
+                cvItem = new CVItem(is.getType(),is.getAmount(), 100, is.getItemMeta().getDisplayName());
             }
+            cvItem.setCustomModelData(is.getItemMeta().getCustomModelData());
+        } else {
+            cvItem = new CVItem(is.getType(),is.getAmount());
         }
-        return new CVItem(is.getType(),is.getAmount());
+        return cvItem;
     }
     public static List<CVItem> createListFromString(String input) {
         String groupName = null;
@@ -299,10 +310,10 @@ public class CVItem {
             Type mmoType = Civs.mmoItems.getTypes().get(mmoItemType);
             MMOItem mmoItem = Civs.mmoItems.getItems().getMMOItem(mmoType, mmoItemName);
             ItemStack itemStack = mmoItem.newBuilder().build();
-            if (displayName != null) {
+            if (displayName != null && itemStack.getItemMeta() != null) {
                 itemStack.getItemMeta().setDisplayName(displayName);
             }
-            if (!lore.isEmpty()) {
+            if (!lore.isEmpty() && itemStack.getItemMeta() != null) {
                 itemStack.getItemMeta().setLore(lore);
             }
             itemStack.setAmount(qty);
@@ -315,14 +326,19 @@ public class CVItem {
                 is.setItemMeta(Bukkit.getItemFactory().getItemMeta(is.getType()));
             }
             ItemMeta im = is.getItemMeta();
-            if (displayName != null) {
-                im.setDisplayName(displayName);
+            if (im != null) {
+                if (displayName != null) {
+                    im.setDisplayName(displayName);
+                }
+                if (lore != null && !lore.isEmpty()) {
+                    im.setLore(lore);
+                }
+                im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                if (customModelData != null) {
+                    is.getItemMeta().setCustomModelData(customModelData);
+                }
+                is.setItemMeta(im);
             }
-            if (lore != null && !lore.isEmpty()) {
-                im.setLore(lore);
-            }
-            im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            is.setItemMeta(im);
         }
         return is;
     }
@@ -344,6 +360,10 @@ public class CVItem {
                 return false;
             }
             return true;
+        }
+        if (customModelData != null && iss.getItemMeta() != null &&
+                iss.getItemMeta().getCustomModelData() != customModelData) {
+            return false;
         }
         if (useDisplayName) {
             boolean nullComparison = getDisplayName() == null;
@@ -371,6 +391,11 @@ public class CVItem {
         }
         if (mmoItemType != null) {
             return true;
+        }
+
+        if ((iss.getCustomModelData() != null || customModelData != null) &&
+                ObjectUtils.equals(iss.getCustomModelData(), customModelData)) {
+            return false;
         }
 
         if (useDisplayName) {
@@ -415,6 +440,7 @@ public class CVItem {
     @Override
     public CVItem clone() {
         CVItem cvItem = new CVItem(mat, qty, (int) chance, displayName, new ArrayList<>(lore));
+        cvItem.customModelData = customModelData;
         cvItem.mmoItemName = mmoItemName;
         cvItem.mmoItemType = mmoItemType;
         cvItem.setGroup(group);
