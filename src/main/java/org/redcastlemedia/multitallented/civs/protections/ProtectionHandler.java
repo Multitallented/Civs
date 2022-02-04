@@ -92,6 +92,8 @@ import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.MessageUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
+import io.papermc.paper.event.player.PlayerItemFrameChangeEvent;
+
 @CivsSingleton
 public class ProtectionHandler implements Listener {
 
@@ -516,14 +518,10 @@ public class ProtectionHandler implements Listener {
         shouldBlockAction(event.getEntity().getLocation(), null, RegionEffectConstants.BLOCK_BREAK);
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onItemFrame(PlayerInteractAtEntityEvent event) {
-        if (EntityType.ITEM_FRAME != event.getRightClicked().getType() &&
-                event.getRightClicked().getType() != EntityType.GLOW_ITEM_FRAME) {
-            return;
-        }
+    @EventHandler(ignoreCancelled = true, priority=EventPriority.HIGHEST)
+    public void onItemFrame(PlayerItemFrameChangeEvent event) {
         Player player = event.getPlayer();
-        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getRightClicked().getLocation(),
+        boolean setCancelled = shouldBlockAction(event.getItemFrame().getLocation(),
                 player, "block_build");
         if (setCancelled) {
             event.setCancelled(true);
@@ -545,7 +543,7 @@ public class ProtectionHandler implements Listener {
                 player = (Player) entityDamageByEntityEvent.getDamager();
             }
         }
-        boolean setCancelled = event.isCancelled() || shouldBlockAction(event.getEntity().getLocation(),
+        boolean setCancelled = shouldBlockAction(event.getEntity().getLocation(),
                 player, "chest_use");
         if (setCancelled) {
             event.setCancelled(true);

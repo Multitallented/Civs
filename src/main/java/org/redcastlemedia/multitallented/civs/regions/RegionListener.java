@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -45,6 +46,9 @@ public class RegionListener implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent blockPlaceEvent) {
+        if (blockPlaceEvent.canBuild()) {
+            return;
+        }
         RegionManager regionManager = RegionManager.getInstance();
 
         if (!blockPlaceEvent.getItemInHand().hasItemMeta()) {
