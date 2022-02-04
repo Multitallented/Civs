@@ -66,7 +66,7 @@ public class ItemsTests extends TestUtil {
     }
 
     @Test
-    public void newPlayerShouldRecieveAShelterItem() {
+    public void newPlayerShouldReceiveAShelterItem() {
         loadRegionTypeShelter();
         CivilianManager.getInstance();
         PlayerJoinEvent event = new PlayerJoinEvent(TestUtil.player, "blah");
