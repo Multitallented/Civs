@@ -165,8 +165,8 @@ public class TownManager {
                     location.getX() - buildRadius <= town.getLocation().getX() + currentTownType.getBuildRadius() &&
                     location.getZ() + buildRadius >= town.getLocation().getZ() - currentTownType.getBuildRadius() &&
                     location.getZ() - buildRadius <= town.getLocation().getZ() + currentTownType.getBuildRadius() &&
-                    Math.max(location.getY() - buildRadiusY, 0) <=
-                            Math.max(town.getLocation().getY() + currentTownType.getBuildRadiusY(), 0) &&
+                    Math.max(location.getY() - buildRadiusY, -64) <=
+                            Math.max(town.getLocation().getY() + currentTownType.getBuildRadiusY(), -64) &&
                     Math.min(location.getY() + buildRadiusY, location.getWorld().getMaxHeight()) >=
                             Math.min(town.getLocation().getY() - currentTownType.getBuildRadiusY(), town.getLocation().getWorld().getMaxHeight())) {
                 townArrayList.add(town);

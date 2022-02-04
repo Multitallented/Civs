@@ -101,7 +101,7 @@ public class WarehouseEffect implements Listener, RegionCreatedListener {
 
         int x = (int) Math.round(lx - buildRadius);
         int y = (int) Math.round(ly - buildRadius);
-        y = Math.max(y, 0);
+        y = Math.max(y, -64);
         int z = (int) Math.round(lz - buildRadius);
         int xMax = (int) Math.round(lx + buildRadius);
         int yMax = (int) Math.round(ly + buildRadius);
