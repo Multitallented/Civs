@@ -37,6 +37,7 @@ effects:
 - chest_use
 - block_liquid
 - block_fire
+- exclusive:jade_shop
 
 period: daily
 upkeep:
