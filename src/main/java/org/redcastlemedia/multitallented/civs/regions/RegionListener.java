@@ -44,11 +44,8 @@ public class RegionListener implements Listener {
      * If placing a region block, try to create a region
      * @param blockPlaceEvent
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockPlace(BlockPlaceEvent blockPlaceEvent) {
-        if (blockPlaceEvent.canBuild()) {
-            return;
-        }
         RegionManager regionManager = RegionManager.getInstance();
 
         if (!blockPlaceEvent.getItemInHand().hasItemMeta()) {
