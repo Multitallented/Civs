@@ -169,6 +169,7 @@ public class ConfigManager {
     @Getter double percentPowerForUpgrade;
     @Getter boolean showKillStreakMessages;
     @Getter boolean combatTagEnabled;
+    @Getter boolean useBossBar;
 
     @Getter
     String chatChannelFormat;
@@ -422,6 +423,7 @@ public class ConfigManager {
             useBounties = config.getBoolean("use-bounties", true);
             useSkills = config.getBoolean("use-skills", true);
             warningLogger = config.getBoolean("show-warning-logs", false);
+            useBossBar = config.getBoolean("show-civs-boss-bar", true);
             percentPowerForUpgrade = config.getDouble("percent-power-for-town-upgrade", 0.1);
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
@@ -523,6 +525,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        useBossBar = true;
         combatTagEnabled = true;
         warningLogger = false;
         percentPowerForUpgrade = 0.1;
