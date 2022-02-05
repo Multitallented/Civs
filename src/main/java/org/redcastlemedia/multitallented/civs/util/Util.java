@@ -426,20 +426,14 @@ public final class Util {
     public static String getValidFileName(String fileName) {
         return fileName.replaceAll("^[.\\\\/:*?\"<>|]?[\\\\/:*?\"<>|]*", "");
     }
-    public static Locale getNumberFormatLocale(String locale) {
-        Locale localeEnum = Locale.forLanguageTag(locale);
-        if (localeEnum == null) {
-            Civs.logger.log(Level.SEVERE, "Unable to find locale {0}", locale);
-            return Locale.getDefault();
-        }
-        return localeEnum;
-    }
-    public static String getNumberFormat(double number, String locale) {
-        String numberFormat = NumberFormat.getInstance(getNumberFormatLocale(locale)).format(number);
-        if (numberFormat.isEmpty()) {
+    public static String getNumberFormat(double number, String language) {
+        Locale locale = new Locale("en", "US");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+        String currencyString = numberFormat.format(number);
+        if (currencyString.isEmpty()) {
             return NumberFormat.getCurrencyInstance().format(number);
         } else {
-            return numberFormat;
+            return currencyString;
         }
     }
 

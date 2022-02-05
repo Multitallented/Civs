@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.civs.menus.regions;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -206,10 +207,12 @@ public class RegionMenu extends CustomMenu {
                 }
                 i++;
             }
+            Locale locale = new Locale("en", "US");
+            NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
             cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                     menuIcon.getDesc()).replace("$1", regionType.getDisplayName(player))
-                    .replace("$2", NumberFormat.getCurrencyInstance().format(lastDayIncome))
-                    .replace("$3", NumberFormat.getCurrencyInstance().format(lastWeekIncome))));
+                    .replace("$2", numberFormat.format(lastDayIncome))
+                    .replace("$3", numberFormat.format(lastWeekIncome))));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
