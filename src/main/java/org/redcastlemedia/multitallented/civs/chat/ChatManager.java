@@ -5,6 +5,8 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -12,11 +14,14 @@ import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
+import org.redcastlemedia.multitallented.civs.civilians.ChatChannel;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
 import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * https://docs.adventure.kyori.net/minimessage.html
@@ -36,8 +41,8 @@ public class ChatManager {
         return instance;
     }
 
-    public void formatMessage(Player source, Civilian civilian, ChatChannelConfig config,
-                              String message, Iterable<Player> recipients) {
+    public void formatAndSendMessage(Player source, Civilian civilian, ChatChannelConfig config,
+                                     String message, Iterable<Player> recipients) {
 
         TownManager townManager = TownManager.getInstance();
         String biggestTown = townManager.getBiggestTown(civilian);
@@ -69,6 +74,11 @@ public class ChatManager {
         for (CommandSender recipient : recipients) {
             Audience sender = bukkitAudiences.sender(recipient);
             sender.sendMessage(parse);
+        }
+        Audience sender = bukkitAudiences.sender(Bukkit.getConsoleSender());
+        sender.sendMessage(parse);
+        if (Civs.discordSRV != null && config.channelType == ChatChannel.ChatChannelType.GLOBAL) {
+            DiscordUtil.sendMessageToMainChannel(format);
         }
     }
 
