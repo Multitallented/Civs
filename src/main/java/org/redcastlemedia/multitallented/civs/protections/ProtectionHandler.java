@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -19,7 +20,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
-import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Phantom;
 import org.bukkit.entity.Player;
@@ -53,8 +53,6 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -79,7 +77,6 @@ import org.redcastlemedia.multitallented.civs.regions.RegionEffectConstants;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.skills.CivSkills;
-import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
@@ -89,7 +86,6 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
-import org.redcastlemedia.multitallented.civs.util.MessageUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 import io.papermc.paper.event.player.PlayerItemFrameChangeEvent;
@@ -115,9 +111,10 @@ public class ProtectionHandler implements Listener {
         return instance;
     }
 
-//    @EventHandler
+    @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
-//        System.out.println("chunk unloaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
+        Civs.logger.log(Level.INFO, "chunk unloaded: {0}, {1} = {2}", new Object[]{event.getChunk().getX(), event.getChunk().getZ(),
+                event.getWorld().getLoadedChunks().length});
     }
 
     @EventHandler
@@ -125,7 +122,8 @@ public class ProtectionHandler implements Listener {
         if (ConfigManager.getInstance().isDebugLog()) {
             DebugLogger.chunkLoads++;
         }
-//        System.out.println("chunk loaded: " + event.getChunk().getX() + ", " + event.getChunk().getZ());
+        Civs.logger.log(Level.INFO, "chunk loaded: {0}, {1} = {2}", new Object[] {event.getChunk().getX(), event.getChunk().getZ(),
+                event.getWorld().getLoadedChunks().length});
     }
 
     @EventHandler(ignoreCancelled = true)

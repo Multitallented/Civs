@@ -78,6 +78,7 @@ public class Region {
     private List<String> chests = new ArrayList<>();
     @Getter
     private boolean idle = false;
+    @Getter @Setter private Location previousConveyorDestination;
 
     public Region(String type,
                   HashMap<UUID, String> people,

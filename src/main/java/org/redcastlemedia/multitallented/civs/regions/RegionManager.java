@@ -362,6 +362,11 @@ public class RegionManager {
             } else {
                 regionConfig.set(ActiveEffect.LAST_ACTIVE_KEY, null);
             }
+            if (region.getPreviousConveyorDestination() != null) {
+                regionConfig.set("previous-conveyor", Region.locationToString(region.getPreviousConveyorDestination()));
+            } else {
+                regionConfig.set("previous-conveyor", null);
+            }
             regionConfig.save(regionFile);
         } catch (Exception e) {
             Civs.logger.severe("Unable to write to " + region.getId() + ".yml");
@@ -425,6 +430,11 @@ public class RegionManager {
             }
             if (regionConfig.isSet(Constants.CHESTS)) {
                 region.getChests().addAll(regionConfig.getStringList(Constants.CHESTS));
+            }
+            String previousConveyorString = regionConfig.getString("previous-conveyor");
+            if (previousConveyorString != null) {
+                Location previousConveyorLocation = Region.idToLocation(previousConveyorString);
+                region.setPreviousConveyorDestination(previousConveyorLocation);
             }
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read " + regionFile.getName(), e);

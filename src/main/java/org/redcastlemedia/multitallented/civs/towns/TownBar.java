@@ -37,6 +37,9 @@ public class TownBar
 
     public void update() {
         Town town = TownManager.getInstance().getTown(townName);
+        if (town == null) {
+            return;
+        }
         bossBar.setProgress(clamp((double) town.getPower() / town.getMaxPower(), 0, 1));
     }
 

@@ -207,12 +207,10 @@ public class RegionMenu extends CustomMenu {
                 }
                 i++;
             }
-            Locale locale = new Locale("en", "US");
-            NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
             cvItem.setLore(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player,
                     menuIcon.getDesc()).replace("$1", regionType.getDisplayName(player))
-                    .replace("$2", numberFormat.format(lastDayIncome))
-                    .replace("$3", numberFormat.format(lastWeekIncome))));
+                    .replace("$2", Util.getNumberFormat(lastDayIncome, civilian.getLocale()))
+                    .replace("$3", Util.getNumberFormat(lastWeekIncome, civilian.getLocale()))));
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;

@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.minecart.StorageMinecart;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -38,7 +39,6 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
     private HashMap<Region, StorageMinecart> carts = new HashMap<>();
     private HashMap<Region, StorageMinecart> orphanCarts = new HashMap<>();
     private HashMap<Region, Location> cacheSpawnPoints = new HashMap<>();
-    private HashMap<Region, Region> cacheDestinationRegions = new HashMap<>();
     private boolean disabled = false;
     public static String KEY = "conveyor";
 
@@ -64,7 +64,6 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
     public void onRegionDestroyed(RegionDestroyedEvent event) {
         carts.remove(event.getRegion());
         cacheSpawnPoints.remove(event.getRegion());
-        cacheDestinationRegions.remove(event.getRegion());
     }
 
     @EventHandler
@@ -176,11 +175,16 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         }
 
         //If chunk not loaded try using region cache to move directly
-        if (!Util.isChunkLoadedAt(loc)) {
-            if (!cacheDestinationRegions.containsKey(r)) {
+        if (!Util.isChunkLoadedAt(loc) || !isPlayerWithing5Chunks(r.getLocation())) {
+            if (r.getPreviousConveyorDestination() == null) {
                 return;
             }
-            CVInventory cachedDestinationInventory = UnloadedInventoryHandler.getInstance().getChestInventory(cacheDestinationRegions.get(r).getLocation());
+            Region previousRegion = RegionManager.getInstance().getRegionAt(r.getPreviousConveyorDestination());
+            if (previousRegion == null) {
+                r.setPreviousConveyorDestination(null);
+                return;
+            }
+            CVInventory cachedDestinationInventory = UnloadedInventoryHandler.getInstance().getChestInventory(previousRegion.getLocation());
             if (cachedDestinationInventory.firstEmpty() < 0 ||
                     cachedDestinationInventory.firstEmpty() > cachedDestinationInventory.getSize() - 3) {
                 return;
@@ -196,7 +200,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
                 for (ItemStack is : iss) {
                     cachedDestinationInventory.addItem(is);
                 }
-                RegionManager.getInstance().removeCheckedRegion(cacheDestinationRegions.get(r));
+                r.setPreviousConveyorDestination(null);
             } catch (Exception e) {
                 Civs.logger.log(Level.WARNING, "Exception from offline conveyor: ", e);
             }
@@ -229,6 +233,16 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
             }
             carts.put(r, cart);
         }
+    }
+
+    private boolean isPlayerWithing5Chunks(Location location) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.getWorld().getName().equals(location.getWorld().getName()) &&
+                    player.getLocation().distance(location) < 6400) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @EventHandler
@@ -289,11 +303,12 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
     }
 
     private boolean isDestinationChestFull(Region region) {
-        if (!cacheDestinationRegions.containsKey(region)) {
+        if (region.getPreviousConveyorDestination() == null) {
             return false;
         }
-        Region destinationRegion = cacheDestinationRegions.get(region);
+        Region destinationRegion = RegionManager.getInstance().getRegionAt(region.getPreviousConveyorDestination());
         if (destinationRegion == null) {
+            region.setPreviousConveyorDestination(null);
             return true;
         }
         CVInventory destinationInventory = UnloadedInventoryHandler.getInstance()
@@ -368,9 +383,7 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
         }
         returnCart(r, false);
         carts.remove(r);
-        if (!cacheDestinationRegions.containsKey(r)) {
-            cacheDestinationRegions.put(r, region);
-        }
+        r.setPreviousConveyorDestination(region.getLocation());
     }
 
     public void onDisable() {
@@ -386,6 +399,5 @@ public class ConveyorEffect implements Listener, RegionCreatedListener {
             returnCart(entry.getKey(), false);
         }
         carts.clear();
-        cacheDestinationRegions.clear();
     }
 }

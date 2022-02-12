@@ -272,5 +272,6 @@ public class UtilTests extends TestUtil {
     @Test
     public void numberFormatShouldNotBeEmpty() {
         assertEquals("100", Util.getNumberFormat(100, "zh"));
+        assertEquals("1 000,1", Util.getNumberFormat(1000.1, "ru"));
     }
 }

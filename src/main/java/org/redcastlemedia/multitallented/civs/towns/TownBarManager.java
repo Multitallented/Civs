@@ -72,8 +72,9 @@ public class TownBarManager implements Listener {
     public void onTownCreated(TownCreatedEvent event)
     {
         String townName = event.getTown().getName();
-
-        createTownBar(townName);
+        Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> {
+            createTownBar(townName);
+        }, 20L);
     }
 
     @EventHandler
