@@ -278,7 +278,7 @@ chat-channels:
   alliance:
     enabled: true
     icon: GOLDEN_SWORD
-    format: "[<lightpurple>Al<reset>]<town_f> <player>:<lightpurple> <message>"
+    format: "[<gray>Al<reset>]<town_f> <player>:<gray> <message>"
 
 # If player do not belong to any nation, or town formatted tags will eventually fallback to empty string
 chat-tags-format:
