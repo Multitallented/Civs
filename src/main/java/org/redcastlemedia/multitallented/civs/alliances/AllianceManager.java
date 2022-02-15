@@ -167,7 +167,7 @@ public class AllianceManager implements Listener {
         }
         toTown.getAllyInvites().add(fromTown.getName());
         player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                "town-ally-request-sent").replace("$1", fromTown.getName()));
+                "town-ally-request-sent").replace("$1", toTown.getName()));
         for (UUID uuid : toTown.getRawPeople().keySet()) {
             if (uuid.equals(player.getUniqueId())) {
                 continue;
