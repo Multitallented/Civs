@@ -46,4 +46,4 @@ upkeep:
     input:
     - GLASS_BOTTLE*2
     output:
-    - EXPERIENCE_BOTTLE*2
+    - EXPERIENCE_BOTTLE*64
