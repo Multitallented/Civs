@@ -64,7 +64,12 @@
 #          - IRON_BLOCK
 #          - REDSTONE_BLOCK
 #          - DIAMOND_SWORD
-#        money: 300
+#          - LEATHER
+#          - STICK
+#          - WOODEN_SWORD
+#          - KELP
+#          - WOODEN_AXE
+#        money: 500
 #    - type: upkeep
 #      region: altar
 #      rewards:
@@ -94,8 +99,9 @@
 #          - DIAMOND*3
 #        money: 1000
 #    - type: build
-#      region: siege_machine
+#      region: catapult
 #      rewards:
+#        money: 250
 #        items:
 #          - TNT*64
 #    - type: build
