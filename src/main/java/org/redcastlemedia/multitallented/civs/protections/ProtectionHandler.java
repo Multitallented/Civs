@@ -111,19 +111,19 @@ public class ProtectionHandler implements Listener {
         return instance;
     }
 
-    @EventHandler
-    public void onChunkUnload(ChunkUnloadEvent event) {
-        Civs.logger.log(Level.INFO, "chunk unloaded: {0}, {1} = {2}", new Object[]{event.getChunk().getX(), event.getChunk().getZ(),
-                event.getWorld().getLoadedChunks().length});
-    }
+//    @EventHandler
+//    public void onChunkUnload(ChunkUnloadEvent event) {
+//        Civs.logger.log(Level.INFO, "chunk unloaded: {0}, {1} = {2}", new Object[]{event.getChunk().getX(), event.getChunk().getZ(),
+//                event.getWorld().getLoadedChunks().length});
+//    }
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         if (ConfigManager.getInstance().isDebugLog()) {
             DebugLogger.chunkLoads++;
         }
-        Civs.logger.log(Level.INFO, "chunk loaded: {0}, {1} = {2}", new Object[] {event.getChunk().getX(), event.getChunk().getZ(),
-                event.getWorld().getLoadedChunks().length});
+//        Civs.logger.log(Level.INFO, "chunk loaded: {0}, {1} = {2}", new Object[] {event.getChunk().getX(), event.getChunk().getZ(),
+//                event.getWorld().getLoadedChunks().length});
     }
 
     @EventHandler(ignoreCancelled = true)
