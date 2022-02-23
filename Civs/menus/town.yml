@@ -99,7 +99,7 @@
 #    actions:
 #      - menu:confirmation?town=$town$&type=leave
 #  alliance-invites:
-#    index: 11
+#    index: 2
 #    icon: GOLDEN_SWORD
 #    name: town-ally-invites
 #    actions:
