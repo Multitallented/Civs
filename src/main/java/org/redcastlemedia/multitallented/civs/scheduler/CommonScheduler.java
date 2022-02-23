@@ -97,7 +97,9 @@ public class CommonScheduler implements Runnable {
                 sendAnnouncement(player);
             }
             checkExploration(player);
-            AllowedActionsListener.dropInvalidArmorOrWeapons(player);
+            if (ConfigManager.getInstance().getUseClassesAndSpells()) {
+                AllowedActionsListener.dropInvalidArmorOrWeapons(player);
+            }
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Error occurred during Civs heartbeat player check", e);
         }

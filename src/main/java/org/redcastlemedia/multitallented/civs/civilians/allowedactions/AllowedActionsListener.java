@@ -87,6 +87,7 @@ public class AllowedActionsListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onEnchantItem(EnchantItemEvent event) {
         final Player player = event.getEnchanter();
+        addExpForEnchant(event);
         if (!ConfigManager.getInstance().getUseClassesAndSpells() ||
                 player.getGameMode() != GameMode.SURVIVAL || (Civs.perm != null &&
                 Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
@@ -119,12 +120,8 @@ public class AllowedActionsListener implements Listener {
 
         final int returnedLevels = returningLevels;
 
-        if (!event.isCancelled()) {
-            addExpForEnchant(event);
-
-            Bukkit.getScheduler().runTaskLater(Civs.getInstance(),
-                    () -> setCorrectEnchantItemsAndExp(player, limitedItem, returnedLevels), 1);
-        }
+        Bukkit.getScheduler().runTaskLater(Civs.getInstance(),
+                () -> setCorrectEnchantItemsAndExp(player, limitedItem, returnedLevels), 1);
     }
 
     private void addExpForEnchant(EnchantItemEvent event) {
