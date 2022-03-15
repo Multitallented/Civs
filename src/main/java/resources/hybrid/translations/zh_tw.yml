@@ -1,859 +1,859 @@
 name: 繁體中文
 icon: RED_WOOL
-starter-book: 城鎮系統
-next-button: 下一頁
-prev-button: 上一頁
-language-menu: 選擇語言
-language-set: 你的語言已設置為 $1
-back-button: 返回
-start-tutorial: 查看成就
-start-tutorial-desc: 完成成就即可獲得金錢和物品
-skip: 關閉成就
-tutorial-click: 請查看 Civs 教學
-tutorial-wiki: 城鎮系統插件維基
-click-info: 點擊查看詳情
-guide: 教學
-income: 收入
-income-desc: 你的$1在前一天裡賺得了$2，在前一周裡賺得了$3
-rebuild: 重建
-rebuild-req-desc: 這個建築只能在以下建築裡建造
-rebuild-opt-desc: 這個建築可以建造在以下建築上面
-guide-desc: 點擊查看你的下一個目標
-choose-path: 選擇你城鎮接下來的走向
-new-owner-town: $1 繼承了 $2 的 $3 城主之位
-town-bank-balance: 銀行存款 $1
-town-bank-desc: 使用/cv withdraw $1 [要取出的數量] 來取出存款
-withdrawn-money: "你從$2的銀行取出了 $$1 "
-deposit-money: 你將$1存入$2的銀行
-too-much-money: 您在銀行的存款不能超過$1
-town-tax: "城鎮稅收: $1"
-town-tax-desc: 使用/cv tax $1 [數量] 來設置稅收
-town-tax-gov-type: $1 設置稅收失敗
-town-tax-set: $1的稅收成功設置為 $2
-tax-too-high: 稅收不能高於$1
-town-assist-price: 由於你建造了 $2，你的城鎮消耗了 $1
-colony-town-set: 你設置 $1 為 $2 的管理者
-cant-build-feudal: 你不能在其他城鎮內建造此區域
-tribalism-no-invite: 你的城鎮部落禁止你邀請 $1 到非盟友城鎮 $2
-vote-member: 為下一任城主投票
-capitalism-voting-cost: 額外投票將消耗$1
-voted: 你為$1投上了寶貴的一票
-gov-type-change: $1 從 $2 更改為 $3
-cant-change-gov-type-daily: 你每天只能更改一次城鎮政體類型。
-revolt: 反抗
-revolt-desc: 點擊加入反抗 $1 的隊伍。消耗$2 $3。
-revolt-display: $1 / $2 名成員舉起了反抗的火把。
-cancel-revolt: 點擊取消反抗$1。
-item-cost: 這個動作花費了$1 個 $2。
-cost-buff: 由於你在$3城鎮內建造了$2，你獲得了$1。
-refund: 你已被退還 $$1。
-spell-cast: "@{BLUE}$1 @{WHITE}使用了魔法 @{RED}$2"
-exp-gained: 你得到了$2方面的經驗值$1
-merit-new-owner: 恭喜你！你勝過了$1。你現在是新的城主了！
-item-locked: 你還沒解鎖這個物品。
-ai-invite: 你好, @$1 想要加入我的城鎮嗎?
-ai-help: $1可以帶你到那個地方。
-cooldown-buff-desc: 所有 $2 的冷卻減少$1%
-payout-buff-desc: 所有 $2的區域支出增加$1%
-power-buff-desc: "每日能量增加 $1% "
-max_power-buff-desc: 最大能量增加$1%
-cost-buff-desc: 所有$2的償還消耗減少$1%
-shop: 商店
-buy-item: 點擊購買
-price: 價格 $1
-buy: 購買 $1
-cancel: 取消
-item-bought: 成功以 $2 元購買 $1。
-max-item: 你不能購買多於 $2 個 $1
-max-qty: $1 擁有太多 $2 了所以無法獲得更多
-items: 物品
-click-for-item-group: 點擊查看這個組內的所有物品
-classes: 職業
-spells: 魔法
-blueprints: 藍圖
-regions: 區域
-community: 社區
-players: 玩家
-towns: 城鎮
-town: 城鎮
-your-towns: 你的城鎮
-wars: 戰爭
-alliances: 聯盟
-leaderboard: 排行榜
-ports: 港口
-money: "金錢: $$1"
-points: "點數: $1"
-killstreak: "連續擊殺數: $1"
-highest-killstreak: "最多連續擊殺數: $1"
-kills: "擊殺數: $1"
-deaths: "死亡數: $1"
-friends: 朋友
-confirm: 確認
-reject: 拒絕
-effects: 效果
-size: 大小
-range: 範圍
-build-reqs-title: 建築需求
-population: 人口
-population-req: 需要 $1 和 $2 人口
-biomes: 生態系
-devolve-town: $1 耗盡了能量並降級為 $2!
-pop-desc: $1 人口 / $2 住宅 / $3 村民
-build-reqs: 建築 $1 所需的方塊
-reagents-title: 試劑
-reagents: $1 箱子裡的所有你需要的物品
-upkeep-title: 投入
-upkeep: 所有 $1 消耗的物品
-output-title: 產出
-output: 所有 $1 創建的物品
-payout-title: 支付
-payout: 建造這片區域可獲得 $$1
-power-input-title: 耗能
-power-input: 這片區域消耗$1點能量
-power-output-title: 產能
-power-output: 這片區域生成$1點能量
-power-history: 前$1天的能量歷史：
-too-close-region: 你的 $1 靠 $2 太近了
-too-close-town: 你的 $1 靠另一個重載太近了
-town-created: $1 已被創建!
-town-destroyed: $1 已破滅!
-region-built: 你成功地建造了一個 $1 區域
-region-type: 區域類型
-destroy: 摧毀
-region-in-town: 你的區域位於 $1
-town-req-desc: "你必須在這裡建造你的區域:"
-view-members: 查看成員
-add-member: 添加成員
-operation: 操作
-region-working: 你的區域運行正常
-region-not-working: 你的區域少了點東西
-filter-online: 過濾在線玩家
-sort-alphabetical: 根據字母分類
-sort-points: 根據擊殺數分類
-sort-rank: 根據頭銜分類
-owner: 地主
-member: 成員
-guest: 遊客
-recruiter: 招募員
-set-owner: 設置地主
-set-member: 設置成員
-set-guest: 設置遊客
-set-recruiter: 設置招募員
-remove-member: 刪除成員
-leave-town: 離開城鎮
-you-left-town: 你離開了 $1
-invite-sent: 已發送邀請
-add-member-region: 你成為了 $1 的一員
-member-added-region: $1 現在是 $2 的一員了
-owner-description: 地主可以為所欲為
-guest-description: 遊客只可以使用門和按鈕
-member-description: 成員可以建造和使用這片區域
-recruiter-description: 招募員可以邀請玩家加入城鎮
-remove-member-region: 你不再是 $1 的一員
-member-removed-region: $1 不再是 $2 的一員
-add-owner-region: 你為 $1 添加了一個地主
-owner-added-region: $1 現在是 $2 的地主
-add-recruiter-region: 你已為$1設置招募員
-recruiter-added-region: $1現在是$2的招募員
-add-guest-region: 你已成為 $1 的遊客
-guest-added-region: $1 現在是 $2 的遊客
-invite-member-region: 你成為了 $1 的一員
-member-invited-region: $1 已加入你的 $2
-no-invite: 你沒有邀請
-stand-in-region: 請讓 $1 站在該區域內
-create: 創建
-click-for-region-limits: 點擊這裡查看區域限制列表
-click-for-req-regions: 點擊這裡查看所需區域列表
-town-instructions: 輸入/cv town [城鎮名] 來創建 $1
-town-enter: 你進入了 $1
-town-enter-warning: "@{RED}警告!這個城鎮有防禦設施，也許你可以試著使用強襲傳送台或圍攻機來攻擊它。"
-town-exit: 你退出了 $1
-wild: 荒原
-new-town-member: $1 加入了 $2
-must-be-built-on-top: $1 必須造在 $2 的上面
-town-power: "能量: $1/$2"
-port-warmup: 你將在 $1 秒後被傳送
-teleported: 已傳送!
-location: 地點
-location-set: 已設置 $1 的地點
-rename-town: 修改城鎮名
-rename-desc: 使用 /cv rename [舊城鎮名] [新城鎮名]
-town-renamed: 你的城鎮已從 $1 更名為 $2
-bounty-set: $1 設置了懸賞： $2
-bounty-bonus: 你獲得了 $1 的賞金
-allied-bounty: 擊殺盟友不會獲得懸賞。
-add-friend: 交友
-remove-friend: 絕交
-friend-added: $1 已成為了你的好友
-friend-removed: $1 不再是你的好友了
-bounty: 設置懸賞： /cv bounty $1 數量
-click-me: ">>>請點我<<<"
-bounty-command: /cv bounty $1 [賞金金額]
-rename-command: /cv rename $1 [城鎮新名字]
-town-ally: 將 $1 視為盟友
-town-unally: 將 $1 視為敵人
-town-ally-invites: 你收到了其他重載的結盟申請
-town-ally-request-sent: 結盟邀請已發給 $1
-town-ally-request-accepted: $1 和 $2 已結盟
-town-ally-request-denied: $1 的結盟申請被拒絕
-town-ally-removed: $1 和 $2 的聯盟破滅了
-decline-all: 拒絕所有邀請
-accept-invite: 接受邀請
-region-evolve: $1已進化為$2
-region-evolved: 你的 $1 加入到了 $2
-anti-camp-active: $1的PVP保護已激活
-anti-camp-expired: $1的PVP保護已失效
-activate-anticamp-question: $1已在$2內部死亡。您要激活$3的野營防禦嗎？
-region-sale-set: $1 現以 $2 的價格出售
-sell-region: 出售區域
-cancel-sale: 取消出售
-buy-region: 用$2 購買 $1
-regions-for-sale: 出售區域
-use-sell-command: 輸入 /cv sell 價格
-region-bought: 你成功地用$2購買了$1
-region-sold: 你的 $1 成功以 $3 元賣給了 $2。
-sort-by-level: 根據等級分類區域
-level: $1級
-level-up: 點此以使用你自己的經驗值來提升這個技能的經驗值，而且自身經驗等級低於技能等級時才可以這麼做。
-level-up-max: 你的技能等即已達到最高。
-not-enough-levels: 你需要再提升$1級才能這樣做。
-rename-alliance: 重命名聯盟
-rename-alliance-desc: 請輸入 /cv really $1 新的聯盟名
-alliance-renamed: " $1 已改名為 $2"
-invalid-name: 無效的名稱
-region-not-allowed-in-world: 你不能在這個世界上建$1。
-last-renamed-by: 最後由$1改名
-leave-alliance: 離開聯盟
-hunting-players: 警告！有人在你所在地區搞事。
-no-hunting-new-players: 你不能選擇狩獵一個沒有加入任何城鎮的玩家。
-target-not-in-world: $1 和你不在同一個世界.
-cant-place-town: "輸入 /cv town 城鎮名 "
-no-region-type-found: 找不到區域類型 $1
-building-too-big: 你造的$1太大了
-no-required-blocks: 你未放置建造 $1 所需的方塊
-cant-build-on-region: 你不能在 $2 上面建造 $1
-rebuild-required: 你需要在 $2 上面建造 $1
-max-rebuild-required: 你已經擁有了$1個$3，你只能用$4來升級$5。
-prevent-civs-item-share: 你不能分享Civ的物品
-region-protected: 這片區域受到保護
-region-destroyed: 區域 $1 已被摧毀!
-specify-player-town: 請指定玩家和城鎮名
-specify-town-name: 請設置城鎮名
-specify-player-region: 請指定玩家和區域名
-town-not-exist: $1 不是一個城鎮
-no-permission-invite: 你沒有邀請玩家到 $1 的權限
-player-not-online: $1 不在線
-invite-player: $1 想要邀請你加入 $2 $3. 輸入 /cv accept 以接受
-already-member: $1 已經是 $2 的一員了
-broke-own-region: 你的 $1 缺少方塊
-no-permission: 沒有權限
-class-changed: 你的職業已更改為 $1
-not-enough-money: 你沒有 $$1
-not-allowed-place: $1 無法被放置
-hold-town: 請手持城鎮物品
-no-commands-in-jail: 你不能在 $1 的監獄裡使用指令
-building-requires-2space: 這個建築需要在中心箱子上面留兩格空間
-missing-blocks-build: 你需要放置這些方塊來建造 $1
-intruder-enter: "@{RED}[警告] $1已進入$2"
-intruder-exit: $1已退出$2
-in-combat: 你不能在戰鬥時這麼做
-cooldown: 冷卻中：$1
-need-more-health: 你需要更多的 $1 生命值才能這麼做
-need-more-stamina: 你需要更多的 $1 耐力才能這麼做
-need-more-mana: 你需要更多的 $1 魔法才能這麼做
-port-not-found: 找不到港口
-region-missing-upkeep-items: 區域不需要物品
-raid-porter-offline: 當成員不在線時，您無法發動強襲$1
-raid-target-lost: 在$2 格內沒有名為 $1 的城鎮
-searching-for-target: 搜索強襲傳送點中...
-raid-target-blocked: 強襲傳送點被封鎖.
-raid-porter-warning: 警告! $1 創建了一個朝向 $3 的 $2
-siege-built: "@{RED}[警告] $1建造了$2以摧毀$3"
-jammer-built: "@{RED}[警告] $1已被建造。請小心傳送。"
-raid-remote: 你獲得了控制這個 $1 的物品
-raid-sign: 你需要在箱子上面放寫有目標城鎮名的牌子
-no-blocks-above-chest: 中央箱子上方不能有任何物品。
-invalid-target: 無效的目標
-no-tp-out-of-town: 您無法將自己轉移出敵人的城鎮
-jammer-redirect: "@{RED}[警告] 您的傳送由$1干擾"
-raid-target-inside-region: 你不能在區域內設置地點
-req-build-inside-town: 這個 $1 只能在 $2 裡建
-missing-region-requirements: 你的 $1 缺少所需的區域
-friendly-fire: 你不能傷害你的朋友
-catapult-elytra-equipped: 當穿著鞘翅時，不能使用彈射。
-limits: 限制
-item-limit: 你有 $1 / $2 個 $3。
-region-limit-reached: $1 只能擁有 $2 $3
-region-in-biome: 你可以在$2 建造 $1
-not-enough-housing: 你需要建造更多住宅才能邀請玩家加入
-not-member-port: 你不是這個港口的成員
-cant-repair-item: 這個東西不能修復
-more-repair-items: 你需要更多的 $1 才能修復這件物品
-hold-repair-item: 你必須手持你想要修復的物品
-player-not-found: 找不到 $1 這名玩家
-repeat-kill: $1 死太多次了. 你沒有獲得點數.
-kill-streak: $1 完成了連殺： $2
-kill-joy: $1 終極了 $2 的大殺特殺： $3
-death: 你死亡失去了 $1 點數
-kill: "擊殺: $1"
-low-health: "殘血獎勵: $1"
-killstreak-points: "連殺獎勵: $1"
-killjoy-points: "殺戮獎勵: $1"
-total-points: "共有點數: $1"
-karma: "善良值: $1"
-karma-desc: 善良值是測量善惡之物。殺死善良值越低的玩家，獲得的獎勵越豐厚。
-hardship: 城鎮保護值:$1
-hardship-desc: 城鎮保護值取決於你的城鎮多久被攻擊一次，被攻擊頻率越高，城鎮保護值也越高，攻擊你的城鎮所要花費的金額也越高。城鎮保護值每七天更新一次。
-karma-gained: "善良值: +$1,獲得 $2 "
-karma-lost: "善良值: -$1,失去 $2 "
-karma-display: 目前善良值:$1 / 個人懸賞金額:$2
-combat-tagged: "@{RED}進入戰鬥狀態， $1秒以內將無法傳送。"
-ann-limit: "[信息] 你擁有$1/ $2座$3建築."
-ann-achievement: "[信息]打開嚮導來查看下一個成就"
-ann-town-join: "[信息] 你可以是多個城鎮的居民。"
-ann-town-protection: "[信息] 城鎮保護土地並且可以在商店內解鎖新的建築."
-ann-town-housing: "[信息] $1 擁有 $2 / $3 個住宅. 如果你想要發展城鎮請建造更多住宅."
-ann-make-allies: "[信息] 考慮加入聯盟吧. 在社區 > 城鎮 > 你可以設置盟友城鎮"
-ann-town-low-power: "@{RED}[警告] $1 只有 $2 / $3 點能量了. 建造更多產能的建築吧."
-ann-bank: "[信息] $1的銀行內有 $$2.你可以使用 /cv withdraw $1 量 來取款"
-ann-vote: 別忘了為下一屆$1的城主投票。社區 > 你的城鎮 > $1 > 查看成員 > 玩家 > 投票
-ann-karma: "@{YELLOW}[提醒] $1在線. 如果你殺死$1, 你就會獲得獎勵.但請不要惡意PVP哦."
-ann-missing-input: " [信息] 你的 $1 需要物品。 使用城鎮系統之書來查看需要什麼原料。"
-ann-bounty: " [信息] $1的懸賞為$2。"
-and-more: 還有更多...
-tut-default-0: 首先打開城鎮系統之書，點擊藍圖，拿好你的庇護所，然後放置庇護所。
-tut-default-1: 接下來請把 4塊麵包、32個胡蘿蔔、32個豬排或32個土豆放到庇護所的箱子裡.
-tut-default-2: 庇護所會提供給你食物, 但煤炭商店會給你更多東西. 打開嚮導, 點擊商店, 然後購買煤炭商店.
-tut-default-3: 放置25塊羊毛、14個柵欄和兩個箱子. 之後這裡就成為煤炭商店了.
-tut-default-4: 恭喜！您已完成默認教程。現在請選擇你的下一個生涯路徑。
-tut-warrior-name: 戰鬥型城市
-tut-warrior-desc: 選擇此選項，你的城鎮將會成為一個以攻擊他人為目標的城鎮。
-tut-warrior-0: 首先請購買祭壇. 你可以使用祭壇來獲得鑽石裝備.
-tut-warrior-1: 現在, 放一個鑽石和終界水晶到祭壇箱子內. 如果你擁有 $300, 你就會獲得裝備.
-tut-warrior-2: 這是個附魔金蘋果. 現在你應有盡有了. 你的下一個目標是殺人.
-tut-warrior-3: 恭喜你! 你現在是名合格的戰士了. 現在成為侵略者吧. 購買並在城鎮附近建造一個強襲傳送門.
-tut-warrior-4: 一旦你激活了強襲傳送門, 站到上面你就會傳送到城鎮.
-tut-warrior-5: 現在你侵略了一座城鎮, 是時候發動戰爭了. 在敵人的城鎮附近建造指揮部.
-tut-warrior-6: 現在請購買和在指揮部上面建造戰爭前哨。之後請購買和建造圍攻機.
-tut-warrior-7: 圍攻機會緩慢減少城鎮的能量來讓城鎮反擊你。請在指揮部上面建造城堡。
-tut-warrior-8: 現在你造好了城堡，請購買和建造堡壘。然後請建造紀念館。
-tut-warrior-9: 恭喜你！你現在更加了解戰爭了。你的軍旅生涯已經登峰造極。
-tut-builder-name: 建造型城市
-tut-builder-desc: 選擇此選項，你的城鎮將會發展為一個以建造及防禦為目標的城鎮。
-tut-builder-0: 首先請建造會議室。這是城鎮的核心。它可以提供能量和2個住宅。
-tut-builder-1: 現在請建造會議室。
-tut-builder-2: 你成功地建成了會議室，聲明了你的土地。接下來請購買定居點。
-tut-builder-3: 恭喜你！請使用/cv town 創建你的城鎮。完成建城後請購買和建造一個小屋。
-tut-builder-4: 小屋提供住宅。住宅可用於邀請玩家加入你的城鎮。現在請你在小屋裡購買和放置一個NPC小屋。
-tut-builder-5: 村民也會被視為人口。如果村民死了，城鎮會失去能量。當然，村民可以腐化，現在請你建造一個教堂。
-tut-builder-6: 創建提供能量的建築非常重要。能量可以保護城鎮。請建造一個弓箭陷阱來防衛你的城鎮。
-tut-builder-7: 接下來請建造一個弓箭工廠來為城鎮的防禦工事提供箭。
-tut-builder-8: 定居點最多只能由4個小屋。想要擴大住宅，請建造一個小屋，然後購買並在小屋內放置一個棚屋。
-tut-builder-9: 接下來請建造一個投石器。投石器可以發射TNT來破壞侵略者的圍攻建築。
-tut-builder-10: 然後請升級你的城鎮等級為小村莊。升級後請建造一個寓所。每個新的城鎮等級你都可以獲得更好的住宅。
-tut-builder-11: 現在請再次升級你的城鎮等級為村莊。之後請建造馬厩。
-tut-builder-12: 在你可以升級村莊前，你需要先升級你的會議室。請購買並在會議室內放置城鎮大廳。
-tut-builder-13: 恭喜你！你現在成為了頂級的建築師。你的建築生涯已經登峰造極。
-tut-merchant-name: 商人
-tut-merchant-0: 加入一個城鎮。從居民身上購買一個小屋。一旦你成為了屋主，你就可以在小屋的箱子裡放置一些麵包。
-tut-merchant-1: 升級房屋可以使你獲得更多的錢。請從商店內購買棚屋。
-tut-merchant-2: 加到你的小屋裡來使其成為9x9x9的區域，然後在裡面放置棚屋箱子。
-tut-merchant-3: 在棚屋箱子內放入384個土豆。 24小時內，你的棚屋會出售所有土豆併升級為1級棚屋。
-tut-merchant-4: 購買和建造一個蘋果園。然後在蘋果園內建造礦車軌道並延伸到你的1級棚屋內。在棚屋內的軌道終點放置傾斜的充能鐵軌。最後請在蘋果園內放置箱子礦車。
-tut-merchant-5: 是時候再次升級了。購買並在你的1級棚屋內放置一個寓所。
-tut-merchant-6: 寓所可以給予你很多錢，但是房屋可以給你更多錢。請購買併升級你的寓所為房屋。
-tut-merchant-7: 在你的房屋內放置這個面板來將其升級為1級房屋。
-tut-merchant-8: 把這些鮭魚放到你的1級房屋內來將其升級為2級房屋。
-tut-merchant-9: 現在請建造一個鐵商店來增加你的收入。
-tut-merchant-10: 每名玩家最多只能開3個商店。最賺錢的商店是貿易商店。現在請建造綠寶石商店。如果你已經有3個商店的話請拆掉其中一個。
-tut-merchant-11: 恭喜你！你現在可以出售從其他城鎮的綠寶石礦源內購買的物品。你的商人生涯已經登峰造極。
-tut-merchant-12: 每個玩家可以最多建造三個商店。
-anarchy-name: 無政府主義
-anarchy-desc: 任何人可以破壞城鎮和傷害區域內的成員。沒有稅收，也沒有聯盟。
-capitalism-name: 資本主義
-capitalism-desc: 民主 + 城鎮居民可以購買額外選票。
-colonialism-name: 殖民主義
-colonialism-desc: 居民沒有城鎮所有權。上級城鎮擁有低級城鎮使用權。
-communism-name: 共產主義
-communism-desc: 任何人可以擁有任何東西。所有區域收入都被平均分配給每一個人。
-cooperative-name: 合作主義
-cooperative-desc: 民主 + 所有區域收入和稅收平均分配給所有城鎮居民。
-cybersynacy-name: 專家政治
-cybersynacy-desc: 無人有城鎮所有權。聯盟、稅收、招募和公共設施由AI掌控。
-democracy-name: 民主主義
-democracy-desc: 城主可以管理聯盟、設置稅收和管理城鎮居民。城鎮定期進行選舉選出城主。
-democratic_socialism-name: 民主社會主義
-democratic_socialism-desc: 民主主義 + 所有人共有所有的公共設施、農場、礦業、工廠和採石場。
-dictatorship-name: 專政體制
-dictatorship-desc: 城主可以管理聯盟、區域和城鎮居民並設置稅收。
-feudalism-name: 封建主義
-feudalism-desc: 專政體制 + 城鎮居民不能在城鎮內建造區域。
-idiocracy-name: 制杖主義
-idiocracy-desc: 發射最多煙花火箭並放置最多含有自己名字的告示牌的人將成為城主。
-kraterocracy-name: 末日主義
-kraterocracy-desc: 專政體制 + 當城鎮居民殺死城主後，這名城鎮居民就可以當上城主。
-libertarian-name: 自由意志
-libertarian-desc: 無城鎮所有權。
-libertarian_socialism-name: 自由社會主義
-libertarian_socialism-desc: 自由意志 + 社會主義
-meritocracy-name: 精英體制
-meritocracy-desc: 專政體制 + 誰建的最好和擊殺點數最多就會成為城主。
-oligarchy-name: 寡頭政治
-oligarchy-desc: 專政體制 + 城鎮所有權可以購入和賣出。
-socialism-name: 社會主義
-socialism-desc: 專政體制 + 所有人共有所有的公共設施、農場、礦業、工廠和採石場。
-tribalism-name: 部落主義
-tribalism-desc: 專政體制 + 居民無法加入非盟友城鎮。
-admin_graveyard-name: 墓地
-admin_graveyard-desc: 所有玩家重生的地方。可防止玩家受傷。
-shelter-name: 庇護所
-shelter-desc: 可用於存儲你的物品的簡易庇護所, 並且每30分鐘可根據你提供的麵包、牛排、胡蘿蔔或土豆來給予你金錢。
-arrow_trap-name: 弓箭陷阱
-arrow_trap-desc: 1級陷阱 |範圍： 17 | 傷害： 30 | 速度：38 | 分散度： 3 | 向最近的非城鎮成員玩家和怪物發射弓箭.
-arrow_trap_fast-name: 弓箭陷阱2
-arrow_trap_fast-desc: 2級陷阱 |範圍： 19 | 傷害： 34 | 速度：38 | 分散度： 4 | 向最近的非城鎮成員玩家和怪物發射弓箭.
-arrow_trap_fastest-name: 弓箭陷阱3
-arrow_trap_fastest-desc: 3級陷阱 |範圍： 21 | 傷害： 38 | 速度：42 | 分散度： 3 | 向最近的非城鎮成員玩家和怪物發射弓箭.
-barracks-name: 軍營
-barracks-desc: 給城鎮添加6個住宅。每天提供288點能量。不能在擁有旅館的城鎮內建造軍營。
-bell_tower-name: 鐘樓
-bell_tower-desc: 當有侵略者入侵城鎮時提醒城鎮成員。
-church-name: 教堂
-church-desc: 沒有人會受傷的安全之地。每天提供192點能量
-graveyard-name: 墓地
-graveyard-desc: 城鎮居民重生的地方。可防止玩家受到傷害。
-hospital-name: 醫院
-hospital-desc: 治愈醫院內的所有玩家。每天提供192點能量。
-idol-name: 偶像
-idol-desc: 給予居民抗性提升和力量BUFF。每天提供192點能量。
-jail-name: 監獄
-jail-desc: 暫時監禁在你的城鎮內死亡的入侵者。每天提供192點能量。
-monument-name: 紀念碑
-monument-desc: 給予城鎮居民抗性提升、力量和速度BUFF。每天提供192點能量。
-statue-name: 雕像
-statue-desc: 給予居民抗性提升。每天提供192點能量。
-arrow_factory-name: 弓箭工廠
-arrow_factory-desc: 自動生產箭
-bakery-name: 麵包店
-bakery-desc: 每兩分鐘製造餅乾和南瓜派。請在箱子內放入箱子礦車，建造前往目的區域的鐵路，在起點放置傾斜的充能鐵軌來開始運輸。
-dye_works-name: 染坊
-dye_works-desc: 自動生產染料
-flint_works-name: 燧石工廠
-flint_works-desc: 自動生產燧石。請在箱子內放入箱子礦車，建造前往目的區域的鐵路，在起點放置傾斜的充能鐵軌來開始運輸。
-gold_infuser-name: 黃金注射器
-gold_infuser-desc: 自動製作金胡蘿蔔和金蘋果
-ice_maker-name: 製冰機
-ice_maker-desc: 自動合成冰塊
-iron_works-name: 煉鐵廠
-iron_works-desc: 自動合成鐵質工具。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-lava_works-name: 岩漿廠
-lava_works-desc: 自動合成岩漿請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-mill-name: 磨坊
-mill-desc: 每30秒將兩個小麥做成一個麵包。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-boot_grinder-name: 皮鞋磨床
-boot_grinder-desc: 將皮革鞋子分解成皮革。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-stone_works-name: 磨石坊
-stone_works-desc: 自動合成石質工具。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-weapons_factory-name: 武器工廠
-weapons_factory-desc: 將3個火藥和5個沙子合成為爆破物。
-jammer_trap-name: 攔截陷阱
-jammer_trap-desc: 該建築物可攔截100格範圍內的傳送，並將目標傳送到其他地點。
-chicken_coop-name: 雞舍
-chicken_coop-desc: 自動養雞農場。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-donkey_farm-name: 驢舍
-donkey_farm-desc: 每小時生成驢和馬鞍。
-mule_farm-name: 騾舍
-mule_farm-desc: 每小時生成騾和馬鞍。
-pig_pen-name: 豬圈
-pig_pen-desc: 自動養豬農場
-rabbit_hutch-name: 兔籠
-rabbit_hutch-desc: 自動養兔農場
-ranch-name: 牧場
-ranch-desc: 自動養牛農場。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-sheep_farm-name: 綿羊農場
-sheep_farm-desc: 自動養羊農場
-stables-name: 馬厩
-stables-desc: 每小時生成馬和馬鞍。
-acacia_lumberyard-name: 金合歡木伐木場
-acacia_lumberyard-desc: 自動砍伐金合歡木。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-birch_lumberyard-name: 樺木伐木場
-birch_lumberyard-desc: 自動砍伐樺木。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-dark_oak_lumberyard-name: 深色橡木伐木場
-dark_oak_lumberyard-desc: 自動砍伐深色橡木。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-jungle_lumberyard-name: 叢林木伐木場
-jungle_lumberyard-desc: 自動砍伐叢林木。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-oak_lumberyard-name: 橡木伐木場
-oak_lumberyard-desc: 自動砍伐橡木。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-spruce_lumberyard-name: 雲杉伐木場
-spruce_lumberyard-desc: 自動砍伐雲杉木。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-apple_orchard-name: 蘋果園
-apple_orchard-desc: 自動蘋果農場。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-carrot_farm-name: 胡蘿蔔農場
-carrot_farm-desc: 每5分鐘生產16個胡蘿蔔。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-cocoa_farm-name: 可可豆農場
-cocoa_farm-desc: 每5分鐘生成16個可可豆。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-ender_pearl_farm-name: 末影珍珠農場
-ender_pearl_farm-desc: 自動生產末影珍珠
-fishing_hut-name: 釣魚小屋
-fishing_hut-desc: 每5分鐘生產鮭魚、小丑魚、河豚、鱈魚或皮革鞋子。
-greenhouse-name: 溫室
-greenhouse-desc: 自動養花。
-melon_farm-name: 西瓜農場
-melon_farm-desc: 每10分鐘生成西瓜。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-potato_farm-name: 馬鈴薯農場
-potato_farm-desc: 每5分鐘生產馬鈴薯。
-pumpkin_farm-name: 南瓜農場
-pumpkin_farm-desc: 每10分鐘生成南瓜。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-sugar_cane_farm-name: 甘蔗農場
-sugar_cane_farm-desc: 每5分鐘合成16個甘蔗。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-wheat_farm-name: 小麥農場
-wheat_farm-desc: 每5分鐘生成小麥和枯萎的灌木。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-shack-name: 小屋
-shack-desc: 最基礎的房屋。出售馬鈴薯每天可獲得122元。
-hovel-name: 棚屋
-hovel-desc: 2級房屋。出售馬鈴薯每天可獲得133元。從小屋升級而成
-hovel1-name: 大棚屋
-hovel1-desc: 2級的房屋。出售馬鈴薯和蘋果每天可獲得310元
-dwelling-name: 寓所
-dwelling-desc: 3級房屋。出售馬鈴薯和蘋果每天可獲得309元
-dwelling1-name: 小寓所
-dwelling1-desc: 3級房屋。出售馬鈴薯和蘋果可獲得326元
-dwelling2-name: 大寓所
-dwelling2-desc: 3級房屋。出售馬鈴薯、魚和蘋果每天可獲得598元。
-house-name: 房子
-house-desc: 4級房屋。出售麵包和蘋果每天可獲得491元。只能從寓所升級而來。
-house1-name: 小房子
-house1-desc: 4級房屋。出售麵包、魚和蘋果每天可獲得635元。
-house2-name: 大房子
-house2-desc: 4級房屋。出售麵包、魚、西瓜片和蘋果每天可獲得832元。
-chalet-name: 木屋
-chalet-desc: 5級房屋。出售麵包和胡蘿蔔每天可獲得548元。
-chalet1-name: 小木屋
-chalet1-desc: 5級房屋。出售麵包、魚和胡蘿蔔每天可獲得692元。
-chalet2-name: 木屋
-chalet2-desc: 5級房屋。出售麵包、魚、西瓜片和胡蘿蔔每天可獲得890元。
-chalet3-name: 大木屋
-chalet3-desc: 5級房屋。出售麵包、魚、西瓜片、餅乾和胡蘿蔔每天可獲得1022元。
-mansion-name: 宅邸
-mansion-desc: 6級房屋。出售麵包、胡蘿蔔和牛排每天可獲得648元。只能從木屋升級而來。
-mansion1-name: 小豪宅
-mansion1-desc: 6級房屋。出售麵包、胡蘿蔔、餅乾和牛排每天可獲得894元。
-mansion2-name: 豪宅
-mansion2-desc: 6級房屋。出售麵包、胡蘿蔔、餅乾和牛排每天可獲得1167元。
-mansion3-name: 大豪宅
-mansion3-desc: 6級房屋。出售麵包、胡蘿蔔、餅乾、牛奶和牛排每天可獲得1407元。
-manor-name: 莊園
-manor-desc: 7級房屋。出售金胡蘿蔔、餅乾和牛排每天可獲得1032元。只能從宅邸升級而來。
-manor1-name: 小莊園
-manor1-desc: 7級房屋。出售金胡蘿蔔、餅乾和牛排每天可獲得1032元。
-manor2-name: 莊園
-manor2-desc: 7級房屋。出售金胡蘿蔔、南瓜派、牛排、餅乾和牛奶每天可獲得1679元。
-manor3-name: 大莊園
-manor3-desc: 7級房屋。出售金胡蘿蔔、南瓜派、牛排、餅乾和牛奶每天可獲得1751元。
-villa-name: 別墅
-villa-desc: 8級房屋。出售金胡蘿蔔、南瓜派和牛排每天可獲得1100元。
-villa1-name: 大別墅
-villa1-desc: 8級房屋。出售金胡蘿蔔、南瓜派和牛排每天可獲得1397元。
-villa2-name: 豪華別墅
-villa2-desc: 8級房屋。出售金胡蘿蔔、南瓜派、牛奶、牛排和金蘋果每天可獲得1877元。
-estate-name: 房地產
-estate-desc: 9級房屋。出售金胡蘿蔔、南瓜派和金蘋果每天可獲得1480元。只能由別墅升級而來。
-estate1-name: 1級房地產
-estate1-desc: 9級房屋。出售金胡蘿蔔、南瓜派和金蘋果每天可獲得1917元。
-estate2-name: 2級房地產
-estate2-desc: 9級房屋。出售金胡蘿蔔、南瓜派、兔肉湯、蛋糕和金蘋果每天可獲得2397元。
-estate3-name: 3級房地產
-estate3-desc: 9級房屋。出售金胡蘿蔔、南瓜派、兔肉湯、蛋糕和金蘋果每天可獲得2621元。
-inn-name: 旅館
-inn-desc: 提供12住宅和一個港口。對於沒有住宅而又想要拉人的城鎮來說很有用。
-jade_mine-name: 玉礦源
-jade_mine-desc: 每天生成16塊玉，這些玉只能用玉商店出售。無法在已經有玉商店的城鎮內建造，意即你必須要在另一個城鎮才能賣它。
-jade-mine-name: 玉礦源
-jade-mine-desc: 每天生成16塊玉，這些玉只能用玉商店出售。無法在已經有玉商店的城鎮內建造，意即你必須要在另一個城鎮才能賣它。
-coal_mine-name: 煤炭礦源
-coal_mine-desc: 消耗鎬子挖掘煤炭。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-diamond_mine-name: 鑽石礦源
-diamond_mine-desc: 消耗鐵鎬挖掘鑽石。
-gold_mine-name: 黃金礦源
-gold_mine-desc: 消耗鐵鎬挖掘煤炭。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-gunpowder_mine-name: 火藥礦源
-gunpowder_mine-desc: 消耗鐵鎬挖出火藥。
-iron_mine-name: 鐵礦源
-iron_mine-desc: 每小時消耗鐵鎬挖掘鐵礦
-lapis_mine-name: 青金石礦源
-lapis_mine-desc: 每小時消耗鐵鎬挖掘青金石礦
-marine_mine-name: 海洋礦源
-marine_mine-desc: 消耗鎬子挖掘海洋資源。
-obsidian_mine-name: 黑曜石礦源
-obsidian_mine-desc: 緩慢產出黑曜石
-quartz_mine-name: 石英礦源
-quartz_mine-desc: 消耗鎬子挖掘石英
-redstone_mine-name: 紅石礦源
-redstone_mine-desc: 消耗鎬子挖掘紅石。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-npc_chalet-name: 村民木屋
-npc_chalet-desc: 為村民而造之房。可將村民視為城鎮人口
-npc_dwelling-name: 村民寓所
-npc_dwelling-desc: 為村民而造之房。可將村民視為城鎮人口
-npc_house-name: 村民房
-npc_house-desc: 為村民而造之房。可將村民視為城鎮人口
-npc_hovel-name: 村民棚屋
-npc_hovel-desc: 為村民而造之房。可將村民視為城鎮人口
-npc_mansion-name: 村民宅邸
-npc_mansion-desc: 為村民而造之房。可將村民視為城鎮人口
-npc_shack-name: 村民小屋
-npc_shack-desc: 為村民而造之房。可將村民視為城鎮人口
-raid_porter-name: 強襲傳送門
-raid_porter-desc: 入侵敵方城鎮的可靠方式。需要4分鐘的準備時間。
-raid_porter_active-name: 激活的強襲傳送門
-raid_porter_active-desc: 在中心方塊放置一個寫有目標城鎮名的告示牌。然後站在中心方塊上。
-siege_machine-name: 圍攻機
-siege_machine-desc: 所有戰爭的基礎。緩慢地減少附近目標城鎮的能力。需要4分鐘的準備時間。
-siege_machine_active-name: 激活的圍攻機
-siege_machine_active-desc: 每3分鐘破壞1點能量。三發後自動升級。
-siege_machine1-name: 圍攻機1
-siege_machine1-desc: 每2.5分鐘破壞1點能量。三發後自動升級。
-siege_machine2-name: 2級圍攻機
-siege_machine2-desc: 每2分鐘破壞1點能量。四發後自動升級。
-siege_machine3-name: 3級圍攻機
-siege_machine3-desc: 每1.5分鐘破壞1點能量。三發後自動升級。
-no-tp-pearl-chorus: 你不能在敵方城鎮中使用歌萊果或終界珍珠。
-altar-name: 祭壇
-altar-desc: 消耗300元，每小時創建全套鑽石套和弓箭。
-blindness_trap-name: 致盲陷阱
-blindness_trap-desc: 給予附近非城鎮居民致盲、緩慢和虛弱效果。在30分鐘後會自毀。
-castle-name: 城堡
-castle-desc: 堡壘中心
-catapult-name: 投石器
-catapult-desc: 遠程發射TNT
-command_tent-name: 指揮部
-command_tent-desc: 戰爭前哨中心。可以讓你進攻附近的城鎮。每15分鐘生成1點能量。
-hunting-lodge-name: 狩獵屋
-hunting-lodge-desc: 在中心方塊上放置寫有目標名的告示牌,然後右擊告示牌來傳送到離這名玩家200格遠的地方.
-memorial-name: 紀念館
-memorial-desc: 城鎮居民重生的地方。可防止玩家受傷。
-mobile_hospital-name: 流動醫院
-mobile_hospital-desc: 治愈在醫院內的所有玩家。 30分鐘後會自毀。
-temp_arrow_trap-name: 臨時弓箭陷阱
-temp_arrow_trap-desc: 向附近非居民玩家發射弓箭。 15分鐘後會自毀。
-clay_quarry-name: 黏土採土場
-clay_quarry-desc: 自動採掘黏土。
-cobble_quarry-name: 鵝卵石採石場
-cobble_quarry-desc: 每30分鐘採集鵝卵石。
-cobble_grinder-name: 磨石機
-cobble_grinder-desc: 每30分鐘生成石頭。請在箱子內放置一個箱子礦車並建造前往指定區域的鐵路，在鐵路起點請放置傾斜的充能鐵軌。
-dirt_quarry-name: 採泥廠
-dirt_quarry-desc: 自動生成泥土
-red_sand_pit-name: 紅沙坑
-red_sand_pit-desc: 每30秒合成紅沙。
-sand_pit-name: 沙坑
-sand_pit-desc: 每30秒合成沙子。
-sifter-name: 篩子
-sifter-desc: 從泥土中篩出有用的物品。
-jade_shop-name: 玉商店
-jade_shop-desc: 每天出售144塊綠寶石給給服務器並獲得1000元。無法在已經建造了玉礦源的城鎮內建造。
-coal_shop-name: 煤炭商店
-coal_shop-desc: 每天出售144塊煤炭給服務器並獲得432元。
-diamond_shop-name: 鑽石商店
-diamond_shop-desc: 每天出售24塊鑽石給服務器並獲得1536元。
-flower_shop-name: 花店
-flower_shop-desc: 每天出售花給服務器並獲得288元。
-gold_shop-name: 黃金商店
-gold_shop-desc: 每天出售288塊金錠給服務器並獲得672元。
-iron_shop-name: 鐵商店
-iron_shop-desc: 每天出售288塊鐵錠給服務器並獲得576元。
-leather_shop-name: 皮革商店
-leather_shop-desc: 每天出售皮革給服務器並獲得360元。
-lapis_shop-name: 青金石商店
-lapis_shop-desc: 每天出售青金石給服務器並獲得600元。
-city-name: 城市
-city-desc: 5級城鎮。需要30人口
-hamlet-name: 村莊
-hamlet-desc: 2級城鎮。需要5人口
-keep-name: 堡壘
-keep-desc: 2級圍攻基地
-metropolis-name: 都市
-metropolis-desc: 6級城鎮。需要50人口。
-mining_colony-name: 採礦地
-mining_colony-desc: 防止生怪並給予挖掘加速效果。
-outpost-name: 戰爭前哨
-outpost-desc: 1級圍攻基地
-settlement-name: 定居點
-settlement-desc: 1級城鎮
-town-name: 城鎮
-town-desc: 4級城鎮。需要20人口
-village-name: 村莊
-village-desc: 3級城鎮。需要10人口
-bank-name: 銀行
-bank-desc: 每天提供192點能量。將64塊綠寶石變現為640元，反之亦然。
-bath_house-name: 浴室
-bath_house-desc: 每天提供192點能量給城鎮。
-capitol-name: 首都大廈
-capitol-desc: 城鎮核心建築。每天提供768點能量。可視為城鎮之家。
-city_hall-name: 城市大廳
-city_hall-desc: 城鎮核心建築。每天提供576點能量。可視為城鎮之家。
-council_room-name: 會議室
-council_room-desc: 城鎮核心建築。每天提供192點能量。可視為城鎮之家。
-embassy-name: 大使館
-embassy-desc: 每天提供192點能量。可作為城鎮之家。
-library-name: 圖書館
-library-desc: 每天產出192點能量。每15分支產出2經驗瓶。
-purifier-name: 淨化器
-purifier-desc: 每15分鐘將腐肉變為皮革並移除毒馬鈴薯的毒性。
-smithy-name: 鐵匠鋪
-smithy-desc: 右擊鐵塊來修復物品。每天消耗192點能量。
-town_hall-name: 城鎮大廳
-town_hall-desc: 城鎮中心的建築。每天提供384點能量。同時也是城鎮之家。
-warehouse-name: 倉庫
-warehouse-desc: 分配物品到有需求的區域內.
-warehouse-toggle-on: 開啟倉庫供給
-warehouse-toggle-off: 關閉倉庫供給
-warehouse-toggle-desc: 點擊開關這片區域的倉庫供給
-item-jade-name: 綠寶石商店
-item-jade-desc: 以1000賣出16個綠寶石。
-farms-name: 農場
-farms-desc: 有關食物、動物和礦物生產的建築.
-towns-name: 城鎮
-towns-desc: 升級城鎮、戰爭營地和礦鎮.
-shops-name: 商店
-shops-desc: 出售貨物給服務器的商店.每名玩家最多擁有3個商店.
-utilities-name: 公共設施
-utilities-desc: 所有可生成能量保護城鎮的公共設施.
-housing-name: 住宅
-housing-desc: 住宅可以增加城鎮人口上限.大多數住宅可以出售食物給服務器.
-defense-name: 防禦工事
-defense-desc: 防禦性建築。一些建築物也會發電。
-quarries-name: 採集場
-quarries-desc: 生產土質材料的建築.
-factories-name: 工廠
-factories-desc: 高效合成物品的建築.主要使用鐵路來傳輸物品到其他區域.
-offense-name: 侵略
-offense-desc: 戰爭建築.包括破壞城鎮的圍攻機.
-mines-name: 礦業
-mines-desc: 可以生產礦物和其他稀有物品的建築.
-woodworks-name: 伐木場
-woodworks-desc: 包含各種木頭的伐木場.
-animals-name: 動物農場
-animals-desc: 生成動物的農場.
-npchousing-name: 村民住宅
-npchousing-desc: 為村民提供住宅並視為城鎮人口.這些建築不會生產收入且必須從普通的住宅升級而來.
-trading-name: 貿易
-trading-desc: 進行城鎮間交易所需建築.
-fireworks_factory-name: 煙花工廠
-fireworks_factory-desc: 消耗火藥製作煙花火箭.
-admin-name: 管理員
-admin-desc: 管理員特供
-house-evolve-name: 進化之屋
-house-evolve-desc: 隱藏的房屋建築
-trade-mines-name: 貿易礦
-trade-mines-desc: 可生產出售給其他城鎮的礦物
-defense-evolve-name: 進化之屋
-defense-evolve-desc: 隱藏的不同建築的進化版
-evolve-name: 進化之屋
-evolve-desc: 隱藏的建築
-plot7x7-name: 7x7土地
-plot7x7-desc: 小於等於7x7大小的區域的佔位符
-plot11x11-name: 11x11土地
-plot11x11-desc: 小於等於11x11大小的區域的佔位符
-plot15x15-name: 15x15土地
-plot15x15-desc: 小於等於15x15大小的區域的佔位符
-plot19x19-name: 19x19土地
-plot19x19-desc: 小於等於19x19大小的區域的佔位符
-vault-name: 避難所
-vault-desc: 增加500最大能量，每天產生96能量。
-housing-group: 住宅
-defense-group: 防禦工事
-trap-group: 陷阱
-arrowtrapgroup-group: 弓箭陷阱
-publichousing-group: 公共住宅
-idolgroup-group: 偶像
-factory-group: 工廠
-farm-group: 農場
-raw-group: 原料生產
-woodwork-group: 伐木場
-allchalet-group: 任何木屋
-basechalet-group: 非NPC木屋
-allhousing-group: 任何住宅
-npchousinggroup-group: NPC住宅
-alldwelling-group: 任何寓所
-basedwelling-group: 非NPC寓所
-allestate-group: 任何房地產
-baseestate-group: 非NPC房地產
-allhouse-group: 任何房屋
-basehouse-group: 非NPC房屋
-allhovel-group: 任何棚屋
-basehovel-group: 非NPC棚屋
-allmanor-group: 任何莊園
-basemanor-group: 非NPC莊園
-allmansion-group: 任何宅邸
-basemansion-group: 非NPC宅邸
-allshack-group: 任何小屋
-baseshack-group: 非NPC小屋
-allvilla-group: 任何別墅
-basevilla-group: 非NPC別墅
-trademine-group: 貿易礦
-trading-group: 貿易
-mine-group: 礦業
-offense-group: 侵略
-basecenter-group: 基地
-raidport-group: 強襲傳送門
-siegemachinegroup-group: 圍攻機
-townpowerreduce-group: 圍攻設備
-quarry-group: 採集場
-tradeshop-group: 貿易商店
-shop-group: 商店
-oreshop-group: 礦物商店
-superregion-group: 城鎮
-utility-group: 公共設施
-town_center-group: 城鎮中心
-skills: 城鎮技能
-armor-skill: 防禦
-armor-skill-desc: 防禦技能等級目前為$1(最高$3)，穿著護甲受到傷害時可得到此技能的經驗值。技能效果為購買防禦設施時會得到折扣。
-building-skill: 建築
-building-skill-desc: 建築技能目前等級$1(最高$3)，建造建築可以得到此技能的經驗值。技能效果為購買住所或NPC住所可以會得到折扣。
-sword-skill: 劍術
-sword-skill-desc: 劍術技能目前等級$1(最高$3)，使用劍擊殺怪物可以得到此技能的經驗值。技能效果為購買某些重要侵略建築能享有折扣。
-axe-skill: 戰斧
-axe-skill-desc: 戰斧技能目前等級$1(最高$3)，使用斧頭擊殺怪物可以得到此技能的經驗值。技能效果為購買伐木場、強襲傳送門、攔截陷阱及狩獵屋時享有折扣。
-bow-skill: 弓術
-bow-skill-desc: 弓術技能目前等級$1(最高$3)，使用斧頭擊殺怪物可以得到此技能的經驗值。技能效果為購買圍攻機及其他有關弓箭的建築時享有折扣。
-crossbow-skill: 強弩
-crossbow-skill-desc: 強弩技能目前等級$1(最高$3)，使用努擊殺怪物可以得到此技能的經驗值。技能效果為購買圍攻機及其他有關弓箭的建築時享有折扣。
-enchant-skill: 附魔
-enchant-skill-desc: 附魔技能目前等級$1(最高$3)，在附魔台附魔即可得到此技能的經驗值。技能效果為購買具有增益效果或產生能量的建築時享有折扣。
-mining-skill: 礦業
-mining-skill-desc: 礦業技能目前等級$1(最高$3)，使用沒有絲綢之觸的稿子挖礦及可得到此技能的經驗值。技能效果為購買礦坑時享有折扣。
-trident-skill: 三叉戟
-trident-skill-desc: 三叉戟技能目前等級$1(最高$3)，使用沒有三叉戟攻擊怪物可得到此技能的經驗值。技能效果為購買有關水的建築享有折扣。
-crafting-skill: 合成
-crafting-skill-desc: 合成技能目前等級$1(最高$3)，合成各種東西可得到此技能的經驗值。技能效果為購買有關合成物品的建築享有折扣。
-exploration-skill: 探索
-exploration-skill-desc: 探索技能目前等級$1(最高$3)，探索各種生態域可得到此技能的經驗值。技能效果為購買有關城鎮公共建築的建築享有折扣。
-food-skill: 覓食
-food-skill-desc: 覓食技能目前等級$1(最高$3)，吃各種東西可得到此技能的經驗值。技能效果為購買有關農場的建築享有折扣。
-shield-skill: 盾
-shield-skill-desc: 盾技能目前等級$1(最高$3)，用盾防禦可得到此技能的經驗值。技能效果為購買公用及防禦建築享有折扣。
-potion-skill: 藥水
-potion-skill-desc: 藥水技能目前等級$1(最高$3)，喝下/丟擲可得到此技能的經驗值。技能效果為購買產生能量的建築享有折扣。
-skill-bar: "@{GREEN}$1@{RED}$2"
-chat-channels: 聊天頻道
-chat-change-chat: 已改變聊天頻道至 $1 頻道。
-friend-channel: 朋友
-friend-channel-desc: 只有朋友才能聽到你說話
-global-channel: 全服聊天
-global-channel-desc: 所有玩家
-local-channel: 本地
-local-channel-desc: 只有100格範圍內的玩家聽得到你說話
-town-channel-desc: 只有在$1內的玩家聽得到你說話
-alliance-channel-desc: 只有在聯盟$1內的玩家聽得到你說話
-chat-channel-set: 你現在在 $1 頻道裡。
-click-change-chat: 點擊更改聊天頻道
-no-recipients: 沒有人在$1聊天頻道內
-health: 血量
-health-desc: "最大值: $1"
-mana: 魔力
-or: 或
-empty-spell-slot: 空魔法欄位
-empty-spell-slot-desc: 為這個欄位選一個魔法
-see-all-spells: 查看所有魔法
-spell-command: 用/cv spells來查看所有魔法
-switch-spell-cast: 將魔法附到此物品上，以後使用此物即可發動魔法。
+starter-book: "&6城鎮系統"
+next-button: "&6下一頁"
+prev-button: "&6上一頁"
+language-menu: "&6選擇語言"
+language-set: "&6你的語言已設置為$1"
+back-button: "&6返回"
+start-tutorial: "&6查看成就"
+start-tutorial-desc: "&6完成成就即可獲得金錢和物品"
+skip: "&6關閉成就"
+tutorial-click: "&6請到新手關卡查看新手教成"
+tutorial-wiki: "&6系統插件維基"
+click-info: "&6點擊查看詳情"
+guide: "&6教學"
+income: "&6收入"
+income-desc: "&6你的$1在前一天裡賺得了$2，在前一周裡賺得了$3"
+rebuild: "&6重建"
+rebuild-req-desc: "&6這個建築只能在以下建築裡建造"
+rebuild-opt-desc: "&6這個建築可以建造在以下建築上面"
+guide-desc: "&6點擊查看你的下一個目標"
+choose-path: "&6選擇你接下來的走向"
+new-owner-town: "&6$1繼承了$2的$3市長之位"
+town-bank-balance: "&6銀行存款$1"
+town-bank-desc: "&6使用/cvwithdraw$1[要取出的數量]來取出存款"
+withdrawn-money: "&6你從$2的銀行取出了$$1"
+deposit-money: "&6你將$1存入$2的銀行"
+too-much-money: "&6您在銀行的存款不能超過$1"
+town-tax: "&6稅收:$1"
+town-tax-desc: "&6使用/cvtax$1[數量]來設置稅收"
+town-tax-gov-type: "&6$1設置稅收失敗"
+town-tax-set: "&6$1的稅收成功設置為$2"
+tax-too-high: "&6稅收不能高於$1"
+town-assist-price: "&6由於你建造了$2，你的消耗了$1"
+colony-town-set: "&6你設置$1為$2的管理者"
+cant-build-feudal: "&6你不能在其他城鎮內建造此區域"
+tribalism-no-invite: "&6你的城鎮部落禁止你邀請$1到非聯合國城鎮$2"
+vote-member: "&6為下一任市長投票"
+capitalism-voting-cost: "&6額外投票將消耗$1"
+voted: "&6你為$1投上了寶貴的一票"
+gov-type-change: "$1從$2更改為$3"
+cant-change-gov-type-daily: "&6你每天只能更改一次城鎮政體類型，"
+revolt: "&6反抗"
+revolt-desc: "&6點擊加入反抗$1的隊伍，消耗$2$3，"
+revolt-display: "&6$1$2名成員舉起了反抗的火把，"
+cancel-revolt: "&6點擊取消反抗$1，"
+item-cost: "&6這個動作花費了$1個$2，"
+cost-buff: "&6由於你在$3城鎮內建造了$2，你獲得了$1，"
+refund: "&6你已被退還$$1，"
+spell-cast: "&6@{BLUE}$1 &6@{WHITE}使用了魔法 &6@{RED}$2"
+exp-gained: "&6你得到了$2方面的經驗值$1"
+merit-new-owner: "&6恭喜你！你勝過了$1，你現在是新的市長了！"
+item-locked: "&6你還沒解鎖這個物品，"
+ai-invite: "&6你好,$1想要加入我的城鎮嗎?"
+ai-help: "&6$1可以帶你到那個地方，"
+cooldown-buff-desc: "&6所有$2的冷卻減少$1%"
+payout-buff-desc: "&6所有$2的區域支出增加$1%"
+power-buff-desc: "&6每日能量增加 &6$1% &6"
+max_power-buff-desc: "&6最大防禦數值增加$1%"
+cost-buff-desc: "&6所有$2的償還消耗減少$1%"
+shop: "&6建築設計圖商店"
+buy-item: "&6點擊購買"
+price: "&6價格$1"
+buy: "&6購買$1"
+cancel: "&6取消"
+item-bought: "&6成功以$2元購買$1，"
+max-item: "&6你不能購買多於$2個$1"
+max-qty: "&6$1擁有太多$2了所以無法獲得更多"
+items: "&6物品"
+click-for-item-group: "&6點擊查看這個組內的所有物品"
+classes: "&6職業"
+spells: "&6魔法"
+blueprints: "&6建築設計圖取(需要先去建築設計圖建築設計圖商店購買)"
+regions: "&6區域"
+community: "&6社區"
+players: "&6玩家"
+towns: "&6城鎮"
+town: "&6城鎮"
+your-towns: "&6你的城鎮"
+wars: "&6戰爭"
+alliances: "&6聯合國"
+leaderboard: "&6排行榜"
+ports: "&6港口"
+money: "&6金錢: &6$$1"
+points: "&6點數: &6$1"
+killstreak: "&6連續擊殺數: &6$1"
+highest-killstreak: "&6最多連續擊殺數: &6$1"
+kills: "&6擊殺數: &6$1"
+deaths: "&6死亡數: &6$1"
+friends: "&6朋友"
+confirm: "&6確認"
+reject: "&6拒絕"
+effects: "&6效果"
+size: "&6大小"
+range: "&6範圍"
+build-reqs-title: "&6建築需求"
+population: "&6人口"
+population-req: "&6需要$1和$2人口"
+biomes: "&6生態系"
+devolve-town: "&6$1耗盡了防禦數值並降級為$2!"
+pop-desc: "&6$1人口/$2住宅/$3村民"
+build-reqs: "&6建築$1所需的方塊"
+reagents-title: "&6投入物"
+reagents: "&6$1箱子裡的所有你需要的物品"
+upkeep-title: "&6放入"
+upkeep: "&6所有$1消耗的物品"
+output-title: "&6產出"
+output: "&6所有$1創建的物品"
+payout-title: "&6支付"
+payout: "&6建造這片區域可獲得$$1"
+power-input-title: "&6耗能"
+power-input: "&6這片區域消耗$1點防禦數值"
+power-output-title: "&6產能"
+power-output: "&6這片區域生成$1點防禦數值"
+power-history: "&6前$1天的防禦數值歷史："
+too-close-region: "&6你的$1靠$2太近了"
+too-close-town: "&6你的$1靠另一個重載太近了"
+town-created: "&6$1已被創建!"
+town-destroyed: "&6$1已破滅!"
+region-built: "&6你成功地建造了一個$1區域"
+region-type: "&6區域類型"
+destroy: "&6摧毀"
+region-in-town: "&6你的區域位於$1"
+town-req-desc: "&6你必須在這裡建造你的區域: &6"
+view-members: "&6查看成員"
+add-member: "&6添加成員"
+operation: "&6操作"
+region-working: "&6你的區域運行正常"
+region-not-working: "&6你的區域少了點東西"
+filter-online: "&6過濾在線玩家"
+sort-alphabetical: "&6根據字母分類"
+sort-points: "&6根據擊殺數分類"
+sort-rank: "&6根據頭銜分類"
+owner: "&6地主"
+member: "&6成員"
+guest: "&6遊客"
+recruiter: "&6招募員"
+set-owner: "&6設置地主"
+set-member: "&6設置成員"
+set-guest: "&6設置遊客"
+set-recruiter: "&6設置招募員"
+remove-member: "&6刪除成員"
+leave-town: "&6離開城鎮"
+you-left-town: "&6你離開了$1"
+invite-sent: "&6已發送邀請"
+add-member-region: "&6你成為了$1的一員"
+member-added-region: "&6$1現在是$2的一員了"
+owner-description: "&6地主可以為所欲為"
+guest-description: "&6遊客只可以使用門和按鈕"
+member-description: "&6成員可以建造和使用這片區域"
+recruiter-description: "&6招募員可以邀請玩家加入城鎮"
+remove-member-region: "&6你不再是$1的一員"
+member-removed-region: "&6$1不再是$2的一員"
+add-owner-region: "&6你為$1添加了一個地主"
+owner-added-region: "&6$1現在是$2的地主"
+add-recruiter-region: "&6你已為$1設置招募員"
+recruiter-added-region: "&6$1現在是$2的招募員"
+add-guest-region: "&6你已成為$1的遊客"
+guest-added-region: "&6$1現在是$2的遊客"
+invite-member-region: "&6你成為了$1的一員"
+member-invited-region: "&6$1已加入你的$2"
+no-invite: "&6你沒有邀請"
+stand-in-region: "&6請讓$1站在該區域內"
+create: "&6創建"
+click-for-region-limits: "&6點擊這裡查看區域限制列表"
+click-for-req-regions: "&6點擊這裡查看所需區域列表"
+town-instructions: "&6輸入/cvtown[城鎮名]來創建$1"
+town-enter: "&6你進入了$1"
+town-enter-warning: "&6@{RED}警告!這個城鎮有防禦設施，也許你可以試著使用強襲傳送台或圍攻機來攻擊它。"
+town-exit: "&6你退出了$1"
+wild: "郊區"
+new-town-member: "&6$1加入了$2"
+must-be-built-on-top: "&6$1必須造在$2的上面"
+town-power: "&6能量: &6$1/$2"
+port-warmup: "&6你將在$1秒後被傳送"
+teleported: "&6已傳送!"
+location: "&6地點"
+location-set: "&6已設置$1的地點"
+rename-town: "&6修改城鎮名"
+rename-desc: "&6使用/cvrename[舊城鎮名][新城鎮名]"
+town-renamed: "&6你的城鎮已從$1更名為$2"
+bounty-set: "&6$1設置了懸賞：$2"
+bounty-bonus: "&6你獲得了$1的賞金"
+allied-bounty: "&6擊殺聯合國不會獲得懸賞，"
+add-friend: "&6交友"
+remove-friend: "&6絕交"
+friend-added: "&6$1已成為了你的好友"
+friend-removed: "&6$1不再是你的好友了"
+bounty: "&6設置懸賞：/cvbounty$1數量"
+click-me: "&6>>>請點我<<<"
+bounty-command: "&6/cvbounty$1[賞金金額]"
+rename-command: "&6/cvrename$1[城鎮新名字]"
+town-ally: "&6將$1視為聯合國"
+town-unally: "&6將$1視為敵人"
+town-ally-invites: "&6你收到了其他重載的結盟申請"
+town-ally-request-sent: "&6結盟邀請已發給$1"
+town-ally-request-accepted: "&6$1和$2已結盟"
+town-ally-request-denied: "&6$1的結盟申請被拒絕"
+town-ally-removed: "&6$1和$2的聯合國破滅了"
+decline-all: "&6拒絕所有邀請"
+accept-invite: "&6接受邀請"
+region-evolve: "&6$1已進化為$2"
+region-evolved: "&6你的$1加入到了$2"
+anti-camp-active: "&6$1的PVP保護已激活"
+anti-camp-expired: "&6$1的PVP保護已失效"
+activate-anticamp-question: "&6$1已在$2內部死亡，您要激活$3的野營防禦嗎？"
+region-sale-set: "&6$1現以$2的價格出售"
+sell-region: "&6出售區域"
+cancel-sale: "&6取消出售"
+buy-region: "&6用$2購買$1"
+regions-for-sale: "&6出售區域"
+use-sell-command: "&6輸入/cvsell價格"
+region-bought: "&6你成功地用$2購買了$1"
+region-sold: "&6你的$1成功以$3元賣給了$2，"
+sort-by-level: "&6根據等級分類區域"
+level: "&6$1級"
+level-up: "&6點此以使用你自己的經驗值來提升這個技能的經驗值，而且自身經驗等級低於技能等級時才可以這麼做，"
+level-up-max: "&6你的技能等即已達到最高，"
+not-enough-levels: "&6你需要再提升$1級才能這樣做，"
+rename-alliance: "&6重命名聯合國"
+rename-alliance-desc: "&6請輸入/cvreally$1新的聯合國名"
+alliance-renamed: "&6$1已改名為$2"
+invalid-name: "&6無效的名稱"
+region-not-allowed-in-world: "&6你不能在這個世界上建$1，"
+last-renamed-by: "&6最後由$1改名"
+leave-alliance: "&6離開聯合國"
+hunting-players: "&6警告！有人在你所在地區搞事，"
+no-hunting-new-players: "&6你不能選擇狩獵一個沒有加入任何城鎮的玩家，"
+target-not-in-world: "&6$1和你不在同一個世界."
+cant-place-town: "&6輸入/cvtown城鎮名"
+no-region-type-found: "&6找不到區域類型$1"
+building-too-big: "&6你造的$1太大了"
+no-required-blocks: "&6你未放置建造$1所需的方塊"
+cant-build-on-region: "&6你不能在$2上面建造$1"
+rebuild-required: "&6你需要在$2上面建造$1"
+max-rebuild-required: "&6你已經擁有了$1個$3，你只能用$4來升級$5，"
+prevent-civs-item-share: "&6你不能分享Civ的物品"
+region-protected: "&6這片區域受到保護"
+region-destroyed: "&6區域$1已被摧毀!"
+specify-player-town: "&6請指定玩家和城鎮名"
+specify-town-name: "&6請設置城鎮名"
+specify-player-region: "&6請指定玩家和區域名"
+town-not-exist: "&6$1不是一個城鎮"
+no-permission-invite: "&6你沒有邀請玩家到$1的權限"
+player-not-online: "&6$1不在線"
+invite-player: "&6$1想要邀請你加入$2$3.輸入/cvaccept以接受"
+already-member: "&6$1已經是$2的一員了"
+broke-own-region: "&6你的$1缺少方塊"
+no-permission: "&6沒有權限"
+class-changed: "&6你的職業已更改為$1"
+not-enough-money: "&6你沒有$$1"
+not-allowed-place: "&6$1無法被放置"
+hold-town: "&6請手持城鎮物品"
+no-commands-in-jail: "&6你不能在$1的監獄裡使用指令"
+building-requires-2space: "&6這個建築需要在中心箱子上面留兩格空間"
+missing-blocks-build: "&6你需要放置這些方塊來建造$1"
+intruder-enter: "&6@{RED}[警告]$1已進入$2"
+intruder-exit: "&6$1已退出$2"
+in-combat: "&6你不能在戰鬥時這麼做"
+cooldown: "&6冷卻中：$1"
+need-more-health: "&6你需要更多的$1生命值才能這麼做"
+need-more-stamina: "&6你需要更多的$1耐力才能這麼做"
+need-more-mana: "&6你需要更多的$1魔法才能這麼做"
+port-not-found: "&6找不到港口"
+region-missing-upkeep-items: "&6區域不需要物品"
+raid-porter-offline: "&6當成員不在線時，您無法發動強襲$1"
+raid-target-lost: "&6在$2格內沒有名為$1的城鎮"
+searching-for-target: "&6搜索強襲傳送點中..."
+raid-target-blocked: "&6強襲傳送點被封鎖."
+raid-porter-warning: "&6警告!$1創建了一個朝向$3的$2"
+siege-built: "&6@{RED}[警告]$1建造了$2以摧毀$3"
+jammer-built: "&6@{RED}[警告]$1已被建造，請小心傳送"
+raid-remote: "&6你獲得了控制這個$1的物品"
+raid-sign: "&6你需要在箱子上面放寫有目標城鎮名的牌子"
+no-blocks-above-chest: "&6中央箱子上方不能有任何物品，"
+invalid-target: "&6無效的目標"
+no-tp-out-of-town: "&6您無法將自己轉移出敵人的城鎮"
+jammer-redirect: "&6@{RED}[警告]您的傳送由$1干擾"
+raid-target-inside-region: "&6你不能在區域內設置地點"
+req-build-inside-town: "&6這個$1只能在$2裡建"
+missing-region-requirements: "&6你的$1缺少所需的區域"
+friendly-fire: "&6你不能傷害你的朋友"
+catapult-elytra-equipped: "&6當穿著鞘翅時，不能使用彈射，"
+limits: "&6限制"
+item-limit: "&6你有$1/$2個$3，"
+region-limit-reached: "&6$1只能擁有$2$3"
+region-in-biome: "&6你可以在$2建造$1"
+not-enough-housing: "&6你需要建造更多住宅才能邀請玩家加入"
+not-member-port: "&6你不是這個港口的成員"
+cant-repair-item: "&6這個東西不能修復"
+more-repair-items: "&6你需要更多的$1才能修復這件物品"
+hold-repair-item: "&6你必須手持你想要修復的物品"
+player-not-found: "&6找不到$1這名玩家"
+repeat-kill: "&6$1死太多次了.你沒有獲得點數."
+kill-streak: "&6$1完成了連殺：$2"
+kill-joy: "&6$1終極了$2的大殺特殺：$3"
+death: "&6你死亡失去了$1點數"
+kill: "&6擊殺: &6$1"
+low-health: "&6殘血獎勵: &6$1"
+killstreak-points: "&6連殺獎勵: &6$1"
+killjoy-points: "&6殺戮獎勵: &6$1"
+total-points: "&6共有點數: &6$1"
+karma: "&6善良值: &6$1"
+karma-desc: "&6善良值是測量善惡之物。殺死善良值越低的玩家，獲得的獎勵越豐厚。"
+hardship: "&6城鎮保護值:$1"
+hardship-desc: "&6城鎮保護值取決於你的城鎮多久被攻擊一次，被攻擊頻率越高，城鎮保護值也越高，攻擊你的城鎮所要花費的金額也越高。城鎮保護值每七天更新一次。"
+karma-gained: "&6善良值: &6+$1,獲得 &6$2 &6 "
+karma-lost: "&6善良值: &6-$1,失去 &6$2 &6 "
+karma-display: "&6目前善良值:$1 / &6個人懸賞金額:$2"
+combat-tagged: "&6@{RED}進入戰鬥狀態， &6$1秒以內將無法傳送。"
+ann-limit: "&6[信息] &6你擁有$1/ &6$2座$3建築."
+ann-achievement: "&6[信息]打開嚮導來查看下一個成就"
+ann-town-join: "&6[信息] &6你可以是多個城鎮的居民。"
+ann-town-protection: "&6[信息] &6城鎮保護土地並且可以在商店內解鎖新的建築."
+ann-town-housing: "&6[信息] &6$1 &6擁有 &6$2 &6/ &6$3 &6個住宅. &6如果你想要發展城鎮請建造更多住宅."
+ann-make-allies: "&6[信息] &6考慮加入聯盟吧. &6在社區 &6> &6城鎮 &6> &6你可以設置盟友城鎮"
+ann-town-low-power: "&6@{RED}[警告] &6$1 &6只有 &6$2 &6/ &6$3 &6點能量了. &6建造更多產能的建築吧."
+ann-bank: "&6[信息] &6$1的銀行內有 &6$$2.你可以使用 &6/cv &6 withdraw &6$1 &6量 &6來取款"
+ann-vote: "&6別忘了為下一屆$1的城主投票。社區 &6> &6你的城鎮 &6> &6$1 &6> &6查看成員 &6> &6玩家 &6> &6投票"
+ann-karma: "&6@{YELLOW}[提醒] &6$1在線. &6如果你殺死$1, &6你就會獲得獎勵.但請不要惡意PVP哦."
+ann-missing-input: "&6 &6[信息] &6你的 &6$1 &6需要物品。 &6使用城鎮系統之書來查看需要什麼原料。"
+ann-bounty: "&6 &6[信息] &6$1的懸賞為$2。"
+and-more: "&6還有更多..."
+tut-default-0: "&6首先打開城鎮系統之書，點擊建築設計圖，拿好你的小鎮辦公處，然後放置小鎮辦公處，"
+tut-default-1: "&6接下來請把4塊麵包、32個胡蘿蔔、32個豬排或32個土豆放到小鎮辦公處的箱子裡."
+tut-default-2: "&6小鎮辦公處會提供給你食物,但煤炭建築設計圖商店會給你更多東西.打開嚮導,點擊建築設計圖商店,然後購買煤炭建築設計圖商店."
+tut-default-3: "&6放置25塊羊毛、14個柵欄和兩個箱子.之後這裡就成為煤炭建築設計圖商店了."
+tut-default-4: "&6恭喜！您已完成默認教程，現在請選擇你的下一個生涯路徑，"
+tut-warrior-name: "&6戰鬥型城鎮"
+tut-warrior-desc: "&6選擇此選項，你的城鎮將會成為一個以攻擊他人為目標的城鎮，"
+tut-warrior-0: "&6首先請購買祭壇.你可以使用祭壇來獲得鑽石裝備."
+tut-warrior-1: "&6現在,放一個鑽石和終界水晶到祭壇箱子內.如果你擁有$300,你就會獲得裝備."
+tut-warrior-2: "&6這是個附魔金蘋果.現在你應有盡有了.你的下一個目標是殺人."
+tut-warrior-3: "&6恭喜你!你現在是名合格的戰士了.現在成為侵略者吧.購買並在城鎮附近建造一個強襲傳送門."
+tut-warrior-4: "&6一旦你激活了強襲傳送門,站到上面你就會傳送到城鎮."
+tut-warrior-5: "&6現在你侵略了一座城鎮,是時候發動戰爭了.在敵人的城鎮附近建造指揮部."
+tut-warrior-6: "&6現在請購買和在指揮部上面建造戰爭前哨，之後請購買和建造圍攻機."
+tut-warrior-7: "&6圍攻機會緩慢減少城鎮的防禦數值來讓城鎮反擊你，請在指揮部上面建造城堡，"
+tut-warrior-8: "&6現在你造好了城堡，請購買和建造堡壘，然後請建造紀念館，"
+tut-warrior-9: "&6恭喜你！你現在更加了解戰爭了，你的軍旅生涯已經登峰造極，"
+tut-builder-name: "&6建造型城鎮"
+tut-builder-desc: "&6選擇此選項，你的城鎮將會發展為一個以建造及防禦為目標的城鎮，"
+tut-builder-0: "&6首先請建造會議室，這是城鎮的核心，它可以提供防禦數值和2個住宅，"
+tut-builder-1: "&6現在請建造會議室，"
+tut-builder-2: "&6你成功地建成了會議室，聲明了你的土地，接下來請購買城鎮核心，"
+tut-builder-3: "&6 &6喜你！請使用/cv &6 town創建你的城鎮，完成建城後請購買和建造一個小屋，"
+tut-builder-4: "&6小屋提供住宅，住宅可用於邀請玩家加入你的城鎮，現在請你在小屋裡購買和放置一個NPC小屋，"
+tut-builder-5: "&6村民也會被視為人口，如果村民死了，城鎮會失去防禦數值，當然，村民可以腐化，現在請你建造一個教堂，"
+tut-builder-6: "&6創建提供防禦數值的建築非常重要，防禦數值可以保護城鎮，請建造一個弓箭陷阱來防衛你的城鎮，"
+tut-builder-7: "&6接下來請建造一個弓箭工廠來為城鎮的防禦工事提供箭，"
+tut-builder-8: "&6城鎮核心最多只能由4個小屋，想要擴大住宅，請建造一個小屋，然後購買並在小屋內放置一個棚屋，"
+tut-builder-9: "&6接下來請建造一個投石器，投石器可以發射TNT來破壞侵略者的圍攻建築，"
+tut-builder-10: "&6然後請升級你的城鎮等級為小村莊，升級後請建造一個寓所，每個新的城鎮等級你都可以獲得更好的住宅，"
+tut-builder-11: "&6現在請再次升級你的城鎮等級為村莊，之後請建造馬厩，"
+tut-builder-12: "&6在你可以升級村莊前，你需要先升級你的會議室，請購買並在會議室內放置城鎮大廳，"
+tut-builder-13: "&6恭喜你！你現在成為了頂級的建築師，你的建築生涯已經登峰造極，"
+tut-merchant-name: "&6商人"
+tut-merchant-0: "&6加入一個城鎮，從居民身上購買一個小屋，一旦你成為了屋主，你就可以在小屋的箱子裡放置一些麵包，"
+tut-merchant-1: "&6升級房屋可以使你獲得更多的錢，請從建築設計圖商店內購買棚屋，"
+tut-merchant-2: "&6加到你的小屋裡來使其成為9x9x9的區域，然後在裡面放置棚屋箱子，"
+tut-merchant-3: "&6在棚屋箱子內放入384個土豆，24小時內，你的棚屋會出售所有土豆併升級為1級棚屋，"
+tut-merchant-4: "&6購買和建造一個蘋果園，然後在蘋果園內建造礦車軌道並延伸到你的1級棚屋內，在棚屋內的軌道終點放置傾斜的充能鐵軌，最後請在蘋果園內放置箱子礦車，"
+tut-merchant-5: "&6是時候再次升級了，購買並在你的1級棚屋內放置一個寓所，"
+tut-merchant-6: "&6寓所可以給予你很多錢，但是房屋可以給你更多錢，請購買併升級你的寓所為房屋，"
+tut-merchant-7: "&6在你的房屋內放置這個面板來將其升級為1級房屋，"
+tut-merchant-8: "&6把這些鮭魚放到你的1級房屋內來將其升級為2級房屋，"
+tut-merchant-9: "&6現在請建造一個鐵建築設計圖商店來增加你的收入，"
+tut-merchant-10: "&6每名玩家最多只能開3個建築設計圖商店，最賺錢的建築設計圖商店是貿易建築設計圖商店，現在請建造綠寶石建築設計圖商店，如果你已經有3個建築設計圖商店的話請拆掉其中一個，"
+tut-merchant-11: "&6恭喜你！你現在可以出售從其他城鎮的綠寶石礦源內購買的物品，你的商人生涯已經登峰造極，"
+tut-merchant-12: "&6每個玩家可以最多建造三個建築設計圖商店，"
+anarchy-name: "&6無政府主義"
+anarchy-desc: "任何人可以破壞城鎮和傷害區域內的成員，沒有稅收，也沒有聯合國，"
+capitalism-name: "&6資本主義"
+capitalism-desc: "民主+城鎮居民可以購買額外選票，"
+colonialism-name: "&6殖民主義"
+colonialism-desc: "居民沒有城鎮所有權，上級城鎮擁有低級城鎮使用權，"
+communism-name: "&6共產主義"
+communism-desc: "任何人可以擁有任何東西，所有區域收入都被平均分配給每一個人，"
+cooperative-name: "&6合作主義"
+cooperative-desc: "民主+所有區域收入和稅收平均分配給所有城鎮居民，"
+cybersynacy-name: "&6專家政治"
+cybersynacy-desc: "無人有城鎮所有權，聯合國、稅收、招募和公共設施由AI掌控，"
+democracy-name: "&6民主主義"
+democracy-desc: "市長可以管理聯合國、設置稅收和管理城鎮居民，城鎮定期進行選舉選出市長，"
+democratic_socialism-name: "&6民主社會主義"
+democratic_socialism-desc: "民主主義+所有人共有所有的公共設施、農場、礦業、工廠和採石場，"
+dictatorship-name: "&6專政體制"
+dictatorship-desc: "市長可以管理聯合國、區域和城鎮居民並設置稅收，"
+feudalism-name: "&6封建主義"
+feudalism-desc: "專政體制+城鎮居民不能在城鎮內建造區域，"
+idiocracy-name: "&6制杖主義"
+idiocracy-desc: "發射最多煙花火箭並放置最多含有自己名字的告示牌的人將成為市長，"
+kraterocracy-name: "&6末日主義"
+kraterocracy-desc: "專政體制+當城鎮居民殺死市長後，這名城鎮居民就可以當上市長，"
+libertarian-name: "&6自由意志"
+libertarian-desc: "無城鎮所有權，"
+libertarian_socialism-name: "&6自由社會主義"
+libertarian_socialism-desc: "自由意志+社會主義"
+meritocracy-name: "&6精英體制"
+meritocracy-desc: "專政體制+誰建的最好和擊殺點數最多就會成為市長，"
+oligarchy-name: "&6寡頭政治"
+oligarchy-desc: "專政體制+城鎮所有權可以購入和賣出，"
+socialism-name: "&6社會主義"
+socialism-desc: "專政體制+所有人共有所有的公共設施、農場、礦業、工廠和採石場，"
+tribalism-name: "&6部落主義"
+tribalism-desc: "專政體制+居民無法加入非聯合國城鎮，"
+admin_graveyard-name: "&6墓地"
+admin_graveyard-desc: "所有玩家重生的地方，可防止玩家受傷，"
+shelter-name: "&6小鎮辦公處"
+shelter-desc: "可用於存儲你的物品的簡易小鎮辦公處,並且每30分鐘可根據你提供的麵包、牛排、胡蘿蔔或土豆來給予你金錢，"
+arrow_trap-name: "&6弓箭陷阱"
+arrow_trap-desc: "1級陷阱|範圍：17|傷害：30|速度：38|分散度：3|向最近的非城鎮成員玩家和怪物發射弓箭."
+arrow_trap_fast-name: "&6弓箭陷阱2"
+arrow_trap_fast-desc: "2級陷阱|範圍：19|傷害：34|速度：38|分散度：4|向最近的非城鎮成員玩家和怪物發射弓箭."
+arrow_trap_fastest-name: "&6弓箭陷阱3"
+arrow_trap_fastest-desc: "3級陷阱|範圍：21|傷害：38|速度：42|分散度：3|向最近的非城鎮成員玩家和怪物發射弓箭."
+barracks-name: "&6軍營"
+barracks-desc: "給城鎮添加6個住宅，每天提供288點防禦數值，不能在擁有旅館的城鎮內建造軍營，"
+bell_tower-name: "&6鐘樓"
+bell_tower-desc: "當有侵略者入侵城鎮時提醒城鎮成員，"
+church-name: "&6教堂"
+church-desc: "沒有人會受傷的安全之地，每天提供192點防禦數值"
+graveyard-name: "&6墓地"
+graveyard-desc: "城鎮居民重生的地方，可防止玩家受到傷害，"
+hospital-name: "&6醫院"
+hospital-desc: "治愈醫院內的所有玩家，每天提供192點防禦數值，"
+idol-name: "&6偶像"
+idol-desc: "給予居民抗性提升和力量BUFF，每天提供192點防禦數值，"
+jail-name: "&6監獄"
+jail-desc: "暫時監禁在你的城鎮內死亡的入侵者，每天提供192點防禦數值，"
+monument-name: "&6紀念碑"
+monument-desc: "給予城鎮居民抗性提升、力量和速度BUFF，每天提供192點防禦數值，"
+statue-name: "&6雕像"
+statue-desc: "給予居民抗性提升，每天提供192點防禦數值，"
+arrow_factory-name: "&6弓箭工廠"
+arrow_factory-desc: "&6自動生產箭"
+bakery-name: "&6麵包店"
+bakery-desc: "每兩分鐘製造餅乾和南瓜派，"
+dye_works-name: "&6染料生產工作室"
+dye_works-desc: "&6自動生產染料"
+flint_works-name: "&6燧石工廠"
+flint_works-desc: "&6自動生產燧石，"
+gold_infuser-name: "&6黃金注射器"
+gold_infuser-desc: "&6自動製作金胡蘿蔔和金蘋果"
+ice_maker-name: "&6製冰機"
+ice_maker-desc: "&6自動合成冰塊"
+iron_works-name: "&6煉鐵廠"
+iron_works-desc: "&6自動合成鐵質工具，"
+lava_works-name: "&6岩漿廠"
+lava_works-desc: "&6自動合成岩漿"
+mill-name: "&6磨麥坊"
+mill-desc: "每30秒將兩個小麥做成一個麵包，"
+boot_grinder-name: "&6皮鞋磨床"
+boot_grinder-desc: "將皮革鞋子分解成皮革，"
+stone_works-name: "&6磨石坊"
+stone_works-desc: "自動合成石質工具，"
+weapons_factory-name: "&6武器工廠"
+weapons_factory-desc: "將3個火藥和5個沙子合成為爆破物，"
+jammer_trap-name: "&6攔截陷阱"
+jammer_trap-desc: "該建築物可攔截100格範圍內的傳送，並將目標傳送到其他地點，"
+chicken_coop-name: "&6雞舍"
+chicken_coop-desc: "自動養雞農場，"
+donkey_farm-name: "&6驢舍"
+donkey_farm-desc: "每小時生成驢和馬鞍，"
+mule_farm-name: "&6騾舍"
+mule_farm-desc: "每小時生成騾和馬鞍，"
+pig_pen-name: "&6豬圈"
+pig_pen-desc: "自動養豬農場"
+rabbit_hutch-name: "&6兔籠"
+rabbit_hutch-desc: "自動養兔農場"
+ranch-name: "&6牧場"
+ranch-desc: "自動養牛農場，"
+sheep_farm-name: "&6綿羊農場"
+sheep_farm-desc: "自動養羊農場"
+stables-name: "&6馬厩"
+stables-desc: "每小時生成馬和馬鞍，"
+acacia_lumberyard-name: "&6金合歡木伐木場"
+acacia_lumberyard-desc: "自動砍伐金合歡木，在箱子內放入一個斧頭即可運作"
+birch_lumberyard-name: "&6樺木伐木場"
+birch_lumberyard-desc: "自動砍伐樺木，在箱子內放入一個斧頭即可運作"
+dark_oak_lumberyard-name: "&6深色橡木伐木場"
+dark_oak_lumberyard-desc: "自動砍伐深色橡木，在箱子內放入一個斧頭即可運作"
+jungle_lumberyard-name: "&6叢林木伐木場"
+jungle_lumberyard-desc: "自動砍伐叢林木，在箱子內放入一個斧頭即可運作"
+oak_lumberyard-name: "&6橡木伐木場"
+oak_lumberyard-desc: "自動砍伐橡木，在箱子內放入一個斧頭即可運作"
+spruce_lumberyard-name: "&6雲杉伐木場"
+spruce_lumberyard-desc: "自動砍伐雲杉木，在箱子內放入一個斧頭即可運作"
+apple_orchard-name: "&6蘋果園"
+apple_orchard-desc: "自動蘋果農場，"
+carrot_farm-name: "&6胡蘿蔔農場"
+carrot_farm-desc: "每5分鐘生產16個胡蘿蔔，"
+cocoa_farm-name: "&6可可豆農場"
+cocoa_farm-desc: "每5分鐘生成16個可可豆，"
+ender_pearl_farm-name: "&6末影珍珠農場"
+ender_pearl_farm-desc: "自動生產末影珍珠"
+fishing_hut-name: "&6釣魚小屋"
+fishing_hut-desc: "每5分鐘生產鮭魚、小丑魚、河豚、鱈魚或皮革鞋子，"
+greenhouse-name: "&6溫室"
+greenhouse-desc: "自動養花，"
+melon_farm-name: "&6西瓜農場"
+melon_farm-desc: "每10分鐘生成西瓜，"
+potato_farm-name: "&6馬鈴薯農場"
+potato_farm-desc: "每5分鐘生產馬鈴薯，"
+pumpkin_farm-name: "&6南瓜農場"
+pumpkin_farm-desc: "每10分鐘生成南瓜，"
+sugar_cane_farm-name: "&6甘蔗農場"
+sugar_cane_farm-desc: "每5分鐘合成16個甘蔗，"
+wheat_farm-name: "&6小麥農場"
+wheat_farm-desc: "每5分鐘生成小麥和枯萎的灌木，"
+shack-name: "&6小屋"
+shack-desc: "最基礎的房屋，出售馬鈴薯每天可獲得122元，"
+hovel-name: "&6棚屋"
+hovel-desc: "2級房屋，出售馬鈴薯每天可獲得133元，從小屋升級而成"
+hovel1-name: "&6大棚屋"
+hovel1-desc: "級的房屋，出售馬鈴薯和蘋果每天可獲得310元"
+dwelling-name: "&6寓所"
+dwelling-desc: "3級房屋，出售馬鈴薯和蘋果每天可獲得309元"
+dwelling1-name: "&6小寓所"
+dwelling1-desc: "4級房屋，出售馬鈴薯和蘋果可獲得326元"
+dwelling2-name: "&6大寓所"
+dwelling2-desc: "5級房屋，出售馬鈴薯、魚和蘋果每天可獲得598元，"
+house-name: "&6房子"
+house-desc: "4級房屋，出售麵包和蘋果每天可獲得491元，只能從寓所升級而來，"
+house1-name: "&6小房子"
+house1-desc: "4級房屋，出售麵包、魚和蘋果每天可獲得635元，"
+house2-name: "&6大房子"
+house2-desc: "4級房屋，出售麵包、魚、西瓜片和蘋果每天可獲得832元，"
+chalet-name: "&6木屋"
+chalet-desc: "5級房屋，出售麵包和胡蘿蔔每天可獲得548元，"
+chalet1-name: "&6小木屋"
+chalet1-desc: "5級房屋，出售麵包、魚和胡蘿蔔每天可獲得692元，"
+chalet2-name: "&6木屋"
+chalet2-desc: "5級房屋，出售麵包、魚、西瓜片和胡蘿蔔每天可獲得890元，"
+chalet3-name: "&6大木屋"
+chalet3-desc: "5級房屋，出售麵包、魚、西瓜片、餅乾和胡蘿蔔每天可獲得1022元，"
+mansion-name: "&6宅邸"
+mansion-desc: "6級房屋，出售麵包、胡蘿蔔和牛排每天可獲得648元，只能從木屋升級而來，"
+mansion1-name: "&6小豪宅"
+mansion1-desc: "6級房屋，出售麵包、胡蘿蔔、餅乾和牛排每天可獲得894元，"
+mansion2-name: "&6豪宅"
+mansion2-desc: "6級房屋，出售麵包、胡蘿蔔、餅乾和牛排每天可獲得1167元，"
+mansion3-name: "&6大豪宅"
+mansion3-desc: "6級房屋，出售麵包、胡蘿蔔、餅乾、牛奶和牛排每天可獲得1407元，"
+manor-name: "&6莊園"
+manor-desc: "7級房屋，出售金胡蘿蔔、餅乾和牛排每天可獲得1032元，只能從宅邸升級而來，"
+manor1-name: "&6小莊園"
+manor1-desc: "7級房屋，出售金胡蘿蔔、餅乾和牛排每天可獲得1032元，"
+manor2-name: "&6莊園"
+manor2-desc: "7級房屋，出售金胡蘿蔔、南瓜派、牛排、餅乾和牛奶每天可獲得1679元，"
+manor3-name: "&6大莊園"
+manor3-desc: "7級房屋，出售金胡蘿蔔、南瓜派、牛排、餅乾和牛奶每天可獲得1751元，"
+villa-name: "&6別墅"
+villa-desc: "8級房屋，出售金胡蘿蔔、南瓜派和牛排每天可獲得1100元，"
+villa1-name: "&6大別墅"
+villa1-desc: "8級房屋，出售金胡蘿蔔、南瓜派和牛排每天可獲得1397元，"
+villa2-name: "&6豪華別墅"
+villa2-desc: "8級房屋，出售金胡蘿蔔、南瓜派、牛奶、牛排和金蘋果每天可獲得1877元，"
+estate-name: "&6房地產"
+estate-desc: "9級房屋，出售金胡蘿蔔、南瓜派和金蘋果每天可獲得1480元，只能由別墅升級而來，"
+estate1-name: "&61級房地產"
+estate1-desc: "9級房屋，出售金胡蘿蔔、南瓜派和金蘋果每天可獲得1917元，"
+estate2-name: "&62級房地產"
+estate2-desc: "9級房屋，出售金胡蘿蔔、南瓜派、兔肉湯、蛋糕和金蘋果每天可獲得2397元，"
+estate3-name: "&63級房地產"
+estate3-desc: "9級房屋，出售金胡蘿蔔、南瓜派、兔肉湯、蛋糕和金蘋果每天可獲得2621元，"
+inn-name: "&6旅館"
+inn-desc: "提供12住宅和一個港口，對於沒有住宅而又想要拉人的城鎮來說很有用，"
+jade_mine-name: "&6玉礦源"
+jade_mine-desc: "每天生成16塊玉，這些玉只能用玉建築設計圖商店出售，無法在已經有玉建築設計圖商店的城鎮內建造，意即你必須要在另一個城鎮才能賣它，"
+jade-mine-name: "&6玉礦源"
+jade-mine-desc: "每天生成16塊玉，這些玉只能用玉建築設計圖商店出售，無法在已經有玉建築設計圖商店的城鎮內建造，意即你必須要在另一個城鎮才能賣它，"
+coal_mine-name: "&6煤炭礦源"
+coal_mine-desc: "消耗鎬子挖掘煤炭，"
+diamond_mine-name: "&6鑽石礦源"
+diamond_mine-desc: "消耗鐵鎬挖掘鑽石，"
+gold_mine-name: "&6黃金礦源"
+gold_mine-desc: "消耗鐵鎬挖掘煤炭，"
+gunpowder_mine-name: "&6火藥礦源"
+gunpowder_mine-desc: "消耗鐵鎬挖出火藥，"
+iron_mine-name: "&6鐵礦源"
+iron_mine-desc: "每小時消耗鐵鎬挖掘鐵礦"
+lapis_mine-name: "&6青金石礦源"
+lapis_mine-desc: "每小時消耗鐵鎬挖掘青金石礦"
+marine_mine-name: "&6海洋礦源"
+marine_mine-desc: "消耗鎬子挖掘海洋資源，"
+obsidian_mine-name: "&6黑曜石礦源"
+obsidian_mine-desc: "緩慢產出黑曜石"
+quartz_mine-name: "&6石英礦源"
+quartz_mine-desc: "消耗鎬子挖掘石英"
+redstone_mine-name: "&6紅石礦源"
+redstone_mine-desc: "消耗鎬子挖掘紅石，"
+npc_chalet-name: "&6村民木屋"
+npc_chalet-desc: "為村民而造之房，可將村民視為城鎮人口"
+npc_dwelling-name: "&6村民寓所"
+npc_dwelling-desc: "為村民而造之房，可將村民視為城鎮人口"
+npc_house-name: "&6村民房"
+npc_house-desc: "為村民而造之房，可將村民視為城鎮人口"
+npc_hovel-name: "&6村民棚屋"
+npc_hovel-desc: "為村民而造之房，可將村民視為城鎮人口"
+npc_mansion-name: "&6村民宅邸"
+npc_mansion-desc: "為村民而造之房，可將村民視為城鎮人口"
+npc_shack-name: "&6村民小屋"
+npc_shack-desc: "為村民而造之房，可將村民視為城鎮人口"
+raid_porter-name: "&6強襲傳送門"
+raid_porter-desc: "入侵敵方城鎮的可靠方式，需要4分鐘的準備時間，"
+raid_porter_active-name: "&6激活的強襲傳送門"
+raid_porter_active-desc: "在中心方塊放置一個寫有目標城鎮名的告示牌，然後站在中心方塊上，"
+siege_machine-name: "&6圍攻機"
+siege_machine-desc: "所有戰爭的基礎，緩慢地減少附近目標城鎮的能力，需要4分鐘的準備時間，"
+siege_machine_active-name: "&6激活的圍攻機"
+siege_machine_active-desc: "每3分鐘破壞1點防禦數值，三發後自動升級，"
+siege_machine1-name: "&6圍攻機1"
+siege_machine1-desc: "每2.5分鐘破壞1點防禦數值，三發後自動升級，"
+siege_machine2-name: "&62級圍攻機"
+siege_machine2-desc: "每2分鐘破壞1點防禦數值，四發後自動升級，"
+siege_machine3-name: "&63級圍攻機"
+siege_machine3-desc: "每1.5分鐘破壞1點防禦數值，三發後自動升級，"
+no-tp-pearl-chorus: "你不能在敵方城鎮中使用歌萊果或終界珍珠，"
+altar-name: "&6祭壇"
+altar-desc: "消耗300元，每小時創建全套鑽石套和弓箭，"
+blindness_trap-name: "&6致盲陷阱"
+blindness_trap-desc: "給予附近非城鎮居民致盲、緩慢和虛弱效果，在30分鐘後會自毀，"
+castle-name: "&6城堡"
+castle-desc: "&6堡壘中心"
+catapult-name: "&6投石器"
+catapult-desc: "遠程發射TNT"
+command_tent-name: "&6指揮部"
+command_tent-desc: "戰爭前哨中心，可以讓你進攻附近的城鎮，每15分鐘生成1點防禦數值，"
+hunting-lodge-name: "&6狩獵屋"
+hunting-lodge-desc: "在中心方塊上放置寫有目標名的告示牌,然後右擊告示牌來傳送到離這名玩家200格遠的地方."
+memorial-name: "&6紀念館"
+memorial-desc: "城鎮居民重生的地方，可防止玩家受傷，"
+mobile_hospital-name: "&6流動醫院"
+mobile_hospital-desc: "治愈在醫院內的所有玩家，30分鐘後會自毀，"
+temp_arrow_trap-name: "&6臨時弓箭陷阱"
+temp_arrow_trap-desc: "向附近非居民玩家發射弓箭，15分鐘後會自毀，"
+clay_quarry-name: "&6黏土採土場"
+clay_quarry-desc: "自動採掘黏土，"
+cobble_quarry-name: "&6鵝卵石採石場"
+cobble_quarry-desc: "每30分鐘採集鵝卵石，"
+cobble_grinder-name: "&6磨石機"
+cobble_grinder-desc: "每30分鐘生成石頭，"
+dirt_quarry-name: "&6採泥廠"
+dirt_quarry-desc: "自動生成泥土"
+red_sand_pit-name: "紅沙坑"
+red_sand_pit-desc: "每30秒合成紅沙，"
+sand_pit-name: "&6沙坑"
+sand_pit-desc: "每30秒合成沙子，"
+sifter-name: "&6篩子"
+sifter-desc: "從泥土中篩出有用的物品，"
+jade_shop-name: "&6玉建築設計圖商店"
+jade_shop-desc: "每天出售144塊綠寶石給給服務器並獲得1000元，無法在已經建造了玉礦源的城鎮內建造，"
+coal_shop-name: "&6煤炭建築設計圖商店"
+coal_shop-desc: "每天出售144塊煤炭給服務器並獲得432元，"
+diamond_shop-name: "&6鑽石建築設計圖商店"
+diamond_shop-desc: "每天出售24塊鑽石給服務器並獲得1536元，"
+flower_shop-name: "&6花店"
+flower_shop-desc: "每天出售花給服務器並獲得288元，"
+gold_shop-name: "&6黃金建築設計圖商店"
+gold_shop-desc: "每天出售288塊金錠給服務器並獲得672元，"
+iron_shop-name: "&6鐵建築設計圖商店"
+iron_shop-desc: "每天出售288塊鐵錠給服務器並獲得576元，"
+leather_shop-name: "&6皮革建築設計圖商店"
+leather_shop-desc: "每天出售皮革給服務器並獲得360元，"
+lapis_shop-name: "&6青金石建築設計圖商店"
+lapis_shop-desc: "每天出售青金石給服務器並獲得600元，"
+city-name: "&6城鎮"
+city-desc: "5級城鎮，需要30人口"
+hamlet-name: "&6村莊"
+hamlet-desc: "2級城鎮，需要5人口"
+keep-name: "&6堡壘"
+keep-desc: "2級圍攻基地"
+metropolis-name: "&6城鎮"
+metropolis-desc: "6級城鎮，需要50人口，"
+mining_colony-name: "&6採礦地"
+mining_colony-desc: "防止生怪並給予挖掘加速效果，"
+outpost-name: "&6戰爭前哨"
+outpost-desc: "1級圍攻基地"
+settlement-name: "&6城鎮核心"
+settlement-desc: "1級城鎮"
+town-name: "&6城鎮"
+town-desc: "4級城鎮，需要20人口"
+village-name: "&6村莊"
+village-desc: "3級城鎮，需要10人口"
+bank-name: "&6銀行"
+bank-desc: "每天提供192點防禦數值，將64塊綠寶石變現為640元，反之亦然，"
+bath_house-name: "&6浴室"
+bath_house-desc: "每天提供192點防禦數值給城鎮，"
+capitol-name: "&6首都大廈"
+capitol-desc: "城鎮核心建築，每天提供768點防禦數值，可視為城鎮之家，"
+city_hall-name: "&6城鎮大廳"
+city_hall-desc: "城鎮核心建築，每天提供576點防禦數值，可視為城鎮之家，"
+council_room-name: "&6會議室"
+council_room-desc: "城鎮核心建築，每天提供192點防禦數值，可視為城鎮之家，"
+embassy-name: "&6大使館"
+embassy-desc: "每天提供192點防禦數值，可作為城鎮之家，"
+library-name: "&6圖書館"
+library-desc: "每天產出192點防禦數值，每15分支產出2經驗瓶，"
+purifier-name: "&6淨化器"
+purifier-desc: "每15分鐘將腐肉變為皮革並移除毒馬鈴薯的毒性，"
+smithy-name: "&6鐵匠鋪"
+smithy-desc: "右擊鐵塊來修復物品，每天消耗192點防禦數值，"
+town_hall-name: "&6城鎮大廳"
+town_hall-desc: "城鎮中心的建築，每天提供384點防禦數值，同時也是城鎮之家，"
+warehouse-name: "&6倉庫"
+warehouse-desc: "分配物品到有需求的區域內."
+warehouse-toggle-on: "開啟倉庫供給"
+warehouse-toggle-off: "關閉倉庫供給"
+warehouse-toggle-desc: "點擊開關這片區域的倉庫供給"
+item-jade-name: "&6綠寶石建築設計圖商店"
+item-jade-desc: "&6以1000賣出16個綠寶石，"
+farms-name: "&6農場"
+farms-desc: "有關食物、動物和礦物生產的建築."
+towns-name: "&6城鎮"
+towns-desc: "升級城鎮、戰爭營地和礦鎮."
+shops-name: "&6商店"
+shops-desc: "出售貨物給服務器的商店.每名玩家最多擁有3個建築設計圖商店."
+utilities-name: "&6公共設施"
+utilities-desc: "所有可生成防禦數值保護城鎮的公共設施."
+housing-name: "&6住宅"
+housing-desc: "住宅可以增加城鎮人口上限.大多數住宅可以出售食物給服務器."
+defense-name: "&6防禦工事"
+defense-desc: "防禦性建築，一些建築物也會發電，"
+quarries-name: "&6採集場"
+quarries-desc: "生產土質材料的建築."
+factories-name: "&6工廠"
+factories-desc: "高效合成物品的建築.主要使用鐵路來傳輸物品到其他區域."
+offense-name: "&6侵略"
+offense-desc: "戰爭建築.包括破壞城鎮的圍攻機."
+mines-name: "&6礦業"
+mines-desc: "可以生產礦物和其他稀有物品的建築."
+woodworks-name: "&6伐木場"
+woodworks-desc: "包含各種木頭的伐木場."
+animals-name: "&6動物農場"
+animals-desc: "生成動物的農場."
+npchousing-name: "村民住宅"
+npchousing-desc: "為村民提供住宅並視為城鎮人口.這些建築不會生產收入且必須從普通的住宅升級而來."
+trading-name: "&6貿易"
+trading-desc: "進行城鎮間交易所需建築."
+fireworks_factory-name: "煙花工廠"
+fireworks_factory-desc: "消耗火藥製作煙花火箭."
+admin-name: "&6管理員"
+admin-desc: "管理員特供"
+house-evolve-name: "&6進化之屋"
+house-evolve-desc: "隱藏的房屋建築"
+trade-mines-name: "&6貿易礦"
+trade-mines-desc: "可生產出售給其他城鎮的礦物"
+defense-evolve-name: "&6進化之屋"
+defense-evolve-desc: "隱藏的不同建築的進化版"
+evolve-name: "&6進化之屋"
+evolve-desc: "隱藏的建築"
+plot7x7-name: "&67x7土地"
+plot7x7-desc: "小於等於7x7大小的區域的佔位符"
+plot11x11-name: "&611x11土地"
+plot11x11-desc: "小於等於11x11大小的區域的佔位符"
+plot15x15-name: "&615x15土地"
+plot15x15-desc: "小於等於15x15大小的區域的佔位符"
+plot19x19-name: "&619x19土地"
+plot19x19-desc: "小於等於19x19大小的區域的佔位符"
+vault-name: "&6避難所"
+vault-desc: "增加500最大防禦數值，每天產生96防禦數值，"
+housing-group: "&6住宅"
+defense-group: "防禦工事"
+trap-group: "&6陷阱"
+arrowtrapgroup-group: "&6弓箭陷阱"
+publichousing-group: "&6公共住宅"
+idolgroup-group: "&6偶像"
+factory-group: "&6工廠"
+farm-group: "&6農場"
+raw-group: "&6原料生產"
+woodwork-group: "&6伐木場"
+allchalet-group: "&6任何木屋"
+basechalet-group: "&6非NPC木屋"
+allhousing-group: "&6任何住宅"
+npchousinggroup-group: "&6NPC住宅"
+alldwelling-group: "&6任何寓所"
+basedwelling-group: "&6非NPC寓所"
+allestate-group: "&6任何房地產"
+baseestate-group: "&6非NPC房地產"
+allhouse-group: "&6任何房屋"
+basehouse-group: "&6非NPC房屋"
+allhovel-group: "&6任何棚屋"
+basehovel-group: "&6非NPC棚屋"
+allmanor-group: "&6任何莊園"
+basemanor-group: "&6非NPC莊園"
+allmansion-group: "&6任何宅邸"
+basemansion-group: "&6非NPC宅邸"
+allshack-group: "&6任何小屋"
+baseshack-group: "&6非NPC小屋"
+allvilla-group: "&6任何別墅"
+basevilla-group: "&6非NPC別墅"
+trademine-group: "&6貿易礦"
+trading-group: "&6貿易"
+mine-group: "&6礦業"
+offense-group: "&6侵略"
+basecenter-group: "&6基地"
+raidport-group: "&6強襲傳送門"
+siegemachinegroup-group: "&6圍攻機"
+townpowerreduce-group: "&6圍攻設備"
+quarry-group: "&6採集場"
+tradeshop-group: "&6貿易建築設計圖商店"
+shop-group: "&6建築設計圖商店"
+oreshop-group: "&6礦物建築設計圖商店"
+superregion-group: "&6城鎮"
+utility-group: "&6公共設施"
+town_center-group: "&6城鎮中心"
+skills: "&6城鎮技能"
+armor-skill: "&6防禦"
+armor-skill-desc: "&6防禦技能等級目前為$1(最高$3)，穿著護甲受到傷害時可得到此技能的經驗值，技能效果為購買防禦設施時會得到折扣，"
+building-skill: "&6建築"
+building-skill-desc: "&6建築技能目前等級$1(最高$3)，建造建築可以得到此技能的經驗值，技能效果為購買住所或NPC住所可以會得到折扣，"
+sword-skill: "&6劍術"
+sword-skill-desc: "&6劍術技能目前等級$1(最高$3)，使用劍擊殺怪物可以得到此技能的經驗值，技能效果為購買某些重要侵略建築能享有折扣，"
+axe-skill: "&6戰斧"
+axe-skill-desc: "&6戰斧技能目前等級$1(最高$3)，使用斧頭擊殺怪物可以得到此技能的經驗值，技能效果為購買伐木場、強襲傳送門、攔截陷阱及狩獵屋時享有折扣，"
+bow-skill: "&6弓術"
+bow-skill-desc: "&6弓術技能目前等級$1(最高$3)，使用斧頭擊殺怪物可以得到此技能的經驗值，技能效果為購買圍攻機及其他有關弓箭的建築時享有折扣，"
+crossbow-skill: "&6強弩"
+crossbow-skill-desc: "&6強弩技能目前等級$1(最高$3)，使用努擊殺怪物可以得到此技能的經驗值，技能效果為購買圍攻機及其他有關弓箭的建築時享有折扣，"
+enchant-skill: "&6附魔"
+enchant-skill-desc: "&6附魔技能目前等級$1(最高$3)，在附魔台附魔即可得到此技能的經驗值，技能效果為購買具有增益效果或產生防禦數值的建築時享有折扣，"
+mining-skill: "&6礦業"
+mining-skill-desc: "&6礦業技能目前等級$1(最高$3)，使用沒有絲綢之觸的稿子挖礦及可得到此技能的經驗值，技能效果為購買礦坑時享有折扣，"
+trident-skill: "&6三叉戟"
+trident-skill-desc: "&6三叉戟技能目前等級$1(最高$3)，使用沒有三叉戟攻擊怪物可得到此技能的經驗值，技能效果為購買有關水的建築享有折扣，"
+crafting-skill: "&6合成"
+crafting-skill-desc: "&6合成技能目前等級$1(最高$3)，合成各種東西可得到此技能的經驗值，技能效果為購買有關合成物品的建築享有折扣，"
+exploration-skill: "&6探索"
+exploration-skill-desc: "&6探索技能目前等級$1(最高$3)，探索各種生態域可得到此技能的經驗值，技能效果為購買有關城鎮公共建築的建築享有折扣，"
+food-skill: "&6覓食"
+food-skill-desc: "&6覓食技能目前等級$1(最高$3)，吃各種東西可得到此技能的經驗值，技能效果為購買有關農場的建築享有折扣，"
+shield-skill: "&6盾"
+shield-skill-desc: "&6盾技能目前等級$1(最高$3)，用盾防禦可得到此技能的經驗值，技能效果為購買公用及防禦建築享有折扣，"
+potion-skill: "&6藥水"
+potion-skill-desc: "&6藥水技能目前等級$1(最高$3)，喝下/丟擲可得到此技能的經驗值，技能效果為購買產生防禦數值的建築享有折扣，"
+skill-bar: "&6@{GREEN}$1@{RED}$2"
+chat-channels: "&6聊天頻道"
+chat-change-chat: "&6已改變聊天頻道至$1頻道，"
+friend-channel: "&6朋友"
+friend-channel-desc: "&6只有朋友才能聽到你說話"
+global-channel: "&6全服聊天"
+global-channel-desc: "&6所有玩家"
+local-channel: "&6本地"
+local-channel-desc: "&6只有100格範圍內的玩家聽得到你說話"
+town-channel-desc: "&6只有在$1內的玩家聽得到你說話"
+alliance-channel-desc: "&6只有在聯合國$1內的玩家聽得到你說話"
+chat-channel-set: "&6你現在在$1頻道裡，"
+click-change-chat: "&6點擊更改聊天頻道"
+no-recipients: "&6沒有人在$1聊天頻道內"
+health: "&6血量"
+health-desc: "&6最大值: &6$1"
+mana: "&6魔力"
+or: "&6或"
+empty-spell-slot: "&6空魔法欄位"
+empty-spell-slot-desc: "&6為這個欄位選一個魔法"
+see-all-spells: "&6查看所有魔法"
+spell-command: "&6用/cvspells來查看所有魔法s"
+witch-spell-cast: "&6將魔法附到此物品上，以後使用此物即可發動魔法"
