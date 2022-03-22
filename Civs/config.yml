@@ -68,6 +68,7 @@ use-particle-bounding-boxes: false
 
 price-multiplier: 1.0 #multiplier for prices before adding base price
 price-base: 0.0 #added to all item prices
+refund-percentage: 0.5 #how much money you get from destroying your own regions
 
 exp-base: 100
 exp-modifier: 0.2

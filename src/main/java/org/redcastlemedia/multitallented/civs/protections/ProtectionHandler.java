@@ -307,7 +307,7 @@ public class ProtectionHandler implements Listener {
             if (Civs.econ != null &&
                     region.getRawPeople().containsKey(event.getPlayer().getUniqueId()) &&
                     region.getRawPeople().get(event.getPlayer().getUniqueId()).contains(Constants.OWNER)) {
-                double salvage = regionType.getPrice(civilian) / 2;
+                double salvage = regionType.getPrice(civilian) * ConfigManager.getInstance().getRefundPercentage();
                 Civs.econ.depositPlayer(event.getPlayer(), salvage);
             }
             RegionManager.getInstance().removeRegion(region, true, true);

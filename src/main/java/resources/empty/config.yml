@@ -68,6 +68,7 @@ use-particle-bounding-boxes: false
 
 price-multiplier: 1.0 #multiplier for prices before adding base price
 price-base: 0.0 #added to all item prices
+refund-percentage: 0.5 #how much money you get from destroying your own regions
 
 exp-base: 100
 exp-modifier: 0.2
@@ -88,6 +89,8 @@ stop-mobs-from-dropping-items-in-safe-zones: false
 
 ##cooldown in seconds before killing the same player reduces the town power
 death-grace-period-seconds: 60
+
+combat-tag-enabled: true
 ##how many seconds a player is considered in combat after taking or dealing damage
 combat-tag-duration: 60
 ##how much damage should a player receive if they log out during combat
@@ -247,8 +250,8 @@ civs-chat-prefix: "@{GREEN}[Civs] "
 prefix-all-text: ""
 civs-item-prefix: "Civs"
 
-chat-channel-format: "[$channel$]$player$: $message$"
-
+# Deprecated
+chat-channel-format: "[$channel$] $player$: $message$"
 #In order to reference a placeholder use format <%PLACEHOLDER%>
 #For more formatting options such as using onClick events, custom fonts, or color gradients check out https://docs.adventure.kyori.net/minimessage.html#format
 chat-channels:
@@ -276,13 +279,12 @@ chat-channels:
   alliance:
     enabled: true
     icon: GOLDEN_SWORD
-    format: "[<lightpurple>Al<reset>]<town_f> <player>:<lightpurple> <message>"
+    format: "[<gray>Al<reset>]<town_f> <player>:<gray> <message>"
 
 # If player do not belong to any nation, or town formatted tags will eventually fallback to empty string
 chat-tags-format:
   town_f: "<white>[<gold>$1<white>]"
   nation_f: "<white>[<gold>$1<white>]"
-
 
 allow-changing-gov-type: true
 default-gov-type: "DICTATORSHIP"

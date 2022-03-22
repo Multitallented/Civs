@@ -170,6 +170,7 @@ public class ConfigManager {
     @Getter boolean showKillStreakMessages;
     @Getter boolean combatTagEnabled;
     @Getter boolean useBossBar;
+    @Getter double refundPercentage;
 
     @Getter
     String chatChannelFormat;
@@ -425,6 +426,7 @@ public class ConfigManager {
             warningLogger = config.getBoolean("show-warning-logs", false);
             useBossBar = config.getBoolean("show-civs-boss-bar", true);
             percentPowerForUpgrade = config.getDouble("percent-power-for-town-upgrade", 0.1);
+            refundPercentage = config.getDouble("refund-percentage", 0.5);
             if (config.isSet("line-break-length-per-language")) {
                 for (String key : config.getConfigurationSection("line-break-length-per-language").getKeys(false)) {
                     lineLengthMap.put(key, config.getInt("line-break-length-per-language." + key, lineBreakLength));
@@ -525,6 +527,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        refundPercentage = 0.5;
         useBossBar = true;
         combatTagEnabled = true;
         warningLogger = false;
