@@ -684,6 +684,19 @@ public final class Util {
         return true;
     }
 
+    public static boolean isAdminOrOwner(Civilian civilian, Town town) {
+        if (town == null) {
+            return false;
+        }
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        boolean isAdmin = player != null && (player.isOp() || Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION));
+        if (isAdmin) {
+            return true;
+        }
+        return town.getRawPeople().containsKey(civilian.getUuid()) &&
+                town.getRawPeople().get(civilian.getUuid()).equals(Constants.OWNER);
+    }
+
     public static boolean hasOverride(Region region, Civilian civilian) {
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         return hasOverride(region, civilian, town);
