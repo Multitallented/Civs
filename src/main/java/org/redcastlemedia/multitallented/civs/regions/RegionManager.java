@@ -605,6 +605,9 @@ public class RegionManager {
         if (regionNotAllowedInFeudalTown(event, player, town))  {
             return;
         }
+        if (regionNotAllowedGovType(regionType, event, player, town)) {
+            return;
+        }
 
         if (regionType.getTowns() != null && !regionType.getTowns().isEmpty() &&
                 (town == null || !regionType.getTowns().contains(town.getType()))) {
@@ -901,6 +904,23 @@ public class RegionManager {
                     event.setCancelled(true);
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    private boolean regionNotAllowedGovType(RegionType regionType, BlockPlaceEvent event, Player player, Town town) {
+
+        if (town != null) {
+            Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            String localGovName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                    government.getName() + LocaleConstants.NAME_SUFFIX);
+            if (!regionType.getGovTypes().contains(government.getGovernmentType().name())) {
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                            .getTranslation(player, "cant-build-gov-type").replace("$1", localGovName));
+                    event.setCancelled(true);
+                    return true;
             }
         }
         return false;

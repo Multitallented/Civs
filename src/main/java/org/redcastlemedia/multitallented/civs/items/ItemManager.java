@@ -384,6 +384,12 @@ public class ItemManager {
         } else {
             townSet = new HashSet<>();
         }
+        HashSet<String> govTypes;
+        if (config.isSet("gov-types")) {
+            govTypes = new HashSet<>(config.getStringList("gov-types"));
+        } else {
+            govTypes = new HashSet<>();
+        }
         HashMap<String, String> effects = new HashMap<>();
         for (String s : config.getStringList("effects")) {
             String[] effectSplit = s.split(":");
@@ -444,6 +450,7 @@ public class ItemManager {
                 config.getBoolean("rebuild-required", false),
                 config.getInt("level",1),
                 worlds);
+        regionType.setGovTypes(govTypes);
         if (config.isSet("commands-on-creation")) {
             regionType.getCommandsOnCreation().addAll(config.getStringList("commands-on-creation"));
         }

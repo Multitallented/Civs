@@ -43,6 +43,8 @@ public class RegionType extends CivItem {
     private String dynmapMarkerKey = "";
     @Getter @Setter
     private boolean startInInventory = false;
+    @Getter @Setter
+    private Set<String> govTypes = new HashSet<>();
 
     public RegionType(String key, String name,
                       CVItem icon,
