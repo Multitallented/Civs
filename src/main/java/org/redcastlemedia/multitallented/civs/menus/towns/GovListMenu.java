@@ -51,10 +51,10 @@ public class GovListMenu extends CustomMenu {
                     govList.remove(currentGovName);
                 }
             }
-            govList = govList.stream().filter(govName -> {
+            govList = new ArrayList<>(govList.stream().filter(govName -> {
                 Government government = GovernmentManager.getInstance().getGovernment(govName);
                 return government.isSelectable();
-            }).toList();
+            }).toList());
             govList.sort((o1, o2) -> {
                 int power1 = govPower.getOrDefault(o1.toLowerCase(), 0);
                 int power2 = govPower.getOrDefault(o2.toLowerCase(), 0);
