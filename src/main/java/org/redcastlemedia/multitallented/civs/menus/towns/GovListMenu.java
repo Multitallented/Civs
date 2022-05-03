@@ -51,13 +51,14 @@ public class GovListMenu extends CustomMenu {
                     govList.remove(currentGovName);
                 }
             }
-            govList.sort(new Comparator<String>() {
-                @Override
-                public int compare(String o1, String o2) {
-                    int power1 = govPower.getOrDefault(o1.toLowerCase(), 0);
-                    int power2 = govPower.getOrDefault(o2.toLowerCase(), 0);
-                    return Integer.compare(power2, power1);
-                }
+            govList = govList.stream().filter(govName -> {
+                Government government = GovernmentManager.getInstance().getGovernment(govName);
+                return government.isSelectable();
+            }).toList();
+            govList.sort((o1, o2) -> {
+                int power1 = govPower.getOrDefault(o1.toLowerCase(), 0);
+                int power2 = govPower.getOrDefault(o2.toLowerCase(), 0);
+                return Integer.compare(power2, power1);
             });
             data.put("townsByGov", townsByGov);
             data.put("govPower", govPower);

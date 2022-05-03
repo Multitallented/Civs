@@ -119,7 +119,7 @@ public class RegionsTests extends TestUtil {
         HashSet<GovTypeBuff> buffs = new HashSet<>();
         buffs.add(buff);
         Government government = new Government("ANARCHY", GovernmentType.ANARCHY,
-                buffs, null, new ArrayList<>());
+                buffs, null, new ArrayList<>(), true);
         assertEquals(90, regionType.getPeriod(government));
     }
 

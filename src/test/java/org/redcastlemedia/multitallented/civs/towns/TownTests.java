@@ -47,7 +47,7 @@ public class TownTests extends TestUtil {
         GovTypeBuff buff = new GovTypeBuff(GovTypeBuff.BuffType.COST, 15,
                 groups, regions);
         Government government = new Government("CAPITALISM", GovernmentType.CAPITALISM,
-                null, null, new ArrayList<>());
+                null, null, new ArrayList<>(), true);
         assertEquals("mine, inn", government.getApplyString(buff));
     }
 
@@ -362,10 +362,10 @@ public class TownTests extends TestUtil {
                 GovernmentType.ANARCHY.name());
         transitions.add(govTransition);
         Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP,
-                new HashSet<>(), null, transitions);
+                new HashSet<>(), null, transitions, true);
         GovernmentManager.getInstance().addGovernment(government);
         Government anarchyGov = new Government("ANARCHY", GovernmentType.ANARCHY,
-                new HashSet<>(), null, transitions);
+                new HashSet<>(), null, transitions, true);
         GovernmentManager.getInstance().addGovernment(anarchyGov);
         TownTransitionUtil.checkTown(town);
         assertEquals(GovernmentType.ANARCHY.name(), town.getGovernmentType());
@@ -384,7 +384,7 @@ public class TownTests extends TestUtil {
                 GovernmentType.ANARCHY.name());
         transitions.add(govTransition);
         Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP, new HashSet<>(), null,
-                transitions);
+                transitions, true);
         GovernmentManager.getInstance().addGovernment(government);
         TownTransitionUtil.checkTown(town);
         assertEquals(GovernmentType.DICTATORSHIP.name(), town.getGovernmentType());
@@ -404,7 +404,7 @@ public class TownTests extends TestUtil {
                 GovernmentType.ANARCHY.name());
         transitions.add(govTransition);
         Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP, new HashSet<>(), null,
-                transitions);
+                transitions, true);
         GovernmentManager.getInstance().addGovernment(government);
         TownTransitionUtil.checkTown(town);
         assertEquals(GovernmentType.DICTATORSHIP.name(), town.getGovernmentType());
@@ -417,7 +417,7 @@ public class TownTests extends TestUtil {
         RegionsTests.createNewRegion("cobble");
         HashSet<GovTypeBuff> buffs = new HashSet<>();
         buffs.add(new GovTypeBuff(GovTypeBuff.BuffType.MAX_POWER, 10, new HashSet<>(), new HashSet<>()));
-        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP, buffs, null, new ArrayList<>());
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP, buffs, null, new ArrayList<>(), true);
         GovernmentManager.getInstance().addGovernment(government);
         TownCommand townCommand = new TownCommand();
         String[] args = new String[2];

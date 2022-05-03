@@ -52,7 +52,7 @@ public class CommandTests extends TestUtil {
         Location location = TestUtil.player.getLocation();
         Town town = TownTests.loadTown("test", "hamlet2", location);
         Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP,
-                new HashSet<>(), null, new ArrayList<>());
+                new HashSet<>(), null, new ArrayList<>(), true);
         TownTests.addGovernmentType(government);
         town.setGovernmentType("DICTATORSHIP");
         town.getRawPeople().put(TestUtil.player.getUniqueId(), Constants.OWNER);
@@ -77,7 +77,7 @@ public class CommandTests extends TestUtil {
         Location location = TestUtil.player.getLocation();
         Town town = TownTests.loadTown("test", "hamlet2", location);
         Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP,
-                new HashSet<>(), null, new ArrayList<>());
+                new HashSet<>(), null, new ArrayList<>(), true);
         TownTests.addGovernmentType(government);
         town.setGovernmentType("DICTATORSHIP");
         town.getRawPeople().put(TestUtil.player.getUniqueId(), Constants.OWNER);

@@ -99,10 +99,11 @@ public class GovernmentManager {
             new AIManager();
         }
         CVItem cvItem = CVItem.createCVItemFromString(config.getString("icon", "STONE"));
+        boolean selectable = config.getBoolean("selectable", true);
 
         ArrayList<GovTransition> transitions = processTransitionList(config.getConfigurationSection("transition"));
         Government government = new Government(name, governmentType,
-                getBuffs(config.getConfigurationSection("buffs")), cvItem, transitions);
+                getBuffs(config.getConfigurationSection("buffs")), cvItem, transitions, selectable);
         governments.put(name.toUpperCase(), government);
     }
 

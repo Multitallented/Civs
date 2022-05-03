@@ -24,15 +24,19 @@ public class Government {
     @Getter
     private final List<GovTransition> transitions;
     private final CVItem icon;
+    @Getter
+    private final boolean selectable;
 
     public Government(String name, GovernmentType governmentType,
                       Set<GovTypeBuff> buffs, CVItem cvItem,
-                      List<GovTransition> transitions) {
+                      List<GovTransition> transitions,
+                      boolean selectable) {
         this.name = name;
         this.governmentType = governmentType;
         this.buffs = buffs;
         this.icon = cvItem;
         this.transitions = transitions;
+        this.selectable = selectable;
     }
 
     public CVItem getIcon(Civilian civilian) {
