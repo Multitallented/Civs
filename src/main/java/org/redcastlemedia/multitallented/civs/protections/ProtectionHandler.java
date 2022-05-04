@@ -818,7 +818,6 @@ public class ProtectionHandler implements Listener {
     public void onMobSpawn(CreatureSpawnEvent event) {
         if ((!(event.getEntity() instanceof Monster) && !(event.getEntity() instanceof Phantom) && !(event.getEntity() instanceof Slime)) ||
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.INFECTION ||
-                event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SLIME_SPLIT ||
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER ||
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER_EGG ||
                 event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.DISPENSE_EGG) {
