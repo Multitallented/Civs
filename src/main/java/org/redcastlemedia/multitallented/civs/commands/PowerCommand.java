@@ -42,7 +42,7 @@ public class PowerCommand extends CivCommand {
         }
 
         if (args.length > 2) {
-            if (!Util.isAdminOrOwner(civilian, town)) {
+            if (!Util.isAdmin(player)) {
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(civilian.getLocale(),
                         LocaleConstants.PERMISSION_DENIED));
                 return true;
