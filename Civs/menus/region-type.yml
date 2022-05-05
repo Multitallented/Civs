@@ -64,6 +64,11 @@
 #    icon: OAK_DOOR
 #    name: towns
 #    desc: town-req-desc # also adds req towns
+#  govs:
+#    index: 15
+#    icon: BOOK
+#    name: government-type
+  # desc: list of gov types
 #  build-reqs:
 #    index: 10
 #    icon: SCAFFOLDING

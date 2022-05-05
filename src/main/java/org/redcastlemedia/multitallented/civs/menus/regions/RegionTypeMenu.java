@@ -237,9 +237,22 @@ public class RegionTypeMenu extends CustomMenu {
             if (regionType.getBiomes().isEmpty()) {
                 return new ItemStack(Material.AIR);
             }
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
+            CVItem cvItem = menuIcon.createCVItem(player, count);
             for (Biome biome : regionType.getBiomes()) {
                 cvItem.getLore().add(biome.name());
+            }
+            ItemStack itemStack = cvItem.createItemStack();
+            putActions(civilian, menuIcon, itemStack, count);
+            return itemStack;
+        } else if ("govs".equals(menuIcon.getKey())) {
+            if (regionType.getGovTypes().isEmpty()) {
+                return new ItemStack(Material.AIR);
+            }
+            CVItem cvItem = menuIcon.createCVItem(player, count);
+            for (String govTypeName : regionType.getGovTypes()) {
+                String localGovTypeName = LocaleManager.getInstance().getTranslation(player,
+                        govTypeName.toLowerCase() + LocaleConstants.NAME_SUFFIX);
+                cvItem.getLore().add(localGovTypeName);
             }
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
@@ -248,7 +261,7 @@ public class RegionTypeMenu extends CustomMenu {
             if (regionType.getTowns().isEmpty()) {
                 return new ItemStack(Material.AIR);
             }
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
+            CVItem cvItem = menuIcon.createCVItem(player, count);
             for (String townTypeName : regionType.getTowns()) {
                 String localizedTownTypeName = LocaleManager.getInstance().getTranslation(player,
                         townTypeName + LocaleConstants.NAME_SUFFIX);
@@ -258,7 +271,7 @@ public class RegionTypeMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("effects".equals(menuIcon.getKey())) {
-            CVItem cvItem = menuIcon.createCVItem(civilian.getLocale(), count);
+            CVItem cvItem = menuIcon.createCVItem(player, count);
             cvItem.getLore().addAll(regionType.getEffects().keySet());
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);

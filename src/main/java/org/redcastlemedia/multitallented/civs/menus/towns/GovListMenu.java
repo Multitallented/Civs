@@ -51,10 +51,6 @@ public class GovListMenu extends CustomMenu {
                     govList.remove(currentGovName);
                 }
             }
-            govList = new ArrayList<>(govList.stream().filter(govName -> {
-                Government government = GovernmentManager.getInstance().getGovernment(govName);
-                return government.isSelectable();
-            }).toList());
             govList.sort((o1, o2) -> {
                 int power1 = govPower.getOrDefault(o1.toLowerCase(), 0);
                 int power2 = govPower.getOrDefault(o2.toLowerCase(), 0);
@@ -62,6 +58,11 @@ public class GovListMenu extends CustomMenu {
             });
             data.put("townsByGov", townsByGov);
             data.put("govPower", govPower);
+        } else {
+            govList = new ArrayList<>(govList.stream().filter(govName -> {
+                Government government = GovernmentManager.getInstance().getGovernment(govName);
+                return government.isSelectable();
+            }).toList());
         }
         data.put("govList", govList);
         data.put("govMap", new HashMap<ItemStack, String>());
