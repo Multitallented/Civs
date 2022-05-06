@@ -911,7 +911,7 @@ public class RegionManager {
 
     private boolean regionNotAllowedGovType(RegionType regionType, BlockPlaceEvent event, Player player, Town town) {
 
-        if (town != null) {
+        if (town != null && !regionType.getGovTypes().isEmpty()) {
             Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
             Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
             String localGovName = LocaleManager.getInstance().getTranslation(civilian.getLocale(),
