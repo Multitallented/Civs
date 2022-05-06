@@ -39,7 +39,7 @@ public class PowerRemCommand extends CivCommand {
             return true;
         }
 
-        int newPower = Math.max(0, Math.min(Integer.parseInt(args[2]) - town.getPower(), town.getMaxPower()));
+        int newPower = Math.max(0, Math.min(town.getPower() - Integer.parseInt(args[2]), town.getMaxPower()));
 
         TownManager.getInstance().setTownPower(town, newPower);
 
