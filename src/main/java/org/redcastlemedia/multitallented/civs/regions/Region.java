@@ -294,8 +294,10 @@ public class Region {
         int zMax = (int) location.getZ() + radiusZP;
         int zMin = (int) location.getZ() - radiusZN;
 
-        yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
-        yMin = yMin < 0 ? 0 : yMin;
+        int worldMin = currentWorld.getMinHeight();
+        int worldMax = currentWorld.getMaxHeight();
+        yMax = yMax > worldMax ? worldMax : yMax;
+        yMin = yMin < worldMin ? worldMin : yMin;
 
         HashMap<Material, Integer> maxCheck = new HashMap<>();
         for (HashMap<Material, Integer> tempMap : itemCheck) {
@@ -489,8 +491,10 @@ public class Region {
         double zMax = location.getZ() + biggestXZRadius * 1.5;
         double zMin = location.getZ() - biggestXZRadius * 1.5;
 
-        yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
-        yMin = yMin < 0 ? 0 : yMin;
+        int worldMin = currentWorld.getMinHeight();
+        int worldMax = currentWorld.getMaxHeight();
+        yMax = yMax > worldMax ? worldMax : yMax;
+        yMin = yMin < worldMin ? worldMin : yMin;
 
         radii = addItemCheck(radii, location, currentWorld, xMin, xMax, yMin, yMax, zMin, zMax,
                 itemCheck, regionType);
@@ -529,8 +533,10 @@ public class Region {
         double zMax = location.getZ() + regionType.getBuildRadiusX();
         double zMin = location.getZ() - regionType.getBuildRadiusX();
 
-        yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
-        yMin = yMin < 0 ? 0 : yMin;
+        int worldMin = currentWorld.getMinHeight();
+        int worldMax = currentWorld.getMaxHeight();
+        yMax = yMax > worldMax ? worldMax : yMax;
+        yMin = yMin < worldMin ? worldMin : yMin;
 
         outer: for (double x=xMin; x<=xMax;x++) {
             for (double y=yMin; y<=yMax; y++) {
@@ -643,8 +649,10 @@ public class Region {
         double zMax = location.getZ() + biggestXZRadius * 1.5;
         double zMin = location.getZ() - biggestXZRadius * 1.5;
 
-        yMax = yMax > currentWorld.getMaxHeight() ? currentWorld.getMaxHeight() : yMax;
-        yMin = yMin < 0 ? 0 : yMin;
+        int worldMin = currentWorld.getMinHeight();
+        int worldMax = currentWorld.getMaxHeight();
+        yMax = yMax > worldMax ? worldMax : yMax;
+        yMin = yMin < worldMin ? worldMin : yMin;
 
         radii = addItemCheck(radii, location, currentWorld, xMin, xMax, yMin, yMax, zMin, zMax,
                 itemCheck, regionType);
