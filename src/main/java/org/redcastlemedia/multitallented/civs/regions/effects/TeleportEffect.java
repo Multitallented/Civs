@@ -68,7 +68,15 @@ public class TeleportEffect implements Listener, RegionCreatedListener {
             return;
         }
         Location destination = Region.idToLocation(locationString);
-        player.teleport(destination);
+        destination = HuntEffect.findNearbyLocationForTeleport(destination, 4, player);
+        if (destination != null) {
+            player.teleport(destination);
+        } else {
+            destination = HuntEffect.findNearbyLocationForTeleport(destination, 6, player);
+            if (destination != null) {
+                player.teleport(destination);
+            }
+        }
     }
 
     @Override
