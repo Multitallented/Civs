@@ -354,6 +354,7 @@ public class RegionManager {
             for (Long time : region.getUpkeepHistory().keySet()) {
                 regionConfig.set("upkeep-history." + time, region.getUpkeepHistory().get(time));
             }
+            regionConfig.set("effects", convertRegionEffects(region.getEffects()));
             regionConfig.set("type", region.getType());
             regionConfig.set("exp", region.getExp());
             regionConfig.set("warehouse-enabled", region.isWarehouseEnabled());
@@ -371,6 +372,14 @@ public class RegionManager {
         } catch (Exception e) {
             Civs.logger.severe("Unable to write to " + region.getId() + ".yml");
         }
+    }
+
+    private static List<String> convertRegionEffects(Map<String, String> effects) {
+        List<String> saveThis = new ArrayList<>();
+        for (Map.Entry<String, String> entry : effects.entrySet()) {
+            saveThis.add(entry.getKey() + ":" + entry.getValue());
+        }
+        return saveThis;
     }
 
     @SuppressWarnings("unchecked")
@@ -436,6 +445,18 @@ public class RegionManager {
                 Location previousConveyorLocation = Region.idToLocation(previousConveyorString);
                 region.setPreviousConveyorDestination(previousConveyorLocation);
             }
+            if (regionConfig.isSet("effects")) {
+                List<String> effectList = regionConfig.getStringList("effects");
+                for (String effectString : effectList) {
+                    String[] splitString = effectString.split(":");
+                    if (splitString.length > 1) {
+                        region.getEffects().put(splitString[0], splitString[1]);
+                    } else {
+                        region.getEffects().put(splitString[0], null);
+                    }
+                }
+            }
+
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Unable to read " + regionFile.getName(), e);
             return null;

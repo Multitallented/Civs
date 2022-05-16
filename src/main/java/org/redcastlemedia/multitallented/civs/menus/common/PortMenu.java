@@ -138,7 +138,7 @@ public class PortMenu extends CustomMenu {
             return true;
         } else if (actionString.equals("set-teleport")) {
             Region region = (Region) MenuManager.getData(civilian.getUuid(), Constants.REGION);
-            String id = ChatColor.stripColor(clickedItem.getItemMeta().getLore().get(0));
+            String id = ((Map<ItemStack, Region>) MenuManager.getData(civilian.getUuid(), "portMap")).get(clickedItem).getId();
             region.getEffects().put(TeleportEffect.KEY, id);
             RegionManager.getInstance().saveRegion(region);
             return true;

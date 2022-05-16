@@ -22,6 +22,7 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 @CivsSingleton
 public class TeleportEffect implements Listener, RegionCreatedListener {
     public static String KEY = "teleport";
+    public static String KEY_PUBLIC = "teleport_public";
 
     public static void getInstance() {
         Bukkit.getPluginManager().registerEvents(new TeleportEffect(), Civs.getInstance());
@@ -62,7 +63,8 @@ public class TeleportEffect implements Listener, RegionCreatedListener {
             return;
         }
 
-        if (!player.isSneaking() || !region.getPeople().containsKey(player.getUniqueId())) {
+        if (!player.isSneaking() || (!region.getEffects().containsKey(KEY_PUBLIC) &&
+                !region.getPeople().containsKey(player.getUniqueId()))) {
             return;
         }
         Location destination = Region.idToLocation(locationString);
