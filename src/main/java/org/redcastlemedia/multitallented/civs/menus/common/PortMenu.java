@@ -54,7 +54,8 @@ public class PortMenu extends CustomMenu {
             if (regions.contains(currentRegion) || currentRegion.equals(region)) {
                 continue;
             }
-            if (!currentRegion.getEffects().containsKey("port")) {
+            if ((region == null && !currentRegion.getEffects().containsKey("port")) ||
+                    (region != null && !currentRegion.getEffects().containsKey(TeleportEffect.KEY))) {
                 continue;
             }
             //Don't show private ports
