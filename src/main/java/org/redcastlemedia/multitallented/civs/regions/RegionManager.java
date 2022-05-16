@@ -377,7 +377,11 @@ public class RegionManager {
     private static List<String> convertRegionEffects(Map<String, String> effects) {
         List<String> saveThis = new ArrayList<>();
         for (Map.Entry<String, String> entry : effects.entrySet()) {
-            saveThis.add(entry.getKey() + ":" + entry.getValue());
+            if (entry.getValue() == null) {
+                saveThis.add(entry.getKey());
+            } else {
+                saveThis.add(entry.getKey() + ":" + entry.getValue());
+            }
         }
         return saveThis;
     }

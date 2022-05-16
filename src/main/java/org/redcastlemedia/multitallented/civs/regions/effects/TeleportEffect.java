@@ -63,7 +63,7 @@ public class TeleportEffect implements Listener, RegionCreatedListener {
             return;
         }
 
-        if (!player.isSneaking() || (!region.getEffects().containsKey(KEY_PUBLIC) &&
+        if (player.isSneaking() || (!region.getEffects().containsKey(KEY_PUBLIC) &&
                 !region.getPeople().containsKey(player.getUniqueId()))) {
             return;
         }
