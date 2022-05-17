@@ -786,7 +786,7 @@ public class Region {
                 failingUpkeeps.add(i);
             }
 
-            if (chestInventory == null && needsItems &&
+            if (chestInventory == null && (needsItems || !regionUpkeep.getOutputs().isEmpty()) &&
                     RegionManager.getInstance().hasRegionChestChanged(this)) {
                 chestInventory = UnloadedInventoryHandler.getInstance().getChestInventory(getLocation());
                 RegionManager.getInstance().addCheckedRegion(this);
