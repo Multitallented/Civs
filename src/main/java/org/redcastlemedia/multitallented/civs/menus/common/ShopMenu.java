@@ -95,6 +95,7 @@ public class ShopMenu extends CustomMenu {
             int maxPage = (int) Math.ceil((double) shopItems.size() / (double) itemsPerPage.get("items"));
             maxPage = maxPage > 0 ? maxPage - 1 : 0;
             data.put("maxPage", maxPage);
+            data.put("itemMap", new HashMap<ItemStack, CivItem>());
         } else if (!levelList.isEmpty()) {
             data.put("levelList", levelList);
             int maxPage = (int) Math.ceil((double) levelList.size() / (double) itemsPerPage.get("items"));
@@ -157,6 +158,9 @@ public class ShopMenu extends CustomMenu {
                     return itemStack;
                 }
                 putActions(civilian, menuIcon, itemStack, count);
+                Map<ItemStack, CivItem> itemMap = (Map<ItemStack, CivItem>) MenuManager.getData(civilian.getUuid(), "itemMap");
+                itemMap.put(itemStack, civItem);
+                MenuManager.putData(civilian.getUuid(), "itemMap", itemMap);
                 return itemStack;
             } else if (levelList != null) {
                 if (levelList.size() <= index) {
@@ -178,7 +182,7 @@ public class ShopMenu extends CustomMenu {
             Player player = Bukkit.getPlayer(civilian.getUuid());
             String sortType = (String) MenuManager.getData(civilian.getUuid(), "sort");
             HashMap<String, String> params = new HashMap<>();
-            CivItem civItem = CivItem.getFromItemStack(clickedItem);
+            CivItem civItem = ((Map<ItemStack, CivItem>) MenuManager.getData(civilian.getUuid(), "itemMap")).get(clickedItem);
             if (civItem != null) {
                 if (civItem.getItemType() == CivItem.ItemType.REGION) {
                     params.put("regionType", civItem.getProcessedName());
