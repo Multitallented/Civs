@@ -95,13 +95,13 @@ public class ShopMenu extends CustomMenu {
             int maxPage = (int) Math.ceil((double) shopItems.size() / (double) itemsPerPage.get("items"));
             maxPage = maxPage > 0 ? maxPage - 1 : 0;
             data.put("maxPage", maxPage);
-            data.put("itemMap", new HashMap<ItemStack, CivItem>());
         } else if (!levelList.isEmpty()) {
             data.put("levelList", levelList);
             int maxPage = (int) Math.ceil((double) levelList.size() / (double) itemsPerPage.get("items"));
             maxPage = maxPage > 0 ? maxPage - 1 : 0;
             data.put("maxPage", maxPage);
         }
+        data.put("itemMap", new HashMap<ItemStack, CivItem>());
 
         for (String key : params.keySet()) {
             if (key.equals("page") || key.equals("maxPage") ||
