@@ -761,13 +761,6 @@ public class RegionManager {
         if (missingBlocks != null && !missingBlocks.isEmpty()) {
             List<List<CVItem>> missingList = Util.convertListMapToDisplayableList(missingBlocks);
 
-            for (List<CVItem> missingItems : missingList) {
-                for (CVItem cvItem : missingItems) {
-                    Civs.logger.log(Level.INFO, cvItem.getMat().name() + ": " + cvItem.getQty());
-                    break;
-                }
-            }
-
             HashMap<String, Object> data = new HashMap<>();
             data.put("items", missingList);
             data.put("page", 0);
