@@ -265,6 +265,13 @@ public class ProtectionHandler implements Listener {
             case LAPIS_ORE:
             case NETHER_QUARTZ_ORE:
             case GLOWSTONE:
+            case DEEPSLATE_COAL_ORE:
+            case DEEPSLATE_COPPER_ORE:
+            case DEEPSLATE_DIAMOND_ORE:
+            case DEEPSLATE_GOLD_ORE:
+            case DEEPSLATE_LAPIS_ORE:
+            case DEEPSLATE_EMERALD_ORE:
+            case DEEPSLATE_REDSTONE_ORE:
                 return true;
             default:
                 return false;

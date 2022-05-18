@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -101,7 +102,6 @@ public class ShopMenu extends CustomMenu {
             maxPage = maxPage > 0 ? maxPage - 1 : 0;
             data.put("maxPage", maxPage);
         }
-        data.put("itemMap", new HashMap<ItemStack, CivItem>());
 
         for (String key : params.keySet()) {
             if (key.equals("page") || key.equals("maxPage") ||
@@ -158,9 +158,6 @@ public class ShopMenu extends CustomMenu {
                     return itemStack;
                 }
                 putActions(civilian, menuIcon, itemStack, count);
-                Map<ItemStack, CivItem> itemMap = (Map<ItemStack, CivItem>) MenuManager.getData(civilian.getUuid(), "itemMap");
-                itemMap.put(itemStack, civItem);
-                MenuManager.putData(civilian.getUuid(), "itemMap", itemMap);
                 return itemStack;
             } else if (levelList != null) {
                 if (levelList.size() <= index) {
@@ -182,7 +179,7 @@ public class ShopMenu extends CustomMenu {
             Player player = Bukkit.getPlayer(civilian.getUuid());
             String sortType = (String) MenuManager.getData(civilian.getUuid(), "sort");
             HashMap<String, String> params = new HashMap<>();
-            CivItem civItem = ((Map<ItemStack, CivItem>) MenuManager.getData(civilian.getUuid(), "itemMap")).get(clickedItem);
+            CivItem civItem = CivItem.getFromItemStack(clickedItem);
             if (civItem != null) {
                 if (civItem.getItemType() == CivItem.ItemType.REGION) {
                     params.put("regionType", civItem.getProcessedName());

@@ -372,10 +372,12 @@ public class CVItem {
 
         ItemStack is = new ItemStack(mat, qty);
         if (displayName != null || (lore != null && !lore.isEmpty())) {
+            ItemMeta im = null;
             if (!is.hasItemMeta()) {
-                is.setItemMeta(Bukkit.getItemFactory().getItemMeta(is.getType()));
+                im = Bukkit.getItemFactory().getItemMeta(is.getType());
+            } else {
+                im = is.getItemMeta();
             }
-            ItemMeta im = is.getItemMeta();
             if (im != null) {
                 if (displayName != null) {
                     im.setDisplayName(displayName);
@@ -392,6 +394,9 @@ public class CVItem {
                             PersistentDataType.STRING, civItemName);
                 }
                 is.setItemMeta(im);
+            } else {
+                Civs.logger.log(Level.WARNING, "Unable to get item meta for {0} material {1}",
+                        new Object[] {civItemName, mat});
             }
         }
         return is;
