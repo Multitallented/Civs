@@ -213,10 +213,6 @@ public class TNTCannon implements Listener, RegionCreatedListener {
                     "target-too-close"));
             return;
         }
-        boolean upkeepRan = region.runUpkeep(false);
-        if (!upkeepRan) {
-            return;
-        }
 
         fireTheCannon(player, id, cooldown, fireLocation, targetLocation);
     }
@@ -226,6 +222,10 @@ public class TNTCannon implements Listener, RegionCreatedListener {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         TNTPrimed tnt = fireLocation.getWorld().spawn(fireLocation, TNTPrimed.class);
 
+        boolean upkeepRan = region.runUpkeep(false);
+        if (!upkeepRan) {
+            return;
+        }
             /*Vector vector = new Vector((targetLocation.getX() - fireLocation.getX()) / periods,
                              (targetLocation.getY() - fireLocation.getY()) / periods + (100 / periods * 2),
                              (targetLocation.getZ() - fireLocation.getZ()) / periods);
