@@ -775,7 +775,11 @@ public class Region {
         boolean hasItemUpkeep = false;
         int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
-            if (!hasUpkeepPerm(regionUpkeep)) {
+            boolean emptyUpkeep = regionUpkeep.getInputs().isEmpty() && regionUpkeep.getReagents().isEmpty() &&
+                    regionUpkeep.getOutputs().isEmpty() && regionUpkeep.getPowerOutput() == 0 &&
+                    regionUpkeep.getPowerInput() == 0 && regionUpkeep.getPayout() == 0 &&
+                    (regionUpkeep.getCommand() == null || regionUpkeep.getCommand().isEmpty());
+            if (emptyUpkeep || !hasUpkeepPerm(regionUpkeep)) {
                 continue;
             }
 
