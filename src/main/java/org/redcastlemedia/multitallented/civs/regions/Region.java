@@ -965,7 +965,10 @@ public class Region {
                     }
                 }
             } else {
-                payout = payout / (double) getOwners().size();
+                Set<UUID> owners = getOwners();
+                if (owners.size() > 1) {
+                    payout = payout / (double) owners.size();
+                }
                 if (payout == 0) {
                     hasMoney = true;
                 } else {

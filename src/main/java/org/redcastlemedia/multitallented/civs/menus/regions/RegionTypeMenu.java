@@ -299,7 +299,7 @@ public class RegionTypeMenu extends CustomMenu {
                     return replaceItemStackWithRegionTypeName(civilian, menuIcon, regionType, count, player, "output");
 
                 case "payout":
-                    if (regionType.getUpkeeps().get(count).getPayout() != 0 &&
+                    if (regionType.getUpkeeps().get(count).getPayout() == 0 &&
                             regionType.getUpkeeps().get(count).getPowerInput() <= 0 &&
                             regionType.getUpkeeps().get(count).getPowerOutput() <= 0) {
                         return new ItemStack(Material.AIR);
