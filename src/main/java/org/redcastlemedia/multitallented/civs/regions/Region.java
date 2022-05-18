@@ -974,7 +974,7 @@ public class Region {
                 } else {
                     if (payout < 0) {
                         boolean allOwnersPaid = true;
-                        for (UUID uuid : getOwners()) {
+                        for (UUID uuid : owners) {
                             OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
                             if (!Civs.econ.has(player, payout)) {
                                 allOwnersPaid = false;
@@ -982,13 +982,13 @@ public class Region {
                         }
                         if (allOwnersPaid) {
                             hasMoney = true;
-                            for (UUID uuid : getOwners()) {
+                            for (UUID uuid : owners) {
                                 OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
                                 Civs.econ.withdrawPlayer(player, Math.abs(payout));
                             }
                         }
                     } else {
-                        for (UUID uuid : getOwners()) {
+                        for (UUID uuid : owners) {
                             OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
                             if (payout > 0) {
                                 Civs.econ.depositPlayer(player, payout);
