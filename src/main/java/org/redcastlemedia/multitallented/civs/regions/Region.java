@@ -965,14 +965,28 @@ public class Region {
                 if (payout == 0) {
                     hasMoney = true;
                 } else {
-                    for (UUID uuid : getOwners()) {
-                        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-                        if (payout > 0) {
-                            Civs.econ.depositPlayer(player, payout);
+                    if (payout < 0) {
+                        boolean allOwnersPaid = true;
+                        for (UUID uuid : getOwners()) {
+                            OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+                            if (!Civs.econ.has(player, payout)) {
+                                allOwnersPaid = false;
+                            }
+                        }
+                        if (allOwnersPaid) {
                             hasMoney = true;
-                        } else if (Civs.econ.has(player, payout)) {
-                            Civs.econ.withdrawPlayer(player, Math.abs(payout));
-                            hasMoney = true;
+                            for (UUID uuid : getOwners()) {
+                                OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+                                Civs.econ.withdrawPlayer(player, Math.abs(payout));
+                            }
+                        }
+                    } else {
+                        for (UUID uuid : getOwners()) {
+                            OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+                            if (payout > 0) {
+                                Civs.econ.depositPlayer(player, payout);
+                                hasMoney = true;
+                            }
                         }
                     }
                 }
