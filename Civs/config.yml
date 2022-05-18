@@ -263,7 +263,7 @@ chat-channels:
   local:
     enabled: true
     icon: GRASS
-    format: "[<yellow>local<reset>]<nation_f><white><player>:<yellow><message>"
+    format: "[<yellow>local<reset>]<nation_f><white><player>: <yellow><message>"
   friend:
     enabled: true
     icon: PLAYER_HEAD
@@ -271,11 +271,11 @@ chat-channels:
   town:
     enabled: true
     icon: BRICKS
-    format: "[<aqua>Tc<reset>]<town_f> <player>:<aqua><message>"
+    format: "[<aqua>Tc<reset>]<town_f> <player>: <aqua><message>"
   nation:
     enabled: true
     icon: BLUE_BANNER
-    format: "[<gold>Nc<reset>]<town_f> <player>:<gold><message>"
+    format: "[<gold>Nc<reset>]<town_f> <player>: <gold><message>"
   alliance:
     enabled: true
     icon: GOLDEN_SWORD
