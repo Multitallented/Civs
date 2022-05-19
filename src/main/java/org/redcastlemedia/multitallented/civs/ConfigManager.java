@@ -173,6 +173,7 @@ public class ConfigManager {
     @Getter double refundPercentage;
     @Getter int ceaseFireStart;
     @Getter int ceaseFireEnd;
+    @Getter boolean allowFireworkUseInCombat;
 
     @Getter
     String chatChannelFormat;
@@ -369,6 +370,7 @@ public class ConfigManager {
             combatTagDuration = config.getInt("combat-tag-duration", 60);
             huntCrossWorld = config.getBoolean("allow-hunt-cross-world", false);
             portDuringCombat = config.getBoolean("port.port-during-combat", false);
+            allowFireworkUseInCombat = config.getBoolean("allow-firework-use-in-combat", true);
             getTownRingSettings(config);
             karmaDepreciatePeriod = config.getLong("karma-depreciate-period", 43200);
             combatLogPenalty = config.getInt("combat-log-out-percent-damage", 80);
@@ -531,6 +533,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        allowFireworkUseInCombat = true;
         ceaseFireEnd = -1;
         ceaseFireStart = -1;
         refundPercentage = 0.5;

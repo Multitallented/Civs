@@ -34,6 +34,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockDamageEvent;
@@ -831,6 +832,25 @@ public class ProtectionHandler implements Listener {
         if (player != null) {
             player.sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onFireworkUse(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
+        Player player = event.getPlayer();
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        boolean holdingFireworkMain = player.getInventory().getItemInMainHand() != null &&
+                player.getInventory().getItemInMainHand().getType() == Material.FIREWORK_ROCKET;
+        boolean holdingFireworkOffhand = player.getInventory().getItemInOffHand() != null &&
+                player.getInventory().getItemInOffHand().getType() == Material.FIREWORK_ROCKET;
+        if (!ConfigManager.getInstance().isAllowFireworkUseInCombat() &&
+                civilian.isInCombat() &&
+                (holdingFireworkMain || holdingFireworkOffhand)) {
+            event.setUseItemInHand(Event.Result.DENY);
+            event.setCancelled(true);
         }
     }
 

@@ -84,6 +84,8 @@ villager-cooldown: 300
 ##Allow people to hunt other players in other worlds
 allow-hunt-cross-world: false
 
+allow-firework-use-in-combat: true
+
 ##stops arrow turrets from shooting at monsters
 disable-arrow-turret-shooting-at-mobs: false
 
