@@ -105,6 +105,11 @@ public class ProtectionHandler implements Listener {
     public ProtectionHandler() {
         Bukkit.getPluginManager().registerEvents(this, Civs.getInstance());
         setInstance(this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(), () -> {
+            for (Town town : TownManager.getInstance().getTowns()) {
+                town.setPowerShieldDamageInLastSecond(0);
+            }
+        }, 20L, 20L);
     }
 
     public static ProtectionHandler getInstance() {
@@ -624,13 +629,15 @@ public class ProtectionHandler implements Listener {
                     int ceaseFireEnd = ConfigManager.getInstance().getCeaseFireEnd();
                     boolean isWithinCeaseFire = ceaseFireStart < ceaseFireEnd ? ceaseFireStart <= hour && ceaseFireEnd > hour :
                             ceaseFireStart <= hour || ceaseFireEnd > hour;
-                    if (ceaseFireStart == -1 || ceaseFireEnd == -1 || !isWithinCeaseFire) {
+                    if (town.getPowerShieldDamageInLastSecond() < 6 &&
+                            (ceaseFireStart == -1 || ceaseFireEnd == -1 || !isWithinCeaseFire)) {
                         int powerReduce = 1;
                         if (!town.isDevolvedToday() &&
                                 town.getEffects().get(RegionEffectConstants.POWER_SHIELD) != null) {
                             powerReduce = Integer.parseInt(town.getEffects().get(RegionEffectConstants.POWER_SHIELD));
                         }
                         if (town.getPower() > 0) {
+                            town.setPowerShieldDamageInLastSecond(town.getPowerShieldDamageInLastSecond() + 1);
                             TownManager.getInstance().setTownPower(town, town.getPower() - powerReduce);
                             setCancelled = true;
                         }

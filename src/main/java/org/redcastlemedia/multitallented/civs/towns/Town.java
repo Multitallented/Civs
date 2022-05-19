@@ -41,6 +41,7 @@ public class Town {
     private HashMap<String, String> effects = new HashMap<>();
     private long lastDisable;
     private int villagers;
+    @Getter @Setter private int powerShieldDamageInLastSecond = 0;
 
     @Getter @Setter
     private double bankAccount;
