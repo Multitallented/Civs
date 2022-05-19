@@ -11,6 +11,9 @@ line-break-length-per-language:
   en: 40
   zh: 25
 
+cease-fire-start: 1
+cease-fire-end: 13
+
 show-civs-boss-bar: true
 
 ##Do not enable this unless you have tested it

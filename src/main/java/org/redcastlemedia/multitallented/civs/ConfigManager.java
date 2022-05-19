@@ -171,6 +171,8 @@ public class ConfigManager {
     @Getter boolean combatTagEnabled;
     @Getter boolean useBossBar;
     @Getter double refundPercentage;
+    @Getter int ceaseFireStart;
+    @Getter int ceaseFireEnd;
 
     @Getter
     String chatChannelFormat;
@@ -391,6 +393,8 @@ public class ConfigManager {
             prefixAllText = Util.parseColors(config.getString("prefix-all-text", ""));
             civsItemPrefix = config.getString("civs-item-prefix", "Civs");
             skinsInMenu = config.getBoolean("show-player-skins-in-menus", true);
+            ceaseFireEnd = config.getInt("cease-fire-end", -1);
+            ceaseFireStart = config.getInt("cease-fire-start", -1);
             if ("".equals(civsItemPrefix)) {
                 civsItemPrefix = "Civs";
             }
@@ -527,6 +531,8 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        ceaseFireEnd = -1;
+        ceaseFireStart = -1;
         refundPercentage = 0.5;
         useBossBar = true;
         combatTagEnabled = true;

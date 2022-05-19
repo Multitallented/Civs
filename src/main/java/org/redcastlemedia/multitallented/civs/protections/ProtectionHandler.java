@@ -1,6 +1,9 @@
 package org.redcastlemedia.multitallented.civs.protections;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -614,14 +617,23 @@ public class ProtectionHandler implements Listener {
             if (shouldBlockActionEffect(event.getLocation(), null, RegionEffectConstants.POWER_SHIELD, 0)) {
                 Town town = TownManager.getInstance().getTownAt(event.getLocation());
                 if (town != null) {
-                    int powerReduce = 1;
-                    if (!town.isDevolvedToday() &&
-                            town.getEffects().get(RegionEffectConstants.POWER_SHIELD) != null) {
-                        powerReduce = Integer.parseInt(town.getEffects().get(RegionEffectConstants.POWER_SHIELD));
-                    }
-                    if (town.getPower() > 0) {
-                        TownManager.getInstance().setTownPower(town, town.getPower() - powerReduce);
-                        setCancelled = true;
+                    Calendar calendar = GregorianCalendar.getInstance();
+                    calendar.setTime(new Date());
+                    int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                    int ceaseFireStart = ConfigManager.getInstance().getCeaseFireStart();
+                    int ceaseFireEnd = ConfigManager.getInstance().getCeaseFireEnd();
+                    boolean isWithinCeaseFire = ceaseFireStart < ceaseFireEnd ? ceaseFireStart <= hour && ceaseFireEnd > hour :
+                            ceaseFireStart <= hour || ceaseFireEnd > hour;
+                    if (ceaseFireStart == -1 || ceaseFireEnd == -1 || !isWithinCeaseFire) {
+                        int powerReduce = 1;
+                        if (!town.isDevolvedToday() &&
+                                town.getEffects().get(RegionEffectConstants.POWER_SHIELD) != null) {
+                            powerReduce = Integer.parseInt(town.getEffects().get(RegionEffectConstants.POWER_SHIELD));
+                        }
+                        if (town.getPower() > 0) {
+                            TownManager.getInstance().setTownPower(town, town.getPower() - powerReduce);
+                            setCancelled = true;
+                        }
                     }
                 }
             }
