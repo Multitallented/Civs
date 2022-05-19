@@ -87,6 +87,7 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.util.ActionBarUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -629,7 +630,7 @@ public class ProtectionHandler implements Listener {
                     int ceaseFireEnd = ConfigManager.getInstance().getCeaseFireEnd();
                     boolean isWithinCeaseFire = ceaseFireStart < ceaseFireEnd ? ceaseFireStart <= hour && ceaseFireEnd > hour :
                             ceaseFireStart <= hour || ceaseFireEnd > hour;
-                    if (town.getPowerShieldDamageInLastSecond() < 6 &&
+                    if (town.getPowerShieldDamageInLastSecond() < 5 &&
                             (ceaseFireStart == -1 || ceaseFireEnd == -1 || !isWithinCeaseFire)) {
                         int powerReduce = 1;
                         if (!town.isDevolvedToday() &&
