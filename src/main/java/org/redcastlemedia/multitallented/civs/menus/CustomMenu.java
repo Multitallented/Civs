@@ -151,8 +151,12 @@ public class CustomMenu {
         } else {
             for (String action : menuIcon.getRightClickActions()) {
                 String newAction = action.replace("$count$", "" + count);
-                newAction = newAction.replace("$itemName$",
-                        ChatColor.stripColor(itemStack.getItemMeta().getDisplayName()));
+                if (itemStack.getItemMeta() != null) {
+                    newAction = newAction.replace("$itemName$",
+                            ChatColor.stripColor(itemStack.getItemMeta().getDisplayName()));
+                } else {
+                    newAction = newAction.replace("$itemName$", "");
+                }
                 currentRightClickActions.add(newAction);
             }
         }
