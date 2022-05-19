@@ -106,11 +106,13 @@ public class ProtectionHandler implements Listener {
     public ProtectionHandler() {
         Bukkit.getPluginManager().registerEvents(this, Civs.getInstance());
         setInstance(this);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(), () -> {
-            for (Town town : TownManager.getInstance().getTowns()) {
-                town.setPowerShieldDamageInLastSecond(0);
-            }
-        }, 20L, 20L);
+        if (Civs.getInstance() != null) {
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(), () -> {
+                for (Town town : TownManager.getInstance().getTowns()) {
+                    town.setPowerShieldDamageInLastSecond(0);
+                }
+            }, 20L, 20L);
+        }
     }
 
     public static ProtectionHandler getInstance() {
