@@ -84,6 +84,7 @@ villager-cooldown: 300
 ##Allow people to hunt other players in other worlds
 allow-hunt-cross-world: false
 
+drop-elytra-and-riptide-in-combat: false
 allow-firework-use-in-combat: true
 
 ##stops arrow turrets from shooting at monsters

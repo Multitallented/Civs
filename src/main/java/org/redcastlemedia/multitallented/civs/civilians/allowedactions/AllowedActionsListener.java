@@ -408,15 +408,6 @@ public class AllowedActionsListener implements Listener {
         if (disallowed == null && !civilian.getCurrentClass().isItemAllowed(itemStack.getType())) {
             disallowed = itemStack.getType().name();
         }
-        if (civilian.isInCombat()) {
-            boolean isChestplate = player.getInventory().getChestplate() != null && itemStack.isSimilar(player.getInventory().getChestplate());
-            if (isChestplate && itemStack.getType() == Material.ELYTRA) {
-                disallowed = itemStack.getType().name();
-            } else if (itemStack.getEnchantmentLevel(Enchantment.RIPTIDE) > 0) {
-                disallowed = "RIPTIDE";
-            }
-
-        }
         if (disallowed != null) {
             boolean removed = player.getInventory().removeItem(itemStack).isEmpty();
             if (!removed && player.getInventory().getHelmet() != null && itemStack.isSimilar(player.getInventory().getHelmet())) {

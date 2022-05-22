@@ -1,37 +1,47 @@
 package org.redcastlemedia.multitallented.civs.scheduler;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.block.Biome;
-import org.bukkit.entity.Player;
-import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsListener;
-import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
-import org.redcastlemedia.multitallented.civs.civilians.Civilian;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.events.*;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
-import org.redcastlemedia.multitallented.civs.regions.Region;
-import org.redcastlemedia.multitallented.civs.regions.RegionManager;
-import org.redcastlemedia.multitallented.civs.regions.RegionType;
-import org.redcastlemedia.multitallented.civs.skills.CivSkills;
-import org.redcastlemedia.multitallented.civs.skills.Skill;
-import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
-import org.redcastlemedia.multitallented.civs.towns.*;
-import org.redcastlemedia.multitallented.civs.tutorials.AnnouncementUtil;
-import org.redcastlemedia.multitallented.civs.util.Constants;
-import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
-import org.redcastlemedia.multitallented.civs.util.MessageUtil;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsListener;
+import org.redcastlemedia.multitallented.civs.events.ManaChangeEvent;
+import org.redcastlemedia.multitallented.civs.events.PlayerEnterRegionEvent;
+import org.redcastlemedia.multitallented.civs.events.PlayerEnterTownEvent;
+import org.redcastlemedia.multitallented.civs.events.PlayerExitRegionEvent;
+import org.redcastlemedia.multitallented.civs.events.PlayerExitTownEvent;
+import org.redcastlemedia.multitallented.civs.events.PlayerInRegionEvent;
+import org.redcastlemedia.multitallented.civs.events.PlayerInTownEvent;
+import org.redcastlemedia.multitallented.civs.events.TwoSecondEvent;
+import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
+import org.redcastlemedia.multitallented.civs.skills.CivSkills;
+import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.tutorials.AnnouncementUtil;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -100,8 +110,33 @@ public class CommonScheduler implements Runnable {
             if (ConfigManager.getInstance().getUseClassesAndSpells()) {
                 AllowedActionsListener.dropInvalidArmorOrWeapons(player);
             }
+            Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+            if (ConfigManager.getInstance().isDropElytraAndRiptideInCombat() && civilian.isInCombat()) {
+                dropItemInCombat(player.getInventory().getChestplate(), player, "chest");
+                dropItemInCombat(player.getInventory().getItemInOffHand(), player, "off");
+                dropItemInCombat(player.getInventory().getItemInMainHand(), player, "main");
+            }
         } catch (Exception e) {
             Civs.logger.log(Level.SEVERE, "Error occurred during Civs heartbeat player check", e);
+        }
+    }
+
+    private void dropItemInCombat(ItemStack itemStack, Player player, String slot) {
+        if (itemStack != null) {
+            if (itemStack.getType() == Material.ELYTRA ||
+                    itemStack.getEnchantmentLevel(Enchantment.RIPTIDE) > 0) {
+                String disallowed = itemStack.getType().name();
+                boolean removed = player.getInventory().removeItem(itemStack).isEmpty();
+                if (!removed && "chest".equals(slot)) {
+                    player.getInventory().setChestplate(new ItemStack(Material.AIR));
+                } else if (!removed && "off".equals(slot)) {
+                    player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+                }
+                player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                                "action-not-allowed").replace("$1", "Combat")
+                        .replace("$2", disallowed));
+            }
         }
     }
 

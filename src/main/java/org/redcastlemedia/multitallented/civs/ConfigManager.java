@@ -174,6 +174,7 @@ public class ConfigManager {
     @Getter int ceaseFireStart;
     @Getter int ceaseFireEnd;
     @Getter boolean allowFireworkUseInCombat;
+    @Getter boolean dropElytraAndRiptideInCombat;
 
     @Getter
     String chatChannelFormat;
@@ -303,6 +304,7 @@ public class ConfigManager {
             expBase = config.getInt("exp-base", 100);
             defaultClass = config.getString("default-class", "default");
             showKillStreakMessages = config.getBoolean("show-killstreak-messages", true);
+            dropElytraAndRiptideInCombat = config.getBoolean("drop-elytra-and-riptide-in-combat", false);
             folderIcons = new HashMap<>();
             ConfigurationSection section2 = config.getConfigurationSection("folders");
             if (section2 != null) {
@@ -533,6 +535,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        dropElytraAndRiptideInCombat = false;
         allowFireworkUseInCombat = true;
         ceaseFireEnd = -1;
         ceaseFireStart = -1;
