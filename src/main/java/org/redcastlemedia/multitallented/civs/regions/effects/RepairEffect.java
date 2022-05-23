@@ -104,7 +104,7 @@ public class RepairEffect implements Listener {
             case NETHERITE_HELMET:
             case NETHERITE_LEGGINGS:
             case NETHERITE_BOOTS:
-                returnSet.add(Material.NETHERITE_INGOT);
+                returnSet.add(Material.NETHERITE_SCRAP);
                 return returnSet;
             case TURTLE_HELMET:
                 returnSet.add(Material.SCUTE);
@@ -356,7 +356,7 @@ public class RepairEffect implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null || event.getHand() == null) {
             return;
