@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -198,6 +199,10 @@ public class SetOwnerCommand extends CivCommand {
                 !town.getPeople().get(invitee.getUniqueId()).contains(Constants.OWNER)) {
             town.setPeople(invitee.getUniqueId(), Constants.OWNER);
             TownManager.getInstance().saveTown(town);
+
+            if (ConfigManager.getInstance().getPvpWorlds().contains(town.getLocation().getWorld().getName())) {
+                Util.checkPvpTownStatus();
+            }
         }
         return true;
     }

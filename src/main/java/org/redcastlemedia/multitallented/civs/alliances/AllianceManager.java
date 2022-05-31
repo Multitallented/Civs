@@ -9,12 +9,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.events.RenameTownEvent;
 import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -230,6 +232,10 @@ public class AllianceManager implements Listener {
         for (Alliance alliance : saveThese) {
             saveAlliance(alliance);
         }
+        if (ConfigManager.getInstance().getPvpWorlds().contains(town1.getLocation().getWorld().getName()) ||
+                ConfigManager.getInstance().getPvpWorlds().contains(town2.getLocation().getWorld().getName())) {
+            Util.checkPvpTownStatus();
+        }
     }
 
     public void unAllyBroadcast(Town townBeingBrokenUpWith, Town allianceBreakerTown) {
@@ -292,6 +298,10 @@ public class AllianceManager implements Listener {
         for (Alliance alliance : saveThese) {
             alliances.put(alliance.getName(), alliance);
             saveAlliance(alliance);
+        }
+        if (ConfigManager.getInstance().getPvpWorlds().contains(town1.getLocation().getWorld().getName()) ||
+                ConfigManager.getInstance().getPvpWorlds().contains(town2.getLocation().getWorld().getName())) {
+            Util.checkPvpTownStatus();
         }
     }
 

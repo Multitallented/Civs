@@ -41,6 +41,7 @@ import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
 import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
 import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
+import org.redcastlemedia.multitallented.civs.util.Util;
 import org.redcastlemedia.multitallented.civs.worldedit.WorldEditSessionListener;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
@@ -106,8 +107,8 @@ public class Civs extends JavaPlugin {
             args = new String[1];
             args[0] = "menu";
         }
-        if (commandSender instanceof Player && ConfigManager.getInstance().getBlackListWorlds()
-                .contains(((Player) commandSender).getWorld().getName())) {
+        if (commandSender instanceof Player &&
+                Util.isDisallowedByWorld(((Player) commandSender).getWorld().getName())) {
             return true;
         }
         CivCommand civCommand = commandList.get(args[0]);

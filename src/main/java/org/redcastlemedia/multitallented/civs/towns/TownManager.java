@@ -71,6 +71,7 @@ public class TownManager {
                     e.printStackTrace();
                 }
             }
+            Util.checkPvpTownStatus();
         } catch (NullPointerException npe) {
             Civs.logger.log(Level.SEVERE, "Unable to read from town folder!", npe);
         }

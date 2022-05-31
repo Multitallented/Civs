@@ -5,6 +5,12 @@ delete-invalid-regions: false
 black-list-worlds:
   - Hub
 
+white-list-worlds: []
+
+# War will only be enabled for towns/alliances
+# with towns in this world
+pvp-worlds: []
+
 default-language: en
 line-break-length: 40
 line-break-length-per-language:
@@ -43,6 +49,9 @@ town-grace-period: 0 #no grace period
 ##ignore other plugins when checking if an explosion is cancelled
 ##before reducing power
 explosion-override: false
+
+##if enabled, vanilla tnt won't damage towns
+catapult-tnt-damage-only: false
 
 destroy-towns-at-zero: false #should towns be destroyed if at zero power
 

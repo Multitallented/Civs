@@ -15,6 +15,7 @@ import org.bukkit.Location;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class WorldEditSessionListener {
 
@@ -26,9 +27,7 @@ public class WorldEditSessionListener {
                 if (event.getStage() != EditSession.Stage.BEFORE_CHANGE) {
                     return;
                 }
-                ConfigManager instance = ConfigManager.getInstance();
-                if (event.getWorld() == null || instance.getBlackListWorlds()
-                        .contains(event.getWorld().getName())) {
+                if (event.getWorld() == null || Util.isDisallowedByWorld(event.getWorld().getName())) {
                     return;
                 }
 

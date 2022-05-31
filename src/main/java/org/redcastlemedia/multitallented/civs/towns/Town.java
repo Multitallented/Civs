@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Location;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.alliances.Alliance;
 import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
@@ -30,6 +31,8 @@ public class Town {
 
     private int maxPower;
     private int power;
+    @Setter
+    private boolean pvpEnabled;
     private Location location;
     private String name;
     private HashMap<UUID, String> people;
@@ -100,6 +103,20 @@ public class Town {
 
     public int getVillagers() {
         return villagers;
+    }
+
+    public Set<UUID> getOwners() {
+        Set<UUID> owners = new HashSet<>();
+        for (Map.Entry<UUID, String> entry : this.people.entrySet()) {
+            if (entry.getValue().contains(Constants.OWNER)) {
+                owners.add(entry.getKey());
+            }
+        }
+        return owners;
+    }
+
+    public boolean isPvpEnabled() {
+        return ConfigManager.getInstance().getPvpWorlds().isEmpty() || pvpEnabled;
     }
 
     public void setVillagers(int villagers) {

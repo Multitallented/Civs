@@ -27,6 +27,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.items.CVInventory;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Bounty;
@@ -45,6 +47,39 @@ public final class Util {
 
     private Util() {
 
+    }
+
+    public static boolean isDisallowedByWorld(String worldName) {
+        return ConfigManager.getInstance().getBlackListWorlds().contains(worldName) ||
+                (!ConfigManager.getInstance().getWhiteListWorlds().isEmpty() &&
+                        !ConfigManager.getInstance().getWhiteListWorlds().contains(worldName));
+    }
+
+    public static void checkPvpTownStatus() {
+        for (Town town : TownManager.getInstance().getTowns()) {
+            if (isPvPWorldRelated(town)) {
+                town.setPvpEnabled(true);
+            }
+        }
+    }
+
+    public static boolean isPvPWorldRelated(Town town) {
+        if (ConfigManager.getInstance().getPvpWorlds().isEmpty()) {
+            return true;
+        }
+        Set<UUID> owners = town.getOwners();
+        for (Town cTown : TownManager.getInstance().getTowns()) {
+            if (cTown.getLocation().getWorld() == null ||
+                    !ConfigManager.getInstance().getPvpWorlds().contains(cTown.getLocation().getWorld().getName())) {
+                continue;
+            }
+            for (UUID cPerson : cTown.getPeople().keySet()) {
+                if (owners.contains(cPerson)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static void promoteWhoeverHasMostNoise(Town town, boolean save) {

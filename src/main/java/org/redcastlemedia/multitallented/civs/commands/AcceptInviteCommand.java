@@ -5,9 +5,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.ConfigManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 import java.util.UUID;
 
@@ -47,6 +49,9 @@ public class AcceptInviteCommand extends CivCommand {
                 } else {
                     player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                             "no-invite"));
+                }
+                if (ConfigManager.getInstance().getPvpWorlds().contains(town.getLocation().getWorld().getName())) {
+                    Util.checkPvpTownStatus();
                 }
             } else {
                 player.sendMessage(Civs.getPrefix() +

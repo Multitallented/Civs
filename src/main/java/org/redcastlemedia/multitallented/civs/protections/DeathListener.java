@@ -70,7 +70,7 @@ public class DeathListener implements Listener {
 
         if (ConfigManager.getInstance().isCombatTagEnabled() &&
                 !ConfigManager.getInstance().isAllowTeleportInCombat() &&
-                !ConfigManager.getInstance().getBlackListWorlds().contains(player.getWorld().getName()) &&
+                !Util.isDisallowedByWorld(player.getWorld().getName()) &&
                 getDistanceSquared(event.getFrom(), event.getTo()) > 9) {
             if (civilian.isInCombat()) {
                 event.setCancelled(true);
@@ -128,7 +128,7 @@ public class DeathListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
-        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getEntity().getWorld().getName())) {
+        if (Util.isDisallowedByWorld(event.getEntity().getWorld().getName())) {
             return;
         }
         Player damager = null;
@@ -221,6 +221,11 @@ public class DeathListener implements Listener {
                     return;
                 }
             }
+            if (cancelIfNotInPvpEnabledTown(damager, player)) {
+                event.setCancelled(true);
+                return;
+            }
+
             if (damager != player) {
                 if (ConfigManager.getInstance().isCombatTagEnabled() && !damagerCiv.isInCombat()) {
                     damager.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(damager,
@@ -242,6 +247,27 @@ public class DeathListener implements Listener {
             return;
         }
         civilian.setLastDamager(damager.getUniqueId());
+    }
+
+    private boolean cancelIfNotInPvpEnabledTown(Player damager, Player player) {
+        if (ConfigManager.getInstance().getPvpWorlds().isEmpty()) {
+            return false;
+        }
+        if (ConfigManager.getInstance().getPvpWorlds().contains(player.getWorld().getName()) &&
+                ConfigManager.getInstance().getPvpWorlds().contains(damager.getWorld().getName())) {
+            return false;
+        }
+        for (Town town : TownManager.getInstance().getTownsForPlayer(player.getUniqueId())) {
+            if (town.isPvpEnabled()) {
+                return false;
+            }
+        }
+        for (Town town : TownManager.getInstance().getTownsForPlayer(damager.getUniqueId())) {
+            if (town.isPvpEnabled()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void checkArmorSkill(Player player) {
@@ -285,10 +311,8 @@ public class DeathListener implements Listener {
 
     @EventHandler
     public void onDeflectArrow(ProjectileHitEvent event) {
-        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getEntity().getWorld().getName())) {
-            return;
-        }
-        if (!(event.getHitEntity() instanceof Player)) {
+        if (Util.isDisallowedByWorld(event.getEntity().getWorld().getName()) ||
+                !(event.getHitEntity() instanceof Player)) {
             return;
         }
         Player player = (Player) event.getHitEntity();
@@ -352,7 +376,7 @@ public class DeathListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onFoodHeal(EntityRegainHealthEvent event) {
-        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getEntity().getWorld().getName())) {
+        if (Util.isDisallowedByWorld(event.getEntity().getWorld().getName())) {
             return;
         }
         if (event.getRegainReason() != EntityRegainHealthEvent.RegainReason.SATIATED ||
@@ -372,10 +396,8 @@ public class DeathListener implements Listener {
 
     @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onEntityDeath(EntityDeathEvent event) {
-        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getEntity().getWorld().getName())) {
-            return;
-        }
-        if (event.getEntity().getKiller() == null) {
+        if (Util.isDisallowedByWorld(event.getEntity().getWorld().getName()) ||
+                event.getEntity().getKiller() == null) {
             return;
         }
         Player player = event.getEntity().getKiller();
@@ -398,7 +420,7 @@ public class DeathListener implements Listener {
 
     @EventHandler @SuppressWarnings("unused")
     public void onPlayerDeath(PlayerDeathEvent event) {
-        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getEntity().getWorld().getName())) {
+        if (Util.isDisallowedByWorld(event.getEntity().getWorld().getName())) {
             return;
         }
         CivilianManager.getInstance().setListNeedsToBeSorted(true);

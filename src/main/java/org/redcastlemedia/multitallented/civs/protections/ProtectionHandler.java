@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -64,6 +65,7 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -80,6 +82,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionBlockCheckResponse;
 import org.redcastlemedia.multitallented.civs.regions.RegionEffectConstants;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.effects.TNTCannon;
 import org.redcastlemedia.multitallented.civs.skills.CivSkills;
 import org.redcastlemedia.multitallented.civs.spells.civstate.BuiltInCivState;
 import org.redcastlemedia.multitallented.civs.towns.Government;
@@ -637,7 +640,10 @@ public class ProtectionHandler implements Listener {
                             (ceaseFireStart == -1 || ceaseFireEnd == -1 || !isWithinCeaseFire)) {
                         int powerReduce = 1;
                         if (!town.isDevolvedToday() &&
-                                town.getEffects().get(RegionEffectConstants.POWER_SHIELD) != null) {
+                                town.isPvpEnabled() &&
+                                town.getEffects().get(RegionEffectConstants.POWER_SHIELD) != null &&
+                                (!ConfigManager.getInstance().isCatapultTntDamageOnly() ||
+                                tnt.getPersistentDataContainer().has(NamespacedKey.minecraft(TNTCannon.PERSISTENT_KEY), PersistentDataType.BYTE))) {
                             powerReduce = Integer.parseInt(town.getEffects().get(RegionEffectConstants.POWER_SHIELD));
                         }
                         if (town.getPower() > 0) {

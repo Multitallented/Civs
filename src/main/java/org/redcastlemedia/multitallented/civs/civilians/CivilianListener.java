@@ -151,7 +151,7 @@ public class CivilianListener implements Listener {
         Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
 
         if (ConfigManager.getInstance().isCombatTagEnabled() &&
-                !ConfigManager.getInstance().getBlackListWorlds().contains(player.getWorld().getName()) &&
+                !Util.isDisallowedByWorld(player.getWorld().getName()) &&
                 civilian.isInCombat() && ConfigManager.getInstance().getCombatLogPenalty() > 0) {
             int penalty = (int) (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() *
                     ConfigManager.getInstance().getCombatLogPenalty() / 100);
@@ -180,13 +180,9 @@ public class CivilianListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPotionSplash(PotionSplashEvent event) {
-        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getEntity().getWorld().getName())) {
-            return;
-        }
-        if (!(event.getPotion().getShooter() instanceof Player)) {
-            return;
-        }
-        if (!ConfigManager.getInstance().isUseSkills()) {
+        if (Util.isDisallowedByWorld(event.getEntity().getWorld().getName()) ||
+                !(event.getPotion().getShooter() instanceof Player) ||
+                !ConfigManager.getInstance().isUseSkills()) {
             return;
         }
         Player player = (Player) event.getPotion().getShooter();
@@ -200,10 +196,8 @@ public class CivilianListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerConsumeItem(PlayerItemConsumeEvent event) {
-        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getPlayer().getWorld().getName())) {
-            return;
-        }
-        if (!ConfigManager.getInstance().isUseSkills()) {
+        if (Util.isDisallowedByWorld(event.getPlayer().getWorld().getName()) ||
+                !ConfigManager.getInstance().isUseSkills()) {
             return;
         }
         Player player = event.getPlayer();
@@ -226,7 +220,7 @@ public class CivilianListener implements Listener {
 
     @EventHandler(ignoreCancelled = true) @SuppressWarnings("unused")
     public void onCraftItem(CraftItemEvent event) {
-        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getWhoClicked().getWorld().getName())) {
+        if (Util.isDisallowedByWorld(event.getWhoClicked().getWorld().getName())) {
             return;
         }
         if (!ConfigManager.getInstance().isUseSkills() ||
@@ -246,7 +240,7 @@ public class CivilianListener implements Listener {
 
     @EventHandler
     public void onRegionCreated(RegionCreatedEvent event) {
-        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getPlayer().getWorld().getName())) {
+        if (Util.isDisallowedByWorld(event.getPlayer().getWorld().getName())) {
             return;
         }
         if (!ConfigManager.getInstance().isUseSkills()) {
@@ -429,8 +423,7 @@ public class CivilianListener implements Listener {
         if (!Util.isStarterBook(event.getItem())) {
             return;
         }
-        if (ConfigManager.getInstance().getBlackListWorlds()
-                .contains(event.getPlayer().getWorld().getName())) {
+        if (Util.isDisallowedByWorld(event.getPlayer().getWorld().getName())) {
             event.setCancelled(true);
             return;
         }
@@ -472,7 +465,7 @@ public class CivilianListener implements Listener {
 
     @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCivilianBlockBreak(BlockBreakEvent event) {
-        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getPlayer().getWorld().getName())) {
+        if (Util.isDisallowedByWorld(event.getPlayer().getWorld().getName())) {
             return;
         }
         boolean shouldCancel = shouldCancelBlockBreak(event.getBlock(), event.getPlayer());
@@ -523,7 +516,7 @@ public class CivilianListener implements Listener {
 
     @EventHandler(priority=EventPriority.LOW, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getPlayer().getWorld().getName())) {
+        if (Util.isDisallowedByWorld(event.getPlayer().getWorld().getName())) {
             return;
         }
         ItemStack is = event.getItemInHand();
@@ -562,7 +555,7 @@ public class CivilianListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onPlaceBlockLogger(BlockPlaceEvent event) {
-        if (ConfigManager.getInstance().getBlackListWorlds().contains(event.getPlayer().getWorld().getName())) {
+        if (Util.isDisallowedByWorld(event.getPlayer().getWorld().getName())) {
             return;
         }
         ItemStack is = event.getItemInHand();

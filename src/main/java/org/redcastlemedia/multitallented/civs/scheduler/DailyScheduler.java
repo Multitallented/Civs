@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.towns.*;
 import org.redcastlemedia.multitallented.civs.util.Constants;
+import org.redcastlemedia.multitallented.civs.util.Util;
 
 public class DailyScheduler implements Runnable {
 
@@ -35,6 +36,7 @@ public class DailyScheduler implements Runnable {
 
         for (Town town : TownManager.getInstance().getTowns()) {
             if (town.isDevolvedToday()) {
+                town.setPvpEnabled(false);
                 town.setDevolvedToday(false);
                 TownManager.getInstance().saveTown(town);
             }
@@ -45,6 +47,7 @@ public class DailyScheduler implements Runnable {
         addDailyPower();
         depreciateHardship();
         TownTransitionUtil.checkTownTransitions();
+        Util.checkPvpTownStatus();
     }
 
     private void depreciateHardship() {

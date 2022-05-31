@@ -53,6 +53,7 @@ import lombok.Setter;
 @CivsSingleton @SuppressWarnings("unused")
 public class TNTCannon implements Listener, RegionCreatedListener {
     private final String KEY = "tnt_cannon";
+    public static final String PERSISTENT_KEY = "civs_catapult";
     private final HashMap<Location, Long> cooldowns = new HashMap<>();
 
     @Getter
@@ -221,6 +222,9 @@ public class TNTCannon implements Listener, RegionCreatedListener {
         Region region = RegionManager.getInstance().getRegionById(id);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         TNTPrimed tnt = fireLocation.getWorld().spawn(fireLocation, TNTPrimed.class);
+        if (ConfigManager.getInstance().isCatapultTntDamageOnly()) {
+            tnt.getPersistentDataContainer().set(NamespacedKey.minecraft(PERSISTENT_KEY), PersistentDataType.BYTE, (byte) 1);
+        }
 
         boolean upkeepRan = region.runUpkeep(false);
         if (!upkeepRan) {

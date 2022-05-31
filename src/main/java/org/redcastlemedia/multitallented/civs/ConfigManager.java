@@ -22,6 +22,10 @@ public class ConfigManager {
 
     private static ConfigManager configManager;
     List<String> blackListWorlds = new ArrayList<>();
+    @Getter
+    List<String> whiteListWorlds = new ArrayList<>();
+    @Getter
+    List<String> pvpWorlds = new ArrayList<>();
     String defaultLanguage;
     boolean allowCivItemDropping;
     boolean explosionOverride;
@@ -175,6 +179,7 @@ public class ConfigManager {
     @Getter int ceaseFireEnd;
     @Getter boolean allowFireworkUseInCombat;
     @Getter boolean dropElytraAndRiptideInCombat;
+    @Getter boolean catapultTntDamageOnly;
 
     @Getter
     String chatChannelFormat;
@@ -294,6 +299,8 @@ public class ConfigManager {
         try {
 
             blackListWorlds = config.getStringList("black-list-worlds");
+            whiteListWorlds = config.getStringList("white-list-worlds");
+            pvpWorlds = config.getStringList("pvp-worlds");
             defaultLanguage = config.getString("default-language", "en");
             allowCivItemDropping = config.getBoolean("allow-civ-item-sharing", false);
             explosionOverride = config.getBoolean("explosion-override", false);
@@ -397,6 +404,7 @@ public class ConfigManager {
             prefixAllText = Util.parseColors(config.getString("prefix-all-text", ""));
             civsItemPrefix = config.getString("civs-item-prefix", "Civs");
             skinsInMenu = config.getBoolean("show-player-skins-in-menus", true);
+            catapultTntDamageOnly = config.getBoolean("catapult-tnt-damage-only", false);
             ceaseFireEnd = config.getInt("cease-fire-end", -1);
             ceaseFireStart = config.getInt("cease-fire-start", -1);
             if ("".equals(civsItemPrefix)) {
@@ -535,6 +543,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        catapultTntDamageOnly = false;
         dropElytraAndRiptideInCombat = false;
         allowFireworkUseInCombat = true;
         ceaseFireEnd = -1;

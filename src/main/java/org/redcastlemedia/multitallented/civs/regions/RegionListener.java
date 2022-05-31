@@ -56,8 +56,7 @@ public class RegionListener implements Listener {
         if (!CVItem.isCivsItem(heldItem)) {
             return;
         }
-        if (ConfigManager.getInstance().getBlackListWorlds()
-                .contains(blockPlaceEvent.getBlockPlaced().getWorld().getName())) {
+        if (Util.isDisallowedByWorld(blockPlaceEvent.getBlockPlaced().getWorld().getName())) {
             blockPlaceEvent.setCancelled(true);
             blockPlaceEvent.getPlayer().sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(
                     blockPlaceEvent.getPlayer(), LocaleConstants.PERMISSION_DENIED));
