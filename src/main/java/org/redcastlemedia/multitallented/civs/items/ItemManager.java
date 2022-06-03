@@ -826,8 +826,7 @@ public class ItemManager {
                                                String req, boolean fast) {
         int pop = Integer.parseInt(req.replace("population=", ""));
         for (Town town : TownManager.getInstance().getTowns()) {
-            if (!town.getPeople().containsKey(civilian.getUuid()) ||
-                    !town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
+            if (!town.getPeople().containsKey(civilian.getUuid())) {
                 continue;
             }
             if (pop <= town.getPopulation()) {
