@@ -35,7 +35,7 @@ use-bounties: true
 #allows players to earn exp in skills
 allow-skills: true
 #turns off exp chat notifications for skills
-no-exp-chat-messages: false
+no-exp-chat-messages: true
 
 ##put rings above towns
 town-rings: true
