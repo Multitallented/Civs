@@ -923,4 +923,23 @@ public class ItemManager {
         }
         return itemSet;
     }
+
+    public void enforceMaxItemLimits(Civilian civilian) {
+        for (Map.Entry<String, Integer> stashItem : new HashMap<>(civilian.getStashItems()).entrySet()) {
+            CivItem civItem = getItemType(stashItem.getKey());
+            if (civItem == null || civItem.getCivMax() < 1) {
+                continue;
+            }
+            int count = civilian.getCountStashItems(civItem.getProcessedName()) +
+                    civilian.getCountNonStashItems(civItem.getProcessedName());
+            if (civItem.getCivMax() < count) {
+                int diff = count - civItem.getCivMax();
+                if (civilian.getStashItems().get(stashItem.getKey()) >= diff) {
+                    civilian.getStashItems().remove(stashItem.getKey());
+                } else {
+                    civilian.getStashItems().put(stashItem.getKey(), stashItem.getValue() - diff);
+                }
+            }
+        }
+    }
 }

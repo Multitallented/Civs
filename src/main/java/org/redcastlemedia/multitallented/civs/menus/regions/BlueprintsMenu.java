@@ -41,6 +41,7 @@ public class BlueprintsMenu extends CustomMenu {
             String itemName = entry.getKey();
             stashItems.put(itemName, newItems.get(itemName));
         }
+        ItemManager.getInstance().enforceMaxItemLimits(civilian);
         CivilianManager.getInstance().saveCivilian(civilian);
         data.put(Constants.ITEMS_IN_VIEW, new HashMap<String, Integer>());
         Map<String, Integer> modifiedStashMap = new HashMap<>();
