@@ -13,9 +13,6 @@
 #pre-reqs:
 #  - member=metropolis
 #
-#towns:
-#  - metropolis
-#
 #build-reqs:
 #  - IRON_BARS*2
 #  - ANCIENT_DEBRIS*2

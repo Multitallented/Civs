@@ -4,7 +4,7 @@ shop-icon: ENDER_PEARL
 dynmap-marker: factory
 name: Ender_Pearl_Farm
 max: 1
-price: 500
+price: 50
 groups:
 - farm
 level: 6

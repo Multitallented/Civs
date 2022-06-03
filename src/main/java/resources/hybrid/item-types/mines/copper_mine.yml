@@ -5,7 +5,7 @@ shop-icon: COPPER_ORE
 dynmap-marker: hammer
 name: Copper_Mine
 max: 1
-price: 400
+price: 100
 groups:
  - mine
 level: 2

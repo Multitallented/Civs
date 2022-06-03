@@ -1,0 +1,45 @@
+type: region
+icon: CHEST
+shop-icon: COPPER_INGOT
+dynmap-marker: coins
+name: Copper_Shop
+max: 1
+price: 50
+groups:
+- shop
+- oreshop
+level: 2
+
+pre-reqs:
+  - member=settlement:hamlet:village:town:city:metropolis
+
+towns:
+  - settlement
+  - hamlet
+  - village
+  - town
+  - city
+  - metropolis
+
+build-reqs:
+- g:fence*7
+- CHEST*1
+- WAXED_COPPER_BLOCK*1
+- g:wool*25
+
+build-radius: 2
+
+effects:
+- block_break
+- block_build
+- chest_use
+- block_liquid
+- block_fire
+
+period: 3600 #1 hour
+upkeep:
+  0:
+    input:
+    - COPPER_INGOT*16 # 384 copper / day
+    payout: 8         # $192 / day
+

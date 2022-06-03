@@ -47,7 +47,6 @@ upkeep:
   1:
     reagents:
     - IRON_PICKAXE
-    - STONE_PICKAXE
     input:
     - STONE_PICKAXE
     output:
@@ -55,7 +54,6 @@ upkeep:
   2:
     reagents:
     - DIAMOND_PICKAXE
-    - STONE_PICKAXE
     input:
     - STONE_PICKAXE
     output:
@@ -63,7 +61,6 @@ upkeep:
   3:
     reagents:
     - NETHERITE_PICKAXE
-    - STONE_PICKAXE
     input:
     - STONE_PICKAXE
     output:

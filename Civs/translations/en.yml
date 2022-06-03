@@ -711,6 +711,8 @@
 #jade_shop-desc: "Sells 16 Jade to the server for $1000 per day. Can't be built in a town with a Jade Mine."
 #coal_shop-name: "Coal Shop"
 #coal_shop-desc: "Sells 144 coal to the server for $432 per day"
+#copper_shop-name: "Copper Shop"
+#copper_shop-desc: "Sells 384 copper to the server for $192 per day"
 #diamond_shop-name: "Diamond Shop"
 #diamond_shop-desc: "Sells 24 diamonds to the server for $1536 per day."
 #flower_shop-name: "Flower Shop"
