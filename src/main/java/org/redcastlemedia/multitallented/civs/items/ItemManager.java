@@ -423,7 +423,7 @@ public class ItemManager {
             worlds.addAll(config.getStringList("worlds"));
         }
         RegionType regionType = new RegionType(
-                localName, name,
+                name, localName,
                 icon,
                 CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", Material.CHEST.name()))),
                 config.getStringList("pre-reqs"),
