@@ -11,14 +11,14 @@
 #shop-rewards:
 #  warehouse: 0.3
 #  embassy: 0.3
-#  library: 0.6
-#  church: 0.4
+#  library: 0.5
+#  church: 0.3
 #  hospital: 0.3
 #  vault: 0.2
-#  bank: 0.4
+#  bank: 0.3
 #  graveyard: 0.3
-#  jail: 0.4
-#  council_room: 0.5
+#  jail: 0.3
+#  council_room: 0.4
 #  town_hall: 0.2
 #  city_hall: 0.2
 #  capitol: 0.1

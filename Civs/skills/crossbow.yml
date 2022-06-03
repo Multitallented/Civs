@@ -1,5 +1,5 @@
 #enabled: true
-#icon: DIAMOND_SWORD
+#icon: CROSSBOW
 #exp-per-new-item: 54
 #exp-repeat-decay: 6
 #max-exp: 3000
@@ -10,8 +10,9 @@
 #  BLAZE: 90
 #  GHAST: 120
 #shop-rewards:
-#  altar: 0.4
-#  castle: 0.2
-#  command_tent: 0.4
-#  memorial: 0.5
-#  mobile_hospital: 0.5
+#  catapult: 0.2
+#  temp_arrow_trap: 0.4
+#  arrow_trap: 0.4
+#  arrow_factory: 0.3
+#  flint_works: 0.4
+#  chicken_coop: 0.4

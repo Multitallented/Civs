@@ -10,8 +10,8 @@ exceptions:
   BLAZE: 90
   GHAST: 120
 shop-rewards:
-  altar: 0.8
-  castle: 0.4
-  command_tent: 0.5
-  memorial: 0.7
-  mobile_hospital: 0.7
+  altar: 0.4
+  castle: 0.2
+  command_tent: 0.4
+  memorial: 0.5
+  mobile_hospital: 0.5

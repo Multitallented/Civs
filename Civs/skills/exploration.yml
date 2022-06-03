@@ -4,11 +4,19 @@
 #exp-repeat-decay: 99999
 #max-exp: 3000
 #shop-rewards:
-#  superregion: 0.1
+#  superregion: 0.2
 #  donkey_farm: 0.5
 #  mule_farm: 0.5
 #  stables: 0.5
 #exceptions:
-#  NETHER: 320
-#  THE_END: 1000
+#  NETHER_WASTES: 80
+#  SOUL_SAND_VALLEY: 80
+#  BASALT_DELTAS: 80
+#  CRIMSON_FOREST: 80
+#  WARPED_FOREST: 80
+#  END_BARRENS: 100
+#  END_HIGHLANDS: 100
+#  END_MIDLANDS: 100
+#  SMALL_END_ISLANDS: 100
+#  THE_END: 500
 #  MUSHROOM_FIELDS: 800

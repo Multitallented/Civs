@@ -4,19 +4,19 @@
 #exp-repeat-decay: 5
 #max-exp: 3000
 #shop-rewards:
-#  apple_orchard: 0.6
-#  carrot_farm: 0.5
-#  cocoa_farm: 0.6
+#  apple_orchard: 0.5
+#  carrot_farm: 0.4
+#  cocoa_farm: 0.5
 #  fishing_hut: 0.4
 #  melon_farm: 0.5
-#  potato_farm: 0.7
+#  potato_farm: 0.5
 #  pumpkin_farm: 0.3
 #  sugar_cane_farm: 0.3
 #  wheat_farm: 0.5
-#  chicken_coop: 0.5
-#  pig_pen: 0.5
+#  chicken_coop: 0.3
+#  pig_pen: 0.3
 #  rabbit_hutch: 0.4
-#  ranch: 0.8
+#  ranch: 0.4
 #  sheep_farm: 0.4
 #exceptions:
 #  GOLDEN_APPLE: 60

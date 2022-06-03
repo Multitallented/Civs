@@ -37,12 +37,12 @@ upkeep:
     - LEATHER*12
   2:
     input:
-    - POISONOUS_POTATO*16
+    - POISONOUS_POTATO*32
     output:
-    - POTATO*16
+    - POTATO*32
   3:
     input:
-    - DEAD_BUSH*8
+    - DEAD_BUSH*16
     output:
-    - WHEAT*8
+    - WHEAT*16
 
