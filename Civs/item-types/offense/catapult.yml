@@ -4,8 +4,7 @@
 #shop-icon: TNT
 #dynmap-marker: bomb
 #name: Catapult
-#price: 250
-#max: 4
+#price: 150
 #groups:
 #  - offense
 #level: 1

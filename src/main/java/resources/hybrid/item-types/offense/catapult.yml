@@ -3,8 +3,7 @@ icon: CHEST
 shop-icon: TNT
 dynmap-marker: bomb
 name: Catapult
-max: 4
-price: 250
+price: 150
 groups:
 - offense
 level: 1

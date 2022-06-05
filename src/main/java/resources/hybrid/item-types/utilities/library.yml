@@ -41,8 +41,6 @@ upkeep:
   0:
     power-output: 4
   1:
-    reagents:
-    - GLASS_BOTTLE*2
     input:
     - GLASS_BOTTLE*2
     output:
