@@ -8,15 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
-import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -64,7 +61,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
-import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -93,7 +89,6 @@ import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
-import org.redcastlemedia.multitallented.civs.util.ActionBarUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
@@ -104,6 +99,8 @@ import io.papermc.paper.event.player.PlayerItemFrameChangeEvent;
 public class ProtectionHandler implements Listener {
 
     private static ProtectionHandler instance;
+
+    private static Map<String, Long> lastAttackMessage = new HashMap<>();
 
     protected static void setInstance(ProtectionHandler protectionHandler) {
         instance = protectionHandler;
@@ -117,6 +114,7 @@ public class ProtectionHandler implements Listener {
                 for (Town town : TownManager.getInstance().getTowns()) {
                     town.setPowerShieldDamageInLastSecond(0);
                 }
+                lastAttackMessage.entrySet().removeIf(entry -> System.currentTimeMillis() - entry.getValue() > 60000);
             }, 20L, 20L);
         }
     }
@@ -672,8 +670,22 @@ public class ProtectionHandler implements Listener {
                             double karmaChange = 1D / (double) town.getMaxPower() * town.getPrice();
                             if (player != null) {
                                 CivilianManager.getInstance().exchangeHardship(town, player.getUniqueId(), karmaChange);
+                                if (!lastAttackMessage.containsKey(town.getName())) {
+                                    lastAttackMessage.put(town.getName(), System.currentTimeMillis());
+                                    for (Player cPlayer : Bukkit.getOnlinePlayers()) {
+                                        cPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(cPlayer, "under-attack-player")
+                                                .replace("$1", town.getName()).replace("$2", cPlayer.getName()));
+                                    }
+                                }
                             } else {
                                 CivilianManager.getInstance().exchangeHardship(town, null, karmaChange);
+                                if (!lastAttackMessage.containsKey(town.getName())) {
+                                    lastAttackMessage.put(town.getName(), System.currentTimeMillis());
+                                    for (Player cPlayer : Bukkit.getOnlinePlayers()) {
+                                        cPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(cPlayer, "under-attack")
+                                                .replace("$1", town.getName()));
+                                    }
+                                }
                             }
                         }
                         if (town.getPower() > 0) {
