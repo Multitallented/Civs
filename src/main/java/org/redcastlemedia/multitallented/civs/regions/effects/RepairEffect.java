@@ -131,6 +131,10 @@ public class RepairEffect implements Listener {
             case IRON_SHOVEL:
             case DIAMOND_SHOVEL:
             case NETHERITE_SHOVEL:
+            case NETHERITE_HOE:
+            case NETHERITE_SWORD:
+            case NETHERITE_PICKAXE:
+            case NETHERITE_AXE:
                 amt = (int) Math.ceil(damage / mat.getMaxDurability() * 1.0D);
                 return Math.max(amt, 1);
             case WOODEN_HOE:
@@ -145,8 +149,8 @@ public class RepairEffect implements Listener {
             case DIAMOND_SWORD:
             case DIAMOND_HOE:
             case IRON_SWORD:
-            case NETHERITE_SWORD:
-            case NETHERITE_HOE:
+            case NETHERITE_BOOTS:
+            case NETHERITE_HELMET:
                 amt = (int) Math.ceil(damage / mat.getMaxDurability() * 2.0D);
                 return Math.max(amt, 1);
             case BOW:
@@ -159,23 +163,21 @@ public class RepairEffect implements Listener {
             case IRON_AXE:
             case IRON_PICKAXE:
             case DIAMOND_PICKAXE:
-            case NETHERITE_PICKAXE:
-            case NETHERITE_AXE:
             case CROSSBOW:
+            case NETHERITE_LEGGINGS:
                 amt = (int) Math.ceil(damage / mat.getMaxDurability() * 3.0D);
                 return Math.max(amt, 1);
             case GOLDEN_BOOTS:
             case IRON_BOOTS:
             case LEATHER_BOOTS:
             case DIAMOND_BOOTS:
-            case NETHERITE_BOOTS:
+            case NETHERITE_CHESTPLATE:
                 amt = (int) Math.ceil(damage / mat.getMaxDurability() * 4.0D);
                 return Math.max(amt, 1);
             case DIAMOND_HELMET:
             case LEATHER_HELMET:
             case IRON_HELMET:
             case GOLDEN_HELMET:
-            case NETHERITE_HELMET:
             case TURTLE_HELMET:
                 amt = (int) Math.ceil(damage / mat.getMaxDurability() * 5.0D);
                 return Math.max(amt, 1);
@@ -183,14 +185,13 @@ public class RepairEffect implements Listener {
             case LEATHER_LEGGINGS:
             case IRON_LEGGINGS:
             case GOLDEN_LEGGINGS:
-            case NETHERITE_LEGGINGS:
                 amt = (int) Math.ceil(damage / mat.getMaxDurability() * 7.0D);
                 return Math.max(amt, 1);
             case LEATHER_CHESTPLATE:
             case DIAMOND_CHESTPLATE:
             case IRON_CHESTPLATE:
             case GOLDEN_CHESTPLATE:
-            case NETHERITE_CHESTPLATE:
+            case ELYTRA:
                 amt = (int) Math.ceil(damage / mat.getMaxDurability() * 8.0D);
                 return Math.max(amt, 1);
             default:
