@@ -624,11 +624,19 @@ public final class Util {
             double prevChance = 0;
             for (CVItem item : tempItems) {
                 if ((prevChance < rand) && (prevChance + item.getChance() > rand)) {
+                    if (item.getMat() == Material.AIR) {
+                        continue outer;
+                    }
                     ItemStack is = item.createItemStack();
                     is.setAmount(1);
                     int amount = item.getQty();
                     int max = is.getMaxStackSize();
+                    int i = 0;
                     for (;;) {
+                        i++;
+                        if (i > 256) {
+                            break;
+                        }
                         ItemStack isa;
                         if (amount > max) {
                             isa = item.createItemStack();

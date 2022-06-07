@@ -31,6 +31,7 @@
 #  - embassy:2
 #  - jammer_trap:0
 #  - catapult:0
+#  - gunpowder_mine:1
 #
 #critical-build-reqs:
 #  - town_center
@@ -46,6 +47,7 @@
 #  - block_fire
 #  - deny_mob_spawn
 #  - power_shield
+#  - daily_shield
 #  - control_override
 #  - door_use
 #  - anticamp:3.1800.200 #3 damage for 30 minutes costs $200

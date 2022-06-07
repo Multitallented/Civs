@@ -32,6 +32,7 @@ limits:
 - idolgroup:8
 - jammer_trap:0
 - catapult:0
+- gunpowder_mine:6
 
 critical-build-reqs:
 - town_center
@@ -48,6 +49,7 @@ effects:
 - block_fire
 - deny_mob_spawn
 - power_shield
+- daily_shield
 - control_override
 - potion:SATURATION.80
 - anticamp:2.1500.1000 #2 damage for 25 minutes costs $1000

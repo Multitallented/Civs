@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -15,6 +16,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -618,17 +620,39 @@ public class ProtectionHandler implements Listener {
         if (event.isCancelled() && !ConfigManager.getInstance().getExplosionOverride()) {
             return;
         }
+        final Location location = event.getLocation();
         boolean setCancelled = false;
+        String exempt = null;
         if (event.getEntity() instanceof TNTPrimed) {
             TNTPrimed tnt = (TNTPrimed) event.getEntity();
+            Region sourceRegion = null;
+            if (Civs.getInstance() != null &&
+                    tnt.getPersistentDataContainer().has(NamespacedKey.minecraft(TNTCannon.PERSISTENT_KEY), PersistentDataType.STRING)) {
+                exempt = tnt.getPersistentDataContainer().get(NamespacedKey.minecraft(TNTCannon.PERSISTENT_KEY), PersistentDataType.STRING);
+                sourceRegion = RegionManager.getInstance().getRegionById(exempt);
+            }
             Player player = null;
             if (tnt.getSource() instanceof Player) {
                 player = (Player) tnt.getSource();
+            } else if (sourceRegion != null) {
+                Set<Region> tempArray = RegionManager.getInstance().getContainingRegions(location, 5);
+                if (tempArray.contains(sourceRegion)) {
+                    event.setCancelled(true);
+                    return;
+                }
+                if (!sourceRegion.getOwners().isEmpty()) {
+                    player = Bukkit.getPlayer(sourceRegion.getOwners().iterator().next());
+                }
             }
             setCancelled = !event.isCancelled() && shouldBlockActionEffect(event.getLocation(), null, RegionEffectConstants.BLOCK_TNT, 5);
             if (shouldBlockActionEffect(event.getLocation(), null, RegionEffectConstants.POWER_SHIELD, 0)) {
                 Town town = TownManager.getInstance().getTownAt(event.getLocation());
                 if (town != null) {
+                    if (checkHardship(player, town)) {
+                        event.setCancelled(true);
+                        return;
+                    }
+
                     Calendar calendar = GregorianCalendar.getInstance();
                     calendar.setTime(new Date());
                     int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -639,12 +663,18 @@ public class ProtectionHandler implements Listener {
                     if (town.getPowerShieldDamageInLastSecond() < 5 &&
                             (ceaseFireStart == -1 || ceaseFireEnd == -1 || !isWithinCeaseFire)) {
                         int powerReduce = 1;
-                        if (!town.isDevolvedToday() &&
+                        if ((!town.isDevolvedToday() || !town.getEffects().containsKey("daily_shield")) &&
                                 town.isPvpEnabled() &&
                                 town.getEffects().get(RegionEffectConstants.POWER_SHIELD) != null &&
                                 (!ConfigManager.getInstance().isCatapultTntDamageOnly() ||
                                 tnt.getPersistentDataContainer().has(NamespacedKey.minecraft(TNTCannon.PERSISTENT_KEY), PersistentDataType.BYTE))) {
                             powerReduce = Integer.parseInt(town.getEffects().get(RegionEffectConstants.POWER_SHIELD));
+                            double karmaChange = 1D / (double) town.getMaxPower() * town.getPrice();
+                            if (player != null) {
+                                CivilianManager.getInstance().exchangeHardship(town, player.getUniqueId(), karmaChange);
+                            } else {
+                                CivilianManager.getInstance().exchangeHardship(town, null, karmaChange);
+                            }
                         }
                         if (town.getPower() > 0) {
                             town.setPowerShieldDamageInLastSecond(town.getPowerShieldDamageInLastSecond() + 1);
@@ -682,13 +712,25 @@ public class ProtectionHandler implements Listener {
             return;
         }
 
-        final Location location = event.getLocation();
         Bukkit.getScheduler().scheduleSyncDelayedTask(Civs.getInstance(), new Runnable() {
             @Override
             public void run() {
                 checkRegionBlocks(location);
             }
         }, 1L);
+    }
+
+    private boolean checkHardship(Player player, Town town) {
+        if (player == null) {
+            return false;
+        }
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        double hardshipBuffer = civilian.getHardship();
+
+        if (Civs.econ != null) {
+            hardshipBuffer += Civs.econ.getBalance(player);
+        }
+        return town.getHardship() > hardshipBuffer;
     }
 
     protected void checkRegionBlocks(Location location) {

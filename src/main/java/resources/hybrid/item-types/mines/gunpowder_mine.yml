@@ -3,11 +3,21 @@ icon: CHEST
 shop-icon: GUNPOWDER
 dynmap-marker: hammer
 name: Gunpowder_Mine
-max: 1
 price: 1000
 groups:
 - mine
 level: 1
+
+pre-reqs:
+  - member=settlement:hamlet:village:town:city:metropolis
+
+towns:
+  - settlement
+  - hamlet
+  - village
+  - town
+  - city
+  - metropolis
 
 build-reqs:
 - TNT*2

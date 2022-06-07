@@ -35,6 +35,7 @@ limits:
 - idolgroup:4
 - jammer_trap:0
 - catapult:0
+- gunpowder_mine:4
 
 critical-build-reqs:
 - town_center
@@ -51,6 +52,7 @@ effects:
 - block_fire
 - deny_mob_spawn
 - power_shield
+- daily_shield
 - control_override
 - anticamp:2.1500.800 #2 damage for 25 minutes costs $800
 

@@ -35,3 +35,4 @@ upkeep:
       - TNT*1
     output:
       - AIR*1%75,TNT*1%25
+    exp: 1

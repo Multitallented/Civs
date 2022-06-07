@@ -31,3 +31,4 @@ upkeep:
     - REDSTONE*8
     input:
     - TNT*1
+    exp: 1

@@ -27,6 +27,7 @@
 #  - catapult:0
 #  - barracks:1
 #  - inn:1
+#  - gunpowder_mine:1
 #
 #build-radius: 40
 #build-radius-y: 500
@@ -38,6 +39,7 @@
 #  - deny_mob_spawn
 #  - control_override
 #  - power_shield
+#  - daily_shield
 #  - door_use
 #  - anticamp:4.1800.100 #4 damage for 30 minutes costs $100
 #

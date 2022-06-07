@@ -176,6 +176,8 @@ public class TNTCannon implements Listener, RegionCreatedListener {
             return;
         }
         Location fireLocation = region.getLocation().getBlock().getRelative(BlockFace.UP, 2).getLocation();
+        fireLocation = new Location(fireLocation.getWorld(), fireLocation.getX() + 0.5, fireLocation.getY() + 0.5,
+                fireLocation.getZ() + 0.5);
         if (!region.hasUpkeepItems()) {
             return;
         }
@@ -223,7 +225,7 @@ public class TNTCannon implements Listener, RegionCreatedListener {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         TNTPrimed tnt = fireLocation.getWorld().spawn(fireLocation, TNTPrimed.class);
         if (ConfigManager.getInstance().isCatapultTntDamageOnly()) {
-            tnt.getPersistentDataContainer().set(NamespacedKey.minecraft(PERSISTENT_KEY), PersistentDataType.BYTE, (byte) 1);
+            tnt.getPersistentDataContainer().set(NamespacedKey.minecraft(PERSISTENT_KEY), PersistentDataType.STRING, id);
         }
 
         boolean upkeepRan = region.runUpkeep(false);
@@ -273,8 +275,13 @@ public class TNTCannon implements Listener, RegionCreatedListener {
 //            "[Townships] Current Velocity: " + current
 
         Vector vector1 = new Vector(newX, newY, newZ);
-        tnt.setVelocity(vector1);
+//        tnt.setVelocity(vector1);
+        tnt.setGravity(false);
         tnt.setFuseTicks(240);
+        Bukkit.getScheduler().runTaskLater(Civs.getInstance(), () -> {
+            tnt.setGravity(true);
+            tnt.setVelocity(vector1);
+        }, 1L);
 
         long cooldownTime = System.currentTimeMillis() + cooldown * 1000;
         if (player != null && player.isSneaking()) {
