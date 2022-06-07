@@ -1,0 +1,43 @@
+#enabled: true
+#type: region
+#icon: CHEST
+#shop-icon: SLIME_SPAWN_EGG
+#dynmap-marker: dog
+#max: 1
+#price: 1000
+#groups:
+#  - farm
+#level: 4
+#pre-reqs:
+#  - member=village:town:city:metropolis
+#towns:
+#  - village
+#  - town
+#  - city
+#  - metropolis
+#
+#build-reqs:
+#  - HONEY_BLOCK*4
+#  - g:fence*16
+#  - g:fencegate*1
+#  - SLIME_BLOCK*2
+#
+#build-radius: 3
+#effects:
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - spawn:SLIME
+#
+#period: 900 #15 minutes
+#
+#upkeep:
+#  0:
+#    reagents:
+#      - HONEY_BOTTLE*6
+#    input:
+#      - POTION
+#    output:
+#      - SLIME_BALL*9
+#
