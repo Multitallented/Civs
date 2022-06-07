@@ -48,4 +48,5 @@ period: 7200 #2 hour
 upkeep:
   0:
     power-input: 1
+    payout: 10
 
