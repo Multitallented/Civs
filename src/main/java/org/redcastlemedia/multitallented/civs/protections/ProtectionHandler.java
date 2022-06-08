@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -100,7 +101,7 @@ public class ProtectionHandler implements Listener {
 
     private static ProtectionHandler instance;
 
-    private static Map<String, Long> lastAttackMessage = new HashMap<>();
+    private static final Map<String, Integer> lastAttackMessage = new HashMap<>();
 
     protected static void setInstance(ProtectionHandler protectionHandler) {
         instance = protectionHandler;
@@ -114,7 +115,14 @@ public class ProtectionHandler implements Listener {
                 for (Town town : TownManager.getInstance().getTowns()) {
                     town.setPowerShieldDamageInLastSecond(0);
                 }
-                lastAttackMessage.entrySet().removeIf(entry -> System.currentTimeMillis() - entry.getValue() > 60000);
+                for (Iterator<Map.Entry<String, Integer>> it = lastAttackMessage.entrySet().iterator(); it.hasNext(); ) {
+                    Map.Entry<String, Integer> entry = it.next();
+                    if (entry.getValue() < 2) {
+                        it.remove();
+                    } else {
+                        lastAttackMessage.put(entry.getKey(), entry.getValue() - 1);
+                    }
+                }
             }, 20L, 20L);
         }
     }
@@ -660,18 +668,20 @@ public class ProtectionHandler implements Listener {
                             ceaseFireStart <= hour || ceaseFireEnd > hour;
                     if (town.getPowerShieldDamageInLastSecond() < 5 &&
                             (ceaseFireStart == -1 || ceaseFireEnd == -1 || !isWithinCeaseFire)) {
-                        int powerReduce = 1;
+                        int powerReduce = 0;
                         if ((!town.isDevolvedToday() || !town.getEffects().containsKey("daily_shield")) &&
                                 town.isPvpEnabled() &&
-                                town.getEffects().get(RegionEffectConstants.POWER_SHIELD) != null &&
+                                town.getEffects().containsKey(RegionEffectConstants.POWER_SHIELD) &&
                                 (!ConfigManager.getInstance().isCatapultTntDamageOnly() ||
-                                tnt.getPersistentDataContainer().has(NamespacedKey.minecraft(TNTCannon.PERSISTENT_KEY), PersistentDataType.BYTE))) {
-                            powerReduce = Integer.parseInt(town.getEffects().get(RegionEffectConstants.POWER_SHIELD));
+                                tnt.getPersistentDataContainer().has(NamespacedKey.minecraft(TNTCannon.PERSISTENT_KEY), PersistentDataType.STRING))) {
+                            String powerDamageString = town.getEffects().getOrDefault(RegionEffectConstants.POWER_SHIELD, "1");
+                            powerDamageString = powerDamageString == null ? "1" : powerDamageString;
+                            powerReduce = Math.max(1, Integer.parseInt(powerDamageString));
                             double karmaChange = 1D / (double) town.getMaxPower() * town.getPrice();
                             if (player != null) {
                                 CivilianManager.getInstance().exchangeHardship(town, player.getUniqueId(), karmaChange);
                                 if (!lastAttackMessage.containsKey(town.getName())) {
-                                    lastAttackMessage.put(town.getName(), System.currentTimeMillis());
+                                    lastAttackMessage.put(town.getName(), 300);
                                     for (Player cPlayer : Bukkit.getOnlinePlayers()) {
                                         cPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(cPlayer, "under-attack-player")
                                                 .replace("$1", town.getName()).replace("$2", cPlayer.getName()));
@@ -680,7 +690,7 @@ public class ProtectionHandler implements Listener {
                             } else {
                                 CivilianManager.getInstance().exchangeHardship(town, null, karmaChange);
                                 if (!lastAttackMessage.containsKey(town.getName())) {
-                                    lastAttackMessage.put(town.getName(), System.currentTimeMillis());
+                                    lastAttackMessage.put(town.getName(), 300);
                                     for (Player cPlayer : Bukkit.getOnlinePlayers()) {
                                         cPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(cPlayer, "under-attack")
                                                 .replace("$1", town.getName()));
@@ -689,16 +699,14 @@ public class ProtectionHandler implements Listener {
                             }
                         }
                         if (town.getPower() > 0) {
-                            town.setPowerShieldDamageInLastSecond(town.getPowerShieldDamageInLastSecond() + 1);
-                            TownManager.getInstance().setTownPower(town, town.getPower() - powerReduce);
+                            if (powerReduce > 0) {
+                                town.setPowerShieldDamageInLastSecond(town.getPowerShieldDamageInLastSecond() + 1);
+                                TownManager.getInstance().setTownPower(town, town.getPower() - powerReduce);
+                            }
                             setCancelled = true;
                         }
                     }
                 }
-            }
-            if (setCancelled && player != null) {
-                player.sendMessage(Civs.getPrefix() +
-                        LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
             }
         }
         if (setCancelled) {

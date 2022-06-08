@@ -2,8 +2,8 @@ package org.redcastlemedia.multitallented.civs.regions.effects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -46,18 +46,16 @@ import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @CivsSingleton @SuppressWarnings("unused")
 public class TNTCannon implements Listener, RegionCreatedListener {
     private final String KEY = "tnt_cannon";
     public static final String PERSISTENT_KEY = "civs_catapult";
-    private final HashMap<Location, Long> cooldowns = new HashMap<>();
+    private final HashMap<Location, Integer> cooldowns = new HashMap<>();
 
     @Getter
-    private final HashMap<String, TNTCannonFiringState> automaticFire = new HashMap<>();
+    private final HashMap<String, Location> automaticFire = new HashMap<>();
 
     public static void getInstance() {
         Bukkit.getPluginManager().registerEvents(new TNTCannon(), Civs.getInstance());
@@ -65,23 +63,31 @@ public class TNTCannon implements Listener, RegionCreatedListener {
 
     public TNTCannon() {
         RegionManager.getInstance().addRegionCreatedListener(KEY, this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Civs.getInstance(), () -> {
+            for (Iterator<Map.Entry<Location, Integer>> it = cooldowns.entrySet().iterator(); it.hasNext(); ) {
+                Map.Entry<Location, Integer> entry = it.next();
+                if (entry.getValue() < 2) {
+                    it.remove();
+                } else {
+                    cooldowns.put(entry.getKey(), entry.getValue() - 1);
+                }
+            }
+        }, 20L, 20L);
     }
 
     @EventHandler
     public void listenAutomaticFire(TwoSecondEvent event) {
-        for (Map.Entry<String, TNTCannonFiringState> entry : automaticFire.entrySet()) {
-            if (System.currentTimeMillis() > entry.getValue().getLastShot()) {
-                Region region = RegionManager.getInstance().getRegionById(entry.getKey());
-                if (region == null) {
-                    continue;
-                }
-                Location fireLocation = region.getLocation().getBlock().getRelative(BlockFace.UP, 2).getLocation();
-
-                if (cooldowns.get(region.getLocation()) != null && cooldowns.get(region.getLocation()) > System.currentTimeMillis()) {
-                    continue;
-                }
-                fireTheCannon(null, entry.getKey(), getCooldown(region), fireLocation, entry.getValue().getLocation());
+        for (Map.Entry<String, Location> entry : automaticFire.entrySet()) {
+            Region region = RegionManager.getInstance().getRegionById(entry.getKey());
+            if (region == null) {
+                continue;
             }
+            Location fireLocation = region.getLocation().getBlock().getRelative(BlockFace.UP, 2).getLocation();
+
+            if (cooldowns.containsKey(region.getLocation())) {
+                continue;
+            }
+            fireTheCannon(null, entry.getKey(), getCooldown(region), fireLocation, entry.getValue());
         }
     }
 
@@ -166,7 +172,7 @@ public class TNTCannon implements Listener, RegionCreatedListener {
             return;
         }
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
-        long cooldown = getCooldown(region);
+        int cooldown = getCooldown(region);
         if (!region.getEffects().containsKey(KEY)) {
             return;
         }
@@ -186,8 +192,8 @@ public class TNTCannon implements Listener, RegionCreatedListener {
         if (!player.isSneaking()) {
             automaticFire.remove(id);
         }
-        if (cooldowns.get(regionLocation) != null && cooldowns.get(regionLocation) > System.currentTimeMillis()) {
-            long timeLeft = (cooldowns.get(regionLocation) - System.currentTimeMillis()) / 1000;
+        if (cooldowns.containsKey(regionLocation)) {
+            long timeLeft = cooldowns.get(regionLocation);
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     LocaleConstants.COOLDOWN).replace("$1", Util.formatTime(player, timeLeft)));
             return;
@@ -220,13 +226,11 @@ public class TNTCannon implements Listener, RegionCreatedListener {
         fireTheCannon(player, id, cooldown, fireLocation, targetLocation);
     }
 
-    private void fireTheCannon(@Nullable Player player, String id, long cooldown, Location fireLocation, Location targetLocation) {
+    private void fireTheCannon(@Nullable Player player, String id, int cooldown, Location fireLocation, Location targetLocation) {
         Region region = RegionManager.getInstance().getRegionById(id);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
         TNTPrimed tnt = fireLocation.getWorld().spawn(fireLocation, TNTPrimed.class);
-        if (ConfigManager.getInstance().isCatapultTntDamageOnly()) {
-            tnt.getPersistentDataContainer().set(NamespacedKey.minecraft(PERSISTENT_KEY), PersistentDataType.STRING, id);
-        }
+        tnt.getPersistentDataContainer().set(NamespacedKey.minecraft(PERSISTENT_KEY), PersistentDataType.STRING, id);
 
         boolean upkeepRan = region.runUpkeep(false);
         if (!upkeepRan) {
@@ -283,11 +287,10 @@ public class TNTCannon implements Listener, RegionCreatedListener {
             tnt.setVelocity(vector1);
         }, 1L);
 
-        long cooldownTime = System.currentTimeMillis() + cooldown * 1000;
         if (player != null && player.isSneaking()) {
-            automaticFire.put(id, new TNTCannonFiringState(targetLocation, cooldownTime));
+            automaticFire.put(id, targetLocation);
         }
-        cooldowns.put(region.getLocation(), cooldownTime);
+        cooldowns.put(region.getLocation(), cooldown);
 
         fireLocation.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, fireLocation.getBlock().getRelative(BlockFace.NORTH,1).getLocation(), 1);
         fireLocation.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, fireLocation.getBlock().getRelative(BlockFace.EAST,1).getLocation(), 1);
@@ -303,9 +306,9 @@ public class TNTCannon implements Listener, RegionCreatedListener {
         }
     }
 
-    private long getCooldown(Region region) {
+    private int getCooldown(Region region) {
         try {
-            return Long.parseLong(region.getEffects().get(KEY));
+            return Integer.parseInt(region.getEffects().get(KEY));
         } catch (Exception e) {
             Civs.logger.log(Level.WARNING, "{0} has an improperly configured tnt_cannon effect",
                     region.getType());
@@ -319,11 +322,5 @@ public class TNTCannon implements Listener, RegionCreatedListener {
         } catch (Exception e) {
             return 10000;
         }
-    }
-
-    @Getter @Setter @AllArgsConstructor
-    private static class TNTCannonFiringState {
-        private Location location;
-        private Long lastShot = -1L;
     }
 }
