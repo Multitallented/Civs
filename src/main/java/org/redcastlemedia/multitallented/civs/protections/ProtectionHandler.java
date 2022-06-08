@@ -684,7 +684,7 @@ public class ProtectionHandler implements Listener {
                                     lastAttackMessage.put(town.getName(), 300);
                                     for (Player cPlayer : Bukkit.getOnlinePlayers()) {
                                         cPlayer.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(cPlayer, "under-attack-player")
-                                                .replace("$1", town.getName()).replace("$2", cPlayer.getName()));
+                                                .replace("$1", town.getName()).replace("$2", player.getName()));
                                     }
                                 }
                             } else {
