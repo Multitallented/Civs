@@ -17,6 +17,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
@@ -77,9 +78,11 @@ public class TNTCannon implements Listener, RegionCreatedListener {
 
     @EventHandler
     public void listenAutomaticFire(TwoSecondEvent event) {
-        for (Map.Entry<String, Location> entry : automaticFire.entrySet()) {
+        for (Iterator<Map.Entry<String, Location>> it = automaticFire.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<String, Location> entry = it.next();
             Region region = RegionManager.getInstance().getRegionById(entry.getKey());
-            if (region == null) {
+            if (region == null || entry.getValue() == null) {
+                it.remove();
                 continue;
             }
             Location fireLocation = region.getLocation().getBlock().getRelative(BlockFace.UP, 2).getLocation();
@@ -229,6 +232,7 @@ public class TNTCannon implements Listener, RegionCreatedListener {
     private void fireTheCannon(@Nullable Player player, String id, int cooldown, Location fireLocation, Location targetLocation) {
         Region region = RegionManager.getInstance().getRegionById(id);
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+        removeAllTickingTntAtFireLocation(region);
         TNTPrimed tnt = fireLocation.getWorld().spawn(fireLocation, TNTPrimed.class);
         tnt.getPersistentDataContainer().set(NamespacedKey.minecraft(PERSISTENT_KEY), PersistentDataType.STRING, id);
 
@@ -306,9 +310,20 @@ public class TNTCannon implements Listener, RegionCreatedListener {
         }
     }
 
+    private void removeAllTickingTntAtFireLocation(Region region) {
+        for (Iterator<Entity> it = region.getLocation().getWorld().getNearbyEntities(region.getLocation(), 3, 3, 3).iterator(); it.hasNext(); ) {
+            Entity entity = it.next();
+            if (entity instanceof TNTPrimed &&
+                    region.getId().equals(entity.getPersistentDataContainer()
+                            .getOrDefault(NamespacedKey.minecraft(PERSISTENT_KEY), PersistentDataType.STRING, "null"))) {
+                entity.remove();
+            }
+        }
+    }
+
     private int getCooldown(Region region) {
         try {
-            return Integer.parseInt(region.getEffects().get(KEY));
+            return Math.max(13, Integer.parseInt(region.getEffects().get(KEY)));
         } catch (Exception e) {
             Civs.logger.log(Level.WARNING, "{0} has an improperly configured tnt_cannon effect",
                     region.getType());
