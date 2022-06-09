@@ -1,5 +1,11 @@
 package org.redcastlemedia.multitallented.civs;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -10,14 +16,10 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
-import org.jetbrains.annotations.Nullable;
 import org.bukkit.persistence.PersistentDataContainer;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import org.bukkit.profile.PlayerProfile;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Multimap;
 
@@ -203,6 +205,12 @@ public class ItemMetaImpl implements ItemMeta, Damageable, SkullMeta {
         return false;
     }
 
+    @NotNull
+    @Override
+    public String getAsString() {
+        return null;
+    }
+
     @Override
     public CustomItemTagContainer getCustomTagContainer() {
         return null;
@@ -252,6 +260,17 @@ public class ItemMetaImpl implements ItemMeta, Damageable, SkullMeta {
     @Override
     public boolean setOwningPlayer(@Nullable OfflinePlayer offlinePlayer) {
         return false;
+    }
+
+    @Nullable
+    @Override
+    public PlayerProfile getOwnerProfile() {
+        return null;
+    }
+
+    @Override
+    public void setOwnerProfile(@Nullable PlayerProfile playerProfile) {
+
     }
 
     @Override

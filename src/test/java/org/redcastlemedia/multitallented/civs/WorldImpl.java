@@ -1,18 +1,62 @@
 package org.redcastlemedia.multitallented.civs;
 
-import org.bukkit.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Predicate;
+
+import org.bukkit.BlockChangeDelegate;
+import org.bukkit.Chunk;
+import org.bukkit.ChunkSnapshot;
+import org.bukkit.Difficulty;
+import org.bukkit.Effect;
+import org.bukkit.FluidCollisionMode;
+import org.bukkit.GameRule;
+import org.bukkit.HeightMap;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
+import org.bukkit.Raid;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
+import org.bukkit.StructureType;
+import org.bukkit.TreeType;
+import org.bukkit.World;
+import org.bukkit.WorldBorder;
+import org.bukkit.WorldType;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.boss.DragonBattle;
-import org.bukkit.entity.*;
+import org.bukkit.entity.AbstractArrow;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.LightningStrike;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.SpawnCategory;
+import org.bukkit.entity.Villager;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Consumer;
@@ -20,13 +64,6 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.io.File;
-import java.util.*;
-import java.util.function.Predicate;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import lombok.Setter;
 
@@ -748,6 +785,11 @@ public class WorldImpl implements World {
     }
 
     @Override
+    public boolean generateTree(@NotNull Location location, @NotNull Random random, @NotNull TreeType treeType, @Nullable Predicate<BlockState> predicate) {
+        return false;
+    }
+
+    @Override
     public double getTemperature(int i, int i1) {
         return 0;
     }
@@ -943,6 +985,16 @@ public class WorldImpl implements World {
     }
 
     @Override
+    public long getTicksPerSpawns(@NotNull SpawnCategory spawnCategory) {
+        return 0;
+    }
+
+    @Override
+    public void setTicksPerSpawns(@NotNull SpawnCategory spawnCategory, int i) {
+
+    }
+
+    @Override
     public int getMonsterSpawnLimit() {
         return 0;
     }
@@ -1003,6 +1055,16 @@ public class WorldImpl implements World {
     }
 
     @Override
+    public int getSpawnLimit(@NotNull SpawnCategory spawnCategory) {
+        return 0;
+    }
+
+    @Override
+    public void setSpawnLimit(@NotNull SpawnCategory spawnCategory, int i) {
+
+    }
+
+    @Override
     public void playSound(Location location, Sound sound, float v, float v1) {
 
     }
@@ -1019,6 +1081,16 @@ public class WorldImpl implements World {
 
     @Override
     public void playSound(Location location, String s, SoundCategory soundCategory, float v, float v1) {
+
+    }
+
+    @Override
+    public void playSound(@NotNull Entity entity, @NotNull Sound sound, float v, float v1) {
+
+    }
+
+    @Override
+    public void playSound(@NotNull Entity entity, @NotNull Sound sound, @NotNull SoundCategory soundCategory, float v, float v1) {
 
     }
 
@@ -1194,6 +1266,18 @@ public class WorldImpl implements World {
 
     @Override
     public Set<String> getListeningPluginChannels() {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public NamespacedKey getKey() {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public PersistentDataContainer getPersistentDataContainer() {
         return null;
     }
 }
