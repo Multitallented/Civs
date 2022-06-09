@@ -22,11 +22,14 @@ import org.bukkit.block.Container;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Creeper;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Phantom;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Slime;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Wither;
@@ -58,6 +61,7 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -93,8 +97,6 @@ import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import io.papermc.paper.event.player.PlayerItemFrameChangeEvent;
 
 @CivsSingleton
 public class ProtectionHandler implements Listener {
@@ -546,16 +548,39 @@ public class ProtectionHandler implements Listener {
         shouldBlockAction(event.getEntity().getLocation(), null, RegionEffectConstants.BLOCK_BREAK);
     }
 
-    @EventHandler(ignoreCancelled = true, priority=EventPriority.HIGHEST)
-    public void onItemFrame(PlayerItemFrameChangeEvent event) {
+    @EventHandler(ignoreCancelled = true)
+    public void onItemFrame(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
-        boolean setCancelled = shouldBlockAction(event.getItemFrame().getLocation(),
-                player, "block_build");
-        if (setCancelled) {
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+        ItemStack itemInOffHand = player.getInventory().getItemInOffHand();
+        boolean isHoldingCivsItem = CVItem.isCivsItem(itemInHand) || CVItem.isCivsItem(itemInOffHand);
+        if (event.getRightClicked() instanceof ItemFrame && (isHoldingCivsItem ||
+                shouldBlockAction(event.getRightClicked().getLocation(), player, "block_build"))) {
             event.setCancelled(true);
             player.sendMessage(Civs.getPrefix() +
                     LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
+        }
+    }
 
+    @EventHandler(ignoreCancelled = true)
+    public void onItemFrameDamage(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof ItemFrame)) {
+            return;
+        }
+        Entity damager = event.getDamager();
+        Player player = null;
+        if (damager instanceof Player) {
+            player = (Player) damager;
+        } else if (damager instanceof Projectile) {
+            Projectile projectile = (Projectile) damager;
+            if (projectile.getShooter() instanceof Player) {
+                player = (Player) projectile.getShooter();
+            }
+        }
+        if (shouldBlockAction(event.getEntity().getLocation(), player, "block_break")) {
+            event.setCancelled(true);
+            player.sendMessage(Civs.getPrefix() +
+                    LocaleManager.getInstance().getTranslation(player, LocaleConstants.REGION_PROTECTED));
         }
     }
 
