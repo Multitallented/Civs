@@ -5,7 +5,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
-import org.bukkit.plugin.ServicePriority;
 import org.dynmap.DynmapCommonAPI;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
@@ -15,7 +14,6 @@ import org.redcastlemedia.multitallented.civs.util.Constants;
 import github.scarsz.discordsrv.DiscordSRV;
 import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import net.Indyuce.mmoitems.MMOItems;
-import ru.endlesscode.mimic.classes.BukkitClassSystem;
 
 public class PluginListener implements Listener {
 
@@ -26,8 +24,7 @@ public class PluginListener implements Listener {
             DynmapHook.initMarkerSet();
         } else if ("Mimic".equalsIgnoreCase(event.getPlugin().getName())) {
             Civs.mimic = true;
-            Civs.getInstance().getServer().getServicesManager().register(BukkitClassSystem.Provider.class,
-                    new MimicClassProvider.Provider(), Civs.getInstance(), ServicePriority.Normal);
+            MimicClassProvider.loadProvider();
         } else if (Constants.PLACEHOLDER_API.equals(event.getPlugin().getName()) &&
                 Bukkit.getPluginManager().isPluginEnabled(Constants.PLACEHOLDER_API)) {
             new PlaceHook().register();

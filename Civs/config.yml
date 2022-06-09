@@ -174,6 +174,7 @@ folders:
   hyphaeworks: CRIMSON_STEM
   animals: SHEEP_SPAWN_EGG
   npchousing: VILLAGER_SPAWN_EGG
+  monsters: SKELETON_SKULL
   trading:
     icon: EMERALD_ORE
     pre-reqs:

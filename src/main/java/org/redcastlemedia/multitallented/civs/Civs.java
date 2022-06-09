@@ -17,21 +17,22 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.dynmap.DynmapCommonAPI;
-import org.redcastlemedia.multitallented.civs.chat.ChatManager;
-import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.redcastlemedia.multitallented.civs.chat.ChatManager;
+import org.redcastlemedia.multitallented.civs.civilians.allowedactions.AllowedActionsListener;
 import org.redcastlemedia.multitallented.civs.commands.CivCommand;
 import org.redcastlemedia.multitallented.civs.commands.CivsCommand;
 import org.redcastlemedia.multitallented.civs.commands.TabComplete;
 import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
 import org.redcastlemedia.multitallented.civs.pl3xmap.Pl3xMapHook;
+import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
 import org.redcastlemedia.multitallented.civs.plugins.MimicClassProvider;
 import org.redcastlemedia.multitallented.civs.plugins.PluginListener;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 import org.redcastlemedia.multitallented.civs.regions.effects.ConveyorEffect;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
@@ -39,8 +40,6 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.LogInfo;
-import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
-import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 import org.redcastlemedia.multitallented.civs.worldedit.WorldEditSessionListener;
 import org.reflections.Reflections;
@@ -53,7 +52,6 @@ import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import net.Indyuce.mmoitems.MMOItems;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-import ru.endlesscode.mimic.classes.BukkitClassSystem;
 
 public class Civs extends JavaPlugin {
 
@@ -231,8 +229,7 @@ public class Civs extends JavaPlugin {
         }
         if (Bukkit.getPluginManager().isPluginEnabled("Mimic")) {
             Civs.mimic = true;
-            getServer().getServicesManager().register(BukkitClassSystem.Provider.class,
-                    new MimicClassProvider.Provider(), this, ServicePriority.Normal);
+            MimicClassProvider.loadProvider();
         }
 
         if (Bukkit.getPluginManager().isPluginEnabled("dynmap")) {
@@ -254,6 +251,7 @@ public class Civs extends JavaPlugin {
         configurationBuilder.addUrls(ClasspathHelper.forPackage("org.redcastlemedia.multitallented.civs"));
         filterBuilder.includePackage("org.redcastlemedia.multitallented.civs")
                 .excludePackage("org.redcastlemedia.multitallented.civs.dynmaphook")
+                .excludePackage("ru.endlesscode.mimic")
                 .excludePackage("org.redcastlemedia.multitallented.civs.placeholderexpansion")
                 .excludePackage("org.redcastlemedia.multitallented.civs.worldedit");
         configurationBuilder.filterInputsBy(filterBuilder);

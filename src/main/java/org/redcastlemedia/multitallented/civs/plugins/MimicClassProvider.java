@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.ServicePriority;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -16,6 +18,11 @@ import ru.endlesscode.mimic.classes.BukkitClassSystem;
 
 public class MimicClassProvider extends BukkitClassSystem {
     private static String CLASS_PROVIDER_ID = "CIVS_CLASS_PROVIDER";
+
+    public static void loadProvider() {
+        Civs.getInstance().getServer().getServicesManager().register(BukkitClassSystem.Provider.class,
+                new MimicClassProvider.Provider(), Civs.getInstance(), ServicePriority.Normal);
+    }
 
     public static class Provider extends BukkitClassSystem.Provider {
 
