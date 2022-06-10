@@ -1,0 +1,50 @@
+#enabled: true
+#type: region
+#icon: CHEST
+#shop-icon: NETHERRACK
+#dynmap-marker: minecart
+#price: 60
+#groups:
+#  - raw
+#  - quarry
+#level: 1
+#
+#build-reqs:
+#  - FURNACE*2
+#  - LAVA*2
+#  - NETHERRACK*9
+#
+#build-radius: 2
+#effects:
+#  - block_break
+#  - block_build
+#
+#biomes:
+#  - BASALT_DELTAS
+#  - NETHER_WASTES
+#  - SOUL_SAND_VALLEY
+#  - CRIMSON_FOREST
+#  - WARPED_FOREST
+#
+#period: 30
+#upkeep:
+#  0:
+#    reagents:
+#      - STONE_PICKAXE
+#    output:
+#      - NETHERRACK*4%25,BLACKSTONE*4%19,BASALT*4%19,SOUL_SAND*4%19,GRAVEL*4%18
+#  1:
+#    reagents:
+#      - IRON_PICKAXE
+#    output:
+#      - NETHERRACK*4%25,BLACKSTONE*4%19,BASALT*4%19,SOUL_SAND*4%19,GRAVEL*4%18
+#  2:
+#    reagents:
+#      - DIAMOND_PICKAXE
+#    output:
+#      - NETHERRACK*4%25,BLACKSTONE*4%19,BASALT*4%19,SOUL_SAND*4%19,GRAVEL*4%18
+#  3:
+#    reagents:
+#      - NETHERITE_PICKAXE
+#    output:
+#      - NETHERRACK*4%25,BLACKSTONE*4%19,BASALT*4%19,SOUL_SAND*4%19,GRAVEL*4%18
