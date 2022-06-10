@@ -39,5 +39,5 @@
 #  0:
 #    input:
 #      - GUNPOWDER*8     # 192 / day
-#    payout: 15          # $360 / day
+#    payout: 30          # $720 / day
 #

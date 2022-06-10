@@ -30,5 +30,5 @@ upkeep:
   0:
     input:
     - COAL*8,CHARCOAL*24 # 144 coal or 480 charcoal / day
-    payout: 8.33         # $200 / day
+    payout: 16.67         # $400 / day
 

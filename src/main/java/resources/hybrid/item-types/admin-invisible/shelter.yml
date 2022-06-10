@@ -28,16 +28,16 @@ upkeep:
   0:
     input:
     - POTATO*32 #.16
-    payout: 5.12
+    payout: 2.5
   1:
     input:
     - CARROT*32 #.12
-    payout: 3.84
+    payout: 2
   2:
     input:
     - BREAD*4 #1.95
-    payout: 7.8
+    payout: 4
   3:
     input:
     - BEEF*32 #.10
-    payout: 10.24
+    payout: 5

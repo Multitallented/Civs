@@ -52,10 +52,10 @@ upkeep:
   1:
     input: #2.11
     - BREAD*5  # 120 or 1.88 stacks / day
-    payout: 6.3 # $151.2 / day
+    payout: 13 # $312 / day
   2:
     input:
     - CARROT*12   # 288 or 4.5 stacks / day
-    payout: 7.28 # $174.72 / day
+    payout: 15 # $360 / day
     exp: 1
 

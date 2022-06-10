@@ -25,7 +25,7 @@ effects:
 - spawn:COW
 - conveyor:BEEF
 
-period: 600 #10 minutes
+period: 300 #5 minutes
 upkeep:
   0:
     reagents:

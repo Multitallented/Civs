@@ -1,0 +1,50 @@
+type: region
+icon: CHEST
+shop-icon: MANGROVE_LOG
+dynmap-marker: tree
+max: 2
+price: 100
+groups:
+- raw
+- farm
+- woodwork
+level: 1
+
+build-reqs:
+- MANGROVE_LOG*8
+- MANGROVE_LEAVES*16
+- g:fence*14
+- g:fencegate*1
+- CHEST*2
+
+build-radius: 4
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- conveyor:MANGROVE_LOG
+
+period: 120 #2 minutes
+upkeep:
+  0:
+    reagents:
+    - STONE_AXE
+    output:
+    - MANGROVE_LOG*2
+  1:
+    reagents:
+    - IRON_AXE
+    output:
+    - MANGROVE_LOG*4
+  2:
+    reagents:
+    - DIAMOND_AXE
+    output:
+    - MANGROVE_LOG*8
+  3:
+    reagents:
+    - NETHERITE_AXE
+    output:
+    - MANGROVE_LOG*14

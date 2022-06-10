@@ -53,14 +53,14 @@ upkeep:
   1:
     input: #2.11
       - BREAD*5  # 120 or 1.88 stacks / day
-    payout: 6.3 # $151.2 / day
+    payout: 13 # $312 / day
   2:
     input:
       - CARROT*12   # 288 or 4.5 stacks / day
-    payout: 8.19 # $196.56 / day
+    payout: 17 # $408 / day
   3:
     input:
     - TROPICAL_FISH*5
-    payout: 3 # $72 / day
+    payout: 6 # $144 / day
     exp: 1
 

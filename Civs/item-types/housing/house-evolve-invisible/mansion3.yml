@@ -53,25 +53,25 @@
 #  1:
 #    input:
 #      - BREAD*5  # 120 or 1.88 stacks / day
-#    payout: 6.3 # $151.2 / day
+#    payout: 13 # $312 / day
 #  2:
 #    input:
 #      - CARROT*12   # 288 or 4.5 stacks / day
-#    payout: 9.1 # $218.4 / day
+#    payout: 18 # $432 / day
 #  3:
 #    input:
 #      - COOKED_BEEF*4,BEEF*32 # 768 or 12 stacks / day
-#    payout: 2.6     # $62.4 / day
+#    payout: 6 # $144 / day
 #  4:
 #    input:
 #      - COOKIE*12 # 288 or 4.5 stacks / day
-#    payout: 5    # $120 / day
+#    payout: 10    # $240 / day
 #  5:
 #    input:
 #      - MILK_BUCKET # 24 / day
-#    payout: 2.93 # $70.2 / day
+#    payout: 8 # $192 / day
 #  6:
 #    input:
 #      - PUFFERFISH*5 # 120 / day
-#    payout: 3 # $72 / day
+#    payout: 6 # $144 / day
 #

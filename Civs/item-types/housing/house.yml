@@ -54,10 +54,10 @@
 #  1:
 #    input: #2.11
 #      - BREAD*6  # 144 or 2.25 stacks / day
-#    payout: 5.04 # $120.96 / day
+#    payout: 12 # $264 / day
 #    exp: 1
 #  2:
 #    input:
 #      - APPLE*5   # 120 or 1.87 stacks / day
-#    payout: 3.9 # $93.6 / day
+#    payout: 8 # $185 / day
 #

@@ -54,14 +54,14 @@ upkeep:
   1:
     input:
     - BREAD*6  # 144 or 2.25 stacks / day
-    payout: 5.67 # $136.08 / day
+    payout: 12 # $288 / day
   2:
     input:
     - APPLE*5   # 120 or 1.87 stacks / day
-    payout: 3.9 # $93.6 / day
+    payout: 8 # $185 / day
   3:
     input:
     - SALMON*6
-    payout: 3 # $72 / day
+    payout: 6 # $144 / day
     exp: 1
 

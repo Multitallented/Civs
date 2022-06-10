@@ -41,5 +41,5 @@
 #  0:
 #    input:
 #      - IRON_INGOT*10 # 240 iron / day
-#    payout: 9          # $216 / day
+#    payout: 18          # $532 / day
 #

@@ -53,4 +53,4 @@
 #  1:
 #    input:
 #      - POTATO*32  # 768 or 12 stacks / day
-#    payout: 4 # $96 / day
+#    payout: 6 # $144 / day

@@ -54,19 +54,19 @@
 #  1:
 #    input:
 #      - BREAD*5  # 120 or 1.88 stacks / day
-#    payout: 6.3 # $151.2 / day
+#    payout: 13 # $312 / day
 #    exp: 1
 #  2:
 #    input:
 #      - CARROT*12   # 288 or 4.5 stacks / day
-#    payout: 9.1 # $218.4 / day
+#    payout: 18 # $432 / day
 #  3:
 #    input:
 #      - TROPICAL_FISH*5
-#    payout: 3 # $72 / day
+#    payout: 7 # $168 / day
 #  4:
 #    input:
 #      - MELON_SLICE*32  #768 or 12 stacks / day
-#    payout: 4   # $96 / day
+#    payout: 10   # $240 / day
 #    exp: 1
 #

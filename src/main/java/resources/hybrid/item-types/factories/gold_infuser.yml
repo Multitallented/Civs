@@ -37,7 +37,7 @@ effects:
   - block_fire
   - conveyor:GOLDEN_CARROT
 
-period: 60 #1 minute
+period: 120 #2 minute
 upkeep:
   0:
     input:
@@ -48,6 +48,6 @@ upkeep:
   1:
     input:
       - APPLE
-      - GOLD_INGOT*54
+      - GOLD_INGOT*6
     output:
       - GOLDEN_APPLE*1

@@ -53,22 +53,23 @@
 #  1:
 #    input: #2.11
 #      - GOLDEN_CARROT*1  # 24 / day
-#    payout: 10.4 # $249.6 / day
+#    payout: 20 # $480 / day
 #  2:
 #    input:
 #      - COOKIE*12 # 288 or 4.5 stacks / day
-#    payout: 5    # $120 / day
+#    payout: 10    # $240 / day
 #  3:
 #    input:
 #      - COOKED_BEEF*4,BEEF*32 # 768 or 12 stacks / day
-#    payout: 2.6     # $62.4 / day
+#    payout: 6     # $144 / day
 #  4:
 #    input:
-#      - PUMPKIN_PIE*1 # 24 stacks / day
-#    payout: 9.12 # $218.88 / day
+#      - MILK_BUCKET # 24 stacks / day
+#    payout: 7 # $168 / day
 #    exp: 1
 #  5:
 #    input:
-#      - MILK_BUCKET # 24 stacks / day
-#    payout: 3.26 # $78.2 / day
+#      - PUMPKIN_PIE*1 # 24 stacks / day
+#    payout: 18 # $432 / day
+#    exp: 1
 #

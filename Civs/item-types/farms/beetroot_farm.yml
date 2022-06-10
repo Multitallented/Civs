@@ -3,9 +3,8 @@
 #icon: CHEST
 #shop-icon: BEETROOT
 #dynmap-marker: cutlery
-#name: Beetroot_Farm
 #max: 1
-#price: 3500
+#price: 1500
 #groups:
 #  - farm
 #level: 7
@@ -29,20 +28,20 @@
 #  - block_liquid
 #  - block_fire
 #  - conveyor:BEETROOT
-#period: 600
+#period: 300 #5 minutes
 #upkeep:
 #  0:
 #    reagents:
 #      - STONE_HOE
 #    output:
-#      - BEETROOT*4
+#      - BEETROOT*8
 #  1:
 #    reagents:
 #      - IRON_HOE
 #    output:
-#      - BEETROOT*8
+#      - BEETROOT*16
 #  2:
 #    reagents:
 #      - DIAMOND_HOE
 #    output:
-#      - BEETROOT*16
+#      - BEETROOT*32

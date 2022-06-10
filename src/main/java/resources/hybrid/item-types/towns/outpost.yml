@@ -3,7 +3,7 @@ icon: TNT
 shop-icon: GUNPOWDER
 name: Outpost
 max: 2
-price: 500
+price: 200
 group:
 - outpost
 level: 2
@@ -34,6 +34,6 @@ effects:
 - control_override
 - power_shield
 
-power: 256
+power: 80
 max-power: 256
 

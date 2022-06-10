@@ -28,6 +28,6 @@ upkeep:
     reagents:
     - STONE_SHOVEL
     output:
-    - DIRT*4%50,PODZOL*4%25,COARSE_DIRT*4%25
+    - DIRT*4%40,PODZOL*4%20,COARSE_DIRT*4%20,MUD*4%20
     - DIRT%93,GRASS_BLOCK%5,MYCELIUM%2
 

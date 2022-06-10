@@ -40,5 +40,5 @@ upkeep:
   0:
     input:
       - LAPIS_LAZULI*20 # 480 lapis / day
-    payout: 10          # $240 / day
+    payout: 20          # $480 / day
 

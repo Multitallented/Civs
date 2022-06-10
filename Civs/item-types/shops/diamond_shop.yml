@@ -37,5 +37,5 @@
 #  0:
 #    input:
 #      - DIAMOND*1 # 24 / day
-#    payout: 25          # $768 / day
+#    payout: 50          # $1200 / day
 #

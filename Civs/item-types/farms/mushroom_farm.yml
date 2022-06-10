@@ -1,0 +1,37 @@
+#enabled: true
+#type: region
+#icon: CHEST
+#shop-icon: BROWN_MUSHROOM
+#dynmap-marker: cutlery
+#max: 1
+#price: 1000
+#groups:
+#  - farm
+#level: 6
+#
+#pre-reqs:
+#  - member=city:metropolis
+#
+#build-reqs:
+#  - g:primary*15
+#  - CHEST*2
+#  - BROWN_MUSHROOM*3
+#  - RED_MUSHROOM*3
+#
+#towns:
+#  - city
+#  - metropolis
+#
+#build-radius: 5
+#effects:
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#period: 300 #5 minutes
+#upkeep:
+#  0:
+#    reagents:
+#      - SHEARS
+#    output:
+#      - RED_MUSHROOM*16%50,BROWN_MUSHROOM*16%50

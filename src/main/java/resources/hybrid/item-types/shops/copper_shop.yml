@@ -41,5 +41,5 @@ upkeep:
   0:
     input:
     - COPPER_INGOT*16 # 384 copper / day
-    payout: 8         # $192 / day
+    payout: 16         # $384 / day
 

@@ -39,5 +39,5 @@
 #  0:
 #    input:
 #      - GOLD_INGOT*2    # 48 / day
-#    payout: 20          # $480 / day
+#    payout: 40          # $960 / day
 #

@@ -53,17 +53,17 @@ upkeep:
   1:
     input:
       - BREAD*5  # 120 or 1.88 stacks / day
-    payout: 6.3 # $151.2 / day
+    payout: 13 # $312 / day
   2:
     input:
       - CARROT*12   # 288 or 4.5 stacks / day
-    payout: 9.1 # $218.4 / day
+    payout: 18 # $432 / day
   3:
     input:
       - COOKED_BEEF*4,BEEF*32 # 768 or 12 stacks / day
-    payout: 2.34 # $56.16 / day
+    payout: 6 # $144 / day
   4:
     input:
       - COOKIE*12 # 288 or 4.5 stacks / day
-    payout: 4    # $96 / day
+    payout: 8    # $192 / day
     exp: 1
