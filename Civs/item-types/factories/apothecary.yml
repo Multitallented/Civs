@@ -1,0 +1,81 @@
+#enabled: true
+#type: region
+#icon: CHEST
+#shop-icon: BREWING_STAND
+#dynmap-marker: factory
+#price: 200
+#groups:
+#  - factory
+#level: 5
+#
+#pre-reqs:
+#  - gold_mine:built=1
+#  - carrot_farm:built=1
+#  - member=town:city:metropolis
+#
+#towns:
+#  - town
+#  - city
+#  - metropolis
+#
+#build-reqs:
+#  - g:window*2
+#  - g:door*1
+#  - DIAMOND_ORE
+#  - g:roof*15
+#  - BREWING_STAND
+#  - g:primary*40
+#  - g:secondary*10
+#
+#build-radius: 3
+#
+#effects:
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#
+#period: 300 #5 minutes
+#upkeep:
+#  0:
+#    reagents:
+#      - GHAST_TEAR
+#    input:
+#      - DIAMOND
+#    output:
+#      - GHAST_TEAR*18
+#  1:
+#    reagents:
+#      - BLAZE_ROD
+#    input:
+#      - DIAMOND
+#    output:
+#      - BLAZE_POWDER*18
+#  2:
+#    reagents:
+#      - NETHER_WART
+#    input:
+#      - DIAMOND
+#    output:
+#      - NETHER_WART_BLOCK*9
+#  3:
+#    reagents:
+#      - DRAGON_BREATH
+#    input:
+#      - DIAMOND
+#    output:
+#      - DRAGON_BREATH*18
+#  4:
+#    reagents:
+#      - GLOWSTONE_DUST
+#    input:
+#      - DIAMOND
+#    output:
+#      - GLOWSTONE_DUST*32
+#  5:
+#    reagents:
+#      - PHANTOM_MEMBRANE
+#    input:
+#      - DIAMOND
+#    output:
+#      - PHANTOM_MEMBRANE*16

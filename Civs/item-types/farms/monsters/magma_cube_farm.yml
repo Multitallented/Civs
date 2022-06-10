@@ -1,0 +1,40 @@
+#enabled: true
+#type: region
+#icon: CHEST
+#shop-icon: MAGMA_CUBE_SPAWN_EGG
+#dynmap-marker: dog
+#max: 1
+#price: 1000
+#groups:
+#  - farm
+#level: 1
+#
+#biomes:
+#  - BASALT_DELTAS
+#  - NETHER_WASTES
+#  - SOUL_SAND_VALLEY
+#  - CRIMSON_FOREST
+#  - WARPED_FOREST
+#
+#build-reqs:
+#  - MAGMA_BLOCK*4
+#  - g:fence*16
+#  - g:fencegate*1
+#
+#build-radius: 3
+#effects:
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - spawn:MAGMA_CUBE
+#
+#period: 300 #5 minutes
+#
+#upkeep:
+#  0:
+#    reagents:
+#      - LAVA_BUCKET
+#    output:
+#      - MAGMA_BLOCK*32
+#
