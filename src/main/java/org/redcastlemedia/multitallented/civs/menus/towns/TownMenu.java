@@ -111,12 +111,22 @@ public class TownMenu extends CustomMenu {
             }
             CVItem cvItem = menuIcon.createCVItem(player, count);
             cvItem.setDisplayName(LocaleManager.getInstance().getTranslation(player,
-                    menuIcon.getName()).replace("$1", "" + town.getPower())
+                            menuIcon.getName()).replace("$1", "" + town.getPower())
                     .replace("$2", "" + town.getMaxPower()));
             // TODO power history
             ItemStack itemStack = cvItem.createItemStack();
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
+        } else if ("war-enabled".equals(menuIcon.getKey())) {
+            if (!town.isWarEnabledToday()) {
+                return new ItemStack(Material.AIR);
+            }
+            return super.createItemStack(civilian, menuIcon, count);
+        } else if ("war-disabled".equals(menuIcon.getKey())) {
+            if (town.isWarEnabledToday()) {
+                return new ItemStack(Material.AIR);
+            }
+            return super.createItemStack(civilian, menuIcon, count);
         } else if ("power-unprotected".equals(menuIcon.getKey())) {
             if (town.getPower() > 0) {
                 return new ItemStack(Material.AIR);

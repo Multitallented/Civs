@@ -9,6 +9,8 @@
 #  - factory
 #level: 3
 #
+#war-enabled: true
+#
 #pre-reqs:
 #  - member=hamlet:village:town:city:metropolis
 #

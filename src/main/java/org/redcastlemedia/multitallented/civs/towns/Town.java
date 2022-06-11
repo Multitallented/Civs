@@ -1,5 +1,4 @@
 package org.redcastlemedia.multitallented.civs.towns;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -72,6 +71,10 @@ public class Town {
 
     @Getter @Setter
     private boolean devolvedToday;
+    @Getter @Setter
+    private boolean warEnabledToday;
+    @Getter @Setter
+    private boolean hasWarBuildings;
 
     @Getter @Setter
     private HashMap<UUID, Integer> idiocracyScore = new HashMap<>();

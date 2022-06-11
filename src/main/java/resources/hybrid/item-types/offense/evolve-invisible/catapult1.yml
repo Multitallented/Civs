@@ -10,6 +10,8 @@ groups:
   - offense
 level: 1
 
+war-enabled: true
+
 build-reqs:
   - OBSIDIAN*8
   - IRON_BARS*8

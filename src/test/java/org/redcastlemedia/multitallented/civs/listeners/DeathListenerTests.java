@@ -1,9 +1,6 @@
 package org.redcastlemedia.multitallented.civs.listeners;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -16,6 +13,7 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -26,6 +24,7 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianTests;
 import org.redcastlemedia.multitallented.civs.protections.DeathListener;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 
 public class DeathListenerTests extends TestUtil {
 
@@ -71,11 +70,24 @@ public class DeathListenerTests extends TestUtil {
         this.deathListener = new DeathListener();
     }
 
+    @After
+    public void cleanup() {
+        RegionManager.getInstance().reload();
+    }
+
     @Test
     public void damageShouldRegisterInCivilian() {
+        RegionsTests.createNewRegion("catapult", player2.getUniqueId());
+        RegionsTests.createNewRegion("catapult", civilian1.getUuid());
         this.deathListener.onEntityDamage(this.damageEvent);
         assertEquals(player2.getUniqueId(), civilian1.getLastDamager());
         assertTrue(civilian1.getLastDamage() > -1);
+    }
+
+    @Test
+    public void damageBetweenNonWarEnabledPeopleShouldBeCancelled() {
+        this.deathListener.onEntityDamage(this.damageEvent);
+        assertNull(civilian1.getLastDamager());
     }
 
     @Test
@@ -106,6 +118,9 @@ public class DeathListenerTests extends TestUtil {
 
     @Test
     public void lastDamageShouldUpdate() {
+        RegionsTests.createNewRegion("catapult", player3.getUniqueId());
+        RegionsTests.createNewRegion("catapult", player2.getUniqueId());
+        RegionsTests.createNewRegion("catapult", civilian1.getUuid());
         this.civilian1.setLastDamager(player3.getUniqueId());
         long prevTime = System.currentTimeMillis() - 3000;
         this.civilian1.setLastDamage(prevTime);

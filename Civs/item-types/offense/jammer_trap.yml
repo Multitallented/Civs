@@ -9,6 +9,8 @@
 #  - trap
 #level: 1
 #
+#war-enabled: true
+#
 #build-reqs:
 #  - TNT*4
 #  - OBSIDIAN*2

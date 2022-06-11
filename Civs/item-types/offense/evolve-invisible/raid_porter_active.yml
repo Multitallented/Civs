@@ -10,6 +10,8 @@
 #  - offense
 #  - raidport
 #
+#war-enabled: true
+#
 #build-reqs:
 #  - TNT*2
 #  - g:sign*1

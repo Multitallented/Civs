@@ -593,6 +593,7 @@ public class CivilianListener implements Listener {
             event.getRegion().getLocation().getChunk().setForceLoaded(false);
         }
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(event.getRegion().getType());
+        TownManager.getInstance().checkWarDisabled(regionType, event.getRegion());
         if (regionType.getEffects().containsKey(Constants.WONDER)) {
             for (Player player1 : Bukkit.getOnlinePlayers()) {
                 player1.sendMessage(Civs.getPrefix() +

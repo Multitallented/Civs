@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -16,10 +15,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -28,14 +25,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.RegionCreatedEvent;
@@ -43,6 +37,8 @@ import org.redcastlemedia.multitallented.civs.events.RegionDestroyedEvent;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleUtil;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.effects.ActiveEffect;
@@ -633,6 +629,9 @@ public class RegionManager {
         if (regionNotAllowedGovType(regionType, event, player, town)) {
             return;
         }
+        if (regionAllowedInPeacefulTown(regionType, event, player, town)) {
+            return;
+        }
 
         if (regionType.getTowns() != null && !regionType.getTowns().isEmpty() &&
                 (town == null || !regionType.getTowns().contains(town.getType()))) {
@@ -725,10 +724,27 @@ public class RegionManager {
 
         Region region = new Region(regionType.getProcessedName(), people, location, radii, regionType.getEffects(), 0);
         addRegion(region);
+        TownManager.getInstance().checkWarEnabled(town, regionType, player, true);
         StructureUtil.removeBoundingBox(civilian.getUuid());
         forceLoadRegionChunk(region);
         RegionCreatedEvent regionCreatedEvent = new RegionCreatedEvent(region, regionType, player);
         Bukkit.getPluginManager().callEvent(regionCreatedEvent);
+    }
+
+    private boolean regionAllowedInPeacefulTown(RegionType regionType, BlockPlaceEvent event, Player player, Town town) {
+        if (town != null && !town.isHasWarBuildings() && !town.getOwners().contains(player.getUniqueId())) {
+            Government gov = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
+            if (gov.getGovernmentType() == GovernmentType.LIBERTARIAN ||
+                    gov.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
+                    gov.getGovernmentType() == GovernmentType.DISESTABLISHMENT) {
+                return false;
+            }
+            event.setCancelled(true);
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance()
+                    .getTranslation(player, "cant-build-peaceful-town").replace("$1", regionType.getDisplayName(player)));
+            return true;
+        }
+        return false;
     }
 
     @Nullable

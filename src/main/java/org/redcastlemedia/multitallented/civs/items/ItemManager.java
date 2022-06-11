@@ -1,5 +1,16 @@
 package org.redcastlemedia.multitallented.civs.items;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.regex.Pattern;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -32,11 +43,6 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 import org.reflections.Reflections;
 import org.reflections.ReflectionsException;
 import org.reflections.scanners.ResourcesScanner;
-
-import java.io.File;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.regex.Pattern;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGHER)
 public class ItemManager {
@@ -450,6 +456,7 @@ public class ItemManager {
                 config.getBoolean("rebuild-required", false),
                 config.getInt("level",1),
                 worlds);
+        regionType.setWarEnabled(config.getBoolean("war-enabled", false));
         regionType.setGovTypes(govTypes);
         if (config.isSet("commands-on-creation")) {
             regionType.getCommandsOnCreation().addAll(config.getStringList("commands-on-creation"));

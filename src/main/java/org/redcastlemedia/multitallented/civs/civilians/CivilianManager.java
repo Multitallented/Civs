@@ -1,31 +1,43 @@
 package org.redcastlemedia.multitallented.civs.civilians;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.redcastlemedia.multitallented.civs.CivsSingleton;
-import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.Civs;
+import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.civclass.CivClass;
 import org.redcastlemedia.multitallented.civs.civclass.ClassManager;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.skills.Skill;
 import org.redcastlemedia.multitallented.civs.skills.SkillManager;
 import org.redcastlemedia.multitallented.civs.skills.SkillType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialManager;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialPath;
 import org.redcastlemedia.multitallented.civs.tutorials.TutorialStep;
+import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.logging.Level;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -370,6 +382,24 @@ public class CivilianManager {
             return;
         }
         playerFile.delete();
+    }
+
+    public boolean civilianIsWarEnabled(Civilian civilian) {
+        for (Town town : TownManager.getInstance().getTownsForPlayer(civilian.getUuid())) {
+            if (!town.isWarEnabledToday()) {
+                return true;
+            }
+        }
+        for (Region region : RegionManager.getInstance().getAllRegions()) {
+            if (region.getRawPeople().containsKey(civilian.getUuid()) &&
+                    region.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
+                RegionType rt = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                if (rt.isWarEnabled()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void exchangeHardship(UUID attacker, UUID defender, double amount) {

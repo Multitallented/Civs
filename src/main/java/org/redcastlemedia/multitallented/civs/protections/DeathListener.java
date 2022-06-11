@@ -221,6 +221,10 @@ public class DeathListener implements Listener {
                     return;
                 }
             }
+            if (cancelForWarDisabledTowns(damager, player)) {
+                event.setCancelled(true);
+                return;
+            }
             if (cancelIfNotInPvpEnabledTown(damager, player)) {
                 event.setCancelled(true);
                 return;
@@ -247,6 +251,41 @@ public class DeathListener implements Listener {
             return;
         }
         civilian.setLastDamager(damager.getUniqueId());
+    }
+
+    private boolean cancelForWarDisabledTowns(Player damager, Player player) {
+        for (Town town : TownManager.getInstance().getTownsForPlayer(player.getUniqueId())) {
+            if (!town.isWarEnabledToday()) {
+                return false;
+            }
+        }
+        for (Town town : TownManager.getInstance().getTownsForPlayer(damager.getUniqueId())) {
+            if (!town.isWarEnabledToday()) {
+                return false;
+            }
+        }
+        boolean damagerHasWarBuilding = false;
+        boolean playerHasWarBuilding = false;
+        for (Region region : RegionManager.getInstance().getAllRegions()) {
+            if (region.getRawPeople().containsKey(player.getUniqueId()) &&
+                    region.getRawPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
+                RegionType rt = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                if (rt.isWarEnabled()) {
+                    playerHasWarBuilding = true;
+                }
+            }
+            if (region.getRawPeople().containsKey(damager.getUniqueId()) &&
+                    region.getRawPeople().get(damager.getUniqueId()).contains(Constants.OWNER)) {
+                RegionType rt = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                if (rt.isWarEnabled()) {
+                    damagerHasWarBuilding = true;
+                }
+            }
+            if (damagerHasWarBuilding && playerHasWarBuilding) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean cancelIfNotInPvpEnabledTown(Player damager, Player player) {

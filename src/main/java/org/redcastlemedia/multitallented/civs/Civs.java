@@ -78,6 +78,7 @@ public class Civs extends JavaPlugin {
         setupPermissions();
 
         instantiateSingletons();
+        TownManager.getInstance().checkAllTownsForWarEnabled();
 
         initCommands();
 

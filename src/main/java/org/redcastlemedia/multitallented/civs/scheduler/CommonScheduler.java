@@ -263,8 +263,13 @@ public class CommonScheduler implements Runnable {
                         .replace("$2", govName));
             }
             if (!town.getPeople().containsKey(player.getUniqueId())) {
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                        "town-enter-warning"));
+                if (town.isWarEnabledToday()) {
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                            "town-enter-warning"));
+                } else {
+                    player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                            "town-enter-peaceful"));
+                }
             }
         }
     }

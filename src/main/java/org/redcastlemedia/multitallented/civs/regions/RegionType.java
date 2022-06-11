@@ -1,19 +1,19 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.bukkit.block.Biome;
-import org.redcastlemedia.multitallented.civs.items.CivItem;
-import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
-import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.bukkit.block.Biome;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.items.CivItem;
+import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
+import org.redcastlemedia.multitallented.civs.towns.Government;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class RegionType extends CivItem {
 
@@ -45,6 +45,8 @@ public class RegionType extends CivItem {
     private boolean startInInventory = false;
     @Getter @Setter
     private Set<String> govTypes = new HashSet<>();
+    @Getter @Setter
+    private boolean isWarEnabled = false;
 
     public RegionType(String key, String name,
                       CVItem icon,

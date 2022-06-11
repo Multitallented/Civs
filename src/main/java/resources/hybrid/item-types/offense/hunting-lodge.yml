@@ -9,6 +9,8 @@ groups:
 - offense
 level: 1
 
+war-enabled: true
+
 build-reqs:
 - g:sign*1
 - CHEST*2

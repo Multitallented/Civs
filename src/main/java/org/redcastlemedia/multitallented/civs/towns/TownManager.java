@@ -1,5 +1,18 @@
 package org.redcastlemedia.multitallented.civs.towns;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -13,13 +26,18 @@ import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
-import org.redcastlemedia.multitallented.civs.events.*;
-import org.redcastlemedia.multitallented.civs.items.CVItem;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.PlayerAcceptsTownInviteEvent;
+import org.redcastlemedia.multitallented.civs.events.TownCreatedEvent;
+import org.redcastlemedia.multitallented.civs.events.TownDestroyedEvent;
+import org.redcastlemedia.multitallented.civs.events.TownDevolveEvent;
+import org.redcastlemedia.multitallented.civs.events.TownEvolveEvent;
+import org.redcastlemedia.multitallented.civs.events.TownInvitesPlayerEvent;
+import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
@@ -28,10 +46,6 @@ import org.redcastlemedia.multitallented.civs.regions.effects.HousingEffect;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.DebugLogger;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.io.File;
-import java.util.*;
-import java.util.logging.Level;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGH)
 public class TownManager {
@@ -209,6 +223,8 @@ public class TownManager {
                 housing,
                 villagers,
                 lastDisable);
+        town.setWarEnabledToday(config.getBoolean("war-enabled-today", false));
+        town.setHasWarBuildings(config.getBoolean("has-war-buildings", false));
         TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
         town.setEffects(new HashMap<>(townType.getEffects()));
         town.setDevolvedToday(config.getBoolean("devolved-today", false));
@@ -522,6 +538,8 @@ public class TownManager {
             config.set("location", Region.locationToString(town.getLocation()));
             config.set("people", null);
             config.set("devolved-today", town.isDevolvedToday());
+            config.set("has-war-buildings", town.isHasWarBuildings());
+            config.set("war-enabled-today", town.isWarEnabledToday());
             if (town.isGovTypeChangedToday()) {
                 config.set("gov-type-changed-today", true);
             } else {
@@ -685,11 +703,12 @@ public class TownManager {
         Location newTownLocation = player.getLocation();
         List<Location> childLocations = new ArrayList<>();
         TownType childTownType = null;
+        Town intersectTown = null;
         String governmentType = null;
         int villagerCount = 0;
         double bank = 0;
         if (townType.getChild() != null) {
-            Town intersectTown = intersectTowns.get(0);
+            intersectTown = intersectTowns.get(0);
             if (intersectTown.getPopulation() < townType.getChildPopulation()) {
                 CivItem intersectTownItem = ItemManager.getInstance().getItemType(intersectTown.getType().toLowerCase());
                 String localIntersectName = intersectTownItem.getDisplayName(player);
@@ -731,12 +750,20 @@ public class TownManager {
 
         if (childTownType != null) {
             evolveTown(player, civilian, townType, townTypeLocalName, childTownType, newTown, government);
-
+            newTown.setHasWarBuildings(intersectTown.isHasWarBuildings());
+            newTown.setWarEnabledToday(intersectTown.isWarEnabledToday());
         } else {
             if (!canJoinAnotherTown(player)) {
                 player.sendMessage(Civs.getPrefix() +
                         localeManager.getTranslation(player, "residence-limit-reached").replace("$1", name));
                 return;
+            }
+            for (Region region : getRegionsInTown(newTown)) {
+                RegionType rt = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+                if (rt.isWarEnabled()) {
+                    newTown.setHasWarBuildings(true);
+                    newTown.setWarEnabledToday(true);
+                }
             }
             TownCreatedEvent townCreatedEvent = new TownCreatedEvent(newTown, townType);
             newTown.setLastVote(System.currentTimeMillis());
@@ -977,5 +1004,83 @@ public class TownManager {
             }
         }
         return false;
+    }
+
+    public void checkAllTownsForWarEnabled() {
+        for (Iterator<Town> it = sortedTowns.iterator(); it.hasNext(); ) {
+            Town town = it.next();
+            Set<RegionType> regionTypes = new HashSet<>();
+            for (Region region : getRegionsInTown(town)) {
+                regionTypes.add((RegionType) ItemManager.getInstance().getItemType(region.getType()));
+            }
+            for (RegionType regionType : regionTypes) {
+                checkWarEnabled(town, regionType, null, false);
+            }
+        }
+    }
+
+    public void checkWarDisabled(RegionType regionType, Region region) {
+        if (!regionType.isWarEnabled()) {
+            return;
+        }
+        Town town = getTownAt(region.getLocation());
+        if (town != null && town.isHasWarBuildings()) {
+            if (!townHasWarEnabledBuildings(town)) {
+                town.setHasWarBuildings(false);
+                saveTown(town);
+            }
+        }
+        for (UUID uuid : region.getOwners()) {
+            Civilian civ = CivilianManager.getInstance().getCivilian(uuid);
+            for (Town t : getOwnedTowns(civ)) {
+                if (!t.isHasWarBuildings()) {
+                    continue;
+                }
+                if (!townHasWarEnabledBuildings(t)) {
+                    t.setHasWarBuildings(false);
+                    saveTown(t);
+                }
+            }
+        }
+    }
+
+    public boolean townHasWarEnabledBuildings(Town town) {
+        for (Region r : getRegionsInTown(town)) {
+            RegionType rt = (RegionType) ItemManager.getInstance().getItemType(r.getType());
+            if (rt.isWarEnabled()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void checkWarEnabled(Town town, RegionType regionType, Player builder, boolean broadcast) {
+        if (!regionType.isWarEnabled()) {
+            return;
+        }
+        if (town != null && !town.isWarEnabledToday()) {
+            setTownToWarAndBroadcast(broadcast, town);
+        }
+        if (builder != null) {
+            Civilian buildCiv = CivilianManager.getInstance().getCivilian(builder.getUniqueId());
+            for (Town cTown : TownManager.getInstance().getOwnedTowns(buildCiv)) {
+                if (cTown.isWarEnabledToday() || cTown.equals(town)) {
+                    continue;
+                }
+                setTownToWarAndBroadcast(broadcast, cTown);
+            }
+        }
+    }
+
+    private void setTownToWarAndBroadcast(boolean broadcast, Town cTown) {
+        if (broadcast) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player, "town-war-enabled")
+                        .replace("$1", cTown.getName()));
+            }
+        }
+        cTown.setWarEnabledToday(true);
+        cTown.setHasWarBuildings(true);
+        TownManager.getInstance().saveTown(cTown);
     }
 }

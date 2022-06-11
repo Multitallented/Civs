@@ -133,6 +133,18 @@ items:
     actions:
       - leave-revolt
       - refresh
+  war-enabled:
+    index: 23
+    icon: NETHERITE_SWORD
+    name: war-enabled
+    desc: war-enabled-desc
+    actions: []
+  war-disabled:
+    index: 23
+    icon: LILY_OF_THE_VALLEY
+    name: war-disabled
+    desc: war-disabled-desc
+    actions: []
   karma:
     index: 24
     icon: SOUL_SAND

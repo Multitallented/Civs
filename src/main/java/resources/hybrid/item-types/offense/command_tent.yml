@@ -10,6 +10,8 @@ groups:
 - basecenter
 level: 1
 
+war-enabled: true
+
 build-reqs:
 - g:fence*7
 - CHEST*1

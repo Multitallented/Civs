@@ -695,6 +695,7 @@ public class ProtectionHandler implements Listener {
                             (ceaseFireStart == -1 || ceaseFireEnd == -1 || !isWithinCeaseFire)) {
                         int powerReduce = 0;
                         if ((!town.isDevolvedToday() || !town.getEffects().containsKey("daily_shield")) &&
+                                town.isWarEnabledToday() &&
                                 town.isPvpEnabled() &&
                                 town.getEffects().containsKey(RegionEffectConstants.POWER_SHIELD) &&
                                 (!ConfigManager.getInstance().isCatapultTntDamageOnly() ||
