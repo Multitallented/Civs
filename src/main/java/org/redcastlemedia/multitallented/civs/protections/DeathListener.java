@@ -254,15 +254,27 @@ public class DeathListener implements Listener {
     }
 
     private boolean cancelForWarDisabledTowns(Player damager, Player player) {
+        boolean damagerTownWarEnabled = false;
         for (Town town : TownManager.getInstance().getTownsForPlayer(player.getUniqueId())) {
-            if (!town.isWarEnabledToday()) {
+            if (town.getRawPeople().containsKey(damager.getUniqueId()) &&
+                    town.getRawPeople().containsKey(player.getUniqueId())) {
                 return false;
+            }
+            if (town.isWarEnabledToday()) {
+                damagerTownWarEnabled = true;
             }
         }
+        if (!damagerTownWarEnabled) {
+            return true;
+        }
+        boolean playerTownWarEnabled = false;
         for (Town town : TownManager.getInstance().getTownsForPlayer(damager.getUniqueId())) {
-            if (!town.isWarEnabledToday()) {
-                return false;
+            if (town.isWarEnabledToday()) {
+                playerTownWarEnabled = true;
             }
+        }
+        if (!playerTownWarEnabled) {
+            return true;
         }
         boolean damagerHasWarBuilding = false;
         boolean playerHasWarBuilding = false;

@@ -732,7 +732,8 @@ public class RegionManager {
     }
 
     private boolean regionAllowedInPeacefulTown(RegionType regionType, BlockPlaceEvent event, Player player, Town town) {
-        if (town != null && !town.isHasWarBuildings() && !town.getOwners().contains(player.getUniqueId())) {
+        if (regionType.isWarEnabled() && town != null &&
+                !town.isHasWarBuildings() && !town.getOwners().contains(player.getUniqueId())) {
             Government gov = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
             if (gov.getGovernmentType() == GovernmentType.LIBERTARIAN ||
                     gov.getGovernmentType() == GovernmentType.LIBERTARIAN_SOCIALISM ||
