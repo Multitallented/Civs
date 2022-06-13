@@ -25,6 +25,9 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianTests;
 import org.redcastlemedia.multitallented.civs.protections.DeathListener;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
+import org.redcastlemedia.multitallented.civs.towns.Town;
+import org.redcastlemedia.multitallented.civs.towns.TownManager;
+import org.redcastlemedia.multitallented.civs.towns.TownTests;
 
 public class DeathListenerTests extends TestUtil {
 
@@ -73,6 +76,7 @@ public class DeathListenerTests extends TestUtil {
     @After
     public void cleanup() {
         RegionManager.getInstance().reload();
+        TownManager.getInstance().reload();
     }
 
     @Test
@@ -118,6 +122,10 @@ public class DeathListenerTests extends TestUtil {
 
     @Test
     public void lastDamageShouldUpdate() {
+        Town town = TownTests.loadTown("test", "settlement", new Location(world, 0, 0,0));
+        town.getRawPeople().put(player3.getUniqueId(), "member");
+        town.getRawPeople().put(player2.getUniqueId(), "member");
+        town.getRawPeople().put(civilian1.getUuid(), "member");
         RegionsTests.createNewRegion("catapult", player3.getUniqueId());
         RegionsTests.createNewRegion("catapult", player2.getUniqueId());
         RegionsTests.createNewRegion("catapult", civilian1.getUuid());
