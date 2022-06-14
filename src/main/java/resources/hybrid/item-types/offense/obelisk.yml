@@ -1,0 +1,38 @@
+type: region
+icon: CHEST
+dynmap-marker: warning
+shop-icon: CRYING_OBSIDIAN
+max: 1
+price: 1000
+groups:
+  - offense
+level: 3
+
+pre-reqs:
+  - member=keep
+
+towns:
+  - keep
+
+build-reqs:
+  - OBSIDIAN*40,COAL_BLOCK*40,NETHERITE_BLOCK*40
+  - CRYING_OBSIDIAN*6
+
+build-radius: 6 #13x13x13
+
+effects:
+  - block_break
+  - block_build
+  - block_fire
+  - deny_mob_spawn
+  - door_use
+  - wonder
+
+period: 3600 # 1hour
+upkeep:
+  upkeep:
+    0:
+      power-output: 1
+      output:
+        - NETHERITE_HELMET%8,NETHERITE_CHESTPLATE%8,NETHERITE_LEGGINGS%8,NETHERITE_BOOTS%9,NETHERITE_SWORD%8,NETHERITE_AXE%8,ENCHANTED_GOLDEN_APPLE%1,TOTEM_OF_UNDYING%4,GOLDEN_CARROT*16%12,ELYTRA%1,SHULKER_BOX%1,GUNPOWDER*32%32
+

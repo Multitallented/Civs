@@ -792,10 +792,19 @@ public class RegionManager {
     private boolean checkCreateRegionListeners(BlockPlaceEvent event, Player player, Block block, RegionType regionType) {
         if (regionType.getEffects().containsKey(Constants.WONDER)) {
             for (Region region : getAllRegions()) {
-                if (regionType.getProcessedName().equals(region.getType())) {
+                if (region.getEffects().containsKey(Constants.WONDER) &&
+                        regionType.getProcessedName().equals(region.getType())) {
+                    String ownerName = "Unowned";
+                    Set<UUID> wonderOwners = region.getOwners();
+                    if (!wonderOwners.isEmpty()) {
+                        OfflinePlayer ownerPlayer = Bukkit.getOfflinePlayer(wonderOwners.iterator().next());
+                        if (ownerPlayer != null && ownerPlayer.hasPlayedBefore() && ownerPlayer.getName() != null) {
+                            ownerName = ownerPlayer.getName();
+                        }
+                    }
                     player.sendMessage(Civs.getPrefix() +
                             LocaleManager.getInstance().getTranslation(player, "cant-build-wonder")
-                                    .replace("$1", regionType.getDisplayName(player)));
+                                    .replace("$1", ownerName));
                     event.setCancelled(true);
                     return true;
                 }

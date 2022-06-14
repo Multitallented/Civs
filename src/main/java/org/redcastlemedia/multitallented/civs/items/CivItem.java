@@ -1,9 +1,15 @@
 package org.redcastlemedia.multitallented.civs.items;
 
-import lombok.Getter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -15,12 +21,14 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleUtil;
+import org.redcastlemedia.multitallented.civs.regions.Region;
+import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.skills.SkillManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Getter;
 
 public abstract class CivItem extends CVItem {
     private final ItemType itemType;
@@ -156,6 +164,27 @@ public abstract class CivItem extends CVItem {
             item.getLore().addAll(Util.textWrap(civilian, Util.parseColors(getDescription(civilian.getLocale()))));
             return item.createItemStack();
         }
+        if (getItemType().equals(ItemType.REGION)) {
+            RegionType regionType = (RegionType) this;
+            Region wonder = wonderAlreadyBuilt(regionType);
+            if (wonder != null) {
+                CVItem item = createCVItemFromString(Material.BARRIER.name());
+                item.setDisplayName(getDisplayName(player));
+                String ownerName = "Unowned";
+                Set<UUID> wonderOwners = wonder.getOwners();
+                if (!wonderOwners.isEmpty()) {
+                    OfflinePlayer ownerPlayer = Bukkit.getOfflinePlayer(wonderOwners.iterator().next());
+                    if (ownerPlayer != null && ownerPlayer.hasPlayedBefore() && ownerPlayer.getName() != null) {
+                        ownerName = ownerPlayer.getName();
+                    }
+                }
+                item.getLore().addAll(Util.textWrap(civilian, LocaleManager.getInstance().getTranslation(player, "cant-build-wonder")
+                        .replace("$1", ownerName)));
+                item.getLore().add(wonder.getLocation().getBlockX() + "x " + wonder.getLocation().getBlockZ() + "z");
+                item.getLore().addAll(Util.textWrap(civilian, Util.parseColors(getDescription(civilian.getLocale()))));
+                return item.createItemStack();
+            }
+        }
         if (!getItemType().equals(ItemType.FOLDER)) {
             cvItem.setDisplayName(getDisplayName(player));
             cvItem.getLore().clear();
@@ -167,6 +196,18 @@ public abstract class CivItem extends CVItem {
             itemStack.setItemMeta(meta);
         }
         return itemStack;
+    }
+
+    private Region wonderAlreadyBuilt(RegionType regionType) {
+        if (regionType.getEffects().containsKey(Constants.WONDER)) {
+            for (Region region : RegionManager.getInstance().getAllRegions()) {
+                if (region.getEffects().containsKey(Constants.WONDER) &&
+                        regionType.getProcessedName().equals(region.getType())) {
+                    return region;
+                }
+            }
+        }
+        return null;
     }
 
     public enum ItemType {

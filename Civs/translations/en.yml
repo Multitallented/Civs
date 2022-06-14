@@ -700,6 +700,8 @@
 #castle-desc: "The center of the Castle. Required before upgrading the outpost to a castle. Creates 6 power every 15 minutes. War enabled building"
 #catapult-name: "Catapult"
 #catapult-desc: "Shoots TNT with precision at long range. War enabled building"
+#obelisk-name: "Obelisk"
+#obelisk-desc: "Generates high level PvP items randomly for free. Only one Obelisk can exist at a time."
 #command_tent-name: "Command Tent"
 #command_tent-desc: "The center of the outpost. Allows you to siege a nearby town. Creates 1 power every 15 minutes. War enabled building"
 #hunting-lodge-name: "Hunting Lodge"
