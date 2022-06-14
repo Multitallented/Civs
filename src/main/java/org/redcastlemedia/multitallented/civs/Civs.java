@@ -34,6 +34,7 @@ import org.redcastlemedia.multitallented.civs.plugins.PluginListener;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 import org.redcastlemedia.multitallented.civs.regions.effects.ConveyorEffect;
+import org.redcastlemedia.multitallented.civs.regions.effects.FlyEffect;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.scheduler.DailyScheduler;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
@@ -89,6 +90,7 @@ public class Civs extends JavaPlugin {
     @Override
     public void onDisable() {
 //        BlockLogger.getInstance().saveBlocks();
+        FlyEffect.removeFlyFromAllPlayers();
         StructureUtil.removeAllBoundingBoxes();
         RegionManager.getInstance().saveAllUnsavedRegions();
         TownManager.getInstance().saveAllUnsavedTowns();

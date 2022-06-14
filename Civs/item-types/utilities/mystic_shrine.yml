@@ -1,0 +1,40 @@
+#enabled: true
+#type: region
+#icon: CRAFTING_TABLE
+#shop-icon: FEATHER
+#dynmap-marker: tornado
+#max: 1
+#price: 8000
+#groups:
+#  - utility
+#level: 7
+#
+#pre-reqs:
+#  - member=city:metropolis
+#
+#build-reqs:
+#  - g:primary*115
+#  - g:secondary*30
+#  - g:glass*60
+#  - LAVA*3
+#  - DIAMOND_BLOCK*4
+#  - SEA_LANTERN*4
+#  - SCULK*8
+#
+#build-radius: 7
+#towns:
+#  - city
+#  - metropolis
+#
+#effects:
+#  - block_break
+#  - block_build
+#  - block_liquid
+#  - block_fire
+#  - fly
+#
+#period: 900 #15 minutes
+#upkeep:
+#  0:
+#    power-output: 6
+#

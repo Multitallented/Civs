@@ -32,6 +32,7 @@ import org.redcastlemedia.multitallented.civs.civilians.Bounty;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.events.EnterCombatEvent;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
@@ -237,6 +238,8 @@ public class DeathListener implements Listener {
                 }
                 damagerCiv.setLastDamage(System.currentTimeMillis());
                 damagerCiv.setLastDamager(player.getUniqueId());
+                EnterCombatEvent enterCombatEvent = new EnterCombatEvent(damagerCiv.getUuid());
+                Bukkit.getPluginManager().callEvent(enterCombatEvent);
             }
         }
         if (!civilian.isInCombat() && player.equals(damager)) {
@@ -247,6 +250,8 @@ public class DeathListener implements Listener {
                     "combat-tagged").replace("$1", "" + (combatTagDuration / 1000)));
         }
         civilian.setLastDamage(System.currentTimeMillis());
+        EnterCombatEvent enterCombatEvent = new EnterCombatEvent(player.getUniqueId());
+        Bukkit.getPluginManager().callEvent(enterCombatEvent);
         if (damager == null) {
             return;
         }
