@@ -38,6 +38,6 @@
 #  0:
 #    reagents:
 #      - TOTEM_OF_UNDYING
-#      - REDSTONE_DUST*64
+#      - REDSTONE*64
 #    output:
-#      - REDSTONE_DUST*1
+#      - REDSTONE*1
