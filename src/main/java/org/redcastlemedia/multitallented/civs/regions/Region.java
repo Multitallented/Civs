@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,6 +29,8 @@ import org.redcastlemedia.multitallented.civs.items.CVInventory;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
+import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
@@ -922,21 +925,10 @@ public class Region {
     }
 
     private boolean runRegionUpkeepPayout(RegionUpkeep regionUpkeep) {
-        boolean hasMoney = false;
         if (regionUpkeep.getPayout() != 0 && Civs.econ != null) {
             double payout = regionUpkeep.getPayout();
             Town town = TownManager.getInstance().getTownAt(getLocation());
-            if (town != null && town.getGovernmentType() != null) {
-                Government government = GovernmentManager.getInstance()
-                        .getGovernment(town.getGovernmentType());
-                for (GovTypeBuff buff : government.getBuffs()) {
-                    if (buff.getBuffType() != GovTypeBuff.BuffType.PAYOUT) {
-                        continue;
-                    }
-                    payout = payout * (1 + (double) buff.getAmount() / 100);
-                    break;
-                }
-            }
+            payout = applyTownPayoutBuff(payout, town);
 
             Government government = null;
             if (town != null) {
@@ -944,62 +936,87 @@ public class Region {
             }
             if (payout > 0 && town != null && (government.getGovernmentType() == GovernmentType.COMMUNISM ||
                     government.getGovernmentType() == GovernmentType.COOPERATIVE)) {
-                double size = town.getRawPeople().size();
-                if (government.getGovernmentType() == GovernmentType.COMMUNISM) {
-                    payout = payout / size;
-                    for (UUID uuid : town.getRawPeople().keySet()) {
-                        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-                        Civs.econ.depositPlayer(offlinePlayer, payout);
-                        hasMoney = true;
-                    }
-                } else if (government.getGovernmentType() == GovernmentType.COOPERATIVE) {
-                    Map<UUID, Double> payouts = OwnershipUtil.getCooperativeSplit(town, this);
-                    for (UUID uuid : payouts.keySet()) {
-                        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-                        Civs.econ.depositPlayer(offlinePlayer, payouts.get(uuid) * payout);
-                        hasMoney = true;
-                    }
-                    if (hasMoney) {
-                        double coopCut = payout * 0.1;
-                        town.setBankAccount(town.getBankAccount() + coopCut);
-                    }
-                }
+                return distributePayoutByGovType(payout, town, government);
             } else {
-                Set<UUID> owners = getOwners();
-                if (owners.size() > 1) {
-                    payout = payout / (double) owners.size();
+                return distributePayoutToOwners(payout);
+            }
+        } else {
+            return true;
+        }
+    }
+
+    private double applyTownPayoutBuff(double payout, Town town) {
+        if (town != null && town.getGovernmentType() != null) {
+            Government government = GovernmentManager.getInstance()
+                    .getGovernment(town.getGovernmentType());
+            for (GovTypeBuff buff : government.getBuffs()) {
+                if (buff.getBuffType() != GovTypeBuff.BuffType.PAYOUT) {
+                    continue;
                 }
-                if (payout == 0) {
-                    hasMoney = true;
-                } else {
-                    if (payout < 0) {
-                        boolean allOwnersPaid = true;
-                        for (UUID uuid : owners) {
-                            OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-                            if (!Civs.econ.has(player, payout)) {
-                                allOwnersPaid = false;
-                            }
-                        }
-                        if (allOwnersPaid) {
-                            hasMoney = true;
-                            for (UUID uuid : owners) {
-                                OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-                                Civs.econ.withdrawPlayer(player, Math.abs(payout));
-                            }
-                        }
-                    } else {
-                        for (UUID uuid : owners) {
-                            OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-                            if (payout > 0) {
-                                Civs.econ.depositPlayer(player, payout);
-                                hasMoney = true;
-                            }
-                        }
-                    }
+                payout = payout * (1 + (double) buff.getAmount() / 100);
+                break;
+            }
+        }
+        return payout;
+    }
+
+    private boolean distributePayoutToOwners(double payout) {
+        boolean hasMoney = false;
+        Set<UUID> owners = getOwners();
+        if (payout == 0) {
+            return true;
+        }
+        if (owners.size() > 1) {
+            payout = payout / (double) owners.size();
+        }
+        if (payout < 0) {
+            boolean allOwnersPaid = true;
+            for (UUID uuid : owners) {
+                OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+                if (!Civs.econ.has(player, Math.abs(payout))) {
+                    allOwnersPaid = false;
+                }
+            }
+            if (allOwnersPaid) {
+                hasMoney = true;
+                for (UUID uuid : owners) {
+                    OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+                    Civs.econ.withdrawPlayer(player, Math.abs(payout));
                 }
             }
         } else {
-            hasMoney = true;
+            for (UUID uuid : owners) {
+                OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+                if (payout > 0) {
+                    Civs.econ.depositPlayer(player, payout);
+                    hasMoney = true;
+                }
+            }
+        }
+        return hasMoney;
+    }
+
+    private boolean distributePayoutByGovType(double payout, Town town, Government government) {
+        boolean hasMoney = false;
+        double size = town.getRawPeople().size();
+        if (government.getGovernmentType() == GovernmentType.COMMUNISM) {
+            payout = payout / size;
+            for (UUID uuid : town.getRawPeople().keySet()) {
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+                Civs.econ.depositPlayer(offlinePlayer, payout);
+                hasMoney = true;
+            }
+        } else if (government.getGovernmentType() == GovernmentType.COOPERATIVE) {
+            Map<UUID, Double> payouts = OwnershipUtil.getCooperativeSplit(town, this);
+            for (UUID uuid : payouts.keySet()) {
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+                Civs.econ.depositPlayer(offlinePlayer, payouts.get(uuid) * payout);
+                hasMoney = true;
+            }
+            if (hasMoney) {
+                double coopCut = payout * 0.1;
+                town.setBankAccount(town.getBankAccount() + coopCut);
+            }
         }
         return hasMoney;
     }
