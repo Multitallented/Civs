@@ -35,8 +35,32 @@ upkeep:
   0:
     reagents:
     - IRON_SHOVEL
+    - POTION
+    - WITHER_SKELETON_SKULL*3
     input:
-    - DIRT*4
+    - SOUL_SAND*4
+    - BONE*2
     output:
-    - DIRT*1%75,LEATHER_BOOTS*1%20,EMERALD*2%4,NETHER_STAR*1%1
+    - DIRT*1%75,SOUL_SOIL*1%20,GOLD_BLOCK*2%4,NETHER_STAR*1%1
+  1:
+    reagents:
+      - POTION
+      - ECHO_SHARD
+    input:
+      - SCULK_SHRIEKER*1,SCULK_CATALYST*1
+      - APPLE
+      - GOLD_BLOCK
+    output:
+      - ROTTEN_FLESH*1%75,GOLDEN_APPLE*1%17,ENCHANTED_GOLDEN_APPLE*1%8
+  2:
+    reagents:
+      - SHEARS
+      - POTION
+    input:
+      - FEATHER*8
+      - PHANTOM_MEMBRANE*4
+      - CHORUS_FRUIT
+      - SHULKER_SHELL
+    output:
+      - SLIMEBALL*1%75,SLIME_BLOCK*1%17,ELYTRA*1%8
 
