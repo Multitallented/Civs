@@ -72,6 +72,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
+import org.redcastlemedia.multitallented.civs.alliances.Alliance;
+import org.redcastlemedia.multitallented.civs.alliances.AllianceManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
@@ -281,6 +283,7 @@ public class ProtectionHandler implements Listener {
 
     private boolean blockIsOre(Material type) {
         switch (type) {
+            case COPPER_ORE:
             case COAL_ORE:
             case IRON_ORE:
             case DIAMOND_ORE:
@@ -597,7 +600,7 @@ public class ProtectionHandler implements Listener {
             }
         }
         boolean setCancelled = shouldBlockAction(event.getEntity().getLocation(),
-                player, "chest_use");
+                player, RegionEffectConstants.CHEST_USE);
         if (setCancelled) {
             event.setCancelled(true);
             if (player != null) {
@@ -882,13 +885,22 @@ public class ProtectionHandler implements Listener {
             if (shouldCancel) {
                 sendRegionProtectedMessage(player);
                 return true;
-            } else {
-                RegionManager.getInstance().removeCheckedRegion(clickedBlock.getLocation());
-                checkRelative(clickedBlock, BlockFace.NORTH);
-                checkRelative(clickedBlock, BlockFace.EAST);
-                checkRelative(clickedBlock, BlockFace.SOUTH);
-                checkRelative(clickedBlock, BlockFace.WEST);
             }
+            Town town = TownManager.getInstance().getTownAt(clickedBlock.getLocation());
+            if (town != null) {
+                Set<Town> playerTowns = TownManager.getInstance().getTownsForPlayer(player.getUniqueId());
+                Set<Alliance> alliances = AllianceManager.getInstance().getAlliances(town);
+                if (!town.isWarEnabledToday() && !playerTowns.contains(town) && !isPlayerInAlliance(playerTowns, alliances)) {
+                    sendRegionProtectedMessage(player);
+                    return true;
+                }
+            }
+
+            RegionManager.getInstance().removeCheckedRegion(clickedBlock.getLocation());
+            checkRelative(clickedBlock, BlockFace.NORTH);
+            checkRelative(clickedBlock, BlockFace.EAST);
+            checkRelative(clickedBlock, BlockFace.SOUTH);
+            checkRelative(clickedBlock, BlockFace.WEST);
         } else if (mat == Material.FARMLAND) {
             boolean shouldCancel = shouldBlockAction(clickedBlock, player, RegionEffectConstants.BLOCK_BREAK, null);
             if (shouldCancel) {
@@ -915,6 +927,18 @@ public class ProtectionHandler implements Listener {
             if (shouldCancel) {
                 sendRegionProtectedMessage(player);
                 return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isPlayerInAlliance(Set<Town> playerTowns, Set<Alliance> alliances) {
+        for (Alliance alliance : alliances) {
+            for (String townName : alliance.getMembers()) {
+                Town town = TownManager.getInstance().getTown(townName);
+                if (playerTowns.contains(town)) {
+                    return true;
+                }
             }
         }
         return false;
