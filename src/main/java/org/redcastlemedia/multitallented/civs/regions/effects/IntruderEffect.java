@@ -1,5 +1,10 @@
 package org.redcastlemedia.multitallented.civs.regions.effects;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -10,18 +15,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.events.PlayerEnterTownEvent;
 import org.redcastlemedia.multitallented.civs.events.PlayerExitTownEvent;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
-
-import java.util.HashMap;
 
 @CivsSingleton
 public class IntruderEffect implements Listener {
@@ -117,8 +120,9 @@ public class IntruderEffect implements Listener {
         }
         lastMessage.put(playerName, System.currentTimeMillis());
 
+        Set<UUID> sentMessages = new HashSet<>();
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (town.getPeople().containsKey(p.getUniqueId())) {
+            if (!sentMessages.contains(p.getUniqueId()) && town.getPeople().containsKey(p.getUniqueId())) {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(p.getUniqueId());
                 String message;
                 if (entering) {
@@ -130,6 +134,7 @@ public class IntruderEffect implements Listener {
                 }
                 p.sendMessage(Civs.getPrefix() + ChatColor.RED + message);
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1, 1);
+                sentMessages.add(p.getUniqueId());
             }
         }
     }
