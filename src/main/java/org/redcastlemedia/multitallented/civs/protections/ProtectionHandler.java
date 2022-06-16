@@ -838,13 +838,11 @@ public class ProtectionHandler implements Listener {
                 mat == Material.SPRUCE_DOOR ||
                 mat == Material.JUNGLE_DOOR ||
                 mat == Material.DARK_OAK_DOOR ||
-                mat == Material.MANGROVE_DOOR ||
                 mat == Material.ACACIA_DOOR ||
                 mat == Material.OAK_TRAPDOOR ||
                 mat == Material.BIRCH_TRAPDOOR ||
                 mat == Material.SPRUCE_TRAPDOOR ||
                 mat == Material.JUNGLE_TRAPDOOR ||
-                mat == Material.MANGROVE_TRAPDOOR ||
                 mat == Material.DARK_OAK_TRAPDOOR ||
                 mat == Material.ACACIA_TRAPDOOR ||
                 mat == Material.IRON_DOOR ||
@@ -854,7 +852,6 @@ public class ProtectionHandler implements Listener {
                 mat == Material.SPRUCE_FENCE_GATE ||
                 mat == Material.ACACIA_FENCE_GATE ||
                 mat == Material.JUNGLE_FENCE_GATE ||
-                mat == Material.MANGROVE_FENCE_GATE ||
                 mat == Material.BIRCH_FENCE_GATE) {
             boolean shouldBlock = shouldBlockAction(clickedBlock, player, RegionEffectConstants.DOOR_USE, null);
             if (shouldBlock) {
@@ -865,8 +862,6 @@ public class ProtectionHandler implements Listener {
                 mat == Material.OAK_WALL_SIGN ||
                 mat == Material.JUNGLE_SIGN ||
                 mat == Material.JUNGLE_WALL_SIGN ||
-                mat == Material.MANGROVE_WALL_SIGN ||
-                mat == Material.MANGROVE_SIGN ||
                 mat == Material.DARK_OAK_SIGN ||
                 mat == Material.DARK_OAK_WALL_SIGN ||
                 mat == Material.SPRUCE_SIGN ||
