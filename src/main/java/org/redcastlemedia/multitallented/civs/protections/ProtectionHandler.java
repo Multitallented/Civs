@@ -887,7 +887,7 @@ public class ProtectionHandler implements Listener {
                 return true;
             }
             Town town = TownManager.getInstance().getTownAt(clickedBlock.getLocation());
-            if (town != null) {
+            if (town != null && player != null) {
                 Set<Town> playerTowns = TownManager.getInstance().getTownsForPlayer(player.getUniqueId());
                 Set<Alliance> alliances = AllianceManager.getInstance().getAlliances(town);
                 if (!town.isWarEnabledToday() && !playerTowns.contains(town) && !isPlayerInAlliance(playerTowns, alliances)) {
