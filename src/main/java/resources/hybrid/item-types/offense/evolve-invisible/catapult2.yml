@@ -8,6 +8,7 @@ is-in-shop: false
 max: 4
 groups:
   - offense
+  - siegemachinegroup
 level: 1
 
 war-enabled: true

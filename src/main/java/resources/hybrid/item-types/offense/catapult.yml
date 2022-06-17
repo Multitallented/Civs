@@ -6,6 +6,7 @@ name: Catapult
 price: 150
 groups:
 - offense
+- siegemachinegroup
 level: 1
 
 war-enabled: true
