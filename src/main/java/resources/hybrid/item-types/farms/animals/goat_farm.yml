@@ -30,7 +30,8 @@ period: 600 #10 minutes
 upkeep:
  0:
    reagents:
-     - WHEAT*64
+     - WHEAT*16
+     - GOAT_HORN
    input:
      - BUCKET
    output:
