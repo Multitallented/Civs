@@ -786,6 +786,14 @@ public class ProtectionHandler implements Listener {
         RegionManager regionManager = RegionManager.getInstance();
         Set<Region> tempArray = regionManager.getContainingRegions(location, 5);
         for (Region region : tempArray) {
+            Town town = TownManager.getInstance().getTownAt(region.getLocation());
+            if (town != null) {
+                TownType townType = (TownType) ItemManager.getInstance().getItemType(town.getType());
+                if ((townType.getEffects().containsKey(RegionEffectConstants.POWER_SHIELD) && town.getPower() > 0) ||
+                        townType.getEffects().containsKey(RegionEffectConstants.BLOCK_EXPLOSION)) {
+                    continue;
+                }
+            }
             regionManager.removeRegion(region, true, true);
             CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), null);
         }
