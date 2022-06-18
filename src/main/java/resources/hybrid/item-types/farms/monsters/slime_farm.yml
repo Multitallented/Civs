@@ -38,7 +38,7 @@ upkeep:
     reagents:
       - HONEY_BOTTLE*6
     input:
-      - POTION
+      - WATER_BOTTLE
     output:
       - SLIME_BALL*9
 
