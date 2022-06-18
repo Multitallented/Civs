@@ -37,7 +37,7 @@
 #    reagents:
 #      - HONEY_BOTTLE*6
 #    input:
-#      - WATER_BOTTLE
+#      - EXPERIENCE_BOTTLE
 #    output:
 #      - SLIME_BALL*9
 #
