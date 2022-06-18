@@ -19,6 +19,7 @@ import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
 import org.redcastlemedia.multitallented.civs.items.CivItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 
 public class CivilianTests extends TestUtil {
@@ -62,6 +63,14 @@ public class CivilianTests extends TestUtil {
         civilian.setBounties(bountyArrayList);
         Bounty bounty = civilian.getHighestBounty();
         assertEquals(20.0, bounty.getAmount(), 0.1);
+    }
+
+    @Test
+    public void maxItemTest() {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(TestUtil.player.getUniqueId());
+        civilian.getStashItems().put("mansion", 1);
+        RegionType regionType = (RegionType) ItemManager.getInstance().getItemType("mansion");
+        assertNull(civilian.isAtMax(regionType, true));
     }
 
     @Test

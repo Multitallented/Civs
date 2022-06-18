@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -38,7 +37,6 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.ActionBarUtil;
 import org.redcastlemedia.multitallented.civs.util.MessageUtil;
-import org.redcastlemedia.multitallented.civs.util.PermissionUtil;
 
 import lombok.Getter;
 import lombok.Setter;
