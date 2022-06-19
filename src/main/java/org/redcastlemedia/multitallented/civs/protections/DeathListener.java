@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -25,6 +26,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.redcastlemedia.multitallented.civs.Civs;
 import org.redcastlemedia.multitallented.civs.CivsSingleton;
 import org.redcastlemedia.multitallented.civs.ConfigManager;
@@ -135,6 +137,11 @@ public class DeathListener implements Listener {
         Player damager = null;
         if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) event;
+            if (entityDamageByEntityEvent.getDamager().getPersistentDataContainer().has(NamespacedKey.minecraft("civs_firework"), PersistentDataType.BYTE)) {
+                event.setCancelled(true);
+                return;
+            }
+
             if (entityDamageByEntityEvent.getDamager() instanceof Player) {
                 damager = (Player) entityDamageByEntityEvent.getDamager();
             } else if (entityDamageByEntityEvent.getDamager() instanceof Projectile) {
