@@ -22,9 +22,6 @@ public class PluginListener implements Listener {
         if ("dynmap".equalsIgnoreCase(event.getPlugin().getName())) {
             DynmapHook.dynmapCommonAPI = (DynmapCommonAPI) event.getPlugin();
             DynmapHook.initMarkerSet();
-        } else if ("Mimic".equalsIgnoreCase(event.getPlugin().getName())) {
-            Civs.mimic = true;
-            MimicClassProvider.loadProvider();
         } else if (Constants.PLACEHOLDER_API.equals(event.getPlugin().getName()) &&
                 Bukkit.getPluginManager().isPluginEnabled(Constants.PLACEHOLDER_API)) {
             new PlaceHook().register();
@@ -42,8 +39,6 @@ public class PluginListener implements Listener {
     public void onPluginDisable(PluginDisableEvent event) {
         if ("dynmap".equalsIgnoreCase(event.getPlugin().getName())) {
             DynmapHook.dynmapCommonAPI = null;
-        } else if ("Mimic".equalsIgnoreCase(event.getPlugin().getName())) {
-            Civs.mimic = null;
         } else if ("MMOItems".equals(event.getPlugin().getName()) &&
                 !Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
             Civs.mmoItems = null;

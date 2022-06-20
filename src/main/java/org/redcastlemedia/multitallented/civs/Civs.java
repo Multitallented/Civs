@@ -29,7 +29,6 @@ import org.redcastlemedia.multitallented.civs.commands.TabComplete;
 import org.redcastlemedia.multitallented.civs.dynmaphook.DynmapHook;
 import org.redcastlemedia.multitallented.civs.pl3xmap.Pl3xMapHook;
 import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
-import org.redcastlemedia.multitallented.civs.plugins.MimicClassProvider;
 import org.redcastlemedia.multitallented.civs.plugins.PluginListener;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
@@ -230,11 +229,6 @@ public class Civs extends JavaPlugin {
         if (Bukkit.getPluginManager().isPluginEnabled("DiscordSRV")) {
             discordSRV = DiscordSRV.getPlugin();
         }
-        if (Bukkit.getPluginManager().isPluginEnabled("Mimic")) {
-            Civs.mimic = true;
-            MimicClassProvider.loadProvider();
-        }
-
         if (Bukkit.getPluginManager().isPluginEnabled("dynmap")) {
             Bukkit.getPluginManager().registerEvents(new DynmapHook(), this);
             DynmapHook.dynmapCommonAPI = (DynmapCommonAPI) Bukkit.getPluginManager().getPlugin("dynmap");
