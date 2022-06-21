@@ -708,6 +708,18 @@ public class RegionManager {
 
         TutorialManager.getInstance().completeStep(civilian, TutorialManager.TutorialType.BUILD, regionTypeName);
 
+        broadcastWonder(player, regionType);
+
+        Region region = new Region(regionType.getProcessedName(), people, location, radii, regionType.getEffects(), 0);
+        addRegion(region);
+        TownManager.getInstance().checkWarEnabled(town, regionType, player, true);
+        StructureUtil.removeBoundingBox(civilian.getUuid());
+        forceLoadRegionChunk(region);
+        RegionCreatedEvent regionCreatedEvent = new RegionCreatedEvent(region, regionType, player);
+        Bukkit.getPluginManager().callEvent(regionCreatedEvent);
+    }
+
+    private void broadcastWonder(Player player, RegionType regionType) {
         if (regionType.getEffects().containsKey(Constants.WONDER)) {
             for (Player player1 : Bukkit.getOnlinePlayers()) {
                 player1.sendMessage(Civs.getPrefix() +
@@ -721,14 +733,6 @@ public class RegionManager {
                         .replace("$1", player.getDisplayName()).replace("$2", regionType.getDisplayName()));
             }
         }
-
-        Region region = new Region(regionType.getProcessedName(), people, location, radii, regionType.getEffects(), 0);
-        addRegion(region);
-        TownManager.getInstance().checkWarEnabled(town, regionType, player, true);
-        StructureUtil.removeBoundingBox(civilian.getUuid());
-        forceLoadRegionChunk(region);
-        RegionCreatedEvent regionCreatedEvent = new RegionCreatedEvent(region, regionType, player);
-        Bukkit.getPluginManager().callEvent(regionCreatedEvent);
     }
 
     private boolean regionAllowedInPeacefulTown(RegionType regionType, BlockPlaceEvent event, Player player, Town town) {

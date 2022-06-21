@@ -137,7 +137,8 @@ public class DeathListener implements Listener {
         Player damager = null;
         if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) event;
-            if (entityDamageByEntityEvent.getDamager().getPersistentDataContainer().has(NamespacedKey.minecraft("civs_firework"), PersistentDataType.BYTE)) {
+            if (Civs.getInstance() != null &&
+                    entityDamageByEntityEvent.getDamager().getPersistentDataContainer().has(NamespacedKey.minecraft("civs_firework"), PersistentDataType.BYTE)) {
                 event.setCancelled(true);
                 return;
             }
