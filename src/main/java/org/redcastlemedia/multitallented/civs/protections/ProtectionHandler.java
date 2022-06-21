@@ -403,6 +403,9 @@ public class ProtectionHandler implements Listener {
         if (index1 != -1) {
             if (index2 != -1) {
                 region.getMissingBlocks().get(index1).remove(index2);
+                if (region.getMissingBlocks().get(index1).isEmpty()) {
+                    region.getMissingBlocks().remove(index1);
+                }
             } else {
                 region.getMissingBlocks().remove(index1);
             }
