@@ -1,5 +1,14 @@
 package org.redcastlemedia.multitallented.civs.towns;
 
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -10,23 +19,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.redcastlemedia.multitallented.civs.SuccessException;
 import org.redcastlemedia.multitallented.civs.TestUtil;
+import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.commands.TownCommand;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.protections.ProtectionHandler;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
+import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionsTests;
 import org.redcastlemedia.multitallented.civs.util.Constants;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.UUID;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class TownTests extends TestUtil {
 
@@ -35,6 +38,47 @@ public class TownTests extends TestUtil {
         TownManager.getInstance().reload();
         RegionManager.getInstance().reload();
         GovernmentManager.getInstance().reload();
+    }
+
+    @Test
+    public void warEnabledRegionShouldMakeTownWarEnabled() {
+        Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        Town town = TownTests.loadTown("hamlet", "hamlet", new Location(world, 0, 0, 0));
+        town.getRawPeople().put(civilian.getUuid(), Constants.OWNER);
+        assertFalse(town.isWarEnabledToday());
+        RegionsTests.createNewRegion("weapons_factory", civilian.getUuid(), new Location(world, 0, 0, 0));
+        TownManager.getInstance().checkWarEnabled(town, (RegionType) ItemManager.getInstance().getItemType("weapons_factory"), player, false);
+        assertTrue(town.isWarEnabledToday());
+    }
+
+    @Test
+    public void townOwnedByOtherPlayerShouldNotBeWarEnabled() {
+        Town town = TownTests.loadTown("hamlet", "hamlet", new Location(world, 0, 0, 0));
+        town.getRawPeople().put(player.getUniqueId(), Constants.OWNER);
+        town.getRawPeople().put(player2.getUniqueId(), Constants.MEMBER);
+        assertFalse(town.isWarEnabledToday());
+        RegionsTests.createNewRegion("command_tent", player2.getUniqueId(), new Location(world, 1000, 0, 0));
+        TownManager.getInstance().checkWarEnabled(null, (RegionType) ItemManager.getInstance().getItemType("command_tent"), player2, false);
+        assertFalse(town.isWarEnabledToday());
+        Town town2 = TownTests.loadTown("outpost", "outpost", new Location(world, 1000, 0, 0));
+        town2.getRawPeople().put(player2.getUniqueId(), Constants.OWNER);
+        TownManager.getInstance().checkWarEnabled(town2, (RegionType) ItemManager.getInstance().getItemType("command_tent"), player2, false);
+        TownManager.getInstance().checkWarEnabled(null, (RegionType) ItemManager.getInstance().getItemType("command_tent"), player2, false);
+        assertTrue(town2.isWarEnabledToday());
+        assertFalse(town.isWarEnabledToday());
+        TownManager.getInstance().checkAllTownsForWarEnabled();
+        assertFalse(town.isWarEnabledToday());
+    }
+
+    @Test
+    public void townOwnedByPlayerShouldBeWarEnabled() {
+        Town town = TownTests.loadTown("hamlet", "hamlet", new Location(world, 0, 0, 0));
+        town.getRawPeople().put(player.getUniqueId(), Constants.OWNER);
+        town.getRawPeople().put(player2.getUniqueId(), Constants.OWNER);
+        assertFalse(town.isWarEnabledToday());
+        RegionsTests.createNewRegion("command_tent", player2.getUniqueId(), new Location(world, 1000, 0, 0));
+        TownManager.getInstance().checkAllTownsForWarEnabled();
+        assertTrue(town.isWarEnabledToday());
     }
 
     @Test

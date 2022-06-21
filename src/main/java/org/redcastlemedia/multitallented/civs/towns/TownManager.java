@@ -1009,12 +1009,35 @@ public class TownManager {
     public void checkAllTownsForWarEnabled() {
         for (Iterator<Town> it = sortedTowns.iterator(); it.hasNext(); ) {
             Town town = it.next();
+            town.setWarEnabledToday(false);
             Set<RegionType> regionTypes = new HashSet<>();
             for (Region region : getRegionsInTown(town)) {
                 regionTypes.add((RegionType) ItemManager.getInstance().getItemType(region.getType()));
             }
             for (RegionType regionType : regionTypes) {
                 checkWarEnabled(town, regionType, null, false);
+            }
+            if (!town.isWarEnabledToday()) {
+                checkRegionsAreWarEnabledForOwners(town);
+            }
+            if (!town.isWarEnabledToday()) {
+                town.setHasWarBuildings(false);
+            }
+        }
+    }
+
+    private void checkRegionsAreWarEnabledForOwners(Town town) {
+        Set<UUID> townOwners = town.getOwners();
+        for (Region region : RegionManager.getInstance().getAllRegions()) {
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(region.getType());
+            if (regionType.isWarEnabled()) {
+                Set<UUID> regionOwners = region.getOwners();
+                for (UUID uuid : townOwners) {
+                    if (regionOwners.contains(uuid)) {
+                        setTownToWarAndBroadcast(false, town);
+                        return;
+                    }
+                }
             }
         }
     }

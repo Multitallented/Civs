@@ -46,12 +46,9 @@ public class DailyScheduler implements Runnable {
                 town.setDevolvedToday(false);
                 TownManager.getInstance().saveTown(town);
             }
-            if (!town.isHasWarBuildings() && town.isWarEnabledToday()) {
-                town.setWarEnabledToday(false);
-                TownManager.getInstance().saveTown(town);
-            }
         }
 
+        TownManager.getInstance().checkAllTownsForWarEnabled();
         doTaxes();
         doVotes();
         addDailyPower();
