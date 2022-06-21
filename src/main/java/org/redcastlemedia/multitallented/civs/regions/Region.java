@@ -1,11 +1,11 @@
 package org.redcastlemedia.multitallented.civs.regions;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,8 +29,6 @@ import org.redcastlemedia.multitallented.civs.items.CVInventory;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
-import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.towns.GovTypeBuff;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
@@ -551,26 +549,21 @@ public class Region {
                         continue;
                     }
                     Material mat = currentBlock.getType();
-                    boolean destroyIndex = false;
-                    int i=0;
-                    outer1: for (HashMap<Material, Integer> tempMap : itemCheck) {
+                    for (Iterator<HashMap<Material, Integer>> it = itemCheck.iterator(); it.hasNext(); ) {
+                        HashMap<Material, Integer> tempMap = it.next();
                         if (tempMap.containsKey(mat)) {
                             if (tempMap.get(mat) < 2) {
-                                destroyIndex = true;
+                                it.remove();
                             } else {
                                 for (Material currentMat : tempMap.keySet()) {
                                     tempMap.put(currentMat, tempMap.get(mat) - 1);
                                 }
                             }
-                            break outer1;
+                            break;
                         }
-                        i++;
                     }
-                    if (destroyIndex) {
-                        itemCheck.remove(i);
-                        if (itemCheck.isEmpty()) {
-                            break outer;
-                        }
+                    if (itemCheck.isEmpty()) {
+                        break outer;
                     }
                 }
             }

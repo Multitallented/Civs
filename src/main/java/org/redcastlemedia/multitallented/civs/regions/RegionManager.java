@@ -772,14 +772,14 @@ public class RegionManager {
                                                         RegionType regionType,
                                                         LocaleManager localeManager,
                                                         RegionBlockCheckResponse regionBlockCheckResponse) {
-        event.setCancelled(true);
-        StructureUtil.showGuideBoundingBox(player, event.getBlockPlaced().getLocation(), regionType, true);
-        player.sendMessage(Civs.getPrefix() +
-                localeManager.getTranslation(player, "no-required-blocks")
-                        .replace("$1", regionType.getDisplayName(player)));
         List<HashMap<Material, Integer>> missingBlocks = regionBlockCheckResponse.getMissingItems();
 
         if (missingBlocks != null && !missingBlocks.isEmpty()) {
+            player.sendMessage(Civs.getPrefix() +
+                    localeManager.getTranslation(player, "no-required-blocks")
+                            .replace("$1", regionType.getDisplayName(player)));
+            event.setCancelled(true);
+            StructureUtil.showGuideBoundingBox(player, event.getBlockPlaced().getLocation(), regionType, true);
             List<List<CVItem>> missingList = Util.convertListMapToDisplayableList(missingBlocks);
 
             HashMap<String, Object> data = new HashMap<>();
@@ -789,8 +789,11 @@ public class RegionManager {
             data.put("regionType", regionType.getProcessedName());
             MenuManager.clearHistory(player.getUniqueId());
             MenuManager.getInstance().openMenuFromHistory(player, "recipe", data);
+            return null;
         }
-        return null;
+        return new RegionPoints(regionType.getBuildRadiusX(), regionType.getBuildRadiusX(),
+                regionType.getBuildRadiusY(), regionType.getBuildRadiusY(), regionType.getBuildRadiusZ(),
+                regionType.getBuildRadiusZ());
     }
 
     private boolean checkCreateRegionListeners(BlockPlaceEvent event, Player player, Block block, RegionType regionType) {
