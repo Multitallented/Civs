@@ -1,8 +1,6 @@
 package org.redcastlemedia.multitallented.civs.menus.regions;
 
-import java.text.NumberFormat;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -13,11 +11,11 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
+import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.ItemManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.menus.CivsMenu;
 import org.redcastlemedia.multitallented.civs.menus.CustomMenu;
 import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
@@ -26,11 +24,12 @@ import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
 import org.redcastlemedia.multitallented.civs.regions.RegionUpkeep;
+import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 import org.redcastlemedia.multitallented.civs.regions.effects.ForSaleEffect;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
-import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
+import org.redcastlemedia.multitallented.civs.util.OwnershipUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
 @CivsMenu(name = "region") @SuppressWarnings("unused")
@@ -85,6 +84,9 @@ public class RegionMenu extends CustomMenu {
         boolean isOwner = isMember &&
                 region.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
+        boolean hasOverride = OwnershipUtil.hasColonialOverride(town, civilian) ||
+                (town.getRawPeople().containsKey(civilian.getUuid()) &&
+                        town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER));
         boolean viewMembers = Util.hasOverride(region, civilian, town) ||
                 (regionPeople.get(civilian.getUuid()) != null &&
                 regionPeople.get(civilian.getUuid()).contains(Constants.OWNER));
@@ -120,7 +122,7 @@ public class RegionMenu extends CustomMenu {
         } else if ("destroy".equals(menuIcon.getKey())) {
             boolean isIndestructible = region.getEffects().containsKey("indestructible");
             boolean isAdmin = Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION);
-            if (!isAdmin && (isIndestructible || !isOwner)) {
+            if (!isAdmin && (isIndestructible || (!isOwner && !hasOverride))) {
                 return new ItemStack(Material.AIR);
             }
         } else if ("people".equals(menuIcon.getKey())) {

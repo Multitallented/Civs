@@ -69,6 +69,9 @@ public final class OwnershipUtil {
     }
 
     public static boolean hasColonialOverride(Town town, Civilian civilian) {
+        if (town == null) {
+            return false;
+        }
         Government government = GovernmentManager.getInstance().getGovernment(town.getGovernmentType());
         boolean colonialOverride = government.getGovernmentType() == GovernmentType.COLONIALISM &&
                 town.getColonialTown() != null;
