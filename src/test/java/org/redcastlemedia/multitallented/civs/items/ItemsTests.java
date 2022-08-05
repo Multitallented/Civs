@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -53,6 +51,14 @@ public class ItemsTests extends TestUtil {
     public void itemTypesShouldLoadProperly() {
         FolderType folderType = (FolderType) ItemManager.getInstance().getItemType("defense");
         assertTrue(folderType.getChildren().contains(ItemManager.getInstance().getItemType("church")));
+    }
+
+    @Test
+    public void itemWithCustomModelDataShouldCreateProperly() {
+        CVItem cvItem = new CVItem(Material.COBBLESTONE, 1);
+        cvItem.setCustomModelData(60);
+        ItemStack itemStack = cvItem.createItemStack();
+        assertEquals(60, itemStack.getItemMeta().getCustomModelData());
     }
 
     @Test

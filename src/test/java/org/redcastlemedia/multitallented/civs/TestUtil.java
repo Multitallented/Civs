@@ -1,8 +1,7 @@
 package org.redcastlemedia.multitallented.civs;
 
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,8 +20,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -34,12 +31,10 @@ import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.junit.BeforeClass;
-import org.mockito.ArgumentMatcher;
 import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
-import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.skills.SkillManager;
 
@@ -109,17 +104,18 @@ public abstract class TestUtil {
             }
         }).when(logger).info(Matchers.anyString());
         when(server.getLogger()).thenReturn(logger);
-        when(server.createInventory(Matchers.any(InventoryHolder.class), Matchers.anyInt(), Matchers.anyString())).thenReturn(inventory);
+        when(server.createInventory(any(InventoryHolder.class), Matchers.anyInt(), Matchers.anyString())).thenReturn(inventory);
 
 
         ItemFactory itemFactory = mock(ItemFactory.class);
-        when(itemFactory.equals(Matchers.any(), Matchers.any())).thenReturn(true);
+        when(itemFactory.equals(any(), any())).thenReturn(true);
+        when(itemFactory.getItemMeta(any(Material.class))).thenReturn(new ItemMetaImpl());
         when(server.getItemFactory()).thenReturn(itemFactory);
         UnsafeValues unsafeValues = mock(UnsafeValues.class);
         when(unsafeValues.toLegacy(Material.CHEST)).thenReturn(Material.CHEST);
         when(server.getUnsafe()).thenReturn(unsafeValues);
         ItemMeta im = new ItemMetaImpl();
-        when(itemFactory.getItemMeta(Matchers.any(Material.class))).thenReturn(im);
+        when(itemFactory.getItemMeta(any(Material.class))).thenReturn(im);
 //        when(im.getDisplayName()).thenReturn("Civs Cobble");
 
         world = new WorldImpl("world");
@@ -132,24 +128,24 @@ public abstract class TestUtil {
         when(player.getLocation()).thenReturn(new Location(world, 0.5,0.5,0.5));
         when(player.getInventory()).thenReturn(new PlayerInventoryImpl());
         AttributeInstance mockAttribute = mock(AttributeInstance.class);
-        when(player.getAttribute(Matchers.any(Attribute.class))).thenReturn(mockAttribute);
+        when(player.getAttribute(any(Attribute.class))).thenReturn(mockAttribute);
         InventoryView view = mock(InventoryView.class);
         when(view.getTopInventory()).thenReturn(new InventoryImpl());
         when(player.getOpenInventory()).thenReturn(view);
         when(player.getServer()).thenReturn(server);
         when(player.getGameMode()).thenReturn(GameMode.SURVIVAL);
         when(player.getPlayer()).thenReturn(player);
-        when(server.getOfflinePlayer(Matchers.any(UUID.class))).thenReturn(player);
+        when(server.getOfflinePlayer(any(UUID.class))).thenReturn(player);
         UUID uuid2 = new UUID(1,3);
         player2 = mock(Player.class);
         when(player2.getWorld()).thenReturn(world);
         when(player2.getUniqueId()).thenReturn(uuid2);
         when(player2.getLocation()).thenReturn(new Location(world, -8197.5,69.5,3196.5));
-        when(player2.getAttribute(Matchers.any(Attribute.class))).thenReturn(mockAttribute);
+        when(player2.getAttribute(any(Attribute.class))).thenReturn(mockAttribute);
         when(player2.getInventory()).thenReturn(new PlayerInventoryImpl());
         when(player2.getServer()).thenReturn(server);
         when(player2.getGameMode()).thenReturn(GameMode.SURVIVAL);
-        when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
+        when(server.getPlayer(any(UUID.class))).thenReturn(player);
         when(server.getOnlinePlayers()).thenReturn((Collection) new ArrayList<Player>());
 
         when(server.getScheduler()).thenReturn(mock(BukkitScheduler.class));
@@ -202,7 +198,7 @@ public abstract class TestUtil {
         when(server.getWorld("world")).thenReturn(world);
         when(server.getWorld(world.getUID())).thenReturn(world);
         when(server.getWorld("world2")).thenReturn(world2);
-        when(server.getPlayer(Matchers.any(UUID.class))).thenReturn(player);
+        when(server.getPlayer(any(UUID.class))).thenReturn(player);
 
         when(server.getPluginManager()).thenReturn(pluginManager);
         blockUnique = createUniqueBlock(Material.CHEST, null, new Location(world, 4,0,0), true);

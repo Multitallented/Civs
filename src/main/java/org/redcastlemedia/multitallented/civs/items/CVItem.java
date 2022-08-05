@@ -371,7 +371,7 @@ public class CVItem {
         }
 
         ItemStack is = new ItemStack(mat, qty);
-        if (displayName != null || (lore != null && !lore.isEmpty())) {
+        if (displayName != null || (lore != null && !lore.isEmpty()) || customModelData != null) {
             ItemMeta im = null;
             if (!is.hasItemMeta()) {
                 im = Bukkit.getItemFactory().getItemMeta(is.getType());
@@ -385,7 +385,7 @@ public class CVItem {
                 if (lore != null && !lore.isEmpty()) {
                     im.setLore(lore);
                 }
-                im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS);
                 if (customModelData != null) {
                     is.getItemMeta().setCustomModelData(customModelData);
                 }

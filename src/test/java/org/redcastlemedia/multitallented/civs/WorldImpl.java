@@ -53,6 +53,7 @@ import org.bukkit.entity.Villager;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.generator.structure.Structure;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.metadata.MetadataValue;
@@ -61,6 +62,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Consumer;
 import org.bukkit.util.RayTraceResult;
+import org.bukkit.util.StructureSearchResult;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -1206,6 +1208,18 @@ public class WorldImpl implements World {
 
     @Override
     public Location locateNearestStructure(Location location, StructureType structureType, int i, boolean b) {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public StructureSearchResult locateNearestStructure(@NotNull Location location, @NotNull org.bukkit.generator.structure.StructureType structureType, int i, boolean b) {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public StructureSearchResult locateNearestStructure(@NotNull Location location, @NotNull Structure structure, int i, boolean b) {
         return null;
     }
 

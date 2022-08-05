@@ -27,6 +27,7 @@ public class ItemMetaImpl implements ItemMeta, Damageable, SkullMeta {
 
     private String displayName = null;
     private List<String> lore = new ArrayList<>();
+    private int customModelData = 0;
     public ItemMetaImpl() {
 
     }
@@ -87,12 +88,12 @@ public class ItemMetaImpl implements ItemMeta, Damageable, SkullMeta {
 
     @Override
     public int getCustomModelData() {
-        return 0;
+        return this.customModelData;
     }
 
     @Override
     public void setCustomModelData(Integer integer) {
-
+        this.customModelData = integer;
     }
 
     @Override
