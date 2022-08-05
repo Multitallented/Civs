@@ -31,6 +31,8 @@ show-player-skins-in-menus: true
 
 ##Allows players to set bounties on each other and on towns
 use-bounties: true
+##Disables PvP and war between towns and players that have no war capabilities
+use-war-enabled: true
 
 #allows players to earn exp in skills
 allow-skills: true

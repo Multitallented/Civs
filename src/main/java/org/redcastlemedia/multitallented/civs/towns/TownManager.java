@@ -1009,6 +1009,11 @@ public class TownManager {
     public void checkAllTownsForWarEnabled() {
         for (Iterator<Town> it = sortedTowns.iterator(); it.hasNext(); ) {
             Town town = it.next();
+            if (!ConfigManager.getInstance().isUseWarEnabled()) {
+                town.setWarEnabledToday(true);
+                town.setHasWarBuildings(true);
+                continue;
+            }
             town.setWarEnabledToday(false);
             Set<RegionType> regionTypes = new HashSet<>();
             for (Region region : getRegionsInTown(town)) {
@@ -1096,7 +1101,7 @@ public class TownManager {
     }
 
     private void setTownToWarAndBroadcast(boolean broadcast, Town cTown) {
-        if (broadcast) {
+        if (broadcast && ConfigManager.getInstance().isUseWarEnabled()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player, "town-war-enabled")
                         .replace("$1", cTown.getName()));

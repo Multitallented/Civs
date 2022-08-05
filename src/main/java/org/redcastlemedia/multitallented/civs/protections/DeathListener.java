@@ -267,6 +267,9 @@ public class DeathListener implements Listener {
     }
 
     private boolean cancelForWarDisabledTowns(Player damager, Player player) {
+        if (!ConfigManager.getInstance().isUseWarEnabled()) {
+            return false;
+        }
         boolean damagerHasWarBuilding = false;
         boolean playerHasWarBuilding = false;
         for (Region region : RegionManager.getInstance().getAllRegions()) {

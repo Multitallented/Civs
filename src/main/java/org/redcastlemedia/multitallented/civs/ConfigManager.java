@@ -1,18 +1,25 @@
 package org.redcastlemedia.multitallented.civs;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
+import java.util.logging.Level;
+
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.redcastlemedia.multitallented.civs.chat.ChatChannelConfig;
 import org.redcastlemedia.multitallented.civs.civilians.ChatChannel;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.util.FallbackConfigUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
-
-import java.io.File;
-import java.util.*;
-import java.util.logging.Level;
 
 import lombok.Getter;
 
@@ -180,6 +187,7 @@ public class ConfigManager {
     @Getter boolean allowFireworkUseInCombat;
     @Getter boolean dropElytraAndRiptideInCombat;
     @Getter boolean catapultTntDamageOnly;
+    @Getter boolean useWarEnabled;
 
     @Getter
     String chatChannelFormat;
@@ -394,6 +402,7 @@ public class ConfigManager {
             levelList = config.getStringList("levels");
             useParticleBoundingBoxes = config.getBoolean("use-particle-bounding-boxes", false);
             combatTagEnabled = config.getBoolean("combat-tag-enabled", true);
+            useWarEnabled = config.getBoolean("use-war-enabled", true);
             getGovSettings(config);
             maxTax = config.getDouble("max-town-tax", 50);
             daysBetweenVotes = config.getInt("days-between-elections", 7);
@@ -543,6 +552,7 @@ public class ConfigManager {
     }
 
     private void loadDefaults() {
+        useWarEnabled = true;
         catapultTntDamageOnly = false;
         dropElytraAndRiptideInCombat = false;
         allowFireworkUseInCombat = true;
