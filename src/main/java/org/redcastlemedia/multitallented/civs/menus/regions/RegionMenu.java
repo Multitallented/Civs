@@ -85,7 +85,7 @@ public class RegionMenu extends CustomMenu {
                 region.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER);
         Town town = TownManager.getInstance().getTownAt(region.getLocation());
         boolean hasOverride = OwnershipUtil.hasColonialOverride(town, civilian) ||
-                (town.getRawPeople().containsKey(civilian.getUuid()) &&
+                (town != null && town.getRawPeople().containsKey(civilian.getUuid()) &&
                         town.getRawPeople().get(civilian.getUuid()).contains(Constants.OWNER));
         boolean viewMembers = Util.hasOverride(region, civilian, town) ||
                 (regionPeople.get(civilian.getUuid()) != null &&
