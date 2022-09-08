@@ -274,7 +274,7 @@ public class DeathListener implements Listener {
         boolean playerHasWarBuilding = false;
         Civilian civ = CivilianManager.getInstance().getCivilian(player.getUniqueId());
         Civilian damagerCiv = CivilianManager.getInstance().getCivilian(damager.getUniqueId());
-        boolean areInSameTown = TownManager.getInstance().findCommonTowns(civ, damagerCiv).isEmpty();
+        boolean areInSameTown = !TownManager.getInstance().findCommonTowns(civ, damagerCiv).isEmpty();
         if (areInSameTown) {
             return false;
         }

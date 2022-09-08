@@ -25,8 +25,8 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
         <repository>
-            <id>ender-zone</id> <!-- Vault Repo -->
-            <url>https://ci.ender.zone/plugin/repository/everything</url>
+            <id>herocraft</id> <!-- Vault Repo -->
+            <url>https://nexus.hc.to/content/repositories/pub_releases/</url>
         </repository>
         <repository>
             <id>placeholderapi</id>
@@ -50,12 +50,16 @@
             <url>https://archiva.reflex.rip/repository/public/</url>
         </repository>
         <repository>
-            <id>enginehub-maven</id>
-            <url>https://maven.enginehub.org/repo/</url>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
+<!--        <repository>-->
+<!--            <id>enginehub-maven</id>-->
+<!--            <url>https://maven.enginehub.org/repo/</url>-->
+<!--        </repository>-->
         <repository>
             <id>jitpack.io</id>
-            <url>https://www.jitpack.io</url>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
@@ -74,7 +78,6 @@
             <version>1.19-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>

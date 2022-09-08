@@ -41,6 +41,7 @@ public class DeathListenerTests extends TestUtil {
 
     @Before
     public void onBefore() {
+        TownManager.getInstance().reload();
         RegionManager.getInstance().reload();
         CivilianManager.getInstance();
         this.player1 = mock(Player.class);
