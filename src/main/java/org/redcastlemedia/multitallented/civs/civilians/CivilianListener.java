@@ -15,6 +15,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.block.Container;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.HumanEntity;
@@ -63,8 +64,10 @@ import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
+import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 import org.redcastlemedia.multitallented.civs.scheduler.CommonScheduler;
 import org.redcastlemedia.multitallented.civs.skills.CivSkills;
+import org.redcastlemedia.multitallented.civs.spells.SpellUtil;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
@@ -73,8 +76,6 @@ import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownType;
 import org.redcastlemedia.multitallented.civs.tutorials.AnnouncementUtil;
 import org.redcastlemedia.multitallented.civs.util.Constants;
-import org.redcastlemedia.multitallented.civs.spells.SpellUtil;
-import org.redcastlemedia.multitallented.civs.regions.StructureUtil;
 import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
@@ -489,6 +490,14 @@ public class CivilianListener implements Listener {
         }
         blockLogger.removeBlock(block.getLocation());
         cvItem.setQty(1);
+        if (block.getState() instanceof Container) {
+            Container container = (Container) block.getState();
+            for (ItemStack itemStack : container.getInventory()) {
+                if (itemStack != null && itemStack.getType() != Material.AIR) {
+                    block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
+                }
+            }
+        }
         if (player != null && (!ConfigManager.getInstance().getAllowSharingCivsItems() ||
                 uuid == null || cvItem.getMat() != block.getType() ||
                 !uuid.equals(player.getUniqueId()))) {

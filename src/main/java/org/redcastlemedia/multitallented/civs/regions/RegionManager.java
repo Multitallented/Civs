@@ -19,7 +19,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
+import org.bukkit.block.Container;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -213,18 +213,16 @@ public class RegionManager {
         Bukkit.getPluginManager().callEvent(new RegionDestroyedEvent(region));
 
         Block block = region.getLocation().getBlock();
-        if (block instanceof Chest) {
-            ItemStack[] contents = ((Chest) block).getBlockInventory().getContents();
-            for (ItemStack is : contents) {
+        if (block.getState() instanceof Container) {
+            for (ItemStack is : ((Container) block.getState()).getInventory()) {
                 if (is != null) {
                     block.getWorld().dropItemNaturally(block.getLocation(), is);
                 }
             }
-            ((Chest) block).getBlockInventory().clear();
         }
 
         if (Civs.getInstance() != null) {
-            region.getLocation().getBlock().setType(Material.AIR);
+            block.setType(Material.AIR);
         }
         BlockLogger.getInstance().removeBlock(region.getLocation());
         removeRegion(region);

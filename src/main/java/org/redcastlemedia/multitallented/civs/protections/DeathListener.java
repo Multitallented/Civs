@@ -272,6 +272,30 @@ public class DeathListener implements Listener {
         }
         boolean damagerHasWarBuilding = false;
         boolean playerHasWarBuilding = false;
+        Civilian civ = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+        Civilian damagerCiv = CivilianManager.getInstance().getCivilian(damager.getUniqueId());
+        boolean areInSameTown = TownManager.getInstance().findCommonTowns(civ, damagerCiv).isEmpty();
+        if (areInSameTown) {
+            return false;
+        }
+        for (Town town : TownManager.getInstance().getTownsForPlayer(player.getUniqueId())) {
+            if (town.getRawPeople().containsKey(damager.getUniqueId()) &&
+                    town.getRawPeople().containsKey(player.getUniqueId())) {
+                return false;
+            }
+            if (town.isWarEnabledToday()) {
+                damagerHasWarBuilding = true;
+            }
+        }
+        for (Town town : TownManager.getInstance().getTownsForPlayer(damager.getUniqueId())) {
+            if (town.isWarEnabledToday()) {
+                playerHasWarBuilding = true;
+            }
+        }
+        if (playerHasWarBuilding && damagerHasWarBuilding) {
+            return false;
+        }
+
         for (Region region : RegionManager.getInstance().getAllRegions()) {
             if (region.getRawPeople().containsKey(player.getUniqueId()) &&
                     region.getRawPeople().get(player.getUniqueId()).contains(Constants.OWNER)) {
@@ -291,21 +315,7 @@ public class DeathListener implements Listener {
                 return false;
             }
         }
-        for (Town town : TownManager.getInstance().getTownsForPlayer(player.getUniqueId())) {
-            if (town.getRawPeople().containsKey(damager.getUniqueId()) &&
-                    town.getRawPeople().containsKey(player.getUniqueId())) {
-                return false;
-            }
-            if (town.isWarEnabledToday()) {
-                damagerHasWarBuilding = true;
-            }
-        }
-        for (Town town : TownManager.getInstance().getTownsForPlayer(damager.getUniqueId())) {
-            if (town.isWarEnabledToday()) {
-                playerHasWarBuilding = true;
-            }
-        }
-        return !(playerHasWarBuilding && damagerHasWarBuilding);
+        return true;
     }
 
     private boolean cancelIfNotInPvpEnabledTown(Player damager, Player player) {
