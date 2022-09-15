@@ -1,23 +1,23 @@
 package org.redcastlemedia.multitallented.civs.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.civs.Civs;
-import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.civilians.Civilian;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianListener;
 import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionManager;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @CivsCommand(keys = { "reset" }) @SuppressWarnings("unused")
 public class ResetCommand extends CivCommand {
@@ -64,8 +64,8 @@ public class ResetCommand extends CivCommand {
             }
         }
         for (Region region : regionsToDestroy) {
-            RegionManager.getInstance().removeRegion(region, false, true);
             CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), null);
+            RegionManager.getInstance().removeRegion(region, false, true);
         }
         CivilianManager.getInstance().deleteCivilian(civilian);
 

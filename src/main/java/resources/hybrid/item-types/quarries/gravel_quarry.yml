@@ -1,0 +1,31 @@
+type: region
+icon: CHEST
+shop-icon: GRAVEL
+dynmap-marker: minecart
+price: 25
+groups:
+- raw
+- quarry
+level: 1
+
+build-reqs:
+- GRAVEL*24
+- FURNACE*2
+- CHEST*2
+
+build-radius: 3
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+
+period: 15 #15 seconds
+upkeep:
+  0:
+    reagents:
+    - STONE_SHOVEL
+    output:
+    - GRAVEL*4
+

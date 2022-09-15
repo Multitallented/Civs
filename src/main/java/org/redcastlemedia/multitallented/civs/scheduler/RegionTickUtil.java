@@ -38,8 +38,8 @@ public final class RegionTickUtil {
                 RegionTickEvent regionTickEvent = new RegionTickEvent(region, regionType, hasUpkeep, shouldTick);
                 Bukkit.getPluginManager().callEvent(regionTickEvent);
                 if (regionTickEvent.getShouldDestroy()) {
-                    RegionManager.getInstance().removeRegion(region, true, true);
                     CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), null);
+                    RegionManager.getInstance().removeRegion(region, true, true);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

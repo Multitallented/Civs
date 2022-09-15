@@ -489,6 +489,10 @@ public class CivilianListener implements Listener {
             uuid = UUID.fromString(ChatColor.stripColor(cvItem.getLore().get(0)));
         }
         blockLogger.removeBlock(block.getLocation());
+        if (RegionManager.getInstance().getRegionAt(block.getLocation()) == null) {
+            return false;
+        }
+
         cvItem.setQty(1);
         if (block.getState() instanceof Container) {
             Container container = (Container) block.getState();

@@ -347,9 +347,9 @@ public class ProtectionHandler implements Listener {
                 double salvage = regionType.getPrice(civilian) * ConfigManager.getInstance().getRefundPercentage();
                 Civs.econ.depositPlayer(event.getPlayer(), salvage);
             }
+            CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), event.getPlayer());
             RegionManager.getInstance().removeRegion(region, true, true);
             ItemManager.getInstance().addMinItems(civilian);
-            CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), event.getPlayer());
             return false;
         }
     }
@@ -799,8 +799,8 @@ public class ProtectionHandler implements Listener {
                     continue;
                 }
             }
-            regionManager.removeRegion(region, true, true);
             CivilianListener.getInstance().shouldCancelBlockBreak(region.getLocation().getBlock(), null);
+            regionManager.removeRegion(region, true, true);
         }
     }
 
