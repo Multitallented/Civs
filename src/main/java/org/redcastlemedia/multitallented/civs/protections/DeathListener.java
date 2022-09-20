@@ -190,6 +190,11 @@ public class DeathListener implements Listener {
             }
         }
 
+        if (player.getInventory().getChestplate() != null &&
+                player.getInventory().getChestplate().getType() == Material.ELYTRA) {
+            event.setDamage(event.getDamage() * ConfigManager.getInstance().getElytraDamageMultiplier());
+        }
+
         if (event.getDamage() > 0 && event.getCause() != EntityDamageEvent.DamageCause.SUFFOCATION &&
                 event.getCause() != EntityDamageEvent.DamageCause.FALL &&
                 event.getCause() != EntityDamageEvent.DamageCause.CONTACT &&

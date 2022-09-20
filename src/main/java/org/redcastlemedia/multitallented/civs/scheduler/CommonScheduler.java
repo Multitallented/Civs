@@ -122,21 +122,22 @@ public class CommonScheduler implements Runnable {
     }
 
     private void dropItemInCombat(ItemStack itemStack, Player player, String slot) {
-        if (itemStack != null) {
-            if (itemStack.getType() == Material.ELYTRA ||
-                    itemStack.getEnchantmentLevel(Enchantment.RIPTIDE) > 0) {
-                String disallowed = itemStack.getType().name();
-                boolean removed = player.getInventory().removeItem(itemStack).isEmpty();
-                if (!removed && "chest".equals(slot)) {
-                    player.getInventory().setChestplate(new ItemStack(Material.AIR));
-                } else if (!removed && "off".equals(slot)) {
-                    player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
-                }
-                player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
-                player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
-                                "action-not-allowed").replace("$1", "Combat")
-                        .replace("$2", disallowed));
+        if (itemStack != null && (itemStack.getType() == Material.ELYTRA ||
+                itemStack.getEnchantmentLevel(Enchantment.RIPTIDE) > 0)) {
+            String disallowed = itemStack.getType().name();
+            boolean removed = player.getInventory().removeItem(itemStack).isEmpty();
+            if (!removed && "chest".equals(slot)) {
+                player.getInventory().setChestplate(new ItemStack(Material.AIR));
+            } else if (!removed && "off".equals(slot)) {
+                player.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
             }
+            HashMap<Integer, ItemStack> missingItems = player.getInventory().addItem(itemStack);
+            if (!missingItems.isEmpty()) {
+                player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
+            }
+            player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
+                            "action-not-allowed").replace("$1", "Combat")
+                    .replace("$2", disallowed));
         }
     }
 
@@ -207,6 +208,14 @@ public class CommonScheduler implements Runnable {
         Town town = townManager.getTownAt(player.getLocation());
         Town prevTown = lastTown.get(player.getUniqueId());
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
+
+        if (ConfigManager.getInstance().isDropElytraAndRiptideInEnemyTowns() &&
+                !town.getPeople().containsKey(player.getUniqueId())) {
+            dropItemInCombat(player.getInventory().getChestplate(), player, "chest");
+            dropItemInCombat(player.getInventory().getItemInOffHand(), player, "off");
+            dropItemInCombat(player.getInventory().getItemInMainHand(), player, "main");
+        }
+
         TownType townType = null;
         if (town != null) {
             townType = (TownType) ItemManager.getInstance().getItemType(town.getType());

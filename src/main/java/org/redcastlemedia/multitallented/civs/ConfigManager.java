@@ -186,6 +186,8 @@ public class ConfigManager {
     @Getter int ceaseFireEnd;
     @Getter boolean allowFireworkUseInCombat;
     @Getter boolean dropElytraAndRiptideInCombat;
+    @Getter boolean dropElytraAndRiptideInEnemyTowns;
+    @Getter double elytraDamageMultiplier;
     @Getter boolean catapultTntDamageOnly;
     @Getter boolean useWarEnabled;
 
@@ -320,6 +322,8 @@ public class ConfigManager {
             defaultClass = config.getString("default-class", "default");
             showKillStreakMessages = config.getBoolean("show-killstreak-messages", true);
             dropElytraAndRiptideInCombat = config.getBoolean("drop-elytra-and-riptide-in-combat", false);
+            dropElytraAndRiptideInEnemyTowns = config.getBoolean("drop-elytra-and-riptide-in-enemy-town", false);
+            elytraDamageMultiplier = config.getDouble("elytra-damage-multiplier", 1.0);
             folderIcons = new HashMap<>();
             ConfigurationSection section2 = config.getConfigurationSection("folders");
             if (section2 != null) {
@@ -555,6 +559,8 @@ public class ConfigManager {
         useWarEnabled = true;
         catapultTntDamageOnly = false;
         dropElytraAndRiptideInCombat = false;
+        dropElytraAndRiptideInEnemyTowns = false;
+        elytraDamageMultiplier = 1.0;
         allowFireworkUseInCombat = true;
         ceaseFireEnd = -1;
         ceaseFireStart = -1;

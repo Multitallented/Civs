@@ -96,6 +96,8 @@ villager-cooldown: 300
 allow-hunt-cross-world: false
 
 drop-elytra-and-riptide-in-combat: false
+drop-elytra-and-riptide-in-enemy-town: false
+elytra-damage-multiplier: 1.0
 allow-firework-use-in-combat: true
 
 ##stops arrow turrets from shooting at monsters
