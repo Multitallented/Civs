@@ -105,6 +105,19 @@ public class SelectTownMenu extends CustomMenu {
         if (player == null) {
             return true;
         }
+        boolean isColony = MenuManager.getAllData(civilian.getUuid()).containsKey("colony");
+        if (isColony) {
+            Town colonyTown = TownManager.getInstance().getTown((String) MenuManager.getData(civilian.getUuid(), "colony"));
+            if (colonyTown != null) {
+                String townName = ChatColor.stripColor(itemStack.getItemMeta().getDisplayName());
+                Town town = TownManager.getInstance().getTown(townName);
+                colonyTown.setColonialTown(townName);
+                Map<String, String> data = new HashMap<>();
+                data.put("town", colonyTown.getName());
+                MenuManager.getInstance().openMenu(player, "town", data);
+                return true;
+            }
+        }
         boolean isAllianceSelect = MenuManager.getAllData(civilian.getUuid()).containsKey("ally");
         if (isAllianceSelect) {
             String townName = ChatColor.stripColor(itemStack.getItemMeta().getDisplayName());

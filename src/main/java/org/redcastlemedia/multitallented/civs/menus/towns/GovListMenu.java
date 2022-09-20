@@ -20,6 +20,7 @@ import org.redcastlemedia.multitallented.civs.menus.MenuIcon;
 import org.redcastlemedia.multitallented.civs.menus.MenuManager;
 import org.redcastlemedia.multitallented.civs.towns.Government;
 import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
+import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.Constants;
@@ -122,7 +123,17 @@ public class GovListMenu extends CustomMenu {
                 theseActions.add("menu:select-town?townList=" + townList);
                 putActionList(civilian, itemStack, theseActions);
             } else {
-                putActions(civilian, menuIcon, itemStack, count);
+                if (GovernmentType.COLONIALISM == government.getGovernmentType()) {
+                    Town town = (Town) MenuManager.getData(civilian.getUuid(), "town");
+                    if (town != null) {
+                        ArrayList<String> theseActions = new ArrayList<>();
+                        theseActions.add("select-gov");
+                        theseActions.add("menu:select-town?colony=" + town.getName());
+                        putActionList(civilian, itemStack, theseActions);
+                    }
+                } else {
+                    putActions(civilian, menuIcon, itemStack, count);
+                }
             }
             ((HashMap<ItemStack, String>) MenuManager.getData(civilian.getUuid(), "govMap")).put(itemStack, govName);
             return itemStack;
