@@ -209,7 +209,7 @@ public class CommonScheduler implements Runnable {
         Town prevTown = lastTown.get(player.getUniqueId());
         Civilian civilian = CivilianManager.getInstance().getCivilian(player.getUniqueId());
 
-        if (ConfigManager.getInstance().isDropElytraAndRiptideInEnemyTowns() &&
+        if (ConfigManager.getInstance().isDropElytraAndRiptideInEnemyTowns() && town != null &&
                 !town.getPeople().containsKey(player.getUniqueId())) {
             dropItemInCombat(player.getInventory().getChestplate(), player, "chest");
             dropItemInCombat(player.getInventory().getItemInOffHand(), player, "off");
