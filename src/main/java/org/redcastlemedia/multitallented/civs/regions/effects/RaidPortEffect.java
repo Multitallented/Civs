@@ -114,7 +114,7 @@ public class RaidPortEffect implements Listener, CreateRegionListener {
         } else {
             hardshipBuffer = Civs.econ.getBalance(player);
         }
-        if (town.getHardship() > civilian.getHardship() + hardshipBuffer) {
+        if (ConfigManager.getInstance().isUseHardshipSystem() && town.getHardship() > civilian.getHardship() + hardshipBuffer) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "hardship-too-high").replace("$1", town.getName()));
             return false;

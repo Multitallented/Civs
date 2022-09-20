@@ -687,7 +687,7 @@ public class ProtectionHandler implements Listener {
             if (shouldBlockActionEffect(event.getLocation(), null, RegionEffectConstants.POWER_SHIELD, 0)) {
                 Town town = TownManager.getInstance().getTownAt(event.getLocation());
                 if (town != null) {
-                    if (checkHardship(player, town)) {
+                    if (ConfigManager.getInstance().isUseHardshipSystem() && checkHardship(player, town)) {
                         event.setCancelled(true);
                         return;
                     }

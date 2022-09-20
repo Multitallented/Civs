@@ -44,8 +44,8 @@ public class ColonyCommand extends CivCommand {
 
         boolean isOwner = owningTown.getRawPeople().containsKey(player.getUniqueId()) &&
                 owningTown.getRawPeople().get(player.getUniqueId()).contains(Constants.OWNER);
-        if (!isOwner || player.isOp() ||
-                (Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION))) {
+        boolean isAdmin = player.isOp() || (Civs.perm != null && Civs.perm.has(player, Constants.ADMIN_PERMISSION));
+        if (!isOwner && !isAdmin) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "no-permission"));
             return true;

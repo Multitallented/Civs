@@ -126,7 +126,7 @@ karma-per-kill: 50
 karma-per-kill-streak: 5
 ##How often should karma be cut by 50%? Adds 50% to negative karma. Subtracts 50% from positive karma.
 karma-depreciate-period: 43200 #12 hours
-hardship-should-pay-damages: true
+hardship-should-pay-damages: false
 hardship-depreciation-period-in-days: 7 #once a week
 hunt-karma: 250.0 # how much karma should a town get when using a building with hunt
 hunt-new-players: true # should players be able to hunt people that aren't in towns

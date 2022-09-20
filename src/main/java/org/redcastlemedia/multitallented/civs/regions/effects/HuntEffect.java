@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -166,7 +165,7 @@ public class HuntEffect implements Listener, CreateRegionListener {
         if (Civs.econ != null) {
             hardhipThreshold = Civs.econ.getBalance(targetPlayer);
         }
-        if ( targetCiv.getHardship() > civilian.getHardship() + hardhipThreshold) {
+        if (ConfigManager.getInstance().isUseHardshipSystem() && targetCiv.getHardship() > civilian.getHardship() + hardhipThreshold) {
             player.sendMessage(Civs.getPrefix() + LocaleManager.getInstance().getTranslation(player,
                     "hardship-too-high").replace("$1", targetPlayer.getDisplayName()));
             return;
