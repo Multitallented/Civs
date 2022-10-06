@@ -1,10 +1,6 @@
 package org.redcastlemedia.multitallented.civs.chat;
 
-import me.clip.placeholderapi.PlaceholderAPI;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -20,8 +16,11 @@ import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.util.DiscordUtil;
 
-import java.util.Map;
-import java.util.logging.Level;
+import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 /**
  * https://docs.adventure.kyori.net/minimessage.html
@@ -61,15 +60,10 @@ public class ChatManager {
         //todo cache MiniMessage later once placeholder resolver supports passing around player context ?
         MiniMessage.Builder mmb = MiniMessage.builder();
         if (Civs.placeholderAPI != null) {
-            mmb.placeholderResolver((name) -> {
-                if (!name.startsWith("%")) {
-                    return null;
-                }
-                return Component.text(PlaceholderAPI.setPlaceholders(source, name));
-            });
+            format = PlaceholderAPI.setPlaceholders(source, format);
         }
         MiniMessage mm = mmb.build();
-        Component parse = mm.parse(format);
+        Component parse = mm.deserialize(format);
 
         for (CommandSender recipient : recipients) {
             Audience sender = bukkitAudiences.sender(recipient);
