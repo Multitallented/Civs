@@ -763,8 +763,7 @@ public class ItemManager {
         int requirement = Integer.parseInt(reqParam);
         for (Town town : TownManager.getInstance().getTowns()) {
             if (!town.getType().equalsIgnoreCase(anotherString) ||
-                    !town.getPeople().containsKey(civilian.getUuid()) ||
-                    !town.getPeople().get(civilian.getUuid()).contains(Constants.OWNER)) {
+                    !town.getPeople().containsKey(civilian.getUuid())) {
                 continue;
             }
             if (requirement <= town.getPopulation()) {
