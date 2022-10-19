@@ -451,7 +451,7 @@ public class ConfigManager {
             deleteInvalidRegions = config.getBoolean("delete-invalid-regions", false);
             lineLengthMap = new HashMap<>();
             useBounties = config.getBoolean("use-bounties", true);
-            useSkills = config.getBoolean("use-skills", true);
+            useSkills = config.getBoolean("allow-skills", true);
             warningLogger = config.getBoolean("show-warning-logs", false);
             useBossBar = config.getBoolean("show-civs-boss-bar", true);
             percentPowerForUpgrade = config.getDouble("percent-power-for-town-upgrade", 0.1);
