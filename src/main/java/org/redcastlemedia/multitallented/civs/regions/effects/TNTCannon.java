@@ -153,6 +153,7 @@ public class TNTCannon implements Listener, RegionCreatedListener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getHand() == EquipmentSlot.OFF_HAND ||
                 (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) ||
+                !event.getPlayer().getInventory().getItemInMainHand().hasItemMeta() ||
                 event.getPlayer().getInventory().getItemInMainHand().getItemMeta() == null) {
             return;
         }

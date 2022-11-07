@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -42,6 +43,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -496,9 +498,26 @@ public class CivilianListener implements Listener {
         cvItem.setQty(1);
         if (block.getState() instanceof Container) {
             Container container = (Container) block.getState();
-            for (ItemStack itemStack : container.getInventory()) {
-                if (itemStack != null && itemStack.getType() != Material.AIR) {
-                    block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
+            if (container.getInventory() instanceof DoubleChestInventory) {
+                DoubleChestInventory doubleChestInventory = (DoubleChestInventory) container.getInventory();
+                if (Objects.equals(doubleChestInventory.getLeftSide().getLocation(), block.getLocation())) {
+                    for (ItemStack itemStack : doubleChestInventory.getLeftSide().getContents()) {
+                        if (itemStack != null && itemStack.getType() != Material.AIR) {
+                            block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
+                        }
+                    }
+                } else {
+                    for (ItemStack itemStack : doubleChestInventory.getRightSide().getContents()) {
+                        if (itemStack != null && itemStack.getType() != Material.AIR) {
+                            block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
+                        }
+                    }
+                }
+            } else {
+                for (ItemStack itemStack : container.getInventory()) {
+                    if (itemStack != null && itemStack.getType() != Material.AIR) {
+                        block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
+                    }
                 }
             }
         }
