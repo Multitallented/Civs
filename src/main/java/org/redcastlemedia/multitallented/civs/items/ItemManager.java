@@ -669,7 +669,23 @@ public class ItemManager {
                 List<List<CVItem>> tools = new ArrayList<>();
                 for (String tool : config.getStringList("upkeep." + key + ".tools")) {
                     List<CVItem> requested_tools = CVItem.createListFromString(tool);
-                    tools.add(requested_tools.stream().filter(cvItem -> cvItem.getMat().getMaxDurability() != 0).collect(Collectors.toList()));
+                    String regionName = name; // Effectively final name for printing error during stream.
+                    requested_tools = requested_tools.stream().filter(cvItem -> {
+                        if (cvItem.getMat().getMaxDurability() != 0) {
+                            return true;
+                        }
+                        else {
+                            Bukkit.getLogger().warning(
+                                    String.format("Warning during loading of %s: " +
+                                            "Ignoring a tool (`%s`) as it isn't a material that has durability and so isn't a valid tool.\n" +
+                                            "Try adding it to the `input` section instead", regionName, cvItem.getMat().name()));
+                            return false;
+                        }
+                    }).collect(Collectors.toList());
+                    if (requested_tools.isEmpty()) {
+                        continue;
+                    }
+                    tools.add(requested_tools);
                 }
                 List<List<CVItem>> inputs = new ArrayList<>();
                 for (String input : config.getStringList("upkeep." + key + ".input")) {

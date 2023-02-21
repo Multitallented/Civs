@@ -111,6 +111,8 @@ max-housing: "Your housing is full. Build more housing if you want to invite mor
 build-reqs: "All the blocks you need to place to build a $1"
 reagents-title: Reagents
 reagents: "All the items you need in the $1 chest"
+tools-title: Tools
+tools: "All the tools you need in the $1 chest"
 upkeep-title: Input
 upkeep: "All the items consumed by the $1"
 output-title: Output

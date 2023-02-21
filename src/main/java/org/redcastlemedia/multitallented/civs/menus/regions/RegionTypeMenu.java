@@ -277,6 +277,7 @@ public class RegionTypeMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("reagents".equals(menuIcon.getKey()) ||
+                   "tools".equals(menuIcon.getKey()) ||
                    "output".equals(menuIcon.getKey()) ||
                    "payout".equals(menuIcon.getKey()) ||
                    "power-input".equals(menuIcon.getKey()) ||

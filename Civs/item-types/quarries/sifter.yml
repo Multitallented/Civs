@@ -37,7 +37,7 @@
 #    reagents:
 #      - POTION
 #      - WITHER_SKELETON_SKULL*3
-#    tools
+#    tools:
 #      - IRON_SHOVEL
 #    input:
 #      - SOUL_SAND*4
