@@ -7,33 +7,33 @@
 #max: 1
 #price: 10
 #groups:
- #- farm
+# - farm
 #level: 1
 
 #build-reqs:
- #- g:fencegate*1
- #- g:fence*43
- #- g:roof*42
- #- WATER*1
- #- CHEST*2
- #- HAY_BLOCK*2
+# - g:fencegate*1
+# - g:fence*43
+# - g:roof*42
+# - WATER*1
+# - CHEST*2
+# - HAY_BLOCK*2
 
 #build-radius: 6
 #effects:
- #- block_break
- #- block_build
- #- block_liquid
- #- block_fire
- #- spawn:GOAT
- #- conveyor:MILK_BUCKET
+# - block_break
+# - block_build
+# - block_liquid
+# - block_fire
+# - spawn:GOAT
+# - conveyor:MILK_BUCKET
 
 #period: 600 #10 minutes
 #upkeep:
- #0:
-   #reagents:
-     #- WHEAT*16
-     #- GOAT_HORN
-   #input:
-     #- BUCKET
-   #output:
-     #- MILK_BUCKET
+# 0:
+#   reagents:
+#     - WHEAT*16
+#     - GOAT_HORN
+#   input:
+#     - BUCKET
+#   output:
+#     - MILK_BUCKET
