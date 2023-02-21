@@ -363,6 +363,10 @@ public class ItemManager {
                 for (String reagent : config.getStringList("upkeep." + key + ".reagents")) {
                     reagents.add(CVItem.createListFromString(reagent));
                 }
+                List<List<CVItem>> tools = new ArrayList<>();
+                for (String tool : config.getStringList("upkeep." + key + ".tools")) {
+                    tools.add(CVItem.createListFromString(tool));
+                }
                 List<List<CVItem>> inputs = new ArrayList<>();
                 for (String input : config.getStringList("upkeep." + key + ".input")) {
                     inputs.add(CVItem.createListFromString(input));
@@ -374,7 +378,7 @@ public class ItemManager {
                 double payout = config.getDouble("upkeep." + key + ".payout", 0);
                 double exp = config.getDouble("upkeep." + key + ".exp", 0);
                 String perm = config.getString("upkeep." + key + ".perm", "");
-                RegionUpkeep regionUpkeep = new RegionUpkeep(reagents, inputs, outputs, payout, exp, perm);
+                RegionUpkeep regionUpkeep = new RegionUpkeep(reagents, tools, inputs, outputs, payout, exp, perm);
                 regionUpkeep.setPowerReagent(config.getInt("upkeep." + key + ".power-reagent", 0));
                 regionUpkeep.setPowerInput(config.getInt("upkeep." + key + ".power-input", 0));
                 regionUpkeep.setPowerOutput(config.getInt("upkeep." + key + ".power-output", 0));

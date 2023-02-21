@@ -42,31 +42,22 @@
 #period: 3600 #1 hour
 #upkeep:
 #  0:
-#    input:
+#    tools:
 #      - STONE_PICKAXE
 #    output:
 #      - IRON_INGOT*6
 #  1:
-#    reagents:
+#    tools:
 #      - IRON_PICKAXE
-#      - STONE_PICKAXE
-#    input:
-#      - STONE_PICKAXE
 #    output:
 #      - IRON_INGOT*8
 #  2:
-#    reagents:
+#    tools:
 #      - DIAMOND_PICKAXE
-#      - STONE_PICKAXE
-#    input:
-#      - STONE_PICKAXE
 #    output:
 #      - IRON_INGOT*12
 #  3:
-#    reagents:
+#    tools:
 #      - NETHERITE_PICKAXE
-#      - STONE_PICKAXE
-#    input:
-#      - STONE_PICKAXE
 #    output:
 #      - IRON_INGOT*18

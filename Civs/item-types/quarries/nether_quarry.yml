@@ -29,22 +29,22 @@
 #period: 30
 #upkeep:
 #  0:
-#    reagents:
+#    tools:
 #      - STONE_PICKAXE
 #    output:
 #      - NETHERRACK*4%25,BLACKSTONE*4%19,BASALT*4%19,SOUL_SAND*4%19,GRAVEL*4%18
 #  1:
-#    reagents:
+#    tools:
 #      - IRON_PICKAXE
 #    output:
 #      - NETHERRACK*4%25,BLACKSTONE*4%19,BASALT*4%19,SOUL_SAND*4%19,GRAVEL*4%18
 #  2:
-#    reagents:
+#    tools:
 #      - DIAMOND_PICKAXE
 #    output:
 #      - NETHERRACK*4%25,BLACKSTONE*4%19,BASALT*4%19,SOUL_SAND*4%19,GRAVEL*4%18
 #  3:
-#    reagents:
+#    tools:
 #      - NETHERITE_PICKAXE
 #    output:
 #      - NETHERRACK*4%25,BLACKSTONE*4%19,BASALT*4%19,SOUL_SAND*4%19,GRAVEL*4%18

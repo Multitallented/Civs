@@ -65,6 +65,10 @@ public class RecipeMenu extends CustomMenu {
             int index = Integer.parseInt(recipe.replace("reagent", ""));
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
             items = Util.convertListListToDisplayableList(regionType.getUpkeeps().get(index).getReagents());
+        } else if (recipe.startsWith("tool")) {
+            int index = Integer.parseInt(recipe.replace("tool", ""));
+            RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);
+            items = Util.convertListListToDisplayableList(regionType.getUpkeeps().get(index).getTools());
         } else if (recipe.startsWith("input")) {
             int index = Integer.parseInt(recipe.replace("input", ""));
             RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(regionTypeName);

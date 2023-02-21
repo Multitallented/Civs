@@ -43,7 +43,7 @@
 #period: daily
 #upkeep:
 #  0:
-#    reagents:
+#    tools:
 #      - IRON_PICKAXE
 #    output:
 #      - EMERALD.jade*16

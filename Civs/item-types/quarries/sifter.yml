@@ -35,9 +35,10 @@
 #upkeep:
 #  0:
 #    reagents:
-#      - IRON_SHOVEL
 #      - POTION
 #      - WITHER_SKELETON_SKULL*3
+#    tools
+#      - IRON_SHOVEL
 #    input:
 #      - SOUL_SAND*4
 #      - BONE*2
@@ -55,8 +56,9 @@
 #      - ROTTEN_FLESH*1%75,GOLDEN_APPLE*1%17,ENCHANTED_GOLDEN_APPLE*1%8
 #  2:
 #    reagents:
-#      - SHEARS
 #      - POTION
+#    tools:
+#      - SHEARS
 #    input:
 #      - FEATHER*8
 #      - PHANTOM_MEMBRANE*4

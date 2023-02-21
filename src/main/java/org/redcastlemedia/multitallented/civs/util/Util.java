@@ -1,27 +1,8 @@
 package org.redcastlemedia.multitallented.civs.util;
 
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.OfflinePlayer;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -30,6 +11,7 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.redcastlemedia.multitallented.civs.Civs;
@@ -43,15 +25,13 @@ import org.redcastlemedia.multitallented.civs.items.ItemManager;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.regions.Region;
 import org.redcastlemedia.multitallented.civs.regions.RegionType;
-import org.redcastlemedia.multitallented.civs.towns.Government;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentManager;
-import org.redcastlemedia.multitallented.civs.towns.GovernmentType;
-import org.redcastlemedia.multitallented.civs.towns.Town;
-import org.redcastlemedia.multitallented.civs.towns.TownManager;
-import org.redcastlemedia.multitallented.civs.towns.TownType;
+import org.redcastlemedia.multitallented.civs.towns.*;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
+import java.text.NumberFormat;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Util {
 
@@ -348,11 +328,12 @@ public final class Util {
     }
 
     public static List<String> parseColors(List<String> inputString) {
-        for (int i=0; i<inputString.size(); i++) {
+        for (int i = 0; i < inputString.size(); i++) {
             inputString.set(i, parseColors(inputString.get(i)));
         }
         return inputString;
     }
+
     public static String parseColors(String input) {
         if (input == null) {
             return null;
@@ -462,6 +443,7 @@ public final class Util {
                 type != Material.ACACIA_BUTTON &&
                 type != Material.OAK_BUTTON;
     }
+
     public static boolean validateFileName(String fileName) {
         return fileName.matches("^[^.\\\\/:*?\"<>|]?[^\\\\/:*?\"<>|]*")
                 && getValidFileName(fileName).length()>0 &&
@@ -471,6 +453,7 @@ public final class Util {
     public static String getValidFileName(String fileName) {
         return fileName.replaceAll("^[.\\\\/:*?\"<>|]?[\\\\/:*?\"<>|]*", "");
     }
+
     public static Locale getNumberFormatLocale(String locale) {
         Locale localeEnum = Locale.forLanguageTag(locale);
         if (localeEnum == null) {
@@ -479,6 +462,7 @@ public final class Util {
         }
         return localeEnum;
     }
+
     public static String getNumberFormat(double number, String locale) {
         String numberFormat = NumberFormat.getInstance(getNumberFormatLocale(locale)).format(number);
         numberFormat = numberFormat.replace(" ", " ");
@@ -543,6 +527,41 @@ public final class Util {
         return true;
     }
 
+    public static boolean containsTools(List<List<CVItem>> req, CVInventory inv) {
+        if (req.isEmpty()) {
+            return true;
+        }
+        if (inv == null) {
+            return false;
+        }
+
+        outer:
+        for (List<CVItem> orReqs : req) {
+            for (CVItem orReq : orReqs) {
+
+                int amount = 0;
+                for (ItemStack iss : inv.getContents()) {
+                    if (iss == null) {
+                        continue;
+                    }
+                    if (!(iss.getItemMeta() instanceof Damageable itemDamage)) {
+                        continue;
+                    }
+                    if (orReq.equivalentItem(iss, orReq.getDisplayName() != null, !orReq.getLore().isEmpty())) {
+                        if (((iss.getType().getMaxDurability() - itemDamage.getDamage()) + amount) >= orReq.getQty()) {
+                            continue outer;
+                        }
+                        else {
+                            amount += (iss.getType().getMaxDurability() - itemDamage.getDamage());
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+
     public static ArrayList<Bounty> readBountyList(FileConfiguration config) {
         ArrayList<Bounty> bountyList = new ArrayList<>();
         ConfigurationSection section1 = config.getConfigurationSection("bounties");
@@ -551,13 +570,88 @@ public final class Util {
             if (section1.isSet(key + ".issuer")) {
                 bounty = new Bounty(UUID.fromString(section1.getString(key + ".issuer")),
                         section1.getDouble(key + ".amount"));
-            } else {
+            }
+            else {
                 bounty = new Bounty(null,
                         section1.getDouble(key + ".amount"));
             }
             bountyList.add(bounty);
         }
         return bountyList;
+    }
+
+    public static boolean damageItems(List<List<CVItem>> req, CVInventory inv) {
+        if (inv == null) {
+            return false;
+        }
+
+        //clone the list
+        ArrayList<ArrayList<CVItem>> hsItemsList = new ArrayList<>();
+        for (List<CVItem> hsItems : req) {
+            ArrayList<CVItem> tempList = new ArrayList<>();
+            for (CVItem hsItem : hsItems) {
+                tempList.add(hsItem.clone());
+            }
+            hsItemsList.add(tempList);
+        }
+
+        ArrayList<Integer> removeItems = new ArrayList<>();
+        HashMap<Integer, Integer> damageItems = new HashMap<>();
+
+        for (int i = 0; i < inv.getSize(); i++) {
+            ItemStack item = inv.getItem(i);
+            if (item == null) {
+                continue;
+            }
+            if (!(item.getItemMeta() instanceof Damageable itemDamage)) {
+                continue;
+            }
+            int j = 0;
+            boolean removeIndex = false;
+            outer1:
+            for (ArrayList<CVItem> hsItems : hsItemsList) {
+                for (CVItem hsItem : hsItems) {
+                    if (hsItem.equivalentItem(item, hsItem.getDisplayName() != null, !hsItem.getLore().isEmpty())) {
+                        if ((item.getType().getMaxDurability() - itemDamage.getDamage()) > hsItem.getQty()) {
+                            damageItems.put(i, hsItem.getQty());
+                            removeIndex = true;
+                        }
+                        else if ((item.getType().getMaxDurability() - itemDamage.getDamage()) == hsItem.getQty()) {
+                            removeItems.add(i);
+                            removeIndex = true;
+                        }
+                        else {
+                            removeItems.add(i);
+                            hsItem.setQty(hsItem.getQty() - item.getAmount());
+                        }
+                        break outer1;
+
+                    }
+                }
+                j++;
+            }
+            if (removeIndex) {
+                hsItemsList.remove(j);
+            }
+        }
+
+        if (!hsItemsList.isEmpty()) {
+            return false;
+        }
+
+        for (Integer i : damageItems.keySet()) {
+            ItemStack item = inv.getItem(i);
+            Damageable itemdmg = (Damageable) item.getItemMeta();
+            assert itemdmg != null;
+            itemdmg.setDamage(itemdmg.getDamage() + damageItems.get(i));
+            item.setItemMeta(itemdmg);
+            inv.setItem(i, item);
+        }
+
+        for (Integer i : removeItems) {
+            inv.setItem(i, null);
+        }
+        return true;
     }
 
     public static boolean removeItems(List<List<CVItem>> req, CVInventory inv) {
@@ -579,13 +673,13 @@ public final class Util {
         ArrayList<Integer> removeItems = new ArrayList<>();
         HashMap<Integer, Integer> reduceItems = new HashMap<>();
 
-        for (int i =0; i< inv.getSize(); i++) {
+        for (int i = 0; i < inv.getSize(); i++) {
             ItemStack item = inv.getItem(i);
             if (item == null) {
                 continue;
             }
 
-            int j=0;
+            int j = 0;
             boolean removeIndex = false;
             outer1: for (ArrayList<CVItem> hsItems : hsItemsList) {
                 for (CVItem hsItem : hsItems) {
@@ -871,6 +965,7 @@ public final class Util {
         //Then apply this to our rocket
         firework.setFireworkMeta(fireworkMeta);
     }
+
     private static Color getColor(int i) {
         Color c = null;
         if(i==1){

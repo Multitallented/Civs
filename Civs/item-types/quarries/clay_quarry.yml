@@ -37,7 +37,7 @@
 #period: 15 #15 seconds
 #upkeep:
 #  0:
-#    reagents:
+#    tools:
 #      - STONE_SHOVEL
 #    output:
 #      - CLAY_BALL*4

@@ -35,17 +35,17 @@
 #period: 300 # 5 minutes
 #upkeep:
 #  0:
-#    reagents:
+#    tools:
 #      - STONE_HOE
 #    output:
 #      - CARROT*8
 #  1:
-#    reagents:
+#    tools:
 #      - IRON_HOE
 #    output:
 #      - CARROT*16
 #  2:
-#    reagents:
+#    tools:
 #      - DIAMOND_HOE
 #    output:
 #      - CARROT*24

@@ -24,7 +24,7 @@
 #period: 30
 #upkeep:
 #  0:
-#    reagents:
+#    tools:
 #      - SHEARS
 #    output:
 #      - CACTUS*3

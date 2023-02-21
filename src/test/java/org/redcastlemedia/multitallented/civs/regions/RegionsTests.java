@@ -725,7 +725,7 @@ public class RegionsTests extends TestUtil {
         Location location = new Location(Bukkit.getWorld("world"), 4,0,0);
         TownTests.loadTown("test", "hamlet2", location);
         Region region = RegionsTests.createNewRegion("utility");
-        assertTrue(region.needsReagentsOrInput());
+        assertTrue(region.needsReagentsOrToolsOrInput());
     }
 
     @Test

@@ -37,22 +37,22 @@
 #period: 30
 #upkeep:
 #  0:
-#    reagents:
+#    tools:
 #      - STONE_PICKAXE
 #    output:
 #      - COBBLED_DEEPSLATE*4
 #  1:
-#    reagents:
+#    tools:
 #      - IRON_PICKAXE
 #    output:
 #      - COBBLED_DEEPSLATE*8
 #  2:
-#    reagents:
+#    tools:
 #      - DIAMOND_PICKAXE
 #    output:
 #      - COBBLED_DEEPSLATE*12
 #  3:
-#    reagents:
+#    tools:
 #      - NETHERITE_PICKAXE
 #    output:
 #      - COBBLED_DEEPSLATE*16

@@ -30,6 +30,7 @@
 #  0:
 #    reagents:
 #      - SNOW_BLOCK*64
+#    tools:
 #      - STONE_SHOVEL
 #    output:
 #      - ICE*9

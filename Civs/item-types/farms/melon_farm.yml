@@ -35,17 +35,17 @@
 #period: 600
 #upkeep:
 #  0:
-#    reagents:
+#    tools:
 #      - STONE_HOE
 #    output:
 #      - MELON_SLICE*8
 #  1:
-#    reagents:
+#    tools:
 #      - IRON_HOE
 #    output:
 #      - MELON_SLICE*16
 #  2:
-#    reagents:
+#    tools:
 #      - DIAMOND_HOE
 #    output:
 #      - MELON_SLICE*32

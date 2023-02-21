@@ -34,7 +34,7 @@
 #    output:
 #      - MUTTON*4
 #  1:
-#    reagents:
+#    tools:
 #      - SHEARS
 #    output:
 #      - WHITE_WOOL*4

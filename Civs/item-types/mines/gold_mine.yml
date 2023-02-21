@@ -39,21 +39,17 @@
 #period: 3600 # 1 hour
 #upkeep:
 #  0:
-#    input:
+#    tools:
 #      - IRON_PICKAXE
 #    output:
 #      - GOLD_INGOT*6
 #  1:
-#    reagents:
+#    tools:
 #      - DIAMOND_PICKAXE
-#    input:
-#      - IRON_PICKAXE
 #    output:
 #      - GOLD_INGOT*10
 #  2:
-#    reagents:
+#    tools:
 #      - NETHERITE_PICKAXE
-#    input:
-#      - IRON_PICKAXE
 #    output:
 #      - GOLD_INGOT*14

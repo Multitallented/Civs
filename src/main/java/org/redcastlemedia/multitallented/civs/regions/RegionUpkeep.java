@@ -9,6 +9,7 @@ import lombok.Setter;
 
 public class RegionUpkeep {
     private final List<List<CVItem>> reagents;
+    private final List<List<CVItem>> tools;
     private final List<List<CVItem>> inputs;
     private final List<List<CVItem>> outputs;
     private final double payout;
@@ -46,12 +47,14 @@ public class RegionUpkeep {
     }
 
     public RegionUpkeep(List<List<CVItem>> reagents,
+                        List<List<CVItem>> tools,
                         List<List<CVItem>> inputs,
                         List<List<CVItem>> outputs,
                         double payout,
                         double exp,
                         String perm) {
         this.reagents = reagents;
+        this.tools = tools;
         this.inputs = inputs;
         this.outputs = outputs;
         this.payout = payout;
@@ -61,6 +64,10 @@ public class RegionUpkeep {
 
     public List<List<CVItem>> getReagents() {
         return reagents;
+    }
+
+    public List<List<CVItem>> getTools() {
+        return tools;
     }
 
     public List<List<CVItem>> getInputs() {
