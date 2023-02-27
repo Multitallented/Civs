@@ -38,12 +38,12 @@
 #period: 3600 # 1 hour
 #upkeep:
 #  0:
-#    reagents:
+#    tools:
 #      - DIAMOND_PICKAXE
 #    output:
 #      - OBSIDIAN*4
 #  1:
-#    reagents:
+#    tools:
 #      - NETHERITE_PICKAXE
 #    output:
 #      - OBSIDIAN*8

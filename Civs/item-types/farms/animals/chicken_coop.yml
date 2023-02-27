@@ -37,7 +37,7 @@
 #      - CHICKEN*4
 #      - EGG*4
 #  1:
-#    reagents:
+#    tools:
 #      - SHEARS
 #    output:
 #      - FEATHER*32

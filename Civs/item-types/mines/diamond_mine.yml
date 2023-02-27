@@ -37,21 +37,17 @@
 #period: 3600 # 1 hour
 #upkeep:
 #  0:
-#    input:
+#    tools:
 #      - IRON_PICKAXE
 #    output:
 #      - DIAMOND
 #  1:
-#    reagents:
+#    tools:
 #      - DIAMOND_PICKAXE
-#    input:
-#      - IRON_PICKAXE
 #    output:
 #      - DIAMOND*2
 #  2:
-#    reagents:
+#    tools:
 #      - NETHERITE_PICKAXE
-#    input:
-#      - IRON_PICKAXE
 #    output:
 #      - DIAMOND*3

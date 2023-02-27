@@ -39,22 +39,22 @@
 #period: 30
 #upkeep:
 #  0:
-#    reagents:
+#    tools:
 #      - STONE_PICKAXE
 #    output:
 #      - COBBLESTONE*4
 #  1:
-#    reagents:
+#    tools:
 #      - IRON_PICKAXE
 #    output:
 #      - COBBLESTONE*8
 #  2:
-#    reagents:
+#    tools:
 #      - DIAMOND_PICKAXE
 #    output:
 #      - COBBLESTONE*12
 #  3:
-#    reagents:
+#    tools:
 #      - NETHERITE_PICKAXE
 #    output:
 #      - COBBLESTONE*16

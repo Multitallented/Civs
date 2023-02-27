@@ -1,16 +1,5 @@
 package org.redcastlemedia.multitallented.civs.items;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.regex.Pattern;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -44,6 +33,12 @@ import org.reflections.Reflections;
 import org.reflections.ReflectionsException;
 import org.reflections.scanners.ResourcesScanner;
 
+import java.io.File;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGHER)
 public class ItemManager {
     private static ItemManager itemManager;
@@ -57,13 +52,521 @@ public class ItemManager {
         return itemManager;
     }
 
-    public void reload() {
-        itemTypes.clear();
-        loadAllItemTypes();
+    public void addMinItems(Civilian civilian) {
+        ArrayList<CivItem> addItems = new ArrayList<>();
+        for (CivItem civItem : itemTypes.values()) {
+            if (civItem.getCivMin() < 1) {
+                continue;
+            }
+            int count = civilian.getCountStashItems(civItem.getProcessedName());
+            count += civilian.getCountNonStashItems(civItem.getProcessedName());
+            if (count >= civItem.getCivMin()) {
+                continue;
+            }
+            if (hasItemUnlocked(civilian, civItem)) {
+                int add = 0;
+                while (count + add < civItem.getCivMin()) {
+                    addItems.add(civItem);
+                    add++;
+                }
+            }
+        }
+        for (CivItem civItem : addItems) {
+            civilian.getStashItems().put(civItem.getProcessedName(), civItem.getQty());
+        }
+        CivilianManager.getInstance().saveCivilian(civilian);
+    }
+
+    private boolean checkBuildRequirement(Civilian civilian, List<String> unmetRequirements, Player player, String[] splitReq,
+                                          String[] reqParams, boolean fast) {
+        if (civilian.getCountNonStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1])) {
+            return true;
+        }
+        if (fast) {
+            unmetRequirements.add("build");
+        }
+        else {
+            CivItem civItem = getItemType(splitReq[0]);
+            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
+                    "req-build").replace("$1", civItem.getDisplayName(player)));
+        }
+        return false;
+    }
+
+    private boolean checkItemLevelRequirement(Civilian civilian, List<String> unmetRequirements, Player player,
+                                              String[] reqParams, CivItem reqItem, boolean fast) {
+        int level = civilian.getLevel(reqItem);
+        if (level >= Integer.parseInt(reqParams[1])) {
+            return true;
+        }
+        if (fast) {
+            unmetRequirements.add("level");
+        }
+        else {
+            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
+                            "req-skill-level").replace("$1", reqItem.getDisplayName(player))
+                    .replace("$2", reqParams[1]));
+        }
+        return false;
+    }
+
+    private boolean checkMemberOfTownRequirement(Civilian civilian, List<String> unmetRequirements, Player player,
+                                                 String req, boolean fast) {
+        String[] townTypeStrings = req.replace("member=", "").split(":");
+        Set<String> townTypes = new HashSet<>(Arrays.asList(townTypeStrings));
+        boolean isMember = false;
+        for (Town town : TownManager.getInstance().getTowns()) {
+            if (townTypes.contains(town.getType()) &&
+                    town.getRawPeople().containsKey(civilian.getUuid())) {
+                isMember = true;
+                break;
+            }
+        }
+        if (!isMember) {
+            if (fast) {
+                unmetRequirements.add("town");
+            }
+            else {
+                StringBuilder townTypesNames = new StringBuilder();
+                for (String townType : townTypes) {
+                    CivItem civItem = getItemType(townType);
+                    townTypesNames.append(civItem.getDisplayName(player)).append(", ");
+                }
+                townTypesNames = new StringBuilder(townTypesNames.substring(0, townTypesNames.length() - 2));
+                unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
+                        "req-member-of-town") + townTypesNames.toString());
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkOwnershipRequirement(Civilian civilian, List<String> unmetRequirements, Player player,
+                                              String[] splitReq, boolean fast) {
+        if (civilian.getCountStashItems(splitReq[0]) > 0 ||
+                civilian.getCountNonStashItems(splitReq[0]) > 0) {
+            return true;
+        }
+        if (fast) {
+            unmetRequirements.add("own");
+        }
+        else {
+            CivItem civItem = getItemType(splitReq[0]);
+            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
+                    "req-item").replace("$1", civItem.getDisplayName(player)));
+        }
+        return false;
+    }
+
+    private boolean checkPermissionRequirement(List<String> unmetRequirements, Player player, String req, boolean fast) {
+        String permission = req.replace("perm=", "");
+        if (Civs.perm == null ||
+                !Civs.perm.has(player, permission)) {
+            if (fast) {
+                unmetRequirements.add("perm");
+            }
+            else {
+                unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
+                        "no-permission"));
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkPopulationRequirement(Civilian civilian, List<String> unmetRequirements, Player player,
+                                               String req, boolean fast) {
+        int pop = Integer.parseInt(req.replace("population=", ""));
+        for (Town town : TownManager.getInstance().getTowns()) {
+            if (!town.getPeople().containsKey(civilian.getUuid())) {
+                continue;
+            }
+            if (pop <= town.getPopulation()) {
+                return true;
+            }
+        }
+        if (fast) {
+            unmetRequirements.add("pop");
+        }
+        else {
+            String town = LocaleManager.getInstance().getTranslation(player,
+                    "town");
+            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
+                            "population-req").replace("$1", town)
+                    .replace("$2", "" + pop));
+        }
+        return false;
+    }
+
+    private boolean checkSkillRequirement(Player player, Civilian civilian, String req,
+                                          List<String> unmetRequirements, boolean fast) {
+        String[] reqSplit = req.split(":")[1].split("=");
+        int level = Integer.parseInt(reqSplit[1]);
+        String skillName = reqSplit[0];
+        for (Skill skill : civilian.getSkills().values()) {
+            if (skill.getType().equalsIgnoreCase(skillName) &&
+                    skill.getLevel() >= level) {
+                return true;
+            }
+        }
+        if (fast) {
+            unmetRequirements.add("skill");
+        }
+        else {
+            String localSkillName = LocaleManager.getInstance().getTranslation(player,
+                    skillName + LocaleConstants.SKILL_SUFFIX);
+            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
+                            "req-skill-level").replace("$1", localSkillName)
+                    .replace("$2", "" + level));
+        }
+        return false;
+    }
+
+    private boolean checkSpecificTownPopulationRequirement(Civilian civilian, List<String> unmetRequirements, Player player,
+                                                           String anotherString, String reqParam, boolean fast) {
+        int requirement = Integer.parseInt(reqParam);
+        for (Town town : TownManager.getInstance().getTowns()) {
+            if (!town.getType().equalsIgnoreCase(anotherString) ||
+                    !town.getPeople().containsKey(civilian.getUuid())) {
+                continue;
+            }
+            if (requirement <= town.getPopulation()) {
+                return true;
+            }
+        }
+        if (fast) {
+            unmetRequirements.add("pop");
+        }
+        else {
+            CivItem civItem = getItemType(anotherString);
+            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
+                            "population-req").replace("$1", civItem.getDisplayName(player))
+                    .replace("$2", "" + requirement));
+        }
+        return false;
+    }
+
+    private HashMap<String, Integer> convertListToMap(List<String> inputList) {
+        HashMap<String, Integer> returnMap = new HashMap<>();
+        for (String currentString : inputList) {
+            String[] splitString = currentString.split(":");
+            if (splitString.length != 2) {
+                returnMap.put(splitString[0], 1);
+            }
+            else {
+                returnMap.put(splitString[0], Integer.parseInt(splitString[1]));
+            }
+        }
+        return returnMap;
+    }
+
+    private FolderType createFolder(String currentFileName, boolean invisible) {
+        String folderName = currentFileName.replace(Constants.INVISIBLE, "");
+        FolderType folderType = new FolderType(new ArrayList<>(),
+                folderName,
+                ConfigManager.getInstance().getFolderIcon(folderName.toLowerCase()),
+                0,
+                null,
+                new ArrayList<>(),
+                invisible,
+                1);
+        folderType.setCivItemName(folderName.toLowerCase());
+        itemTypes.put(folderName.toLowerCase(), folderType);
+        return folderType;
+    }
+
+    public void enforceMaxItemLimits(Civilian civilian) {
+        for (Map.Entry<String, Integer> stashItem : new HashMap<>(civilian.getStashItems()).entrySet()) {
+            CivItem civItem = getItemType(stashItem.getKey());
+            if (civItem == null || civItem.getCivMax() < 1) {
+                continue;
+            }
+            int count = civilian.getCountStashItems(civItem.getProcessedName()) +
+                    civilian.getCountNonStashItems(civItem.getProcessedName());
+            if (civItem.getCivMax() < count) {
+                int diff = count - civItem.getCivMax();
+                if (civilian.getStashItems().get(stashItem.getKey()) >= diff) {
+                    civilian.getStashItems().remove(stashItem.getKey());
+                }
+                else {
+                    civilian.getStashItems().put(stashItem.getKey(), stashItem.getValue() - diff);
+                }
+            }
+        }
     }
 
     public Map<String, CivItem> getAllItemTypes() {
         return new HashMap<>(itemTypes);
+    }
+
+    private List<CivItem> getAllItemsWithParent(Civilian civilian, CivItem parent, boolean isShop) {
+        List<CivItem> returnList = new ArrayList<>();
+        HashSet<CivItem> checkList = new HashSet<>();
+        if (parent == null) {
+            for (Map.Entry<String, CivItem> entry : itemTypes.entrySet()) {
+                CivItem civItem = entry.getValue();
+                if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
+                    checkList.addAll(((FolderType) civItem).getChildren());
+                }
+                else if (civItem.getItemType() == CivItem.ItemType.CLASS) {
+                    for (String key : ((ClassType) civItem).getChildren()) {
+                        if (getItemType(key) != null) {
+                            checkList.add(getItemType(key));
+                        }
+                    }
+                }
+            }
+            for (CivItem civItem : itemTypes.values()) {
+                if (checkList.contains(civItem)) {
+                    continue;
+                }
+                returnList.add(civItem);
+            }
+        }
+        else {
+            if (parent.getItemType().equals(CivItem.ItemType.FOLDER)) {
+                returnList.addAll(((FolderType) parent).getChildren());
+            }
+            else if (parent.getItemType().equals(CivItem.ItemType.CLASS)) {
+                for (String key : ((ClassType) parent).getChildren()) {
+                    if (getItemType(key) != null) {
+                        checkList.add(getItemType(key));
+                    }
+                }
+            }
+        }
+        returnList.removeAll(checkList);
+        checkList.clear();
+        for (CivItem item : returnList) {
+            if (!hasItemUnlocked(civilian, item) ||
+                    (isShop && !item.getInShop())) {
+                checkList.add(item);
+            }
+        }
+        returnList.removeAll(checkList);
+
+        checkList.clear();
+        for (CivItem currentItem : returnList) {
+            if (currentItem.getItemType() != CivItem.ItemType.FOLDER) {
+                continue;
+            }
+            if (getAllItemsWithParent(civilian, currentItem, true).isEmpty()) {
+                checkList.add(currentItem);
+            }
+        }
+        returnList.removeAll(checkList);
+        return returnList;
+    }
+
+    public List<String> getAllUnmetRequirements(CivItem civItem, Civilian civilian, boolean stopOnFirst) {
+        return getAllUnmetRequirements(civItem.getCivReqs(), civilian, stopOnFirst);
+    }
+
+    public List<String> getAllUnmetRequirements(List<String> civReqs, Civilian civilian, boolean stopOnFirst) {
+        List<String> allUnmetRequirements = new ArrayList<>();
+        if (civReqs.isEmpty()) {
+            return allUnmetRequirements;
+        }
+        Player player = Bukkit.getPlayer(civilian.getUuid());
+        if (player == null) {
+            if (stopOnFirst) {
+                allUnmetRequirements.add("invalid");
+            }
+            else {
+                allUnmetRequirements.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
+                        "invalid-target"));
+            }
+            return allUnmetRequirements;
+        }
+
+        outer:
+        for (String reqString : civReqs) {
+            List<String> unmetRequirements = new ArrayList<>();
+            for (String req : reqString.split("\\|")) {
+                if (stopOnFirst && !unmetRequirements.isEmpty()) {
+                    break outer;
+                }
+                if (!stopOnFirst && unmetRequirements.size() % 2 > 0) {
+                    unmetRequirements.add(ChatColor.GOLD + " " +
+                            LocaleManager.getInstance().getTranslation(player,
+                                    "or") + " " + ChatColor.RED);
+                }
+                if (req.startsWith("tutorial=")) {
+                    if (!civilian.getCompletedTutorialSteps().contains(req.replace("tutorial=", ""))) {
+                        if (stopOnFirst) {
+                            unmetRequirements.add("tutorial");
+                        }
+                        else {
+                            String[] reqParts = req.replace("tutorial=", "").split("\\^");
+                            String path = reqParts[0];
+                            String type = reqParts[1];
+                            String key = reqParts[2];
+                            int times = Integer.parseInt(reqParts[3]);
+                            int index = -1;
+                            for (int i = 0; i < TutorialManager.getInstance().getPathByName(path).getSteps().size(); i++) {
+                                TutorialStep step = TutorialManager.getInstance().getPathByName(path).getSteps().get(i);
+                                if ((TutorialManager.TutorialType.KILL.name().equals(type) &&
+                                        times == step.getTimes() && key.equals(step.getKillType())) ||
+                                        (times == step.getTimes() && key.equals(step.getRegion()))) {
+                                    index = i;
+                                    break;
+                                }
+                            }
+                            if (index > -1) {
+                                unmetRequirements.addAll(TutorialManager.getInstance()
+                                        .getTutorialMessage(civilian, path, index, false));
+                            }
+                        }
+                        continue outer;
+                    }
+                    else {
+                        continue;
+                    }
+                    //perm=civs.admin
+                }
+                else if (req.startsWith("perm=")) {
+                    if (checkPermissionRequirement(unmetRequirements, player, req, stopOnFirst)) {
+                        continue outer;
+                    }
+                    continue;
+                    //member=settlement:town:...
+                }
+                else if (req.startsWith("member=")) {
+                    if (checkMemberOfTownRequirement(civilian, unmetRequirements, player, req, stopOnFirst)) {
+                        continue outer;
+                    }
+                    continue;
+                    //skill:crafting=20
+                }
+                else if (req.startsWith("skill:")) {
+                    if (checkSkillRequirement(player, civilian, req, unmetRequirements, stopOnFirst)) {
+                        continue outer;
+                    }
+                    continue;
+                    //population=15
+                }
+                else if (req.startsWith("population=")) {
+                    if (checkPopulationRequirement(civilian, unmetRequirements, player, req, stopOnFirst)) {
+                        continue outer;
+                    }
+                    continue;
+                }
+                String[] splitReq = req.split(":");
+                //house:???
+                if (splitReq.length < 2) {
+                    if (checkOwnershipRequirement(civilian, unmetRequirements, player, splitReq, stopOnFirst)) {
+                        continue outer;
+                    }
+                    continue;
+                }
+                String[] reqParams = splitReq[1].split("=");
+                //shack:built=1
+                if (reqParams[0].equals("built")) {
+                    if (checkBuildRequirement(civilian, unmetRequirements, player, splitReq, reqParams, stopOnFirst)) {
+                        continue outer;
+                    }
+                    //bash:level=4
+                }
+                else if (reqParams[0].equals("level")) {
+                    CivItem reqItem = itemManager.getItemType(splitReq[0]);
+                    if (reqItem == null) {
+                        continue;
+                    }
+                    if (checkItemLevelRequirement(civilian, unmetRequirements, player, reqParams, reqItem, stopOnFirst)) {
+                        continue outer;
+                    }
+                    //house:has=2
+                }
+                else if (reqParams[0].equals("has")) {
+                    if (civilian.getCountStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1]) ||
+                            civilian.getCountNonStashItems(splitReq[0]) > Integer.parseInt(reqParams[1])) {
+                        continue outer;
+                    }
+                    else {
+                        if (stopOnFirst) {
+                            unmetRequirements.add("has");
+                        }
+                        else {
+                            CivItem civItem1 = getItemType(splitReq[0]);
+                            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
+                                    "req-item").replace("$1", civItem1.getDisplayName(player)));
+                        }
+                    }
+                    //hamlet:population=15
+                }
+                else if (reqParams[0].equals("population")) {
+                    if (checkSpecificTownPopulationRequirement(civilian, unmetRequirements, player, splitReq[0], reqParams[1], stopOnFirst)) {
+                        continue outer;
+                    }
+                }
+            }
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(ChatColor.RED);
+            stringBuilder.append("- ");
+            for (int i = 0; i < unmetRequirements.size(); i++) {
+                stringBuilder.append(unmetRequirements.get(i));
+            }
+            allUnmetRequirements.add(stringBuilder.toString());
+        }
+        List<String> returnString = new ArrayList<>();
+        for (String unmetReq : allUnmetRequirements) {
+            returnString.addAll(Util.textWrap(civilian, unmetReq));
+        }
+        return returnString;
+    }
+
+    public List<CivItem> getItemGroup(String groupName) {
+        ArrayList<CivItem> returnList = new ArrayList<>();
+
+        for (CivItem item : this.itemTypes.values()) {
+            if (item.getGroups().contains(groupName)) {
+                returnList.add(item);
+            }
+        }
+
+        return returnList;
+    }
+
+    public CivItem getItemType(String name) {
+        return itemTypes.get(name.toLowerCase());
+    }
+
+    public ArrayList<CivItem> getItemsByLevel(int level) {
+        ArrayList<CivItem> itemSet = new ArrayList<>();
+        for (CivItem civItem : this.itemTypes.values()) {
+            if (civItem.getLevel() == level && civItem.getInShop()) {
+                itemSet.add(civItem);
+            }
+        }
+        return itemSet;
+    }
+
+    public Map<String, Integer> getNewItems(Civilian civilian) {
+        HashMap<String, Integer> newItems = new HashMap<>();
+        for (CivItem civItem : itemTypes.values()) {
+            if (civItem.getItemType() == CivItem.ItemType.FOLDER ||
+                    civilian.getStashItems().containsKey(civItem.getProcessedName()) ||
+                    !hasItemUnlocked(civilian, civItem)) {
+                continue;
+            }
+            int count = civilian.getCountStashItems(civItem.getProcessedName()) +
+                    civilian.getCountNonStashItems(civItem.getProcessedName());
+            if (civItem.getCivQty() > 0) {
+                newItems.put(civItem.getProcessedName(), civItem.getQty());
+            }
+            else if (civItem.getCivMin() > 0 && civItem.getCivMin() > count) {
+                newItems.put(civItem.getProcessedName(), civItem.getCivMin() - count);
+            }
+        }
+        return newItems;
+    }
+
+    public List<CivItem> getShopItems(Civilian civilian, CivItem parent) {
+        return getAllItemsWithParent(civilian, parent, true);
+    }
+
+    public boolean hasItemUnlocked(Civilian civilian, CivItem civItem) {
+        return getAllUnmetRequirements(civItem, civilian, true).isEmpty();
     }
 
     private void loadAllItemTypes() {
@@ -91,138 +594,22 @@ public class ItemManager {
         }
     }
 
-    private void loopThroughResources(String path) {
-        String relativePath = path.replace("/resources/" + ConfigManager.getInstance().getDefaultConfigSet(), "");
-        String[] pathSplit = relativePath.split("/");
-        String currentFileName = pathSplit[pathSplit.length - 1];
-        try {
-            FolderType folderType = null;
-            for (String currentFolder : pathSplit) {
-                if (currentFolder.isEmpty() || Constants.ITEM_TYPES.equals(currentFolder) ||
-                        currentFolder.equals(currentFileName)) {
-                    continue;
-                }
-                if (!ItemManager.getInstance().itemTypes.containsKey(currentFolder.replace(Constants.INVISIBLE, "").toLowerCase())) {
-                    boolean isVisible = relativePath.substring(0, relativePath.lastIndexOf(currentFolder) + currentFolder.length())
-                            .contains(Constants.INVISIBLE);
-                    FolderType currentFolderType = createFolder(currentFolder.toLowerCase(), !isVisible);
-                    if (folderType != null) {
-                        folderType.getChildren().add(currentFolderType);
-                    }
-                    folderType = currentFolderType;
-                } else {
-                    folderType = (FolderType) ItemManager.getInstance().getItemType(currentFolder.toLowerCase());
-                }
-            }
-
-            File file = new File(Civs.dataLocation, relativePath);
-            FileConfiguration typeConfig = FallbackConfigUtil.getConfigFullPath(file, path);
-            if (!typeConfig.getBoolean("enabled", true)) {
-                return;
-            }
-            String type = typeConfig.getString("type",Constants.REGION);
-            CivItem civItem = null;
-            String itemName = currentFileName.replace(".yml", "").toLowerCase();
-            if (Constants.REGION.equals(type)) {
-                civItem = loadRegionType(typeConfig, itemName);
-            } else if ("spell".equals(type)) {
-                civItem = loadSpellType(typeConfig, itemName);
-            } else if ("class".equals(type)) {
-                civItem = loadClassType(typeConfig, itemName);
-            } else if ("town".equals(type)) {
-                civItem = loadTownType(typeConfig, itemName);
-            }
-            if (folderType != null) {
-                folderType.getChildren().add(civItem);
-            }
-        } catch (Exception e) {
-            Civs.logger.log(Level.SEVERE, "Unable to read from {0}", currentFileName);
-            Civs.logger.log(Level.SEVERE, "Exception during file read", e);
+    public Map<String, Integer> loadCivItems(FileConfiguration civConfig) {
+        HashMap<String, Integer> items = new HashMap<>();
+        ConfigurationSection configurationSection = civConfig.getConfigurationSection("items");
+        if (configurationSection == null) {
+            return items;
         }
-    }
-
-    private FolderType createFolder(String currentFileName, boolean invisible) {
-        String folderName = currentFileName.replace(Constants.INVISIBLE, "");
-        FolderType folderType = new FolderType(new ArrayList<>(),
-                folderName,
-                ConfigManager.getInstance().getFolderIcon(folderName.toLowerCase()),
-                0,
-                null,
-                new ArrayList<>(),
-                invisible,
-                1);
-        folderType.setCivItemName(folderName.toLowerCase());
-        itemTypes.put(folderName.toLowerCase(), folderType);
-        return folderType;
-    }
-
-    private void loopThroughTypeFiles(File file, List<CivItem> parentList) {
-        try {
-            if (file.isDirectory() && !file.getName().contains(".yml")) {
-                List<CivItem> currParentList;
-                if (ItemManager.getInstance().getItemType(file.getName().toLowerCase()) != null) {
-                    FolderType folderType = (FolderType) ItemManager.getInstance().getItemType(file.getName().toLowerCase());
-                    currParentList = folderType.getChildren();
-                } else {
-                    currParentList = new ArrayList<>();
-                }
-
-                for (File pFile : file.listFiles()) {
-                    loopThroughTypeFiles(pFile, currParentList);
-                }
-                if (itemTypes.containsKey(file.getName().toLowerCase())) {
-                    return;
-                }
-                String folderName = file.getName().replace(Constants.INVISIBLE, "");
-                FolderType folderType = new FolderType(new ArrayList<>(),
-                        folderName,
-                        ConfigManager.getInstance().getFolderIcon(folderName.toLowerCase()),
-                        0,
-                        null,
-                        currParentList,
-                        !file.getName().contains("invisible"),
-                        1);
-                folderType.setCivItemName(folderName.toLowerCase());
-                itemTypes.put(folderName.toLowerCase(), folderType);
-                if (parentList != null) {
-                    parentList.add(folderType);
-                }
-            } else {
-                String name = file.getName().replace(".yml", "").toLowerCase();
-                if (itemTypes.containsKey(name)) {
-                    return;
-                }
-                try {
-                    FileConfiguration typeConfig = new YamlConfiguration();
-                    typeConfig.load(file);
-                    if (!typeConfig.getBoolean("enabled", true)) {
-                        return;
-                    }
-                    String type = typeConfig.getString("type","region");
-                    CivItem civItem = null;
-                    String itemName = file.getName().replace(".yml", "").toLowerCase();
-                    if (type.equals("region")) {
-                        civItem = loadRegionType(typeConfig, itemName);
-                    } else if (type.equals("spell")) {
-                        civItem = loadSpellType(typeConfig, itemName);
-                    } else if (type.equals("class")) {
-                        civItem = loadClassType(typeConfig, itemName);
-                    } else if (type.equals("town")) {
-                        civItem = loadTownType(typeConfig, itemName);
-                    }
-                    if (civItem != null && parentList != null) {
-                        parentList.add(civItem);
-                    }
-                } catch (Exception e) {
-                    Civs.logger.severe("Unable to read from " + file.getName());
-                    e.printStackTrace();
-                }
+        for (String key : configurationSection.getKeys(false)) {
+            CivItem currentItem = getItemType(key);
+            if (currentItem == null) {
+                continue;
             }
-        } catch (NullPointerException npe) {
-            Civs.logger.warning("No region types found in " + file.getName());
-            return;
+            items.put(key, civConfig.getInt("items." + key));
         }
+        return items;
     }
+
     public CivItem loadClassType(FileConfiguration config, String name) {
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.CHEST.name()));
         name = name.toLowerCase();
@@ -263,90 +650,6 @@ public class ItemManager {
         return civItem;
     }
 
-    public CivItem loadSpellType(FileConfiguration config, String name) {
-        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.CHEST.name()));
-        name = name.toLowerCase();
-        String localName = config.getString("name", name).toLowerCase();
-        SpellType spellType = new SpellType(
-                config.getStringList("pre-reqs"),
-                localName, name,
-                icon.getMat(),
-                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", Material.CHEST.name()))),
-                config.getInt("qty", 0),
-                config.getInt("min", 0),
-                config.getInt("max", -1),
-                config.getDouble("price", 0),
-                config.getString("permission"),
-                config.getStringList("groups"),
-                config,
-                config.getBoolean("is-in-shop", true),
-                config.getInt("level", 1),
-                config.getInt("exp-per-use", 0));
-        AllowedActionsUtil.loadAllowedActions(spellType.getAllowedActions(),
-                config.getStringList("allowed-actions"));
-        spellType.setCivItemName(name.toLowerCase());
-        itemTypes.put(name.toLowerCase(), spellType);
-        return spellType;
-    }
-
-    private HashMap<String, Integer> convertListToMap(List<String> inputList) {
-        HashMap<String, Integer> returnMap = new HashMap<>();
-        for (String currentString : inputList) {
-            String[] splitString = currentString.split(":");
-            if (splitString.length != 2) {
-                returnMap.put(splitString[0], 1);
-            } else {
-                returnMap.put(splitString[0], Integer.parseInt(splitString[1]));
-            }
-        }
-        return returnMap;
-    }
-
-    public TownType loadTownType(FileConfiguration config, String name) {
-        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.STONE.name()));
-        name = name.toLowerCase();
-        String localName = config.getString("name", name).toLowerCase();
-        HashMap<String, String> effects = new HashMap<>();
-        List<String> configEffects = config.getStringList("effects");
-        for (String effectString : configEffects) {
-            if (effectString.contains(":")) {
-                String[] effectSplit = effectString.split(":");
-                effects.put(effectSplit[0], effectSplit[1]);
-            } else {
-                effects.put(effectString, null);
-            }
-        }
-        int buildRadius = config.getInt("build-radius", 20);
-        TownType townType = new TownType(
-                name, localName,
-                icon,
-                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", Material.CHEST.name()))),
-                config.getStringList("pre-reqs"),
-                config.getInt("qty", 0),
-                config.getInt("min",0),
-                config.getInt("max", -1),
-                config.getDouble("price", 0),
-                config.getString("permission"),
-                convertListToMap(config.getStringList("build-reqs")),
-                convertListToMap(config.getStringList("limits")),
-                effects,
-                buildRadius,
-                config.getInt("build-radius-y", buildRadius),
-                config.getStringList("critical-build-reqs"),
-                config.getInt("power", 200),
-                config.getInt("max-power", 1000),
-                config.getStringList("groups"),
-                config.getString("child"),
-                config.getInt("child-population", 0),
-                config.getBoolean("is-in-shop", true),
-                config.getInt("level", 1));
-        townType.setDefaultGovType(config.getString("gov-type", ConfigManager.getInstance().getDefaultGovernmentType()));
-        String townKey = Util.getValidFileName(name).toLowerCase();
-        townType.setCivItemName(townKey);
-        itemTypes.put(townKey, townType);
-        return townType;
-    }
-
     public RegionType loadRegionType(FileConfiguration config, String name) {
         CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.CHEST.name()));
         List<List<CVItem>> reqs = new ArrayList<>();
@@ -363,6 +666,27 @@ public class ItemManager {
                 for (String reagent : config.getStringList("upkeep." + key + ".reagents")) {
                     reagents.add(CVItem.createListFromString(reagent));
                 }
+                List<List<CVItem>> tools = new ArrayList<>();
+                for (String tool : config.getStringList("upkeep." + key + ".tools")) {
+                    List<CVItem> requested_tools = CVItem.createListFromString(tool);
+                    String regionName = name; // Effectively final name for printing error during stream.
+                    requested_tools = requested_tools.stream().filter(cvItem -> {
+                        if (cvItem.getMat().getMaxDurability() != 0) {
+                            return true;
+                        }
+                        else {
+                            Bukkit.getLogger().warning(
+                                    String.format("Warning during loading of %s: " +
+                                            "Ignoring a tool (`%s`) as it isn't a material that has durability and so isn't a valid tool.\n" +
+                                            "Try adding it to the `input` section instead", regionName, cvItem.getMat().name()));
+                            return false;
+                        }
+                    }).collect(Collectors.toList());
+                    if (requested_tools.isEmpty()) {
+                        continue;
+                    }
+                    tools.add(requested_tools);
+                }
                 List<List<CVItem>> inputs = new ArrayList<>();
                 for (String input : config.getStringList("upkeep." + key + ".input")) {
                     inputs.add(CVItem.createListFromString(input));
@@ -374,7 +698,7 @@ public class ItemManager {
                 double payout = config.getDouble("upkeep." + key + ".payout", 0);
                 double exp = config.getDouble("upkeep." + key + ".exp", 0);
                 String perm = config.getString("upkeep." + key + ".perm", "");
-                RegionUpkeep regionUpkeep = new RegionUpkeep(reagents, inputs, outputs, payout, exp, perm);
+                RegionUpkeep regionUpkeep = new RegionUpkeep(reagents, tools, inputs, outputs, payout, exp, perm);
                 regionUpkeep.setPowerReagent(config.getInt("upkeep." + key + ".power-reagent", 0));
                 regionUpkeep.setPowerInput(config.getInt("upkeep." + key + ".power-input", 0));
                 regionUpkeep.setPowerOutput(config.getInt("upkeep." + key + ".power-output", 0));
@@ -387,13 +711,15 @@ public class ItemManager {
         HashSet<String> townSet;
         if (config.isSet("towns")) {
             townSet = new HashSet<>(config.getStringList("towns"));
-        } else {
+        }
+        else {
             townSet = new HashSet<>();
         }
         HashSet<String> govTypes;
         if (config.isSet("gov-types")) {
             govTypes = new HashSet<>(config.getStringList("gov-types"));
-        } else {
+        }
+        else {
             govTypes = new HashSet<>();
         }
         HashMap<String, String> effects = new HashMap<>();
@@ -401,7 +727,8 @@ public class ItemManager {
             String[] effectSplit = s.split(":");
             if (effectSplit.length > 1) {
                 effects.put(effectSplit[0], effectSplit[1]);
-            } else {
+            }
+            else {
                 effects.put(s, null);
             }
         }
@@ -454,7 +781,7 @@ public class ItemManager {
                 config.getStringList("groups"),
                 config.getBoolean("is-in-shop", true),
                 config.getBoolean("rebuild-required", false),
-                config.getInt("level",1),
+                config.getInt("level", 1),
                 worlds);
         regionType.setWarEnabled(config.getBoolean("war-enabled", false));
         regionType.setGovTypes(govTypes);
@@ -475,476 +802,207 @@ public class ItemManager {
         return regionType;
     }
 
-    public Map<String, Integer> loadCivItems(FileConfiguration civConfig) {
-        HashMap<String, Integer> items = new HashMap<>();
-        ConfigurationSection configurationSection = civConfig.getConfigurationSection("items");
-        if (configurationSection == null) {
-            return items;
-        }
-        for (String key : configurationSection.getKeys(false)) {
-            CivItem currentItem = getItemType(key);
-            if (currentItem == null) {
-                continue;
-            }
-            items.put(key, civConfig.getInt("items." + key));
-        }
-        return items;
+    public CivItem loadSpellType(FileConfiguration config, String name) {
+        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.CHEST.name()));
+        name = name.toLowerCase();
+        String localName = config.getString("name", name).toLowerCase();
+        SpellType spellType = new SpellType(
+                config.getStringList("pre-reqs"),
+                localName, name,
+                icon.getMat(),
+                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", Material.CHEST.name()))),
+                config.getInt("qty", 0),
+                config.getInt("min", 0),
+                config.getInt("max", -1),
+                config.getDouble("price", 0),
+                config.getString("permission"),
+                config.getStringList("groups"),
+                config,
+                config.getBoolean("is-in-shop", true),
+                config.getInt("level", 1),
+                config.getInt("exp-per-use", 0));
+        AllowedActionsUtil.loadAllowedActions(spellType.getAllowedActions(),
+                config.getStringList("allowed-actions"));
+        spellType.setCivItemName(name.toLowerCase());
+        itemTypes.put(name.toLowerCase(), spellType);
+        return spellType;
     }
 
-    public CivItem getItemType(String name) {
-        return itemTypes.get(name.toLowerCase());
-    }
-
-    public List<CivItem> getItemGroup(String groupName) {
-        ArrayList<CivItem> returnList = new ArrayList<>();
-
-        for (CivItem item : this.itemTypes.values()) {
-            if (item.getGroups().contains(groupName)) {
-                returnList.add(item);
+    public TownType loadTownType(FileConfiguration config, String name) {
+        CVItem icon = CVItem.createCVItemFromString(config.getString("icon", Material.STONE.name()));
+        name = name.toLowerCase();
+        String localName = config.getString("name", name).toLowerCase();
+        HashMap<String, String> effects = new HashMap<>();
+        List<String> configEffects = config.getStringList("effects");
+        for (String effectString : configEffects) {
+            if (effectString.contains(":")) {
+                String[] effectSplit = effectString.split(":");
+                effects.put(effectSplit[0], effectSplit[1]);
             }
-        }
-
-        return returnList;
-    }
-
-    public Map<String, Integer> getNewItems(Civilian civilian) {
-        HashMap<String, Integer> newItems = new HashMap<>();
-        for (CivItem civItem : itemTypes.values()) {
-            if (civItem.getItemType() == CivItem.ItemType.FOLDER ||
-                    civilian.getStashItems().containsKey(civItem.getProcessedName()) ||
-                    !hasItemUnlocked(civilian, civItem)) {
-                continue;
-            }
-            int count = civilian.getCountStashItems(civItem.getProcessedName()) +
-                    civilian.getCountNonStashItems(civItem.getProcessedName());
-            if (civItem.getCivQty() > 0) {
-                newItems.put(civItem.getProcessedName(), civItem.getQty());
-            } else if (civItem.getCivMin() > 0 && civItem.getCivMin() > count) {
-                newItems.put(civItem.getProcessedName(), civItem.getCivMin() - count);
+            else {
+                effects.put(effectString, null);
             }
         }
-        return newItems;
+        int buildRadius = config.getInt("build-radius", 20);
+        TownType townType = new TownType(
+                name, localName,
+                icon,
+                CVItem.createCVItemFromString(config.getString("shop-icon", config.getString("icon", Material.CHEST.name()))),
+                config.getStringList("pre-reqs"),
+                config.getInt("qty", 0),
+                config.getInt("min", 0),
+                config.getInt("max", -1),
+                config.getDouble("price", 0),
+                config.getString("permission"),
+                convertListToMap(config.getStringList("build-reqs")),
+                convertListToMap(config.getStringList("limits")),
+                effects,
+                buildRadius,
+                config.getInt("build-radius-y", buildRadius),
+                config.getStringList("critical-build-reqs"),
+                config.getInt("power", 200),
+                config.getInt("max-power", 1000),
+                config.getStringList("groups"),
+                config.getString("child"),
+                config.getInt("child-population", 0),
+                config.getBoolean("is-in-shop", true),
+                config.getInt("level", 1));
+        townType.setDefaultGovType(config.getString("gov-type", ConfigManager.getInstance().getDefaultGovernmentType()));
+        String townKey = Util.getValidFileName(name).toLowerCase();
+        townType.setCivItemName(townKey);
+        itemTypes.put(townKey, townType);
+        return townType;
     }
 
-    public List<CivItem> getShopItems(Civilian civilian, CivItem parent) {
-        return getAllItemsWithParent(civilian, parent, true);
-    }
-    private List<CivItem> getAllItemsWithParent(Civilian civilian, CivItem parent, boolean isShop) {
-        List<CivItem> returnList = new ArrayList<>();
-        HashSet<CivItem> checkList = new HashSet<>();
-        if (parent == null) {
-            for (Map.Entry<String, CivItem> entry : itemTypes.entrySet()) {
-                CivItem civItem = entry.getValue();
-                if (civItem.getItemType() == CivItem.ItemType.FOLDER) {
-                    checkList.addAll(((FolderType) civItem).getChildren());
-                } else if (civItem.getItemType() == CivItem.ItemType.CLASS) {
-                    for (String key : ((ClassType) civItem).getChildren()) {
-                        if (getItemType(key) != null) {
-                            checkList.add(getItemType(key));
-                        }
-                    }
-                }
-            }
-            for (CivItem civItem : itemTypes.values()) {
-                if (checkList.contains(civItem)) {
+    private void loopThroughResources(String path) {
+        String relativePath = path.replace("/resources/" + ConfigManager.getInstance().getDefaultConfigSet(), "");
+        String[] pathSplit = relativePath.split("/");
+        String currentFileName = pathSplit[pathSplit.length - 1];
+        try {
+            FolderType folderType = null;
+            for (String currentFolder : pathSplit) {
+                if (currentFolder.isEmpty() || Constants.ITEM_TYPES.equals(currentFolder) ||
+                        currentFolder.equals(currentFileName)) {
                     continue;
                 }
-                returnList.add(civItem);
-            }
-        } else {
-            if (parent.getItemType().equals(CivItem.ItemType.FOLDER)) {
-                returnList.addAll(((FolderType) parent).getChildren());
-            } else if (parent.getItemType().equals(CivItem.ItemType.CLASS)) {
-                for (String key : ((ClassType) parent).getChildren()) {
-                    if (getItemType(key) != null) {
-                        checkList.add(getItemType(key));
+                if (!ItemManager.getInstance().itemTypes.containsKey(currentFolder.replace(Constants.INVISIBLE, "").toLowerCase())) {
+                    boolean isVisible = relativePath.substring(0, relativePath.lastIndexOf(currentFolder) + currentFolder.length())
+                            .contains(Constants.INVISIBLE);
+                    FolderType currentFolderType = createFolder(currentFolder.toLowerCase(), !isVisible);
+                    if (folderType != null) {
+                        folderType.getChildren().add(currentFolderType);
                     }
+                    folderType = currentFolderType;
+                }
+                else {
+                    folderType = (FolderType) ItemManager.getInstance().getItemType(currentFolder.toLowerCase());
                 }
             }
-        }
-        returnList.removeAll(checkList);
-        checkList.clear();
-        for (CivItem item : returnList) {
-            if (!hasItemUnlocked(civilian, item) ||
-                    (isShop && !item.getInShop())) {
-                checkList.add(item);
-            }
-        }
-        returnList.removeAll(checkList);
 
-        checkList.clear();
-        for (CivItem currentItem : returnList) {
-            if (currentItem.getItemType() != CivItem.ItemType.FOLDER) {
-                continue;
+            File file = new File(Civs.dataLocation, relativePath);
+            FileConfiguration typeConfig = FallbackConfigUtil.getConfigFullPath(file, path);
+            if (!typeConfig.getBoolean("enabled", true)) {
+                return;
             }
-            if (getAllItemsWithParent(civilian, currentItem, true).isEmpty()) {
-                checkList.add(currentItem);
+            String type = typeConfig.getString("type", Constants.REGION);
+            CivItem civItem = null;
+            String itemName = currentFileName.replace(".yml", "").toLowerCase();
+            if (Constants.REGION.equals(type)) {
+                civItem = loadRegionType(typeConfig, itemName);
             }
+            else if ("spell".equals(type)) {
+                civItem = loadSpellType(typeConfig, itemName);
+            }
+            else if ("class".equals(type)) {
+                civItem = loadClassType(typeConfig, itemName);
+            }
+            else if ("town".equals(type)) {
+                civItem = loadTownType(typeConfig, itemName);
+            }
+            if (folderType != null) {
+                folderType.getChildren().add(civItem);
+            }
+        } catch (Exception e) {
+            Civs.logger.log(Level.SEVERE, "Unable to read from {0}", currentFileName);
+            Civs.logger.log(Level.SEVERE, "Exception during file read", e);
         }
-        returnList.removeAll(checkList);
-        return returnList;
     }
 
-    public boolean hasItemUnlocked(Civilian civilian, CivItem civItem) {
-        return getAllUnmetRequirements(civItem, civilian, true).isEmpty();
-    }
+    private void loopThroughTypeFiles(File file, List<CivItem> parentList) {
+        try {
+            if (file.isDirectory() && !file.getName().contains(".yml")) {
+                List<CivItem> currParentList;
+                if (ItemManager.getInstance().getItemType(file.getName().toLowerCase()) != null) {
+                    FolderType folderType = (FolderType) ItemManager.getInstance().getItemType(file.getName().toLowerCase());
+                    currParentList = folderType.getChildren();
+                }
+                else {
+                    currParentList = new ArrayList<>();
+                }
 
-    public void addMinItems(Civilian civilian) {
-        ArrayList<CivItem> addItems = new ArrayList<>();
-        for (CivItem civItem : itemTypes.values()) {
-            if (civItem.getCivMin() < 1) {
-                continue;
-            }
-            int count = civilian.getCountStashItems(civItem.getProcessedName());
-            count += civilian.getCountNonStashItems(civItem.getProcessedName());
-            if (count >= civItem.getCivMin()) {
-                continue;
-            }
-            if (hasItemUnlocked(civilian, civItem)) {
-                int add = 0;
-                while(count + add < civItem.getCivMin()) {
-                    addItems.add(civItem);
-                    add++;
+                for (File pFile : file.listFiles()) {
+                    loopThroughTypeFiles(pFile, currParentList);
+                }
+                if (itemTypes.containsKey(file.getName().toLowerCase())) {
+                    return;
+                }
+                String folderName = file.getName().replace(Constants.INVISIBLE, "");
+                FolderType folderType = new FolderType(new ArrayList<>(),
+                        folderName,
+                        ConfigManager.getInstance().getFolderIcon(folderName.toLowerCase()),
+                        0,
+                        null,
+                        currParentList,
+                        !file.getName().contains("invisible"),
+                        1);
+                folderType.setCivItemName(folderName.toLowerCase());
+                itemTypes.put(folderName.toLowerCase(), folderType);
+                if (parentList != null) {
+                    parentList.add(folderType);
                 }
             }
-        }
-        for (CivItem civItem : addItems) {
-            civilian.getStashItems().put(civItem.getProcessedName(), civItem.getQty());
-        }
-        CivilianManager.getInstance().saveCivilian(civilian);
-    }
-
-    public List<String> getAllUnmetRequirements(CivItem civItem, Civilian civilian, boolean stopOnFirst) {
-        return getAllUnmetRequirements(civItem.getCivReqs(), civilian, stopOnFirst);
-    }
-
-    public List<String> getAllUnmetRequirements(List<String> civReqs, Civilian civilian, boolean stopOnFirst) {
-        List<String> allUnmetRequirements = new ArrayList<>();
-        if (civReqs.isEmpty()) {
-            return allUnmetRequirements;
-        }
-        Player player = Bukkit.getPlayer(civilian.getUuid());
-        if (player == null) {
-            if (stopOnFirst) {
-                allUnmetRequirements.add("invalid");
-            } else {
-                allUnmetRequirements.add(LocaleManager.getInstance().getTranslation(civilian.getLocale(),
-                        "invalid-target"));
-            }
-            return allUnmetRequirements;
-        }
-
-        outer: for (String reqString : civReqs) {
-            List<String> unmetRequirements = new ArrayList<>();
-            for (String req : reqString.split("\\|")) {
-                if (stopOnFirst && !unmetRequirements.isEmpty()) {
-                    break outer;
+            else {
+                String name = file.getName().replace(".yml", "").toLowerCase();
+                if (itemTypes.containsKey(name)) {
+                    return;
                 }
-                if (!stopOnFirst && unmetRequirements.size() % 2 > 0) {
-                    unmetRequirements.add(ChatColor.GOLD + " " +
-                            LocaleManager.getInstance().getTranslation(player,
-                            "or") + " " + ChatColor.RED);
-                }
-                if (req.startsWith("tutorial=")) {
-                    if (!civilian.getCompletedTutorialSteps().contains(req.replace("tutorial=", ""))) {
-                        if (stopOnFirst) {
-                            unmetRequirements.add("tutorial");
-                        } else {
-                            String[] reqParts = req.replace("tutorial=", "").split("\\^");
-                            String path = reqParts[0];
-                            String type = reqParts[1];
-                            String key = reqParts[2];
-                            int times = Integer.parseInt(reqParts[3]);
-                            int index = -1;
-                            for (int i = 0; i < TutorialManager.getInstance().getPathByName(path).getSteps().size(); i++) {
-                                TutorialStep step = TutorialManager.getInstance().getPathByName(path).getSteps().get(i);
-                                if ((TutorialManager.TutorialType.KILL.name().equals(type) &&
-                                        times == step.getTimes() && key.equals(step.getKillType())) ||
-                                        (times == step.getTimes() && key.equals(step.getRegion()))) {
-                                    index = i;
-                                    break;
-                                }
-                            }
-                            if (index > -1) {
-                                unmetRequirements.addAll(TutorialManager.getInstance()
-                                        .getTutorialMessage(civilian, path, index, false));
-                            }
-                        }
-                        continue outer;
-                    } else {
-                        continue;
+                try {
+                    FileConfiguration typeConfig = new YamlConfiguration();
+                    typeConfig.load(file);
+                    if (!typeConfig.getBoolean("enabled", true)) {
+                        return;
                     }
-                    //perm=civs.admin
-                } else if (req.startsWith("perm=")) {
-                    if (checkPermissionRequirement(unmetRequirements, player, req, stopOnFirst)) {
-                        continue outer;
+                    String type = typeConfig.getString("type", "region");
+                    CivItem civItem = null;
+                    String itemName = file.getName().replace(".yml", "").toLowerCase();
+                    if (type.equals("region")) {
+                        civItem = loadRegionType(typeConfig, itemName);
                     }
-                    continue;
-                    //member=settlement:town:...
-                } else if (req.startsWith("member=")) {
-                    if (checkMemberOfTownRequirement(civilian, unmetRequirements, player, req, stopOnFirst)) {
-                        continue outer;
+                    else if (type.equals("spell")) {
+                        civItem = loadSpellType(typeConfig, itemName);
                     }
-                    continue;
-                    //skill:crafting=20
-                } else if (req.startsWith("skill:")) {
-                    if (checkSkillRequirement(player, civilian, req, unmetRequirements, stopOnFirst)) {
-                        continue outer;
+                    else if (type.equals("class")) {
+                        civItem = loadClassType(typeConfig, itemName);
                     }
-                    continue;
-                    //population=15
-                } else if (req.startsWith("population=")) {
-                    if (checkPopulationRequirement(civilian, unmetRequirements, player, req, stopOnFirst)) {
-                        continue outer;
+                    else if (type.equals("town")) {
+                        civItem = loadTownType(typeConfig, itemName);
                     }
-                    continue;
-                }
-                String[] splitReq = req.split(":");
-                //house:???
-                if (splitReq.length < 2) {
-                    if (checkOwnershipRequirement(civilian, unmetRequirements, player, splitReq, stopOnFirst)) {
-                        continue outer;
+                    if (civItem != null && parentList != null) {
+                        parentList.add(civItem);
                     }
-                    continue;
-                }
-                String[] reqParams = splitReq[1].split("=");
-                //shack:built=1
-                if (reqParams[0].equals("built")) {
-                    if (checkBuildRequirement(civilian, unmetRequirements, player, splitReq, reqParams, stopOnFirst)) {
-                        continue outer;
-                    }
-                    //bash:level=4
-                } else if (reqParams[0].equals("level")) {
-                    CivItem reqItem = itemManager.getItemType(splitReq[0]);
-                    if (reqItem == null) {
-                        continue;
-                    }
-                    if (checkItemLevelRequirement(civilian, unmetRequirements, player, reqParams, reqItem, stopOnFirst)) {
-                        continue outer;
-                    }
-                    //house:has=2
-                } else if (reqParams[0].equals("has")) {
-                    if (civilian.getCountStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1]) ||
-                            civilian.getCountNonStashItems(splitReq[0]) > Integer.parseInt(reqParams[1])) {
-                        continue outer;
-                    } else {
-                        if (stopOnFirst) {
-                            unmetRequirements.add("has");
-                        } else {
-                            CivItem civItem1 = getItemType(splitReq[0]);
-                            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
-                                    "req-item").replace("$1", civItem1.getDisplayName(player)));
-                        }
-                    }
-                    //hamlet:population=15
-                } else if (reqParams[0].equals("population")) {
-                    if (checkSpecificTownPopulationRequirement(civilian, unmetRequirements, player, splitReq[0], reqParams[1], stopOnFirst)) {
-                        continue outer;
-                    }
+                } catch (Exception e) {
+                    Civs.logger.severe("Unable to read from " + file.getName());
+                    e.printStackTrace();
                 }
             }
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(ChatColor.RED);
-            stringBuilder.append("- ");
-            for (int i = 0; i < unmetRequirements.size(); i++) {
-                stringBuilder.append(unmetRequirements.get(i));
-            }
-            allUnmetRequirements.add(stringBuilder.toString());
+        } catch (NullPointerException npe) {
+            Civs.logger.warning("No region types found in " + file.getName());
+            return;
         }
-        List<String> returnString = new ArrayList<>();
-        for (String unmetReq : allUnmetRequirements) {
-            returnString.addAll(Util.textWrap(civilian, unmetReq));
-        }
-        return returnString;
     }
 
-    private boolean checkSpecificTownPopulationRequirement(Civilian civilian, List<String> unmetRequirements, Player player,
-                                                           String anotherString, String reqParam, boolean fast) {
-        int requirement = Integer.parseInt(reqParam);
-        for (Town town : TownManager.getInstance().getTowns()) {
-            if (!town.getType().equalsIgnoreCase(anotherString) ||
-                    !town.getPeople().containsKey(civilian.getUuid())) {
-                continue;
-            }
-            if (requirement <= town.getPopulation()) {
-                return true;
-            }
-        }
-        if (fast) {
-            unmetRequirements.add("pop");
-        } else {
-            CivItem civItem = getItemType(anotherString);
-            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
-                    "population-req").replace("$1", civItem.getDisplayName(player))
-                    .replace("$2", "" + requirement));
-        }
-        return false;
-    }
-
-    private boolean checkItemLevelRequirement(Civilian civilian, List<String> unmetRequirements, Player player,
-                                              String[] reqParams, CivItem reqItem, boolean fast) {
-        int level = civilian.getLevel(reqItem);
-        if (level >= Integer.parseInt(reqParams[1])) {
-            return true;
-        }
-        if (fast) {
-            unmetRequirements.add("level");
-        } else {
-            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
-                    "req-skill-level").replace("$1", reqItem.getDisplayName(player))
-                    .replace("$2", reqParams[1]));
-        }
-        return false;
-    }
-
-    private boolean checkBuildRequirement(Civilian civilian, List<String> unmetRequirements, Player player, String[] splitReq,
-                                          String[] reqParams, boolean fast) {
-        if (civilian.getCountNonStashItems(splitReq[0]) >= Integer.parseInt(reqParams[1])) {
-            return true;
-        }
-        if (fast) {
-            unmetRequirements.add("build");
-        } else {
-            CivItem civItem = getItemType(splitReq[0]);
-            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
-                    "req-build").replace("$1", civItem.getDisplayName(player)));
-        }
-        return false;
-    }
-
-    private boolean checkOwnershipRequirement(Civilian civilian, List<String> unmetRequirements, Player player,
-                                              String[] splitReq, boolean fast) {
-        if (civilian.getCountStashItems(splitReq[0]) > 0 ||
-                civilian.getCountNonStashItems(splitReq[0]) > 0) {
-            return true;
-        }
-        if (fast) {
-            unmetRequirements.add("own");
-        } else {
-            CivItem civItem = getItemType(splitReq[0]);
-            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
-                    "req-item").replace("$1", civItem.getDisplayName(player)));
-        }
-        return false;
-    }
-
-    private boolean checkPopulationRequirement(Civilian civilian, List<String> unmetRequirements, Player player,
-                                               String req, boolean fast) {
-        int pop = Integer.parseInt(req.replace("population=", ""));
-        for (Town town : TownManager.getInstance().getTowns()) {
-            if (!town.getPeople().containsKey(civilian.getUuid())) {
-                continue;
-            }
-            if (pop <= town.getPopulation()) {
-                return true;
-            }
-        }
-        if (fast) {
-            unmetRequirements.add("pop");
-        } else {
-            String town = LocaleManager.getInstance().getTranslation(player,
-                    "town");
-            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
-                    "population-req").replace("$1", town)
-                    .replace("$2", "" + pop));
-        }
-        return false;
-    }
-
-    private boolean checkSkillRequirement(Player player, Civilian civilian, String req,
-                                          List<String> unmetRequirements, boolean fast) {
-        String[] reqSplit = req.split(":")[1].split("=");
-        int level = Integer.parseInt(reqSplit[1]);
-        String skillName = reqSplit[0];
-        for (Skill skill : civilian.getSkills().values()) {
-            if (skill.getType().equalsIgnoreCase(skillName) &&
-                    skill.getLevel() >= level) {
-                return true;
-            }
-        }
-        if (fast) {
-            unmetRequirements.add("skill");
-        } else {
-            String localSkillName = LocaleManager.getInstance().getTranslation(player,
-                    skillName + LocaleConstants.SKILL_SUFFIX);
-            unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
-                    "req-skill-level").replace("$1", localSkillName)
-                    .replace("$2", "" + level));
-        }
-        return false;
-    }
-
-    private boolean checkMemberOfTownRequirement(Civilian civilian, List<String> unmetRequirements, Player player,
-                                              String req, boolean fast) {
-        String[] townTypeStrings = req.replace("member=", "").split(":");
-        Set<String> townTypes = new HashSet<>(Arrays.asList(townTypeStrings));
-        boolean isMember = false;
-        for (Town town : TownManager.getInstance().getTowns()) {
-            if (townTypes.contains(town.getType()) &&
-                    town.getRawPeople().containsKey(civilian.getUuid())) {
-                isMember = true;
-                break;
-            }
-        }
-        if (!isMember) {
-            if (fast) {
-                unmetRequirements.add("town");
-            } else {
-                StringBuilder townTypesNames = new StringBuilder();
-                for (String townType : townTypes) {
-                    CivItem civItem = getItemType(townType);
-                    townTypesNames.append(civItem.getDisplayName(player)).append(", ");
-                }
-                townTypesNames = new StringBuilder(townTypesNames.substring(0, townTypesNames.length() - 2));
-                unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
-                        "req-member-of-town") + townTypesNames.toString());
-            }
-            return false;
-        }
-        return true;
-    }
-
-    private boolean checkPermissionRequirement(List<String> unmetRequirements, Player player, String req, boolean fast) {
-        String permission = req.replace("perm=", "");
-        if (Civs.perm == null ||
-                !Civs.perm.has(player, permission)) {
-            if (fast) {
-                unmetRequirements.add("perm");
-            } else {
-                unmetRequirements.add(LocaleManager.getInstance().getTranslation(player,
-                        "no-permission"));
-            }
-            return false;
-        }
-        return true;
-    }
-
-    public ArrayList<CivItem> getItemsByLevel(int level) {
-        ArrayList<CivItem> itemSet = new ArrayList<>();
-        for (CivItem civItem : this.itemTypes.values()) {
-            if (civItem.getLevel() == level && civItem.getInShop()) {
-                itemSet.add(civItem);
-            }
-        }
-        return itemSet;
-    }
-
-    public void enforceMaxItemLimits(Civilian civilian) {
-        for (Map.Entry<String, Integer> stashItem : new HashMap<>(civilian.getStashItems()).entrySet()) {
-            CivItem civItem = getItemType(stashItem.getKey());
-            if (civItem == null || civItem.getCivMax() < 1) {
-                continue;
-            }
-            int count = civilian.getCountStashItems(civItem.getProcessedName()) +
-                    civilian.getCountNonStashItems(civItem.getProcessedName());
-            if (civItem.getCivMax() < count) {
-                int diff = count - civItem.getCivMax();
-                if (civilian.getStashItems().get(stashItem.getKey()) >= diff) {
-                    civilian.getStashItems().remove(stashItem.getKey());
-                } else {
-                    civilian.getStashItems().put(stashItem.getKey(), stashItem.getValue() - diff);
-                }
-            }
-        }
+    public void reload() {
+        itemTypes.clear();
+        loadAllItemTypes();
     }
 }

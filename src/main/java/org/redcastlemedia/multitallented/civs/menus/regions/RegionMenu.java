@@ -98,7 +98,7 @@ public class RegionMenu extends CustomMenu {
         }
         boolean hasUpkeepsOrInput = false;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
-            if (!regionUpkeep.getInputs().isEmpty() || !regionUpkeep.getReagents().isEmpty()) {
+            if (!regionUpkeep.getInputs().isEmpty() || !regionUpkeep.getReagents().isEmpty() || !regionUpkeep.getTools().isEmpty()) {
                 hasUpkeepsOrInput = true;
                 break;
             }

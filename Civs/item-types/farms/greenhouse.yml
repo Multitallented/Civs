@@ -34,7 +34,7 @@
 #period: 120 #2 minutes
 #upkeep:
 #  0:
-#    reagents:
+#    tools:
 #      - SHEARS
 #    output:
 #      - DANDELION%10,POPPY%10,BLUE_ORCHID%10,ALLIUM%10,AZURE_BLUET%10,RED_TULIP%10,ORANGE_TULIP%10,WHITE_TULIP%10,PINK_TULIP%10,OXEYE_DAISY%10

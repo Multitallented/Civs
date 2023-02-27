@@ -680,7 +680,7 @@ public class Region {
         return RegionManager.getInstance().hasRegionChestChanged(this) &&
                 hasUpkeepItems(false);
     }
-    public boolean hasUpkeepItems(boolean ignoreReagents) {
+    public boolean hasUpkeepItems(boolean ignoreReagentsAndTools) {
         if (!RegionManager.getInstance().hasRegionChestChanged(this)) {
             return false;
         }
@@ -691,9 +691,13 @@ public class Region {
         Location location = getLocation();
         CVInventory cvInventory = UnloadedInventoryHandler.getInstance().getChestInventory(location);
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
-            if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), cvInventory)) &&
-                    Util.containsItems(regionUpkeep.getInputs(), cvInventory)) {
-                if ((!ignoreReagents && regionUpkeep.getPowerReagent() > 0) || regionUpkeep.getPowerInput() > 0) {
+            if (
+                    (ignoreReagentsAndTools ||
+                    (Util.containsItems(regionUpkeep.getReagents(), cvInventory)) &&
+                            Util.containsTools(regionUpkeep.getTools(), cvInventory) ) &&
+                    Util.containsTools(regionUpkeep.getInputs(), cvInventory)
+            ) {
+                if ((!ignoreReagentsAndTools && regionUpkeep.getPowerReagent() > 0) || regionUpkeep.getPowerInput() > 0) {
                     Town town = TownManager.getInstance().getTownAt(location);
                     if (town == null || town.getPower() < Math.max(regionUpkeep.getPowerReagent(), regionUpkeep.getPowerInput())) {
                         continue;
@@ -708,7 +712,7 @@ public class Region {
         return hasUpkeepItems(true);
     }
 
-    public boolean hasUpkeepItems(int upkeepIndex, boolean ignoreReagents) {
+    public boolean hasUpkeepItems(int upkeepIndex, boolean ignoreReagentsAndTools) {
         if (!RegionManager.getInstance().hasRegionChestChanged(this)) {
             return false;
         }
@@ -719,8 +723,12 @@ public class Region {
         RegionUpkeep regionUpkeep = regionType.getUpkeeps().get(upkeepIndex);
         CVInventory cvInventory = UnloadedInventoryHandler.getInstance().getChestInventory(getLocation());
 
-        if ((ignoreReagents || Util.containsItems(regionUpkeep.getReagents(), cvInventory)) &&
-                Util.containsItems(regionUpkeep.getInputs(), cvInventory)) {
+        if (
+                (ignoreReagentsAndTools ||
+                        (Util.containsItems(regionUpkeep.getReagents(), cvInventory)) &&
+                                Util.containsTools(regionUpkeep.getTools(), cvInventory) ) &&
+                        Util.containsItems(regionUpkeep.getInputs(), cvInventory)
+        ) {
             return true;
         }
         return false;
@@ -730,11 +738,12 @@ public class Region {
         this.lastTick = new Date().getTime();
     }
 
-    boolean needsReagentsOrInput() {
+    boolean needsReagentsOrToolsOrInput() {
         RegionType regionType = (RegionType) ItemManager.getInstance().getItemType(type);
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             if (regionUpkeep.getReagents().isEmpty() &&
-                    regionUpkeep.getInputs().isEmpty()) {
+                    regionUpkeep.getInputs().isEmpty() &&
+                    regionUpkeep.getTools().isEmpty()) {
                 return true;
             }
         }
@@ -772,14 +781,15 @@ public class Region {
         int i=0;
         for (RegionUpkeep regionUpkeep : regionType.getUpkeeps()) {
             boolean emptyUpkeep = regionUpkeep.getInputs().isEmpty() && regionUpkeep.getReagents().isEmpty() &&
-                    regionUpkeep.getOutputs().isEmpty() && regionUpkeep.getPowerOutput() == 0 &&
-                    regionUpkeep.getPowerInput() == 0 && regionUpkeep.getPayout() == 0 &&
+                    regionUpkeep.getTools().isEmpty() && regionUpkeep.getOutputs().isEmpty() &&
+                    regionUpkeep.getPowerOutput() == 0 && regionUpkeep.getPowerInput() == 0 &&
+                    regionUpkeep.getPayout() == 0 &&
                     (regionUpkeep.getCommand() == null || regionUpkeep.getCommand().isEmpty());
             if (emptyUpkeep || !hasUpkeepPerm(regionUpkeep)) {
                 continue;
             }
 
-            boolean needsItems = !regionUpkeep.getReagents().isEmpty() ||
+            boolean needsItems = !regionUpkeep.getReagents().isEmpty() || !regionUpkeep.getTools().isEmpty() ||
                     !regionUpkeep.getInputs().isEmpty();
 
             if (needsItems) {
@@ -799,8 +809,9 @@ public class Region {
                 continue;
             }
             boolean containsReagents = !needsItems || Util.containsItems(regionUpkeep.getReagents(), chestInventory);
+            boolean containsTools = !needsItems || Util.containsTools(regionUpkeep.getTools(), chestInventory);
             boolean containsInputs = !needsItems || Util.containsItems(regionUpkeep.getInputs(), chestInventory);
-            boolean hasReagents = !needsItems || (containsReagents && containsInputs);
+            boolean hasReagents = !needsItems || (containsReagents && containsTools && containsInputs);
             if (!hasReagents) {
                 i++;
                 continue;
@@ -857,11 +868,13 @@ public class Region {
                     DebugLogger.inventoryModifications++;
                 }
                 Util.removeItems(regionUpkeep.getInputs(), chestInventory);
+                Util.damageItems(regionUpkeep.getTools(), chestInventory);
                 chestInventory.addItem(output);
 
                 containsReagents = Util.containsItems(regionUpkeep.getReagents(), chestInventory);
+                containsTools = Util.containsTools(regionUpkeep.getTools(), chestInventory);
                 containsInputs = Util.containsItems(regionUpkeep.getInputs(), chestInventory);
-                if (containsReagents && containsInputs) {
+                if (containsReagents && containsTools && containsInputs) {
                     failingUpkeeps.remove(i);
                 }
             }

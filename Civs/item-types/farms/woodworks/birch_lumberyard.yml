@@ -31,22 +31,22 @@
 #period: 120 #2 minutes
 #upkeep:
 #  0:
-#    reagents:
+#    tools:
 #      - STONE_AXE
 #    output:
 #      - BIRCH_LOG*2
 #  1:
-#    reagents:
+#    tools:
 #      - IRON_AXE
 #    output:
 #      - BIRCH_LOG*4
 #  2:
-#    reagents:
+#    tools:
 #      - DIAMOND_AXE
 #    output:
 #      - BIRCH_LOG*8
 #  2:
-#    reagents:
+#    tools:
 #      - NETHERITE_AXE
 #    output:
 #      - BIRCH_LOG*14

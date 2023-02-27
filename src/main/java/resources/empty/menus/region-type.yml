@@ -96,6 +96,13 @@ items:
     desc: reagents
     actions:
       - menu:recipe?regionType=$regionType$&recipe=reagent$count$
+  tools:
+    index: 18,23,27,32,36,41,45,50
+    icon: CHEST
+    name: tools-title
+    desc: tools
+    actions:
+      - menu:recipe?regionType=$regionType$&recipe=tool$count$
   input:
     index: 19,24,28,33,37,42,46,51
     icon: HOPPER

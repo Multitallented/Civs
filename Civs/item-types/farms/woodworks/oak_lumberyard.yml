@@ -31,22 +31,22 @@
 #period: 120 #2 minutes
 #upkeep:
 #  0:
-#    reagents:
+#    tools:
 #      - STONE_AXE
 #    output:
 #      - OAK_LOG*2
 #  1:
-#    reagents:
+#    tools:
 #      - IRON_AXE
 #    output:
 #      - OAK_LOG*4
 #  2:
-#    reagents:
+#    tools:
 #      - DIAMOND_AXE
 #    output:
 #      - OAK_LOG*8
 #  3:
-#    reagents:
+#    tools:
 #      - NETHERITE_AXE
 #    output:
 #      - OAK_LOG*14

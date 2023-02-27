@@ -40,32 +40,23 @@
 
 #period: 3600 #1 hour
 #upkeep:
-  #0:
-    #input:
-    #- STONE_PICKAXE
-    #output:
-    #- AMETHYST_SHARD*6
-  #1:
-    #reagents:
-    #- IRON_PICKAXE
-    #- STONE_PICKAXE
-    #input:
-    #- STONE_PICKAXE
-    #output:
-    #- AMETHYST_SHARD*8
-  #2:
-    #reagents:
-    #- DIAMOND_PICKAXE
-    #- STONE_PICKAXE
-    #input:
-    #- STONE_PICKAXE
-    #output:
-    #- AMETHYST_SHARD*12
-  #3:
-    #reagents:
-    #- NETHERITE_PICKAXE
-    #- STONE_PICKAXE
-    #input:
-    #- STONE_PICKAXE
-    #output:
-    #- AMETHYST_SHARD*18
+#  0:
+#    tools:
+#    - STONE_PICKAXE
+#    output:
+#    - AMETHYST_SHARD*6
+#  1:
+#    tools:
+#    - IRON_PICKAXE
+#    output:
+#    - AMETHYST_SHARD*8
+#  2:
+#    tools:
+#    - DIAMOND_PICKAXE
+#    output:
+#    - AMETHYST_SHARD*12
+#  3:
+#    tools:
+#    - NETHERITE_PICKAXE
+#    output:
+#    - AMETHYST_SHARD*18

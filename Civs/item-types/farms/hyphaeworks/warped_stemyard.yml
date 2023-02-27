@@ -7,47 +7,47 @@
 #max: 2
 #price: 100
 #groups:
- #- raw
- #- farm
- #- hyphaework
+# - raw
+# - farm
+# - hyphaework
 #level: 1
 
 #build-reqs:
- #- WARPED_STEM*8
- #- WARPED_WART_BLOCK*16
- #- WARPED_NYLIUM*4
- #- g:fence*14
- #- g:fencegate*1
- #- CHEST*2
+# - WARPED_STEM*8
+# - WARPED_WART_BLOCK*16
+# - WARPED_NYLIUM*4
+# - g:fence*14
+# - g:fencegate*1
+# - CHEST*2
 
 #build-radius: 4
 
 #effects:
- #- block_break
- #- block_build
- #- block_liquid
- #- block_fire
- #- conveyor:WARPED_STEM
+# - block_break
+# - block_build
+# - block_liquid
+# - block_fire
+# - conveyor:WARPED_STEM
 
 #period: 120 #2 minutes
 #upkeep:
- #0:
-   #reagents:
-     #- STONE_AXE
-   #output:
-     #- WARPED_STEM*2
- #1:
-   #reagents:
-     #- IRON_AXE
-   #output:
-     #- WARPED_STEM*4
- #2:
-   #reagents:
-     #- DIAMOND_AXE
-   #output:
-     #- WARPED_STEM*8
- #3:
-   #reagents:
-     #- NETHERITE_AXE
-   #output:
-     #- WARPED_STEM*14
+# 0:
+#   tools:
+#     - STONE_AXE
+#   output:
+#     - WARPED_STEM*2
+# 1:
+#   tools:
+#     - IRON_AXE
+#   output:
+#     - WARPED_STEM*4
+# 2:
+#   tools:
+#     - DIAMOND_AXE
+#   output:
+#     - WARPED_STEM*8
+# 3:
+#   tools:
+#     - NETHERITE_AXE
+#   output:
+#     - WARPED_STEM*14

@@ -25,7 +25,7 @@
 #period: 3600 #1 hour
 #upkeep:
 #  0:
-#    input:
+#    tools:
 #      - WOODEN_SWORD
 #    output:
 #      - NETHERITE_SWORD
@@ -44,7 +44,7 @@
 #      - EXPERIENCE_BOTTLE*32
 #    payout: -100
 #  2:
-#    input:
+#    tools:
 #      - WOODEN_AXE
 #    output:
 #      - NETHERITE_AXE

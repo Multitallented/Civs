@@ -30,27 +30,18 @@
 #period: 60 #1 minute
 #upkeep:
 #  0:
-#    reagents:
+#    tools:
 #      - IRON_PICKAXE
-#      - STONE_PICKAXE
-#    input:
-#      - STONE_PICKAXE
 #    output:
 #      - PRISMARINE_SHARD*4
 #  1:
-#    reagents:
+#    tools:
 #      - DIAMOND_PICKAXE
-#      - STONE_PICKAXE
-#    input:
-#      - STONE_PICKAXE
 #    output:
 #      - PRISMARINE_SHARD*6
 #  2:
-#    reagents:
+#    tools:
 #      - NETHERITE_PICKAXE
-#      - STONE_PICKAXE
-#    input:
-#      - STONE_PICKAXE
 #    output:
 #      - PRISMARINE_SHARD*8
 #

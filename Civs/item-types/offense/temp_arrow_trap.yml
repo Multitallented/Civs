@@ -29,8 +29,9 @@
 #upkeep:
 #  0:
 #    reagents:
-#      - ARROW*1
 #      - REDSTONE*4
+#    tools:
+#      - BOW
 #    input:
 #      - ARROW*1
 #    exp: 1

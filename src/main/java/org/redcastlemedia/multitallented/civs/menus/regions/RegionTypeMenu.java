@@ -277,6 +277,7 @@ public class RegionTypeMenu extends CustomMenu {
             putActions(civilian, menuIcon, itemStack, count);
             return itemStack;
         } else if ("reagents".equals(menuIcon.getKey()) ||
+                   "tools".equals(menuIcon.getKey()) ||
                    "output".equals(menuIcon.getKey()) ||
                    "payout".equals(menuIcon.getKey()) ||
                    "power-input".equals(menuIcon.getKey()) ||
@@ -291,6 +292,12 @@ public class RegionTypeMenu extends CustomMenu {
                         return new ItemStack(Material.AIR);
                     }
                     return replaceItemStackWithRegionTypeName(civilian, menuIcon, regionType, count, player, "reagent");
+
+                case "tools":
+                    if (regionType.getUpkeeps().get(count).getTools().isEmpty()) {
+                        return new ItemStack(Material.AIR);
+                    }
+                    return replaceItemStackWithRegionTypeName(civilian, menuIcon, regionType, count, player, "tool");
 
                 case "output":
                     if (regionType.getUpkeeps().get(count).getOutputs().isEmpty()) {
@@ -356,6 +363,17 @@ public class RegionTypeMenu extends CustomMenu {
                         regionType.getUpkeeps().get(count).getReagents().size() == 1 &&
                         regionType.getUpkeeps().get(count).getReagents().get(0).size() == 1) {
                     CVItem item = regionType.getUpkeeps().get(count).getReagents().get(0).get(0);
+                    cvItem.setMat(item.getMat());
+                    if (item.getQty() <= item.getMat().getMaxStackSize()) {
+                        cvItem.setQty(item.getQty());
+                    }
+                }
+                break;
+            case "tool":
+                if (regionType.getUpkeeps().size() > count &&
+                        regionType.getUpkeeps().get(count).getTools().size() == 1 &&
+                        regionType.getUpkeeps().get(count).getTools().get(0).size() == 1) {
+                    CVItem item = regionType.getUpkeeps().get(count).getTools().get(0).get(0);
                     cvItem.setMat(item.getMat());
                     if (item.getQty() <= item.getMat().getMaxStackSize()) {
                         cvItem.setQty(item.getQty());

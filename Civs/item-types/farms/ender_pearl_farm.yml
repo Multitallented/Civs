@@ -35,19 +35,19 @@
 #
 #upkeep:
 #  0:
-#    reagents:
+#    tools:
 #      - IRON_SWORD
 #    output:
 #      - ENDER_PEARL
 #      - CHORUS_FRUIT
 #  1:
-#    reagents:
+#    tools:
 #      - DIAMOND_SWORD
 #    output:
 #      - ENDER_PEARL*2
 #      - CHORUS_FRUIT*2
 #  2:
-#    reagents:
+#    tools:
 #      - NETHERITE_SWORD
 #    output:
 #      - ENDER_PEARL*3

@@ -24,22 +24,22 @@
 #period: 60
 #upkeep:
 #  0:
-#    reagents:
+#    tools:
 #      - STONE_SHOVEL
 #    output:
 #      - RED_SAND*4
 #  1:
-#    reagents:
+#    tools:
 #      - IRON_SHOVEL
 #    output:
 #      - RED_SAND*8
 #  2:
-#    reagents:
+#    tools:
 #      - DIAMOND_SHOVEL
 #    output:
 #      - RED_SAND*32
 #  3:
-#    reagents:
+#    tools:
 #      - NETHERITE_SHOVEL
 #    output:
 #      - RED_SAND*76
