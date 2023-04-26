@@ -74,7 +74,7 @@ public class CustomMenu {
     public Inventory createMenu(Civilian civilian) {
         actions.put(civilian.getUuid(), new HashMap<>());
         rightClickActions.put(civilian.getUuid(), new HashMap<>());
-        Inventory inventory = Bukkit.createInventory(null, this.size, Civs.NAME + getName());
+        Inventory inventory = Bukkit.createInventory(null, this.size, getName());
         HashMap<String, Integer> duplicateCount = new HashMap<>();
         for (MenuIcon menuIcon : itemIndexes) {
             for (Integer i : menuIcon.getIndex()) {
