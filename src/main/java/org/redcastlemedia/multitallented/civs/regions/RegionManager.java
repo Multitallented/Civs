@@ -24,6 +24,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
@@ -214,9 +215,27 @@ public class RegionManager {
 
         Block block = region.getLocation().getBlock();
         if (block.getState() instanceof Container) {
-            for (ItemStack is : ((Container) block.getState()).getInventory()) {
-                if (is != null) {
-                    block.getWorld().dropItemNaturally(block.getLocation(), is);
+            Container container = (Container) block.getState();
+            if (container.getInventory() instanceof DoubleChestInventory) {
+                DoubleChestInventory doubleChestInventory = (DoubleChestInventory) container.getInventory();
+                if (Objects.equals(doubleChestInventory.getLeftSide().getLocation(), block.getLocation())) {
+                    for (ItemStack itemStack : doubleChestInventory.getLeftSide().getContents()) {
+                        if (itemStack != null && itemStack.getType() != Material.AIR) {
+                            block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
+                        }
+                    }
+                } else {
+                    for (ItemStack itemStack : doubleChestInventory.getRightSide().getContents()) {
+                        if (itemStack != null && itemStack.getType() != Material.AIR) {
+                            block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
+                        }
+                    }
+                }
+            } else {
+                for (ItemStack itemStack : container.getInventory()) {
+                    if (itemStack != null && itemStack.getType() != Material.AIR) {
+                        block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
+                    }
                 }
             }
         }
