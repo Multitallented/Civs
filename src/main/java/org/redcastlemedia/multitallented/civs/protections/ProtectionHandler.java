@@ -852,12 +852,14 @@ public class ProtectionHandler implements Listener {
                 mat == Material.JUNGLE_DOOR ||
                 mat == Material.DARK_OAK_DOOR ||
                 mat == Enums.getIfPresent(Material.class, "MANGROVE_DOOR").orNull() ||
+                mat == Enums.getIfPresent(Material.class, "CHERRY_DOOR").orNull() ||
                 mat == Material.ACACIA_DOOR ||
                 mat == Material.OAK_TRAPDOOR ||
                 mat == Material.BIRCH_TRAPDOOR ||
                 mat == Material.SPRUCE_TRAPDOOR ||
                 mat == Material.JUNGLE_TRAPDOOR ||
                 mat == Enums.getIfPresent(Material.class, "MANGROVE_TRAPDOOR").orNull()||
+                mat == Enums.getIfPresent(Material.class, "CHERRY_TRAPDOOR").orNull()||
                 mat == Material.DARK_OAK_TRAPDOOR ||
                 mat == Material.ACACIA_TRAPDOOR ||
                 mat == Material.IRON_DOOR ||
@@ -868,6 +870,7 @@ public class ProtectionHandler implements Listener {
                 mat == Material.ACACIA_FENCE_GATE ||
                 mat == Material.JUNGLE_FENCE_GATE ||
                 mat == Enums.getIfPresent(Material.class, "MANGROVE_FENCE_GATE").orNull() ||
+                mat == Enums.getIfPresent(Material.class, "CHERRY_FENCE_GATE").orNull() ||
                 mat == Material.BIRCH_FENCE_GATE) {
             boolean shouldBlock = shouldBlockAction(clickedBlock, player, RegionEffectConstants.DOOR_USE, null);
             if (shouldBlock) {
@@ -879,7 +882,9 @@ public class ProtectionHandler implements Listener {
                 mat == Material.JUNGLE_SIGN ||
                 mat == Material.JUNGLE_WALL_SIGN ||
                 mat == Enums.getIfPresent(Material.class, "MANGROVE_WALL_SIGN").orNull() ||
+                mat == Enums.getIfPresent(Material.class, "CHERRY_WALL_SIGN").orNull() ||
                 mat == Enums.getIfPresent(Material.class, "MANGROVE_SIGN").orNull() ||
+                mat == Enums.getIfPresent(Material.class, "CHERRY_SIGN").orNull() ||
                 mat == Material.DARK_OAK_SIGN ||
                 mat == Material.DARK_OAK_WALL_SIGN ||
                 mat == Material.SPRUCE_SIGN ||
@@ -929,6 +934,7 @@ public class ProtectionHandler implements Listener {
                 mat == Material.SPRUCE_BUTTON ||
                 mat == Material.JUNGLE_BUTTON ||
                 mat == Material.DARK_OAK_BUTTON ||
+                mat == Enums.getIfPresent(Material.class, "CHERRY_BUTTON").orNull() ||
                 mat == Material.ACACIA_BUTTON ||
                 mat == Material.CRIMSON_BUTTON ||
                 mat == Material.WARPED_BUTTON ||

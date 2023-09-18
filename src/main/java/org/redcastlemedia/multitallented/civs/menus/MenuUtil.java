@@ -3,6 +3,8 @@ package org.redcastlemedia.multitallented.civs.menus;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import com.google.common.base.Enums;
+
 public final class MenuUtil {
     private MenuUtil() {
 
@@ -18,7 +20,7 @@ public final class MenuUtil {
             divideByTwo(item);
         } else if (mat == Material.OAK_DOOR || mat == Material.IRON_DOOR || mat == Material.DARK_OAK_DOOR
                 || mat == Material.BIRCH_DOOR || mat == Material.ACACIA_DOOR || mat == Material.SPRUCE_DOOR
-                || mat == Material.JUNGLE_DOOR) {
+                || mat == Material.JUNGLE_DOOR || mat == Enums.getIfPresent(Material.class, "CHERRY_DOOR").orNull()) {
             divideByTwo(item);
         } else if (mat == Material.REDSTONE_WIRE) {
             item.setType(Material.REDSTONE);
@@ -42,6 +44,8 @@ public final class MenuUtil {
             item.setType(Material.JUNGLE_SIGN);
         } else if (mat == Material.ACACIA_WALL_SIGN) {
             item.setType(Material.ACACIA_SIGN);
+        } else if (mat == Enums.getIfPresent(Material.class, "CHERRY_WALL_SIGN").orNull()) {
+            item.setType(Enums.getIfPresent(Material.class, "CHERRY_SIGN").or(Material.ACACIA_SIGN));
         } else if (mat == Material.COCOA) {
             item.setType(Material.COCOA_BEANS);
         }

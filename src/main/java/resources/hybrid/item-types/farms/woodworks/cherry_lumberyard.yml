@@ -1,0 +1,51 @@
+type: region
+icon: CHEST
+shop-icon: CHERRY_LOG
+dynmap-marker: tree
+name: Cherry_Lumberyard
+max: 2
+price: 100
+groups:
+- raw
+- farm
+- woodwork
+level: 1
+
+build-reqs:
+- CHERRY_LOG*8
+- CHERRY_LEAVES*16
+- g:fence*14
+- g:fencegate*1
+- CHEST*2
+
+build-radius: 4
+
+effects:
+- block_break
+- block_build
+- block_liquid
+- block_fire
+- conveyor:CHERRY_LOG
+
+period: 120 #2 minutes
+upkeep:
+  0:
+    reagents:
+    - STONE_AXE
+    output:
+    - CHERRY_LOG*2
+  1:
+    reagents:
+    - IRON_AXE
+    output:
+    - CHERRY_LOG*4
+  2:
+    reagents:
+    - DIAMOND_AXE
+    output:
+    - CHERRY_LOG*8
+  3:
+    reagents:
+    - NETHERITE_AXE
+    output:
+    - CHERRY_LOG*14

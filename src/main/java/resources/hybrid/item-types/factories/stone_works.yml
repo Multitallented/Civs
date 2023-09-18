@@ -33,7 +33,7 @@ upkeep:
   0:
     input:
     - COBBLESTONE*8
-    - OAK_LOG,BIRCH_LOG,SPRUCE_LOG,JUNGLE_LOG,DARK_OAK_LOG,ACACIA_LOG
+    - g:log
     output:
     - STONE_PICKAXE
     - STONE_PICKAXE

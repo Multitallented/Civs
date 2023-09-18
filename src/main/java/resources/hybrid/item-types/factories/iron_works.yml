@@ -34,7 +34,7 @@ upkeep:
   0:
     input:
     - IRON_INGOT*8
-    - OAK_LOG,BIRCH_LOG,SPRUCE_LOG,JUNGLE_LOG,DARK_OAK_LOG,ACACIA_LOG
+    - g:log
     output:
     - IRON_PICKAXE
     - IRON_PICKAXE

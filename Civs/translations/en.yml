@@ -549,6 +549,8 @@
 #birch_lumberyard-desc: "Automated birch log farming. Place a storage minecart in the chest. Build rails from the Lumberyard to a destination region. Place a sloped powered rail at the start."
 #dark_oak_lumberyard-name: "Dark Oak Lumberyard"
 #dark_oak_lumberyard-desc: "Automated dark oak log farming. Place a storage minecart in the chest. Build rails from the Lumberyard to a destination region. Place a sloped powered rail at the start."
+#cherry_lumberyard-name: "Cherry Lumberyard"
+#cherry_lumberyard-desc: "Automated cherry log farming. Place a storage minecart in the chest. Build rails from the Lumberyard to a destination region. Place a sloped powered rail at the start."
 #jungle_lumberyard-name: "Jungle Lumberyard"
 #jungle_lumberyard-desc: "Automated jungle log farming. Place a storage minecart in the chest. Build rails from the Lumberyard to a destination region. Place a sloped powered rail at the start."
 #oak_lumberyard-name: "Oak Lumberyard"
