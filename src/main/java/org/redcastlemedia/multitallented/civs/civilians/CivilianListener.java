@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,7 +15,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
-import org.bukkit.block.Container;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.HumanEntity;
@@ -43,7 +41,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -496,31 +493,7 @@ public class CivilianListener implements Listener {
         }
 
         cvItem.setQty(1);
-        if (block.getState() instanceof Container) {
-            Container container = (Container) block.getState();
-            if (container.getInventory() instanceof DoubleChestInventory) {
-                DoubleChestInventory doubleChestInventory = (DoubleChestInventory) container.getInventory();
-                if (Objects.equals(doubleChestInventory.getLeftSide().getLocation(), block.getLocation())) {
-                    for (ItemStack itemStack : doubleChestInventory.getLeftSide().getContents()) {
-                        if (itemStack != null && itemStack.getType() != Material.AIR) {
-                            block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
-                        }
-                    }
-                } else {
-                    for (ItemStack itemStack : doubleChestInventory.getRightSide().getContents()) {
-                        if (itemStack != null && itemStack.getType() != Material.AIR) {
-                            block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
-                        }
-                    }
-                }
-            } else {
-                for (ItemStack itemStack : container.getInventory()) {
-                    if (itemStack != null && itemStack.getType() != Material.AIR) {
-                        block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
-                    }
-                }
-            }
-        }
+        Util.dropItemsFromContainer(block);
         if (player != null && (!ConfigManager.getInstance().getAllowSharingCivsItems() ||
                 uuid == null || cvItem.getMat() != block.getType() ||
                 !uuid.equals(player.getUniqueId()))) {
@@ -534,6 +507,14 @@ public class CivilianListener implements Listener {
             } else {
                 Civilian civilian = CivilianManager.getInstance().getCivilian(uuid);
                 CivItem civItem = CivItem.getFromItemStack(cvItem);
+                if (civItem == null) {
+                    Region region = RegionManager.getInstance().getRegionAt(block.getLocation());
+                    if (region != null) {
+                        civItem = ItemManager.getInstance().getItemType(region.getType());
+                    } else {
+                        return true;
+                    }
+                }
                 if (civilian.getStashItems().containsKey(civItem.getProcessedName())) {
                     civilian.getStashItems().put(civItem.getProcessedName(),
                             civilian.getStashItems().get(civItem.getProcessedName()) + 1);

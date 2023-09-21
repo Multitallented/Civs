@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -22,12 +23,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
+import org.bukkit.block.Container;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -446,6 +450,34 @@ public final class Util {
             }
         }
         return false;
+    }
+
+    public static void dropItemsFromContainer(Block block) {
+        if (block.getState() instanceof Container) {
+            Container container = (Container) block.getState();
+            if (container.getInventory() instanceof DoubleChestInventory) {
+                DoubleChestInventory doubleChestInventory = (DoubleChestInventory) container.getInventory();
+                if (Objects.equals(doubleChestInventory.getLeftSide().getLocation(), block.getLocation())) {
+                    for (ItemStack itemStack : doubleChestInventory.getLeftSide().getContents()) {
+                        if (itemStack != null && itemStack.getType() != Material.AIR) {
+                            block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
+                        }
+                    }
+                } else {
+                    for (ItemStack itemStack : doubleChestInventory.getRightSide().getContents()) {
+                        if (itemStack != null && itemStack.getType() != Material.AIR) {
+                            block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
+                        }
+                    }
+                }
+            } else {
+                for (ItemStack itemStack : container.getInventory()) {
+                    if (itemStack != null && itemStack.getType() != Material.AIR) {
+                        block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
+                    }
+                }
+            }
+        }
     }
 
     public static boolean isSolidBlock(Material type) {

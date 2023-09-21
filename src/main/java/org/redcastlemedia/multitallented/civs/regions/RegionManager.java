@@ -19,12 +19,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
-import org.bukkit.block.Container;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import org.redcastlemedia.multitallented.civs.BlockLogger;
@@ -214,31 +212,7 @@ public class RegionManager {
         Bukkit.getPluginManager().callEvent(new RegionDestroyedEvent(region));
 
         Block block = region.getLocation().getBlock();
-        if (block.getState() instanceof Container) {
-            Container container = (Container) block.getState();
-            if (container.getInventory() instanceof DoubleChestInventory) {
-                DoubleChestInventory doubleChestInventory = (DoubleChestInventory) container.getInventory();
-                if (Objects.equals(doubleChestInventory.getLeftSide().getLocation(), block.getLocation())) {
-                    for (ItemStack itemStack : doubleChestInventory.getLeftSide().getContents()) {
-                        if (itemStack != null && itemStack.getType() != Material.AIR) {
-                            block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
-                        }
-                    }
-                } else {
-                    for (ItemStack itemStack : doubleChestInventory.getRightSide().getContents()) {
-                        if (itemStack != null && itemStack.getType() != Material.AIR) {
-                            block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
-                        }
-                    }
-                }
-            } else {
-                for (ItemStack itemStack : container.getInventory()) {
-                    if (itemStack != null && itemStack.getType() != Material.AIR) {
-                        block.getWorld().dropItemNaturally(block.getLocation(), itemStack);
-                    }
-                }
-            }
-        }
+        Util.dropItemsFromContainer(block);
 
         if (Civs.getInstance() != null) {
             block.setType(Material.AIR);
