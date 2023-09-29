@@ -19,6 +19,7 @@ import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Difficulty;
 import org.bukkit.Effect;
+import org.bukkit.FeatureFlag;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.GameRule;
 import org.bukkit.HeightMap;
@@ -145,6 +146,12 @@ public class WorldImpl implements World {
 
     @Override
     public Chunk getChunkAt(int i, int i1) {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public Chunk getChunkAt(int i, int i1, boolean b) {
         return null;
     }
 
@@ -1092,7 +1099,17 @@ public class WorldImpl implements World {
     }
 
     @Override
+    public void playSound(@NotNull Entity entity, @NotNull String s, float v, float v1) {
+
+    }
+
+    @Override
     public void playSound(@NotNull Entity entity, @NotNull Sound sound, @NotNull SoundCategory soundCategory, float v, float v1) {
+
+    }
+
+    @Override
+    public void playSound(@NotNull Entity entity, @NotNull String s, @NotNull SoundCategory soundCategory, float v, float v1) {
 
     }
 
@@ -1250,6 +1267,12 @@ public class WorldImpl implements World {
 
     @Override
     public @Nullable DragonBattle getEnderDragonBattle() {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public Set<FeatureFlag> getFeatureFlags() {
         return null;
     }
 

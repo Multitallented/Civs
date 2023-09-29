@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -272,6 +273,17 @@ public class ItemMetaImpl implements ItemMeta, Damageable, SkullMeta {
     @Override
     public void setOwnerProfile(@Nullable PlayerProfile playerProfile) {
 
+    }
+
+    @Override
+    public void setNoteBlockSound(@Nullable NamespacedKey namespacedKey) {
+
+    }
+
+    @Nullable
+    @Override
+    public NamespacedKey getNoteBlockSound() {
+        return null;
     }
 
     @Override

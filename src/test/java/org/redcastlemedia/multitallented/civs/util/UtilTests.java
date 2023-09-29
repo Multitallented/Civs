@@ -274,4 +274,10 @@ public class UtilTests extends TestUtil {
         assertEquals("100", Util.getNumberFormat(100, "zh"));
         assertEquals("1 000,1", Util.getNumberFormat(1000.1, "ru"));
     }
+
+    @Test
+    public void nameShouldBeValid() {
+        assertFalse(Util.validateFileName("something&something"));
+        assertTrue(Util.validateFileName("something_something"));
+    }
 }

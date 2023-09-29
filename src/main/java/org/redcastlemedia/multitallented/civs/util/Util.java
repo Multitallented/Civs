@@ -503,6 +503,7 @@ public final class Util {
 
     public static boolean validateFileName(String fileName) {
         return fileName.matches("^[^.\\\\/:*?\"<>|]?[^\\\\/:*?\"<>|]*")
+                && !fileName.contains("&")
                 && getValidFileName(fileName).length()>0 &&
                 fileName.length() < 41;
     }

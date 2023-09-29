@@ -306,4 +306,10 @@ public class BlockImpl implements Block {
     public void removeMetadata(String s, Plugin plugin) {
 
     }
+
+    @NotNull
+    @Override
+    public String getTranslationKey() {
+        return "EN";
+    }
 }
