@@ -896,14 +896,14 @@ public class TownManager {
     }
 
     private boolean handleIntersectingTown(Player player, Town town, LocaleManager localeManager, TownType townType, List<Town> intersectTowns) {
-        if (intersectTowns.size() > 1 ||
-                    (!intersectTowns.isEmpty() &&
-                    (townType.getChild() == null || !townType.getChild().equals(intersectTowns.get(0).getType())))) {
-            TownType townType1 = (TownType) ItemManager.getInstance().getItemType(intersectTowns.get(0).getType());
+        intersectTowns.remove(town);
+        if (intersectTowns.size() > 1) {
+            Town intersectTown = intersectTowns.get(0);
+            TownType townType1 = (TownType) ItemManager.getInstance().getItemType(intersectTown.getType());
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "too-close-town").replace("$1", townType.getDisplayName(player))
                     .replace("$2", townType1.getDisplayName(player)));
-            UUID firstOwnerUuid = intersectTowns.get(0).getFirstOwner();
+            UUID firstOwnerUuid = intersectTown.getFirstOwner();
             String ownerName = "no one";
             if (firstOwnerUuid != null) {
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(firstOwnerUuid);
