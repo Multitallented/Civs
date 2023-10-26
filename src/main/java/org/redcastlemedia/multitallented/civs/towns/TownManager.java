@@ -896,9 +896,8 @@ public class TownManager {
     }
 
     private boolean handleIntersectingTown(Player player, Town town, LocaleManager localeManager, TownType townType, List<Town> intersectTowns) {
-        intersectTowns.remove(town);
-        if (intersectTowns.size() > 1) {
-            Town intersectTown = intersectTowns.get(0);
+        if (intersectTowns.size() > 1 || (!intersectTowns.isEmpty() && town != null && !intersectTowns.contains(town))) {
+            Town intersectTown = (town != null && intersectTowns.get(0).equals(town)) ? intersectTowns.get(1) : intersectTowns.get(0);
             TownType townType1 = (TownType) ItemManager.getInstance().getItemType(intersectTown.getType());
             player.sendMessage(Civs.getPrefix() + localeManager.getTranslation(player,
                     "too-close-town").replace("$1", townType.getDisplayName(player))
