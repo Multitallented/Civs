@@ -92,4 +92,58 @@ public class CommandTests extends TestUtil {
         }
         assertEquals("tribe", TownManager.getInstance().getTownAt(location).getType());
     }
+
+    @Test
+    public void playerShouldBeAbleToUpgradeTownWithNoIntersection() {
+        RegionsTests.loadRegionTypeCobble();
+        RegionsTests.createNewRegion("cobble");
+        TownTests.loadTownTypeHamlet2();
+        TownTests.loadTownTypeTribe2();
+        Location location = TestUtil.player.getLocation();
+        Location newTownLocation = new Location(world, 55.5,0.5,55.5);
+        Town town = TownTests.loadTown("test", "hamlet2", location);
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP,
+                new HashSet<>(), null, new ArrayList<>(), true);
+        TownTests.loadTown("test", "hamlet2", newTownLocation);
+        TownTests.addGovernmentType(government);
+        town.setGovernmentType("DICTATORSHIP");
+        town.getRawPeople().put(TestUtil.player.getUniqueId(), Constants.OWNER);
+        TownCommand townCommand = new TownCommand();
+        String[] args = new String[3];
+        args[0] = "town";
+        args[1] = "test2";
+        try {
+            townCommand.runCommand(TestUtil.player, null, "town", args);
+        } catch (SuccessException se) {
+
+        }
+        assertEquals("tribe", TownManager.getInstance().getTownAt(location).getType());
+    }
+
+    @Test
+    public void playerShouldNotBeAbleToUpgradeTownCloseToOtherTown() {
+        RegionsTests.loadRegionTypeCobble();
+        RegionsTests.createNewRegion("cobble");
+        TownTests.loadTownTypeHamlet2();
+        TownTests.loadTownTypeTribe2();
+        Location location = TestUtil.player.getLocation();
+        Location newTownLocation = new Location(world, 20.5,0.5,20.5);
+        Town town = TownTests.loadTown("test", "hamlet2", location);
+        Government government = new Government("DICTATORSHIP", GovernmentType.DICTATORSHIP,
+                new HashSet<>(), null, new ArrayList<>(), true);
+        TownTests.loadTown("test", "hamlet2", newTownLocation);
+        TownTests.addGovernmentType(government);
+        town.setGovernmentType("DICTATORSHIP");
+        town.getRawPeople().put(TestUtil.player.getUniqueId(), Constants.OWNER);
+        TownCommand townCommand = new TownCommand();
+        String[] args = new String[3];
+        args[0] = "town";
+        args[1] = "test2";
+        try {
+            townCommand.runCommand(TestUtil.player, null, "town", args);
+        } catch (SuccessException se) {
+
+        }
+        assertEquals("hamlet2", TownManager.getInstance().getTownAt(location).getType());
+    }
 }

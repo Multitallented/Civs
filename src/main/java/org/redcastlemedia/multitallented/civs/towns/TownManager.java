@@ -680,6 +680,9 @@ public class TownManager {
         }
 
         int modifier = ConfigManager.getInstance().getMinDistanceBetweenTowns();
+        if (townType.getChild() != null) {
+            modifier = 1;
+        }
         List<Town> intersectTowns = checkIntersect(player.getLocation(), townType, modifier);
         if (handleIntersectingTown(player, town, localeManager, townType, intersectTowns)) {
             return;

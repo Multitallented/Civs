@@ -164,6 +164,32 @@ public class TownTests extends TestUtil {
     }
 
     @Test
+    public void newTownShouldStartNotOverlapExistingTown() {
+        TownTests.loadTownTypeTribe();
+        RegionsTests.loadRegionTypeCobble();
+        RegionsTests.createNewRegion("cobble");
+
+        Location location = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+        TownTests.loadTown("test1", "tribe", location);
+        Town town = new Town("test2", "tribe", new Location(Bukkit.getWorld("world"), 25, 0, 25), new HashMap<>(), 100, 100, 1, 0, 0);
+        TownManager.getInstance().placeTown(TestUtil.player, "test2", town);
+        assertNull(TownManager.getInstance().getTown("test2"));
+    }
+
+    @Test
+    public void newTownShouldStartNotBeTooCloseToExistingTown() {
+        TownTests.loadTownTypeTribe();
+        RegionsTests.loadRegionTypeCobble();
+        RegionsTests.createNewRegion("cobble");
+
+        Location location = new Location(Bukkit.getWorld("world"), 0, 0, 0);
+        TownTests.loadTown("test1", "tribe", location);
+        Town town = new Town("test2", "tribe", new Location(Bukkit.getWorld("world"), 55, 0, 55), new HashMap<>(), 100, 100, 1, 0, 0);
+        TownManager.getInstance().placeTown(TestUtil.player, "test2", town);
+        assertNull(TownManager.getInstance().getTown("test2"));
+    }
+
+    @Test
     public void townShouldDestroyWhenCriticalRegionDestroyed() {
         RegionsTests.loadRegionTypeCobble();
         HashMap<UUID, String> people = new HashMap<>();
