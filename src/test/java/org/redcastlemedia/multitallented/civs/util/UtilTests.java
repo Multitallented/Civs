@@ -1,16 +1,7 @@
 package org.redcastlemedia.multitallented.civs.util;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,13 +17,19 @@ import org.redcastlemedia.multitallented.civs.civilians.CivilianManager;
 import org.redcastlemedia.multitallented.civs.items.CVInventory;
 import org.redcastlemedia.multitallented.civs.items.CVItem;
 import org.redcastlemedia.multitallented.civs.items.UnloadedInventoryHandler;
+import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
+import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
 import org.redcastlemedia.multitallented.civs.towns.Town;
 import org.redcastlemedia.multitallented.civs.towns.TownManager;
 import org.redcastlemedia.multitallented.civs.towns.TownTests;
-import org.redcastlemedia.multitallented.civs.placeholderexpansion.PlaceHook;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class UtilTests extends TestUtil {
 
@@ -64,9 +61,11 @@ public class UtilTests extends TestUtil {
     }
     @Test
     public void cvItemFromStringWithNameShouldSetValuesProperly() {
-        CVItem cvItem = CVItem.createCVItemFromString("PRISMARINE.Jade*2");
+        LocaleManager.getInstance().addTranslation("en", "item-jade-name", "Jade");
+        LocaleManager.getInstance().addTranslation("en", "item-jade-desc", "A mineral used in the Jade Shop");
+        CVItem cvItem = CVItem.createCVItemFromString("PRISMARINE.jade*2");
         assertEquals(2, cvItem.getQty());
-//        assertEquals("Jade", cvItem.getDisplayName()); TODO fix this
+        assertEquals("Jade", cvItem.getDisplayName());
         assertEquals(Material.PRISMARINE, cvItem.getMat());
     }
     @Test

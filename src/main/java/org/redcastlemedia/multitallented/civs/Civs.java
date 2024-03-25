@@ -1,17 +1,10 @@
 package org.redcastlemedia.multitallented.civs;
 
-import java.io.File;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import github.scarsz.discordsrv.DiscordSRV;
+import me.clip.placeholderapi.PlaceholderAPIPlugin;
+import net.Indyuce.mmoitems.MMOItems;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -47,11 +40,12 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
 
-import github.scarsz.discordsrv.DiscordSRV;
-import me.clip.placeholderapi.PlaceholderAPIPlugin;
-import net.Indyuce.mmoitems.MMOItems;
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
+import java.io.File;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Civs extends JavaPlugin {
 
@@ -236,8 +230,9 @@ public class Civs extends JavaPlugin {
         }
 
         if (Bukkit.getPluginManager().isPluginEnabled("Pl3xMap")) {
-            Bukkit.getPluginManager().registerEvents(new Pl3xMapHook(), this);
-            Pl3xMapHook.initMarkerSet();
+            Pl3xMapHook pl3xMapHook = new Pl3xMapHook();
+            Bukkit.getPluginManager().registerEvents(pl3xMapHook, this);
+            pl3xMapHook.initMarkerSet();
         }
         Bukkit.getPluginManager().registerEvents(new PluginListener(), this);
     }

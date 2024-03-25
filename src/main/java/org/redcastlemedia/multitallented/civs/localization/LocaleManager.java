@@ -1,11 +1,6 @@
 package org.redcastlemedia.multitallented.civs.localization;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.regex.Pattern;
-
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,7 +14,11 @@ import org.redcastlemedia.multitallented.civs.util.Util;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 
-import me.clip.placeholderapi.PlaceholderAPI;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 @CivsSingleton(priority = CivsSingleton.SingletonLoadPriority.HIGHEST)
 public class LocaleManager {
@@ -175,5 +174,11 @@ public class LocaleManager {
     public boolean hasTranslation(String language, String key) {
         return languageMap.get(language) != null &&
                 languageMap.get(language).get(key) != null;
+    }
+
+    public void addTranslation(String language, String key, String value) {
+        if (languageMap.containsKey(language)) {
+            languageMap.get(language).put(key, value);
+        }
     }
 }

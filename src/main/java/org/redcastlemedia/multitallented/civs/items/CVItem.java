@@ -1,11 +1,12 @@
 package org.redcastlemedia.multitallented.civs.items;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.logging.Level;
-
-import org.apache.commons.lang.ObjectUtils;
+import io.lumine.mythic.lib.api.item.NBTItem;
+import lombok.Getter;
+import lombok.Setter;
+import net.Indyuce.mmoitems.MMOItems;
+import net.Indyuce.mmoitems.api.Type;
+import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -23,12 +24,10 @@ import org.redcastlemedia.multitallented.civs.localization.LocaleConstants;
 import org.redcastlemedia.multitallented.civs.localization.LocaleManager;
 import org.redcastlemedia.multitallented.civs.util.Util;
 
-import io.lumine.mythic.lib.api.item.NBTItem;
-import lombok.Getter;
-import lombok.Setter;
-import net.Indyuce.mmoitems.MMOItems;
-import net.Indyuce.mmoitems.api.Type;
-import net.Indyuce.mmoitems.api.item.mmoitem.MMOItem;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  *
@@ -444,16 +443,19 @@ public class CVItem {
     }
 
     public boolean equivalentCVItem(CVItem iss, boolean useDisplayName) {
-        if (!ObjectUtils.equals(mmoItemName, iss.getMmoItemName()) ||
-                !ObjectUtils.equals(mmoItemType, iss.getMmoItemType())) {
+        if (!StringUtils.equals(mmoItemName, iss.getMmoItemName())) {
             return false;
         }
-        if (mmoItemType != null) {
-            return true;
+        if (!StringUtils.equals(mmoItemType, iss.getMmoItemType())) {
+            return false;
         }
 
-        if ((iss.getCustomModelData() != null || customModelData != null) &&
-                ObjectUtils.equals(iss.getCustomModelData(), customModelData)) {
+        if (iss.getCustomModelData() != null && customModelData != null &&
+                iss.getCustomModelData().intValue() != customModelData.intValue()) {
+            return false;
+        } else if (iss.getCustomModelData() == null && customModelData != null) {
+            return false;
+        } else if (iss.getCustomModelData() != null && customModelData == null) {
             return false;
         }
 
